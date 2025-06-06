@@ -38,6 +38,9 @@
       "@spartan-ng/ui-card-helm": [
         "libs/ui/ui-card-helm/src/index.ts"
       ],
+      "@spartan-ng/ui-carousel-helm": [
+        "libs/ui/ui-carousel-helm/src/index.ts"
+      ],
       "@spartan-ng/ui-checkbox-helm": [
         "libs/ui/ui-checkbox-helm/src/index.ts"
       ],
@@ -52,6 +55,9 @@
       ],
       "@spartan-ng/ui-formfield-helm": [
         "libs/ui/ui-formfield-helm/src/index.ts"
+      ],
+      "@spartan-ng/ui-hovercard-helm": [
+        "libs/ui/ui-hovercard-helm/src/index.ts"
       ],
       "@spartan-ng/ui-icon-helm": [
         "libs/ui/ui-icon-helm/src/index.ts"
@@ -86,8 +92,17 @@
       "@spartan-ng/ui-select-helm": [
         "libs/ui/ui-select-helm/src/index.ts"
       ],
+      "@spartan-ng/ui-separator-helm": [
+        "libs/ui/ui-separator-helm/src/index.ts"
+      ],
+      "@spartan-ng/ui-sheet-helm": [
+        "libs/ui/ui-sheet-helm/src/index.ts"
+      ],
       "@spartan-ng/ui-skeleton-helm": [
         "libs/ui/ui-skeleton-helm/src/index.ts"
+      ],
+      "@spartan-ng/ui-slider-helm": [
+        "libs/ui/ui-slider-helm/src/index.ts"
       ],
       "@spartan-ng/ui-sonner-helm": [
         "libs/ui/ui-sonner-helm/src/index.ts"
@@ -104,8 +119,14 @@
       "@spartan-ng/ui-tabs-helm": [
         "libs/ui/ui-tabs-helm/src/index.ts"
       ],
+      "@spartan-ng/ui-tooltip-helm": [
+        "libs/ui/ui-tooltip-helm/src/index.ts"
+      ],
       "@spartan-ng/ui-typography-helm": [
         "libs/ui/ui-typography-helm/src/index.ts"
+      ],
+      "@spartan-ng/ui-sidebar-helm": [
+        "libs/ui/ui-sidebar-helm/src/index.ts"
       ]
     }
   }

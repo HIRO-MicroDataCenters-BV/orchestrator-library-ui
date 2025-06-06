@@ -1,85 +1,6 @@
 # OrchestrationLibraryFront
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.0.0 and follows the best practices of [spartan.ng](https://spartan.ng/).
-
-## Project Structure
-
-```
-src/
-├── app/
-│   ├── core/                 # Singleton services, guards, interceptors
-│   │   ├── auth/            # Authentication related services
-│   │   ├── guards/          # Route guards
-│   │   ├── interceptors/    # HTTP interceptors
-│   │   └── services/        # Core services
-│   ├── shared/              # Shared modules, components, pipes
-│   ├── features/            # Feature modules
-│   │   ├── public/          # Public routes
-│   │   └── private/         # Private routes
-│   └── layout/              # Layout components
-├── assets/
-├── environments/            # Environment configurations
-└── styles/                 # Global styles
-```
-
-## Features List
-
-### Core Features
-
-- **Authentication System**
-
-  - JWT-based authentication
-  - Secure token storage
-  - Automatic token injection in requests
-  - User session management
-
-- **Environment Configuration**
-
-  - Development/Production environment separation
-  - Secure configuration management
-  - Environment-specific API endpoints
-
-- **Error Handling**
-
-  - Global error interceptor
-  - Centralized error service
-  - Custom error pages
-  - HTTP error handling
-
-- **API Integration**
-  - Centralized API service
-  - Automatic token management
-  - Type-safe API calls
-  - Request/Response interceptors
-
-### Architecture Benefits
-
-1. **Modular Structure**
-
-   - Lazy-loaded feature modules
-   - Clear separation of concerns
-   - Scalable architecture
-   - Easy to maintain and extend
-
-2. **Security**
-
-   - Protected routes with AuthGuard
-   - Secure token handling
-   - Environment-based secrets
-   - HTTP interceptors for security
-
-3. **Performance**
-
-   - Lazy loading of modules
-   - Optimized bundle size
-   - Efficient state management
-   - Caching strategies
-
-4. **Developer Experience**
-   - Clear project structure
-   - Type safety with TypeScript
-   - Consistent coding patterns
-   - Easy to understand and maintain
+This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.0.0.
 
 ## Development server
 
@@ -136,5 +57,3 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 ## Additional Resources
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
-
-For information about spartan.ng and its features, visit [spartan.ng documentation](https://spartan.ng/).
