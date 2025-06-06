@@ -1,0 +1,658 @@
+<div class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 p-6">
+  <div class="max-w-7xl mx-auto space-y-16">
+    <!-- Hero Section -->
+    <div class="text-center space-y-6 py-12">
+      <div class="inline-flex items-center px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full border border-slate-200 shadow-sm">
+        <span class="text-sm font-medium text-slate-600">{{ 'ui_kit.badge' | transloco }}</span>
+      </div>
+      
+      <h1 class="text-5xl md:text-6xl font-bold bg-gradient-to-r from-slate-900 via-blue-800 to-indigo-800 bg-clip-text text-transparent leading-tight">
+        {{ 'ui_kit.title' | transloco }}
+      </h1>
+      
+      <p class="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
+        {{ 'ui_kit.subtitle' | transloco }}
+      </p>
+    </div>
+
+    <!-- Typography Section -->
+    <section class="bg-white rounded-2xl shadow-lg border border-slate-200 p-8 space-y-8">
+      <div class="flex items-center space-x-3">
+        <div class="w-8 h-8 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg flex items-center justify-center">
+          <span class="text-white text-sm font-bold">Aa</span>
+        </div>
+        <h2 class="text-3xl font-bold text-slate-800">{{ 'ui_kit.sections.typography' | transloco }}</h2>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Headings -->
+        <div class="space-y-4">
+          <h3 class="text-lg font-semibold text-slate-700 border-b border-slate-200 pb-2">
+            {{ 'ui_kit.typography.headings' | transloco }}
+          </h3>
+          <div class="p-6 bg-gradient-to-br from-indigo-50 to-purple-50 rounded-xl space-y-4">
+            <h1 class="text-4xl font-bold text-slate-900">{{ 'ui_kit.typography.heading_1' | transloco }}</h1>
+            <h2 class="text-3xl font-semibold text-slate-800">{{ 'ui_kit.typography.heading_2' | transloco }}</h2>
+            <h3 class="text-2xl font-medium text-slate-700">{{ 'ui_kit.typography.heading_3' | transloco }}</h3>
+            <h4 class="text-xl font-medium text-slate-600">{{ 'ui_kit.typography.heading_4' | transloco }}</h4>
+          </div>
+        </div>
+        
+        <!-- Text Elements -->
+        <div class="space-y-4">
+          <h3 class="text-lg font-semibold text-slate-700 border-b border-slate-200 pb-2">
+            {{ 'ui_kit.typography.text_elements' | transloco }}
+          </h3>
+          <div class="p-6 bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl space-y-4">
+            <p class="text-base text-slate-700 leading-relaxed">
+              {{ 'ui_kit.typography.paragraph_text' | transloco }}
+            </p>
+            <p class="text-sm text-slate-600">
+              {{ 'ui_kit.typography.small_text' | transloco }}
+            </p>
+            <p class="text-lg font-medium text-slate-800">
+              {{ 'ui_kit.typography.emphasized_text' | transloco }}
+            </p>
+          </div>
+        </div>
+        
+        <!-- Special Elements -->
+        <div class="space-y-4">
+          <h3 class="text-lg font-semibold text-slate-700 border-b border-slate-200 pb-2">
+            {{ 'ui_kit.typography.special_elements' | transloco }}
+          </h3>
+          <div class="p-6 bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl space-y-4">
+            <blockquote class="border-l-4 border-slate-300 pl-4 italic text-slate-600">
+              "{{ 'ui_kit.typography.blockquote_text' | transloco }}"
+            </blockquote>
+            <code class="bg-slate-100 text-slate-800 px-2 py-1 rounded text-sm font-mono">
+              {{ 'ui_kit.typography.code_example' | transloco }}
+            </code>
+            <div class="text-xs text-slate-600 font-mono bg-white p-2 rounded border">
+              {{ 'ui_kit.typography.html_elements' | transloco }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Buttons Section -->
+    <section class="bg-white rounded-2xl shadow-lg border border-slate-200 p-8 space-y-8">
+      <div class="flex items-center space-x-3">
+        <div class="w-8 h-8 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center">
+          <span class="text-white text-sm font-bold">🔘</span>
+        </div>
+        <h2 class="text-3xl font-bold text-slate-800">{{ 'ui_kit.sections.buttons' | transloco }}</h2>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Default Buttons -->
+        <div class="space-y-4">
+          <h3 class="text-lg font-semibold text-slate-700 border-b border-slate-200 pb-2">
+            {{ 'ui_kit.buttons.variants' | transloco }}
+          </h3>
+          <div class="p-6 bg-gradient-to-br from-slate-50 to-slate-100 rounded-xl space-y-4">
+            <button hlmBtn class="w-full">{{ 'ui_kit.buttons.primary' | transloco }}</button>
+            <div class="text-xs text-slate-600 font-mono bg-white p-2 rounded border">
+              &lt;button hlmBtn&gt;Primary&lt;/button&gt;
+            </div>
+          </div>
+        </div>
+        
+        <!-- Button Variants -->
+        <div class="space-y-4">
+          <h3 class="text-lg font-semibold text-slate-700 border-b border-slate-200 pb-2">
+            {{ 'ui_kit.buttons.variants' | transloco }}
+          </h3>
+          <div class="p-6 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl space-y-4">
+            <div class="space-y-3">
+              <button hlmBtn variant="outline" class="w-full">{{ 'ui_kit.buttons.outline' | transloco }}</button>
+              <button hlmBtn variant="ghost" class="w-full">{{ 'ui_kit.buttons.ghost' | transloco }}</button>
+              <button hlmBtn variant="destructive" class="w-full">{{ 'ui_kit.buttons.destructive' | transloco }}</button>
+            </div>
+            <div class="text-xs text-slate-600 font-mono bg-white p-2 rounded border">
+              variant="outline" | "ghost" | "destructive"
+            </div>
+          </div>
+        </div>
+        
+        <!-- Button Sizes -->
+        <div class="space-y-4">
+          <h3 class="text-lg font-semibold text-slate-700 border-b border-slate-200 pb-2">
+            {{ 'ui_kit.buttons.sizes' | transloco }}
+          </h3>
+          <div class="p-6 bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl space-y-4">
+            <div class="space-y-3 flex flex-col items-center">
+              <button hlmBtn size="sm">{{ 'ui_kit.buttons.small' | transloco }}</button>
+              <button hlmBtn>{{ 'ui_kit.buttons.default' | transloco }}</button>
+              <button hlmBtn size="lg">{{ 'ui_kit.buttons.large' | transloco }}</button>
+            </div>
+            <div class="text-xs text-slate-600 font-mono bg-white p-2 rounded border">
+              size="sm" | default | "lg"
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Inputs & Forms Section -->
+    <section class="bg-white rounded-2xl shadow-lg border border-slate-200 p-8 space-y-8">
+      <div class="flex items-center space-x-3">
+        <div class="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
+          <span class="text-white text-sm font-bold">📝</span>
+        </div>
+        <h2 class="text-3xl font-bold text-slate-800">{{ 'ui_kit.sections.inputs_forms' | transloco }}</h2>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <!-- Text Input -->
+        <div class="space-y-4">
+          <h3 class="text-lg font-semibold text-slate-700 border-b border-slate-200 pb-2">
+            {{ 'ui_kit.forms.text_input' | transloco }}
+          </h3>
+          <div class="p-6 bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl space-y-4">
+            <input hlmInput type="text" placeholder="{{ 'ui_kit.forms.placeholder_text' | transloco }}" class="w-full" />
+            <div class="text-xs text-slate-600 font-mono bg-white p-2 rounded border">
+              &lt;input hlmInput type="text" /&gt;
+            </div>
+          </div>
+        </div>
+        
+        <!-- Email Input -->
+        <div class="space-y-4">
+          <h3 class="text-lg font-semibold text-slate-700 border-b border-slate-200 pb-2">
+            {{ 'ui_kit.forms.email_input' | transloco }}
+          </h3>
+          <div class="p-6 bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl space-y-4">
+            <input hlmInput type="email" placeholder="{{ 'ui_kit.forms.placeholder_email' | transloco }}" class="w-full" />
+            <div class="text-xs text-slate-600 font-mono bg-white p-2 rounded border">
+              &lt;input hlmInput type="email" /&gt;
+            </div>
+          </div>
+        </div>
+        
+        <!-- Password Input -->
+        <div class="space-y-4">
+          <h3 class="text-lg font-semibold text-slate-700 border-b border-slate-200 pb-2">
+            {{ 'ui_kit.forms.password_input' | transloco }}
+          </h3>
+          <div class="p-6 bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl space-y-4">
+            <input hlmInput type="password" placeholder="{{ 'ui_kit.forms.placeholder_password' | transloco }}" class="w-full" />
+            <div class="text-xs text-slate-600 font-mono bg-white p-2 rounded border">
+              &lt;input hlmInput type="password" /&gt;
+            </div>
+          </div>
+        </div>
+        
+        <!-- Disabled Input -->
+        <div class="space-y-4">
+          <h3 class="text-lg font-semibold text-slate-700 border-b border-slate-200 pb-2">
+            {{ 'ui_kit.forms.disabled_input' | transloco }}
+          </h3>
+          <div class="p-6 bg-gradient-to-br from-slate-50 to-gray-50 rounded-xl space-y-4">
+            <input hlmInput type="text" placeholder="{{ 'ui_kit.forms.placeholder_disabled' | transloco }}" disabled class="w-full" />
+            <div class="text-xs text-slate-600 font-mono bg-white p-2 rounded border">
+              &lt;input hlmInput disabled /&gt;
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Accordion Section -->
+    <section class="bg-white rounded-2xl shadow-lg border border-slate-200 p-8 space-y-8">
+      <div class="flex items-center space-x-3">
+        <div class="w-8 h-8 bg-gradient-to-r from-amber-500 to-orange-500 rounded-lg flex items-center justify-center">
+          <span class="text-white text-sm font-bold">📋</span>
+        </div>
+        <h2 class="text-3xl font-bold text-slate-800">{{ 'ui_kit.sections.accordion' | transloco }}</h2>
+      </div>
+      
+      <div class="grid grid-cols-1 gap-8">
+        <div class="space-y-4">
+          <h3 class="text-lg font-semibold text-slate-700 border-b border-slate-200 pb-2">
+            {{ 'ui_kit.accordion.basic' | transloco }}
+          </h3>
+          <div class="p-6 bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl space-y-4">
+            <div hlmAccordion class="w-full">
+              <div hlmAccordionItem value="item-1">
+                <div hlmAccordionTrigger>{{ 'ui_kit.accordion.item_1_title' | transloco }}</div>
+                <hlm-accordion-content>
+                  {{ 'ui_kit.accordion.item_1_content' | transloco }}
+                </hlm-accordion-content>
+              </div>
+              <div hlmAccordionItem value="item-2">
+                <div hlmAccordionTrigger>{{ 'ui_kit.accordion.item_2_title' | transloco }}</div>
+                <hlm-accordion-content>
+                  {{ 'ui_kit.accordion.item_2_content' | transloco }}
+                </hlm-accordion-content>
+              </div>
+            </div>
+            <div class="text-xs text-slate-600 font-mono bg-white p-2 rounded border">
+              &lt;hlm-accordion&gt;&lt;hlm-accordion-item&gt;...&lt;/hlm-accordion-item&gt;&lt;/hlm-accordion&gt;
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    
+
+    <!-- Badge Section -->
+    <section class="bg-white rounded-2xl shadow-lg border border-slate-200 p-8 space-y-8">
+      <div class="flex items-center space-x-3">
+        <div class="w-8 h-8 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-lg flex items-center justify-center">
+          <span class="text-white text-sm font-bold">🏷️</span>
+        </div>
+        <h2 class="text-3xl font-bold text-slate-800">{{ 'ui_kit.sections.badge' | transloco }}</h2>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="space-y-4">
+          <h3 class="text-lg font-semibold text-slate-700 border-b border-slate-200 pb-2">
+            {{ 'ui_kit.badge.default' | transloco }}
+          </h3>
+          <div class="p-6 bg-gradient-to-br from-emerald-50 to-teal-50 rounded-xl space-y-4 text-center">
+            <div hlmBadge>{{ 'ui_kit.badge.default_text' | transloco }}</div>
+            <div class="text-xs text-slate-600 font-mono bg-white p-2 rounded border">
+              &lt;div hlmBadge&gt;Badge&lt;/div&gt;
+            </div>
+          </div>
+        </div>
+        
+        <div class="space-y-4">
+          <h3 class="text-lg font-semibold text-slate-700 border-b border-slate-200 pb-2">
+            {{ 'ui_kit.badge.variants' | transloco }}
+          </h3>
+          <div class="p-6 bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl space-y-4 text-center">
+            <div class="space-y-2">
+              <div hlmBadge variant="secondary">{{ 'ui_kit.badge.secondary' | transloco }}</div>
+              <div hlmBadge variant="destructive">{{ 'ui_kit.badge.destructive' | transloco }}</div>
+              <div hlmBadge variant="outline">{{ 'ui_kit.badge.outline' | transloco }}</div>
+            </div>
+            <div class="text-xs text-slate-600 font-mono bg-white p-2 rounded border">
+              variant="secondary" | "destructive" | "outline"
+            </div>
+          </div>
+        </div>
+        
+        <div class="space-y-4">
+          <h3 class="text-lg font-semibold text-slate-700 border-b border-slate-200 pb-2">
+            {{ 'ui_kit.badge.with_icon' | transloco }}
+          </h3>
+          <div class="p-6 bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl space-y-4 text-center">
+            <div hlmBadge class="flex items-center gap-1">
+              <span>✨</span>
+              {{ 'ui_kit.badge.with_icon_text' | transloco }}
+            </div>
+            <div class="text-xs text-slate-600 font-mono bg-white p-2 rounded border">
+              &lt;div hlmBadge&gt;✨ Badge&lt;/div&gt;
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Card Section -->
+    <section class="bg-white rounded-2xl shadow-lg border border-slate-200 p-8 space-y-8">
+      <div class="flex items-center space-x-3">
+        <div class="w-8 h-8 bg-gradient-to-r from-violet-500 to-purple-500 rounded-lg flex items-center justify-center">
+          <span class="text-white text-sm font-bold">🃏</span>
+        </div>
+        <h2 class="text-3xl font-bold text-slate-800">{{ 'ui_kit.sections.card' | transloco }}</h2>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="space-y-4">
+          <h3 class="text-lg font-semibold text-slate-700 border-b border-slate-200 pb-2">
+            {{ 'ui_kit.card.basic' | transloco }}
+          </h3>
+          <div class="p-6 bg-gradient-to-br from-violet-50 to-purple-50 rounded-xl space-y-4">
+            <div hlmCard class="w-full">
+              <div hlmCardHeader>
+                <div hlmCardTitle>{{ 'ui_kit.card.title' | transloco }}</div>
+                <div hlmCardDescription>
+                  {{ 'ui_kit.card.description' | transloco }}
+                </div>
+              </div>
+              <div hlmCardContent>
+                <p>{{ 'ui_kit.card.content' | transloco }}</p>
+              </div>
+              <div hlmCardFooter>
+                <button hlmBtn>{{ 'ui_kit.card.action' | transloco }}</button>
+              </div>
+            </div>
+            <div class="text-xs text-slate-600 font-mono bg-white p-2 rounded border">
+                &lt;div hlmCard&gt;&lt;div hlmCardHeader&gt;...&lt;/div&gt;&lt;/div&gt;
+              </div>
+          </div>
+        </div>
+        
+        <div class="space-y-4">
+          <h3 class="text-lg font-semibold text-slate-700 border-b border-slate-200 pb-2">
+            {{ 'ui_kit.card.with_form' | transloco }}
+          </h3>
+          <div class="p-6 bg-gradient-to-br from-indigo-50 to-blue-50 rounded-xl space-y-4">
+            <div hlmCard class="w-full">
+              <div hlmCardHeader>
+                <div hlmCardTitle>{{ 'ui_kit.card.form_title' | transloco }}</div>
+                <div hlmCardDescription>
+                  {{ 'ui_kit.card.form_description' | transloco }}
+                </div>
+              </div>
+              <div hlmCardContent class="space-y-4">
+                <div class="space-y-2">
+                  <label hlmLabel>{{ 'ui_kit.card.form_label' | transloco }}</label>
+                  <input hlmInput placeholder="{{ 'ui_kit.card.form_placeholder' | transloco }}" />
+                </div>
+              </div>
+              <div hlmCardFooter>
+                <button hlmBtn class="w-full">{{ 'ui_kit.card.form_submit' | transloco }}</button>
+              </div>
+            </div>
+            <div class="text-xs text-slate-600 font-mono bg-white p-2 rounded border">
+                &lt;div hlmCard&gt; with form elements
+              </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Checkbox Section -->
+    <section class="bg-white rounded-2xl shadow-lg border border-slate-200 p-8 space-y-8">
+      <div class="flex items-center space-x-3">
+        <div class="w-8 h-8 bg-gradient-to-r from-green-500 to-emerald-500 rounded-lg flex items-center justify-center">
+          <span class="text-white text-sm font-bold">☑️</span>
+        </div>
+        <h2 class="text-3xl font-bold text-slate-800">{{ 'ui_kit.sections.checkbox' | transloco }}</h2>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="space-y-4">
+          <h3 class="text-lg font-semibold text-slate-700 border-b border-slate-200 pb-2">
+            {{ 'ui_kit.checkbox.basic' | transloco }}
+          </h3>
+          <div class="p-6 bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl space-y-4">
+            <div class="flex items-center space-x-2">
+              <hlm-checkbox id="terms" />
+              <label hlmLabel for="terms">{{ 'ui_kit.checkbox.label' | transloco }}</label>
+            </div>
+            <div class="text-xs text-slate-600 font-mono bg-white p-2 rounded border">
+              &lt;hlm-checkbox&gt;&lt;/hlm-checkbox&gt;
+            </div>
+          </div>
+        </div>
+        
+        <div class="space-y-4">
+          <h3 class="text-lg font-semibold text-slate-700 border-b border-slate-200 pb-2">
+            {{ 'ui_kit.checkbox.disabled' | transloco }}
+          </h3>
+          <div class="p-6 bg-gradient-to-br from-slate-50 to-gray-50 rounded-xl space-y-4">
+            <div class="flex items-center space-x-2">
+              <hlm-checkbox id="disabled" disabled />
+              <label hlmLabel for="disabled" class="text-slate-400">{{ 'ui_kit.checkbox.disabled_label' | transloco }}</label>
+            </div>
+            <div class="text-xs text-slate-600 font-mono bg-white p-2 rounded border">
+              &lt;hlm-checkbox disabled&gt;&lt;/hlm-checkbox&gt;
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Dialog Section -->
+    <section class="bg-white rounded-2xl shadow-lg border border-slate-200 p-8 space-y-8">
+      <div class="flex items-center space-x-3">
+        <div class="w-8 h-8 bg-gradient-to-r from-rose-500 to-pink-500 rounded-lg flex items-center justify-center">
+          <span class="text-white text-sm font-bold">💬</span>
+        </div>
+        <h2 class="text-3xl font-bold text-slate-800">{{ 'ui_kit.sections.dialog' | transloco }}</h2>
+      </div>
+      
+      <div class="grid grid-cols-1 gap-8">
+        <div class="space-y-4">
+          <h3 class="text-lg font-semibold text-slate-700 border-b border-slate-200 pb-2">
+            {{ 'ui_kit.dialog.basic' | transloco }}
+          </h3>
+          <div class="p-6 bg-gradient-to-br from-rose-50 to-pink-50 rounded-xl space-y-4">
+            <button hlmBtn (click)="openDialog()">{{ 'ui_kit.dialog.trigger' | transloco }}</button>
+            <div class="text-xs text-slate-600 font-mono bg-white p-2 rounded border">
+              &lt;hlm-dialog&gt;&lt;hlm-dialog-content&gt;...&lt;/hlm-dialog-content&gt;&lt;/hlm-dialog&gt;
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Progress Section -->
+    <section class="bg-white rounded-2xl shadow-lg border border-slate-200 p-8 space-y-8">
+      <div class="flex items-center space-x-3">
+        <div class="w-8 h-8 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-lg flex items-center justify-center">
+          <span class="text-white text-sm font-bold">📊</span>
+        </div>
+        <h2 class="text-3xl font-bold text-slate-800">{{ 'ui_kit.sections.progress' | transloco }}</h2>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="space-y-4">
+          <h3 class="text-lg font-semibold text-slate-700 border-b border-slate-200 pb-2">
+            {{ 'ui_kit.progress.basic' | transloco }}
+          </h3>
+          <div class="p-6 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl space-y-4">
+            <brn-progress hlmProgress [value]="33" class="w-full"></brn-progress>
+            <div class="text-xs text-slate-600 font-mono bg-white p-2 rounded border">
+              &lt;brn-progress hlmProgress [value]="33"&gt;&lt;/brn-progress&gt;
+            </div>
+          </div>
+        </div>
+        
+        <div class="space-y-4">
+          <h3 class="text-lg font-semibold text-slate-700 border-b border-slate-200 pb-2">
+            {{ 'ui_kit.progress.animated' | transloco }}
+          </h3>
+          <div class="p-6 bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl space-y-4">
+            <brn-progress hlmProgress [value]="66" class="w-full"></brn-progress>
+            <div class="text-xs text-slate-600 font-mono bg-white p-2 rounded border">
+              &lt;brn-progress hlmProgress [value]="66"&gt;&lt;/brn-progress&gt;
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Separator Section -->
+    <section class="bg-white rounded-2xl shadow-lg border border-slate-200 p-8 space-y-8">
+      <div class="flex items-center space-x-3">
+        <div class="w-8 h-8 bg-gradient-to-r from-gray-500 to-slate-500 rounded-lg flex items-center justify-center">
+          <span class="text-white text-sm font-bold">➖</span>
+        </div>
+        <h2 class="text-3xl font-bold text-slate-800">{{ 'ui_kit.sections.separator' | transloco }}</h2>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="space-y-4">
+          <h3 class="text-lg font-semibold text-slate-700 border-b border-slate-200 pb-2">
+            {{ 'ui_kit.separator.horizontal' | transloco }}
+          </h3>
+          <div class="p-6 bg-gradient-to-br from-gray-50 to-slate-50 rounded-xl space-y-4">
+            <div>
+              <p>{{ 'ui_kit.separator.text_above' | transloco }}</p>
+              <div hlmSeparator class="my-4"></div>
+              <p>{{ 'ui_kit.separator.text_below' | transloco }}</p>
+            </div>
+            <div class="text-xs text-slate-600 font-mono bg-white p-2 rounded border">
+              &lt;hlm-separator&gt;&lt;/hlm-separator&gt;
+            </div>
+          </div>
+        </div>
+        
+        <div class="space-y-4">
+          <h3 class="text-lg font-semibold text-slate-700 border-b border-slate-200 pb-2">
+            {{ 'ui_kit.separator.vertical' | transloco }}
+          </h3>
+          <div class="p-6 bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl space-y-4">
+            <div class="flex h-20 items-center space-x-4">
+              <div>{{ 'ui_kit.separator.left_content' | transloco }}</div>
+              <div hlmSeparator orientation="vertical"></div>
+              <div>{{ 'ui_kit.separator.right_content' | transloco }}</div>
+            </div>
+            <div class="text-xs text-slate-600 font-mono bg-white p-2 rounded border">
+              &lt;hlm-separator orientation="vertical"&gt;&lt;/hlm-separator&gt;
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Skeleton Section -->
+    <section class="bg-white rounded-2xl shadow-lg border border-slate-200 p-8 space-y-8">
+      <div class="flex items-center space-x-3">
+        <div class="w-8 h-8 bg-gradient-to-r from-slate-500 to-gray-500 rounded-lg flex items-center justify-center">
+          <span class="text-white text-sm font-bold">💀</span>
+        </div>
+        <h2 class="text-3xl font-bold text-slate-800">{{ 'ui_kit.sections.skeleton' | transloco }}</h2>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="space-y-4">
+          <h3 class="text-lg font-semibold text-slate-700 border-b border-slate-200 pb-2">
+            {{ 'ui_kit.skeleton.basic' | transloco }}
+          </h3>
+          <div class="p-6 bg-gradient-to-br from-slate-50 to-gray-50 rounded-xl space-y-4">
+            <div class="space-y-2">
+              <hlm-skeleton class="h-4 w-full" />
+              <hlm-skeleton class="h-4 w-4/5" />
+              <hlm-skeleton class="h-4 w-3/5" />
+            </div>
+            <div class="text-xs text-slate-600 font-mono bg-white p-2 rounded border">
+              &lt;hlm-skeleton class="h-4 w-full"&gt;&lt;/hlm-skeleton&gt;
+            </div>
+          </div>
+        </div>
+        
+        <div class="space-y-4">
+          <h3 class="text-lg font-semibold text-slate-700 border-b border-slate-200 pb-2">
+            {{ 'ui_kit.skeleton.card' | transloco }}
+          </h3>
+          <div class="p-6 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl space-y-4">
+            <div class="flex items-center space-x-4">
+              <hlm-skeleton class="h-12 w-12 rounded-full" />
+              <div class="space-y-2 flex-1">
+                <hlm-skeleton class="h-4 w-full" />
+                <hlm-skeleton class="h-4 w-2/3" />
+              </div>
+            </div>
+            <div class="text-xs text-slate-600 font-mono bg-white p-2 rounded border">
+              Card skeleton layout
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Switch Section -->
+    <section class="bg-white rounded-2xl shadow-lg border border-slate-200 p-8 space-y-8">
+      <div class="flex items-center space-x-3">
+        <div class="w-8 h-8 bg-gradient-to-r from-orange-500 to-red-500 rounded-lg flex items-center justify-center">
+          <span class="text-white text-sm font-bold">🔄</span>
+        </div>
+        <h2 class="text-3xl font-bold text-slate-800">{{ 'ui_kit.sections.switch' | transloco }}</h2>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="space-y-4">
+          <h3 class="text-lg font-semibold text-slate-700 border-b border-slate-200 pb-2">
+            {{ 'ui_kit.switch.basic' | transloco }}
+          </h3>
+          <div class="p-6 bg-gradient-to-br from-orange-50 to-red-50 rounded-xl space-y-4">
+            <div class="flex items-center space-x-2">
+              <hlm-switch id="airplane-mode" />
+              <label hlmLabel for="airplane-mode">{{ 'ui_kit.switch.label' | transloco }}</label>
+            </div>
+            <div class="text-xs text-slate-600 font-mono bg-white p-2 rounded border">
+              &lt;hlm-switch&gt;&lt;/hlm-switch&gt;
+            </div>
+          </div>
+        </div>
+        
+        <div class="space-y-4">
+          <h3 class="text-lg font-semibold text-slate-700 border-b border-slate-200 pb-2">
+            {{ 'ui_kit.switch.disabled' | transloco }}
+          </h3>
+          <div class="p-6 bg-gradient-to-br from-slate-50 to-gray-50 rounded-xl space-y-4">
+            <div class="flex items-center space-x-2">
+              <hlm-switch id="disabled-switch" disabled />
+              <label hlmLabel for="disabled-switch" class="text-slate-400">{{ 'ui_kit.switch.disabled_label' | transloco }}</label>
+            </div>
+            <div class="text-xs text-slate-600 font-mono bg-white p-2 rounded border">
+              &lt;hlm-switch disabled&gt;&lt;/hlm-switch&gt;
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Avatar Section -->
+    <section class="bg-white rounded-2xl shadow-lg border border-slate-200 p-8 space-y-8">
+      <div class="flex items-center space-x-3">
+        <div class="w-8 h-8 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-lg flex items-center justify-center">
+          <span class="text-white text-sm font-bold">👤</span>
+        </div>
+        <h2 class="text-3xl font-bold text-slate-800">{{ 'ui_kit.sections.avatar' | transloco }}</h2>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="space-y-4">
+          <h3 class="text-lg font-semibold text-slate-700 border-b border-slate-200 pb-2">
+            {{ 'ui_kit.avatar.image' | transloco }}
+          </h3>
+          <div class="p-6 bg-gradient-to-br from-purple-50 to-indigo-50 rounded-xl space-y-4 flex justify-center">
+            <hlm-avatar>
+              <img hlmAvatarImage src="https://github.com/shadcn.png" alt="User" />
+              <span hlmAvatarFallback>CN</span>
+            </hlm-avatar>
+            <div class="text-xs text-slate-600 font-mono bg-white p-2 rounded border mt-4">
+              &lt;hlm-avatar&gt;&lt;img hlmAvatarImage /&gt;&lt;/hlm-avatar&gt;
+            </div>
+          </div>
+        </div>
+        
+        <div class="space-y-4">
+          <h3 class="text-lg font-semibold text-slate-700 border-b border-slate-200 pb-2">
+            {{ 'ui_kit.avatar.fallback' | transloco }}
+          </h3>
+          <div class="p-6 bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl space-y-4 flex justify-center">
+            <hlm-avatar>
+              <span hlmAvatarFallback>JD</span>
+            </hlm-avatar>
+            <div class="text-xs text-slate-600 font-mono bg-white p-2 rounded border mt-4">
+              &lt;hlm-avatar&gt;&lt;span hlmAvatarFallback&gt;JD&lt;/span&gt;&lt;/hlm-avatar&gt;
+            </div>
+          </div>
+        </div>
+        
+        <div class="space-y-4">
+          <h3 class="text-lg font-semibold text-slate-700 border-b border-slate-200 pb-2">
+            {{ 'ui_kit.avatar.variants' | transloco }}
+          </h3>
+          <div class="p-6 bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl space-y-4">
+            <div class="flex justify-center items-center space-x-4">
+              <hlm-avatar variant="small">
+                <span hlmAvatarFallback>S</span>
+              </hlm-avatar>
+              <hlm-avatar variant="medium">
+                <span hlmAvatarFallback>M</span>
+              </hlm-avatar>
+              <hlm-avatar variant="large">
+                <span hlmAvatarFallback>L</span>
+              </hlm-avatar>
+            </div>
+            <div class="text-xs text-slate-600 font-mono bg-white p-2 rounded border mt-4">
+              variant="small" | "medium" | "large"
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

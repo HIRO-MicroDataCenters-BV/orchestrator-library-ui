@@ -1,0 +1,64 @@
+<div class="flex justify-center items-center min-h-screen p-4">
+  <div hlmCard class="w-full max-w-md">
+    <div hlmCardHeader>
+      <h2 hlmCardTitle>{{ 'auth.login.title' | transloco }}</h2>
+      <p hlmCardDescription>{{ 'auth.login.description' | transloco }}</p>
+    </div>
+    
+    <div hlmCardContent>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-4">
+        <div class="space-y-2">
+          <label hlmLabel for="email">{{ 'auth.login.email' | transloco }}</label>
+          <input 
+            hlmInput 
+            type="email" 
+            id="email" 
+            formControlName="email" 
+            [placeholder]="'auth.login.email_placeholder' | transloco"
+          />
+          <div *ngIf="email?.invalid && (email?.dirty || email?.touched)" class="text-sm text-destructive mt-1">
+            <div *ngIf="email?.errors?.['required']">{{ 'auth.login.email_required' | transloco }}</div>
+            <div *ngIf="email?.errors?.['email']">{{ 'auth.login.email_invalid' | transloco }}</div>
+          </div>
+        </div>
+        
+        <div class="space-y-2">
+          <label hlmLabel for="password">{{ 'auth.login.password' | transloco }}</label>
+          <input 
+            hlmInput 
+            type="password" 
+            id="password" 
+            formControlName="password" 
+            [placeholder]="'auth.login.password_placeholder' | transloco"
+          />
+          <div *ngIf="password?.invalid && (password?.dirty || password?.touched)" class="text-sm text-destructive mt-1">
+            <div *ngIf="password?.errors?.['required']">{{ 'auth.login.password_required' | transloco }}</div>
+            <div *ngIf="password?.errors?.['minlength']">{{ 'auth.login.password_min_length' | transloco }}</div>
+          </div>
+        </div>
+        
+        <div *ngIf="errorMessage" class="text-destructive text-sm mt-2">
+          {{ errorMessage }}
+        </div>
+        
+        <button 
+          hlmBtn 
+          type="submit" 
+          [disabled]="loginForm.invalid || isLoading"
+          class="w-full"
+        >
+          {{ isLoading ? ('auth.login.logging_in' | transloco) : ('auth.login.login_button' | transloco) }}
+        </button>
+      </form>
+    </div>
+    
+    <div hlmCardFooter class="flex justify-center">
+      <p class="text-sm text-muted-foreground">
+        {{ 'auth.login.no_account' | transloco }} 
+        <a routerLink="/auth/register" class="text-primary hover:underline">
+          {{ 'auth.login.register_link' | transloco }}
+        </a>
+      </p>
+    </div>
+  </div>
+</div>

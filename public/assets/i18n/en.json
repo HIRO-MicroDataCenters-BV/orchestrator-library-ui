@@ -1,0 +1,259 @@
+{
+  "buttons": {
+    "button": "Button",
+    "outline": "Outline",
+    "ghost": "Ghost",
+    "link": "Link",
+    "small": "Small",
+    "large": "Large"
+  },
+  "inputs": {
+    "placeholder": "Placeholder"
+  },
+  "common": {
+    "title": "Orchestration Library",
+    "navigation": {
+      "home": "Home",
+      "ui_kit": "UI Kit",
+      "profile": "Profile",
+      "admin": "Admin Panel",
+      "logout": "Logout"
+    }
+  },
+  "app": {
+    "title": "Orchestration Library",
+    "footer": "All rights reserved"
+  },
+  "auth": {
+    "login": {
+      "title": "Login",
+      "description": "Enter your credentials to access your account",
+      "email": "Email",
+      "email_placeholder": "Enter your email",
+      "password": "Password",
+      "password_placeholder": "Enter your password",
+      "remember_me": "Remember me",
+      "forgot_password": "Forgot password?",
+      "login_button": "Login",
+      "logging_in": "Logging in...",
+      "no_account": "Don't have an account?",
+      "register_link": "Register",
+      "email_required": "Email is required",
+      "email_invalid": "Please enter a valid email",
+      "password_required": "Password is required",
+      "error_message": "Invalid email or password"
+    },
+    "register": {
+      "title": "Register",
+      "description": "Create a new account",
+      "first_name": "First Name",
+      "first_name_placeholder": "Enter your first name",
+      "last_name": "Last Name",
+      "last_name_placeholder": "Enter your last name",
+      "email": "Email",
+      "email_placeholder": "Enter your email",
+      "password": "Password",
+      "password_placeholder": "Enter your password",
+      "confirm_password": "Confirm Password",
+      "confirm_password_placeholder": "Confirm your password",
+      "register_button": "Register",
+      "registering": "Registering...",
+      "have_account": "Already have an account?",
+      "login_link": "Login",
+      "email_required": "Email is required",
+      "email_invalid": "Please enter a valid email",
+      "password_required": "Password is required",
+      "password_min_length": "Password must be at least 6 characters",
+      "confirm_password_required": "Please confirm your password",
+      "passwords_not_match": "Passwords do not match",
+      "error_message": "An error occurred during registration"
+    }
+  },
+  "profile": {
+    "title": "Profile",
+    "description": "Manage your account information",
+    "email": "Email",
+    "name": "Name",
+    "role": "Role",
+    "logout": "Logout"
+  },
+  "error": {
+    "not_found": {
+      "title": "Page Not Found",
+      "message": "The page you are looking for doesn't exist or has been moved.",
+      "back_home": "Back to Home"
+    },
+    "forbidden": {
+      "title": "Access Denied",
+      "message": "You don't have permission to access this page.",
+      "back_home": "Back to Home"
+    },
+    "server_error": {
+      "title": "Server Error",
+      "message": "Something went wrong on our servers. Please try again later.",
+      "back_home": "Back to Home"
+    }
+  },
+  "ui_kit": {
+    "title": "Design System",
+    "subtitle": "Explore our comprehensive collection of UI components built with Angular and Spartan UI. Each component is crafted with attention to detail and modern design principles.",
+    "badge": "✨ UI Components Showcase",
+    "sections": {
+      "typography": "Typography",
+      "buttons": "Buttons",
+      "inputs_forms": "Inputs & Forms",
+      "accordion": "Accordion",
+      "alert": "Alert",
+      "avatar": "Avatar",
+      "badge": "Badge",
+      "card": "Card",
+      "checkbox": "Checkbox",
+      "dialog": "Dialog",
+      "progress": "Progress",
+      "separator": "Separator",
+      "skeleton": "Skeleton",
+      "switch": "Switch",
+      "table": "Table",
+      "tabs": "Tabs"
+    },
+    "accordion": {
+      "basic": "Basic Accordion",
+      "item_1_title": "Is it accessible?",
+      "item_1_content": "Yes. It adheres to the WAI-ARIA design pattern.",
+      "item_2_title": "Is it styled?",
+      "item_2_content": "Yes. It comes with default styles that matches the other components' aesthetic."
+    },
+    "alert": {
+      "default": "Default Alert",
+      "destructive": "Destructive Alert",
+      "title": "Heads up!",
+      "description": "You can add components to your app using the cli.",
+      "error_title": "Error",
+      "error_description": "Your session has expired. Please log in again."
+    },
+    "avatar": {
+      "image": "With Image",
+      "fallback": "Fallback",
+      "variants": "Size Variants"
+    },
+    "badge": {
+      "default": "Default Badge",
+      "variants": "Badge Variants",
+      "with_icon": "With Icon",
+      "default_text": "Badge",
+      "secondary": "Secondary",
+      "destructive": "Destructive",
+      "outline": "Outline",
+      "with_icon_text": "Featured"
+    },
+    "card": {
+      "basic": "Basic Card",
+      "with_form": "Card with Form",
+      "title": "Card Title",
+      "description": "Card Description",
+      "content": "Card content goes here. You can add any content you want.",
+      "action": "Action",
+      "form_title": "Create project",
+      "form_description": "Deploy your new project in one-click.",
+      "form_label": "Name",
+      "form_placeholder": "Name of your project",
+      "form_submit": "Deploy"
+    },
+    "checkbox": {
+      "basic": "Basic Checkbox",
+      "disabled": "Disabled Checkbox",
+      "label": "Accept terms and conditions",
+      "disabled_label": "Accept terms and conditions (disabled)"
+    },
+    "dialog": {
+      "basic": "Basic Dialog",
+      "trigger": "Open Dialog"
+    },
+    "progress": {
+      "basic": "Basic Progress",
+      "animated": "Animated Progress"
+    },
+    "separator": {
+      "horizontal": "Horizontal Separator",
+      "vertical": "Vertical Separator",
+      "text_above": "This is the content above the separator.",
+      "text_below": "This is the content below the separator.",
+      "left_content": "Left",
+      "right_content": "Right"
+    },
+    "skeleton": {
+      "basic": "Basic Skeleton",
+      "card": "Card Skeleton"
+    },
+    "switch": {
+      "basic": "Basic Switch",
+      "disabled": "Disabled Switch",
+      "label": "Airplane Mode",
+      "disabled_label": "Airplane Mode (disabled)"
+    },
+    "table": {
+      "basic": "Basic Table",
+      "header_name": "Name",
+      "header_status": "Status",
+      "header_role": "Role",
+      "row_1_name": "John Doe",
+      "row_1_status": "Active",
+      "row_1_role": "Developer",
+      "row_2_name": "Jane Smith",
+      "row_2_status": "Inactive",
+      "row_2_role": "Designer"
+    },
+    "tabs": {
+      "basic": "Basic Tabs",
+      "account": "Account",
+      "password": "Password",
+      "account_title": "Account",
+      "account_description": "Make changes to your account here. Click save when you're done.",
+      "password_title": "Password",
+      "password_description": "Change your password here. After saving, you'll be logged out."
+    },
+    "typography": {
+      "headings": "Headings",
+      "text_elements": "Text Elements",
+      "special_elements": "Special Elements",
+      "heading_1": "Heading 1",
+      "heading_2": "Heading 2",
+      "heading_3": "Heading 3",
+      "heading_4": "Heading 4",
+      "paragraph_text": "This is a paragraph with normal text styling. It demonstrates the default typography settings.",
+      "small_text": "This is smaller text that might be used for captions or secondary information.",
+      "emphasized_text": "This is emphasized text with larger size and medium weight.",
+      "blockquote_text": "This is a blockquote example with beautiful styling.",
+      "code_example": "console.log('Hello World');",
+      "html_elements": "<blockquote> and <code> elements"
+    },
+    "buttons": {
+      "variants": "Button Variants",
+      "sizes": "Button Sizes",
+      "primary": "Primary",
+      "secondary": "Secondary",
+      "outline": "Outline",
+      "ghost": "Ghost",
+      "destructive": "Destructive",
+      "small": "Small",
+      "default": "Default",
+      "large": "Large",
+      "code_example_title": "Usage Example"
+    },
+    "forms": {
+      "input_types": "Input Types",
+      "input_states": "Input States",
+      "text_input": "Text Input",
+      "email_input": "Email Input",
+      "password_input": "Password Input",
+      "disabled_input": "Disabled Input",
+      "error_input": "Input with Error",
+      "placeholder_text": "Enter your text here...",
+      "placeholder_email": "Enter your email...",
+      "placeholder_password": "Enter your password...",
+      "placeholder_disabled": "This input is disabled",
+      "placeholder_error": "This input has an error",
+      "code_example_title": "Usage Example"
+    }
+  }
+}

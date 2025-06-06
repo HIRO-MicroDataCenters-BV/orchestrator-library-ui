@@ -1,0 +1,77 @@
+<div class="min-h-screen bg-background flex">
+  <hlm-sidebar [collapsible]="'icon'" [variant]="'sidebar'">
+    <div hlmSidebarHeader class="flex items-center px-4 py-2">
+      <h2 class="text-lg font-semibold" [class.hidden]="sidebarService.state() === 'collapsed'">{{ 'common.title' | transloco }}</h2>
+    </div>
+    
+    <div hlmSidebarContent class="px-2">
+      <ul hlmSidebarMenu>
+        <li hlmSidebarMenuItem>
+          <a
+            hlmSidebarMenuButton
+            routerLink="/home"
+            routerLinkActive="data-[active=true]"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            <ng-icon name="lucideHouse"></ng-icon>
+            <span [class.hidden]="sidebarService.state() === 'collapsed'">{{ 'common.navigation.home' | transloco }}</span>
+          </a>
+        </li>
+        <li hlmSidebarMenuItem>
+          <a
+            hlmSidebarMenuButton
+            routerLink="/ui-kit"
+            routerLinkActive="data-[active=true]"
+          >
+            <ng-icon name="lucideLayers"></ng-icon>
+            <span [class.hidden]="sidebarService.state() === 'collapsed'">{{ 'common.navigation.ui_kit' | transloco }}</span>
+          </a>
+        </li>
+        <li hlmSidebarMenuItem>
+          <a
+            hlmSidebarMenuButton
+            routerLink="/profile"
+            routerLinkActive="data-[active=true]"
+          >
+            <ng-icon name="lucideUser"></ng-icon>
+            <span [class.hidden]="sidebarService.state() === 'collapsed'">{{ 'common.navigation.profile' | transloco }}</span>
+          </a>
+        </li>
+        
+        <!-- Админ-панель, видимая только для пользователей с ролью admin -->
+        <li hlmSidebarMenuItem *ngIf="currentUser?.role === 'admin'">
+          <a
+            hlmSidebarMenuButton
+            routerLink="/admin"
+            routerLinkActive="data-[active=true]"
+          >
+            <ng-icon name="lucideSettings"></ng-icon>
+            <span [class.hidden]="sidebarService.state() === 'collapsed'">{{ 'common.navigation.admin' | transloco }}</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    
+    <div hlmSidebarFooter class="p-4">
+      <brn-separator hlm class="mb-2"></brn-separator>
+      
+      <!-- Кнопка выхода -->
+      <button 
+        hlmSidebarMenuButton 
+        class="w-full justify-start mb-2" 
+        (click)="logout()"
+      >
+        <ng-icon name="lucideLogOut"></ng-icon>
+        <span [class.hidden]="sidebarService.state() === 'collapsed'">{{ 'common.navigation.logout' | transloco }}</span>
+      </button>
+      
+      <hlm-sidebar-trigger></hlm-sidebar-trigger>
+    </div>
+  </hlm-sidebar>
+  
+  <main class="flex flex-col h-screen w-full">
+    <div class="container mx-auto px-4 py-6">
+      <router-outlet />
+    </div>
+  </main>
+</div>
