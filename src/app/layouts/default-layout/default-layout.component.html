@@ -1,0 +1,20 @@
+<div class="min-h-screen bg-background">
+  <nav class="border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <div class="container mx-auto px-4">
+      <div class="flex h-16 items-center justify-between">
+        <div class="flex items-center space-x-4">
+          <h1 class="text-xl font-bold">{{ 'common.title' | transloco }}</h1>
+        </div>
+        <div class="flex items-center space-x-4">
+          <a routerLink="/home" class="text-sm font-medium transition-colors hover:text-primary" routerLinkActive="text-primary">{{ 'common.navigation.home' | transloco }}</a>
+          <a routerLink="/ui-kit" class="text-sm font-medium transition-colors hover:text-primary" routerLinkActive="text-primary">{{ 'common.navigation.ui_kit' | transloco }}</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <main>
+    <div class="container mx-auto px-4 py-6">
+      <router-outlet />
+    </div>
+  </main>
+</div>
