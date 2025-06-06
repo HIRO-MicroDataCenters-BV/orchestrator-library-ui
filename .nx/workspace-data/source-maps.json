@@ -1979,6 +1979,204 @@
       "nx/target-defaults"
     ]
   },
+  "libs/ui/ui-carousel-helm": {
+    "root": [
+      "libs/ui/ui-carousel-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "name": [
+      "libs/ui/ui-carousel-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "tags": [
+      "libs/ui/ui-carousel-helm/package.json",
+      "nx/core/package-json"
+    ],
+    "tags.npm:public": [
+      "libs/ui/ui-carousel-helm/package.json",
+      "nx/core/package-json"
+    ],
+    "metadata.targetGroups": [
+      "libs/ui/ui-carousel-helm/package.json",
+      "nx/core/package-json"
+    ],
+    "metadata.js": [
+      "libs/ui/ui-carousel-helm/package.json",
+      "nx/core/package-json"
+    ],
+    "metadata.js.packageName": [
+      "libs/ui/ui-carousel-helm/package.json",
+      "nx/core/package-json"
+    ],
+    "metadata.js.isInPackageManagerWorkspaces": [
+      "libs/ui/ui-carousel-helm/package.json",
+      "nx/core/package-json"
+    ],
+    "targets": [
+      "libs/ui/ui-carousel-helm/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.nx-release-publish": [
+      "libs/ui/ui-carousel-helm/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.nx-release-publish.executor": [
+      "libs/ui/ui-carousel-helm/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.nx-release-publish.dependsOn": [
+      "libs/ui/ui-carousel-helm/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.nx-release-publish.options": [
+      "libs/ui/ui-carousel-helm/package.json",
+      "nx/core/package-json"
+    ],
+    "$schema": [
+      "libs/ui/ui-carousel-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "sourceRoot": [
+      "libs/ui/ui-carousel-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "prefix": [
+      "libs/ui/ui-carousel-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "projectType": [
+      "libs/ui/ui-carousel-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build": [
+      "libs/ui/ui-carousel-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.executor": [
+      "libs/ui/ui-carousel-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.outputs": [
+      "libs/ui/ui-carousel-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.options": [
+      "libs/ui/ui-carousel-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.configurations": [
+      "libs/ui/ui-carousel-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.defaultConfiguration": [
+      "libs/ui/ui-carousel-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.options.project": [
+      "libs/ui/ui-carousel-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.configurations.production": [
+      "libs/ui/ui-carousel-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.configurations.production.tsConfig": [
+      "libs/ui/ui-carousel-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.configurations.development": [
+      "libs/ui/ui-carousel-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.configurations.development.tsConfig": [
+      "libs/ui/ui-carousel-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.test": [
+      "libs/ui/ui-carousel-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.test.executor": [
+      "libs/ui/ui-carousel-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.test.outputs": [
+      "libs/ui/ui-carousel-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.test.options": [
+      "libs/ui/ui-carousel-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.test.options.jestConfig": [
+      "libs/ui/ui-carousel-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.lint": [
+      "libs/ui/ui-carousel-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.lint.executor": [
+      "libs/ui/ui-carousel-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.cache": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.build.dependsOn": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.build.inputs": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.build.parallelism": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.test.cache": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.test.inputs": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.test.options.passWithNoTests": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.test.configurations.ci": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.test.configurations.ci.ci": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.test.configurations.ci.codeCoverage": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.test.parallelism": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.lint.cache": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.lint.inputs": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.lint.parallelism": [
+      "nx.json",
+      "nx/target-defaults"
+    ]
+  },
   "libs/ui/ui-checkbox-helm": {
     "root": [
       "libs/ui/ui-checkbox-helm/project.json",
@@ -2573,204 +2771,6 @@
       "nx/target-defaults"
     ]
   },
-  "libs/ui/ui-dialog-helm": {
-    "root": [
-      "libs/ui/ui-dialog-helm/project.json",
-      "nx/core/project-json"
-    ],
-    "name": [
-      "libs/ui/ui-dialog-helm/project.json",
-      "nx/core/project-json"
-    ],
-    "tags": [
-      "libs/ui/ui-dialog-helm/package.json",
-      "nx/core/package-json"
-    ],
-    "tags.npm:public": [
-      "libs/ui/ui-dialog-helm/package.json",
-      "nx/core/package-json"
-    ],
-    "metadata.targetGroups": [
-      "libs/ui/ui-dialog-helm/package.json",
-      "nx/core/package-json"
-    ],
-    "metadata.js": [
-      "libs/ui/ui-dialog-helm/package.json",
-      "nx/core/package-json"
-    ],
-    "metadata.js.packageName": [
-      "libs/ui/ui-dialog-helm/package.json",
-      "nx/core/package-json"
-    ],
-    "metadata.js.isInPackageManagerWorkspaces": [
-      "libs/ui/ui-dialog-helm/package.json",
-      "nx/core/package-json"
-    ],
-    "targets": [
-      "libs/ui/ui-dialog-helm/package.json",
-      "nx/core/package-json"
-    ],
-    "targets.nx-release-publish": [
-      "libs/ui/ui-dialog-helm/package.json",
-      "nx/core/package-json"
-    ],
-    "targets.nx-release-publish.executor": [
-      "libs/ui/ui-dialog-helm/package.json",
-      "nx/core/package-json"
-    ],
-    "targets.nx-release-publish.dependsOn": [
-      "libs/ui/ui-dialog-helm/package.json",
-      "nx/core/package-json"
-    ],
-    "targets.nx-release-publish.options": [
-      "libs/ui/ui-dialog-helm/package.json",
-      "nx/core/package-json"
-    ],
-    "$schema": [
-      "libs/ui/ui-dialog-helm/project.json",
-      "nx/core/project-json"
-    ],
-    "sourceRoot": [
-      "libs/ui/ui-dialog-helm/project.json",
-      "nx/core/project-json"
-    ],
-    "prefix": [
-      "libs/ui/ui-dialog-helm/project.json",
-      "nx/core/project-json"
-    ],
-    "projectType": [
-      "libs/ui/ui-dialog-helm/project.json",
-      "nx/core/project-json"
-    ],
-    "targets.build": [
-      "libs/ui/ui-dialog-helm/project.json",
-      "nx/core/project-json"
-    ],
-    "targets.build.executor": [
-      "libs/ui/ui-dialog-helm/project.json",
-      "nx/core/project-json"
-    ],
-    "targets.build.outputs": [
-      "libs/ui/ui-dialog-helm/project.json",
-      "nx/core/project-json"
-    ],
-    "targets.build.options": [
-      "libs/ui/ui-dialog-helm/project.json",
-      "nx/core/project-json"
-    ],
-    "targets.build.configurations": [
-      "libs/ui/ui-dialog-helm/project.json",
-      "nx/core/project-json"
-    ],
-    "targets.build.defaultConfiguration": [
-      "libs/ui/ui-dialog-helm/project.json",
-      "nx/core/project-json"
-    ],
-    "targets.build.options.project": [
-      "libs/ui/ui-dialog-helm/project.json",
-      "nx/core/project-json"
-    ],
-    "targets.build.configurations.production": [
-      "libs/ui/ui-dialog-helm/project.json",
-      "nx/core/project-json"
-    ],
-    "targets.build.configurations.production.tsConfig": [
-      "libs/ui/ui-dialog-helm/project.json",
-      "nx/core/project-json"
-    ],
-    "targets.build.configurations.development": [
-      "libs/ui/ui-dialog-helm/project.json",
-      "nx/core/project-json"
-    ],
-    "targets.build.configurations.development.tsConfig": [
-      "libs/ui/ui-dialog-helm/project.json",
-      "nx/core/project-json"
-    ],
-    "targets.test": [
-      "libs/ui/ui-dialog-helm/project.json",
-      "nx/core/project-json"
-    ],
-    "targets.test.executor": [
-      "libs/ui/ui-dialog-helm/project.json",
-      "nx/core/project-json"
-    ],
-    "targets.test.outputs": [
-      "libs/ui/ui-dialog-helm/project.json",
-      "nx/core/project-json"
-    ],
-    "targets.test.options": [
-      "libs/ui/ui-dialog-helm/project.json",
-      "nx/core/project-json"
-    ],
-    "targets.test.options.jestConfig": [
-      "libs/ui/ui-dialog-helm/project.json",
-      "nx/core/project-json"
-    ],
-    "targets.lint": [
-      "libs/ui/ui-dialog-helm/project.json",
-      "nx/core/project-json"
-    ],
-    "targets.lint.executor": [
-      "libs/ui/ui-dialog-helm/project.json",
-      "nx/core/project-json"
-    ],
-    "targets.build.cache": [
-      "nx.json",
-      "nx/target-defaults"
-    ],
-    "targets.build.dependsOn": [
-      "nx.json",
-      "nx/target-defaults"
-    ],
-    "targets.build.inputs": [
-      "nx.json",
-      "nx/target-defaults"
-    ],
-    "targets.build.parallelism": [
-      "nx.json",
-      "nx/target-defaults"
-    ],
-    "targets.test.cache": [
-      "nx.json",
-      "nx/target-defaults"
-    ],
-    "targets.test.inputs": [
-      "nx.json",
-      "nx/target-defaults"
-    ],
-    "targets.test.options.passWithNoTests": [
-      "nx.json",
-      "nx/target-defaults"
-    ],
-    "targets.test.configurations.ci": [
-      "nx.json",
-      "nx/target-defaults"
-    ],
-    "targets.test.configurations.ci.ci": [
-      "nx.json",
-      "nx/target-defaults"
-    ],
-    "targets.test.configurations.ci.codeCoverage": [
-      "nx.json",
-      "nx/target-defaults"
-    ],
-    "targets.test.parallelism": [
-      "nx.json",
-      "nx/target-defaults"
-    ],
-    "targets.lint.cache": [
-      "nx.json",
-      "nx/target-defaults"
-    ],
-    "targets.lint.inputs": [
-      "nx.json",
-      "nx/target-defaults"
-    ],
-    "targets.lint.parallelism": [
-      "nx.json",
-      "nx/target-defaults"
-    ]
-  },
   "libs/ui/ui-formfield-helm": {
     "root": [
       "libs/ui/ui-formfield-helm/project.json",
@@ -2910,6 +2910,204 @@
     ],
     "targets.lint.executor": [
       "libs/ui/ui-formfield-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.cache": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.build.dependsOn": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.build.inputs": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.build.parallelism": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.test.cache": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.test.inputs": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.test.options.passWithNoTests": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.test.configurations.ci": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.test.configurations.ci.ci": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.test.configurations.ci.codeCoverage": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.test.parallelism": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.lint.cache": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.lint.inputs": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.lint.parallelism": [
+      "nx.json",
+      "nx/target-defaults"
+    ]
+  },
+  "libs/ui/ui-hovercard-helm": {
+    "root": [
+      "libs/ui/ui-hovercard-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "name": [
+      "libs/ui/ui-hovercard-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "tags": [
+      "libs/ui/ui-hovercard-helm/package.json",
+      "nx/core/package-json"
+    ],
+    "tags.npm:public": [
+      "libs/ui/ui-hovercard-helm/package.json",
+      "nx/core/package-json"
+    ],
+    "metadata.targetGroups": [
+      "libs/ui/ui-hovercard-helm/package.json",
+      "nx/core/package-json"
+    ],
+    "metadata.js": [
+      "libs/ui/ui-hovercard-helm/package.json",
+      "nx/core/package-json"
+    ],
+    "metadata.js.packageName": [
+      "libs/ui/ui-hovercard-helm/package.json",
+      "nx/core/package-json"
+    ],
+    "metadata.js.isInPackageManagerWorkspaces": [
+      "libs/ui/ui-hovercard-helm/package.json",
+      "nx/core/package-json"
+    ],
+    "targets": [
+      "libs/ui/ui-hovercard-helm/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.nx-release-publish": [
+      "libs/ui/ui-hovercard-helm/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.nx-release-publish.executor": [
+      "libs/ui/ui-hovercard-helm/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.nx-release-publish.dependsOn": [
+      "libs/ui/ui-hovercard-helm/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.nx-release-publish.options": [
+      "libs/ui/ui-hovercard-helm/package.json",
+      "nx/core/package-json"
+    ],
+    "$schema": [
+      "libs/ui/ui-hovercard-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "sourceRoot": [
+      "libs/ui/ui-hovercard-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "prefix": [
+      "libs/ui/ui-hovercard-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "projectType": [
+      "libs/ui/ui-hovercard-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build": [
+      "libs/ui/ui-hovercard-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.executor": [
+      "libs/ui/ui-hovercard-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.outputs": [
+      "libs/ui/ui-hovercard-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.options": [
+      "libs/ui/ui-hovercard-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.configurations": [
+      "libs/ui/ui-hovercard-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.defaultConfiguration": [
+      "libs/ui/ui-hovercard-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.options.project": [
+      "libs/ui/ui-hovercard-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.configurations.production": [
+      "libs/ui/ui-hovercard-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.configurations.production.tsConfig": [
+      "libs/ui/ui-hovercard-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.configurations.development": [
+      "libs/ui/ui-hovercard-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.configurations.development.tsConfig": [
+      "libs/ui/ui-hovercard-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.test": [
+      "libs/ui/ui-hovercard-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.test.executor": [
+      "libs/ui/ui-hovercard-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.test.outputs": [
+      "libs/ui/ui-hovercard-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.test.options": [
+      "libs/ui/ui-hovercard-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.test.options.jestConfig": [
+      "libs/ui/ui-hovercard-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.lint": [
+      "libs/ui/ui-hovercard-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.lint.executor": [
+      "libs/ui/ui-hovercard-helm/project.json",
       "nx/core/project-json"
     ],
     "targets.build.cache": [
@@ -5147,6 +5345,402 @@
       "nx/target-defaults"
     ]
   },
+  "libs/ui/ui-separator-helm": {
+    "root": [
+      "libs/ui/ui-separator-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "name": [
+      "libs/ui/ui-separator-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "tags": [
+      "libs/ui/ui-separator-helm/package.json",
+      "nx/core/package-json"
+    ],
+    "tags.npm:public": [
+      "libs/ui/ui-separator-helm/package.json",
+      "nx/core/package-json"
+    ],
+    "metadata.targetGroups": [
+      "libs/ui/ui-separator-helm/package.json",
+      "nx/core/package-json"
+    ],
+    "metadata.js": [
+      "libs/ui/ui-separator-helm/package.json",
+      "nx/core/package-json"
+    ],
+    "metadata.js.packageName": [
+      "libs/ui/ui-separator-helm/package.json",
+      "nx/core/package-json"
+    ],
+    "metadata.js.isInPackageManagerWorkspaces": [
+      "libs/ui/ui-separator-helm/package.json",
+      "nx/core/package-json"
+    ],
+    "targets": [
+      "libs/ui/ui-separator-helm/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.nx-release-publish": [
+      "libs/ui/ui-separator-helm/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.nx-release-publish.executor": [
+      "libs/ui/ui-separator-helm/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.nx-release-publish.dependsOn": [
+      "libs/ui/ui-separator-helm/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.nx-release-publish.options": [
+      "libs/ui/ui-separator-helm/package.json",
+      "nx/core/package-json"
+    ],
+    "$schema": [
+      "libs/ui/ui-separator-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "sourceRoot": [
+      "libs/ui/ui-separator-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "prefix": [
+      "libs/ui/ui-separator-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "projectType": [
+      "libs/ui/ui-separator-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build": [
+      "libs/ui/ui-separator-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.executor": [
+      "libs/ui/ui-separator-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.outputs": [
+      "libs/ui/ui-separator-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.options": [
+      "libs/ui/ui-separator-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.configurations": [
+      "libs/ui/ui-separator-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.defaultConfiguration": [
+      "libs/ui/ui-separator-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.options.project": [
+      "libs/ui/ui-separator-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.configurations.production": [
+      "libs/ui/ui-separator-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.configurations.production.tsConfig": [
+      "libs/ui/ui-separator-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.configurations.development": [
+      "libs/ui/ui-separator-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.configurations.development.tsConfig": [
+      "libs/ui/ui-separator-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.test": [
+      "libs/ui/ui-separator-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.test.executor": [
+      "libs/ui/ui-separator-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.test.outputs": [
+      "libs/ui/ui-separator-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.test.options": [
+      "libs/ui/ui-separator-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.test.options.jestConfig": [
+      "libs/ui/ui-separator-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.lint": [
+      "libs/ui/ui-separator-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.lint.executor": [
+      "libs/ui/ui-separator-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.cache": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.build.dependsOn": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.build.inputs": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.build.parallelism": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.test.cache": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.test.inputs": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.test.options.passWithNoTests": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.test.configurations.ci": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.test.configurations.ci.ci": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.test.configurations.ci.codeCoverage": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.test.parallelism": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.lint.cache": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.lint.inputs": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.lint.parallelism": [
+      "nx.json",
+      "nx/target-defaults"
+    ]
+  },
+  "libs/ui/ui-sheet-helm": {
+    "root": [
+      "libs/ui/ui-sheet-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "name": [
+      "libs/ui/ui-sheet-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "tags": [
+      "libs/ui/ui-sheet-helm/package.json",
+      "nx/core/package-json"
+    ],
+    "tags.npm:public": [
+      "libs/ui/ui-sheet-helm/package.json",
+      "nx/core/package-json"
+    ],
+    "metadata.targetGroups": [
+      "libs/ui/ui-sheet-helm/package.json",
+      "nx/core/package-json"
+    ],
+    "metadata.js": [
+      "libs/ui/ui-sheet-helm/package.json",
+      "nx/core/package-json"
+    ],
+    "metadata.js.packageName": [
+      "libs/ui/ui-sheet-helm/package.json",
+      "nx/core/package-json"
+    ],
+    "metadata.js.isInPackageManagerWorkspaces": [
+      "libs/ui/ui-sheet-helm/package.json",
+      "nx/core/package-json"
+    ],
+    "targets": [
+      "libs/ui/ui-sheet-helm/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.nx-release-publish": [
+      "libs/ui/ui-sheet-helm/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.nx-release-publish.executor": [
+      "libs/ui/ui-sheet-helm/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.nx-release-publish.dependsOn": [
+      "libs/ui/ui-sheet-helm/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.nx-release-publish.options": [
+      "libs/ui/ui-sheet-helm/package.json",
+      "nx/core/package-json"
+    ],
+    "$schema": [
+      "libs/ui/ui-sheet-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "sourceRoot": [
+      "libs/ui/ui-sheet-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "prefix": [
+      "libs/ui/ui-sheet-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "projectType": [
+      "libs/ui/ui-sheet-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build": [
+      "libs/ui/ui-sheet-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.executor": [
+      "libs/ui/ui-sheet-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.outputs": [
+      "libs/ui/ui-sheet-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.options": [
+      "libs/ui/ui-sheet-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.configurations": [
+      "libs/ui/ui-sheet-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.defaultConfiguration": [
+      "libs/ui/ui-sheet-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.options.project": [
+      "libs/ui/ui-sheet-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.configurations.production": [
+      "libs/ui/ui-sheet-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.configurations.production.tsConfig": [
+      "libs/ui/ui-sheet-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.configurations.development": [
+      "libs/ui/ui-sheet-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.configurations.development.tsConfig": [
+      "libs/ui/ui-sheet-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.test": [
+      "libs/ui/ui-sheet-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.test.executor": [
+      "libs/ui/ui-sheet-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.test.outputs": [
+      "libs/ui/ui-sheet-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.test.options": [
+      "libs/ui/ui-sheet-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.test.options.jestConfig": [
+      "libs/ui/ui-sheet-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.lint": [
+      "libs/ui/ui-sheet-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.lint.executor": [
+      "libs/ui/ui-sheet-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.cache": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.build.dependsOn": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.build.inputs": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.build.parallelism": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.test.cache": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.test.inputs": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.test.options.passWithNoTests": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.test.configurations.ci": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.test.configurations.ci.ci": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.test.configurations.ci.codeCoverage": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.test.parallelism": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.lint.cache": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.lint.inputs": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.lint.parallelism": [
+      "nx.json",
+      "nx/target-defaults"
+    ]
+  },
   "libs/ui/ui-skeleton-helm": {
     "root": [
       "libs/ui/ui-skeleton-helm/project.json",
@@ -5286,6 +5880,204 @@
     ],
     "targets.lint.executor": [
       "libs/ui/ui-skeleton-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.cache": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.build.dependsOn": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.build.inputs": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.build.parallelism": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.test.cache": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.test.inputs": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.test.options.passWithNoTests": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.test.configurations.ci": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.test.configurations.ci.ci": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.test.configurations.ci.codeCoverage": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.test.parallelism": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.lint.cache": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.lint.inputs": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.lint.parallelism": [
+      "nx.json",
+      "nx/target-defaults"
+    ]
+  },
+  "libs/ui/ui-slider-helm": {
+    "root": [
+      "libs/ui/ui-slider-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "name": [
+      "libs/ui/ui-slider-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "tags": [
+      "libs/ui/ui-slider-helm/package.json",
+      "nx/core/package-json"
+    ],
+    "tags.npm:public": [
+      "libs/ui/ui-slider-helm/package.json",
+      "nx/core/package-json"
+    ],
+    "metadata.targetGroups": [
+      "libs/ui/ui-slider-helm/package.json",
+      "nx/core/package-json"
+    ],
+    "metadata.js": [
+      "libs/ui/ui-slider-helm/package.json",
+      "nx/core/package-json"
+    ],
+    "metadata.js.packageName": [
+      "libs/ui/ui-slider-helm/package.json",
+      "nx/core/package-json"
+    ],
+    "metadata.js.isInPackageManagerWorkspaces": [
+      "libs/ui/ui-slider-helm/package.json",
+      "nx/core/package-json"
+    ],
+    "targets": [
+      "libs/ui/ui-slider-helm/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.nx-release-publish": [
+      "libs/ui/ui-slider-helm/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.nx-release-publish.executor": [
+      "libs/ui/ui-slider-helm/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.nx-release-publish.dependsOn": [
+      "libs/ui/ui-slider-helm/package.json",
+      "nx/core/package-json"
+    ],
+    "targets.nx-release-publish.options": [
+      "libs/ui/ui-slider-helm/package.json",
+      "nx/core/package-json"
+    ],
+    "$schema": [
+      "libs/ui/ui-slider-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "sourceRoot": [
+      "libs/ui/ui-slider-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "prefix": [
+      "libs/ui/ui-slider-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "projectType": [
+      "libs/ui/ui-slider-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build": [
+      "libs/ui/ui-slider-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.executor": [
+      "libs/ui/ui-slider-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.outputs": [
+      "libs/ui/ui-slider-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.options": [
+      "libs/ui/ui-slider-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.configurations": [
+      "libs/ui/ui-slider-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.defaultConfiguration": [
+      "libs/ui/ui-slider-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.options.project": [
+      "libs/ui/ui-slider-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.configurations.production": [
+      "libs/ui/ui-slider-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.configurations.production.tsConfig": [
+      "libs/ui/ui-slider-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.configurations.development": [
+      "libs/ui/ui-slider-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.configurations.development.tsConfig": [
+      "libs/ui/ui-slider-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.test": [
+      "libs/ui/ui-slider-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.test.executor": [
+      "libs/ui/ui-slider-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.test.outputs": [
+      "libs/ui/ui-slider-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.test.options": [
+      "libs/ui/ui-slider-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.test.options.jestConfig": [
+      "libs/ui/ui-slider-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.lint": [
+      "libs/ui/ui-slider-helm/project.json",
+      "nx/core/project-json"
+    ],
+    "targets.lint.executor": [
+      "libs/ui/ui-slider-helm/project.json",
       "nx/core/project-json"
     ],
     "targets.build.cache": [
@@ -6137,145 +6929,145 @@
       "nx/target-defaults"
     ]
   },
-  "libs/ui/ui-tabs-helm": {
+  "libs/ui/ui-tooltip-helm": {
     "root": [
-      "libs/ui/ui-tabs-helm/project.json",
+      "libs/ui/ui-tooltip-helm/project.json",
       "nx/core/project-json"
     ],
     "name": [
-      "libs/ui/ui-tabs-helm/project.json",
+      "libs/ui/ui-tooltip-helm/project.json",
       "nx/core/project-json"
     ],
     "tags": [
-      "libs/ui/ui-tabs-helm/package.json",
+      "libs/ui/ui-tooltip-helm/package.json",
       "nx/core/package-json"
     ],
     "tags.npm:public": [
-      "libs/ui/ui-tabs-helm/package.json",
+      "libs/ui/ui-tooltip-helm/package.json",
       "nx/core/package-json"
     ],
     "metadata.targetGroups": [
-      "libs/ui/ui-tabs-helm/package.json",
+      "libs/ui/ui-tooltip-helm/package.json",
       "nx/core/package-json"
     ],
     "metadata.js": [
-      "libs/ui/ui-tabs-helm/package.json",
+      "libs/ui/ui-tooltip-helm/package.json",
       "nx/core/package-json"
     ],
     "metadata.js.packageName": [
-      "libs/ui/ui-tabs-helm/package.json",
+      "libs/ui/ui-tooltip-helm/package.json",
       "nx/core/package-json"
     ],
     "metadata.js.isInPackageManagerWorkspaces": [
-      "libs/ui/ui-tabs-helm/package.json",
+      "libs/ui/ui-tooltip-helm/package.json",
       "nx/core/package-json"
     ],
     "targets": [
-      "libs/ui/ui-tabs-helm/package.json",
+      "libs/ui/ui-tooltip-helm/package.json",
       "nx/core/package-json"
     ],
     "targets.nx-release-publish": [
-      "libs/ui/ui-tabs-helm/package.json",
+      "libs/ui/ui-tooltip-helm/package.json",
       "nx/core/package-json"
     ],
     "targets.nx-release-publish.executor": [
-      "libs/ui/ui-tabs-helm/package.json",
+      "libs/ui/ui-tooltip-helm/package.json",
       "nx/core/package-json"
     ],
     "targets.nx-release-publish.dependsOn": [
-      "libs/ui/ui-tabs-helm/package.json",
+      "libs/ui/ui-tooltip-helm/package.json",
       "nx/core/package-json"
     ],
     "targets.nx-release-publish.options": [
-      "libs/ui/ui-tabs-helm/package.json",
+      "libs/ui/ui-tooltip-helm/package.json",
       "nx/core/package-json"
     ],
     "$schema": [
-      "libs/ui/ui-tabs-helm/project.json",
+      "libs/ui/ui-tooltip-helm/project.json",
       "nx/core/project-json"
     ],
     "sourceRoot": [
-      "libs/ui/ui-tabs-helm/project.json",
+      "libs/ui/ui-tooltip-helm/project.json",
       "nx/core/project-json"
     ],
     "prefix": [
-      "libs/ui/ui-tabs-helm/project.json",
+      "libs/ui/ui-tooltip-helm/project.json",
       "nx/core/project-json"
     ],
     "projectType": [
-      "libs/ui/ui-tabs-helm/project.json",
+      "libs/ui/ui-tooltip-helm/project.json",
       "nx/core/project-json"
     ],
     "targets.build": [
-      "libs/ui/ui-tabs-helm/project.json",
+      "libs/ui/ui-tooltip-helm/project.json",
       "nx/core/project-json"
     ],
     "targets.build.executor": [
-      "libs/ui/ui-tabs-helm/project.json",
+      "libs/ui/ui-tooltip-helm/project.json",
       "nx/core/project-json"
     ],
     "targets.build.outputs": [
-      "libs/ui/ui-tabs-helm/project.json",
+      "libs/ui/ui-tooltip-helm/project.json",
       "nx/core/project-json"
     ],
     "targets.build.options": [
-      "libs/ui/ui-tabs-helm/project.json",
+      "libs/ui/ui-tooltip-helm/project.json",
       "nx/core/project-json"
     ],
     "targets.build.configurations": [
-      "libs/ui/ui-tabs-helm/project.json",
+      "libs/ui/ui-tooltip-helm/project.json",
       "nx/core/project-json"
     ],
     "targets.build.defaultConfiguration": [
-      "libs/ui/ui-tabs-helm/project.json",
+      "libs/ui/ui-tooltip-helm/project.json",
       "nx/core/project-json"
     ],
     "targets.build.options.project": [
-      "libs/ui/ui-tabs-helm/project.json",
+      "libs/ui/ui-tooltip-helm/project.json",
       "nx/core/project-json"
     ],
     "targets.build.configurations.production": [
-      "libs/ui/ui-tabs-helm/project.json",
+      "libs/ui/ui-tooltip-helm/project.json",
       "nx/core/project-json"
     ],
     "targets.build.configurations.production.tsConfig": [
-      "libs/ui/ui-tabs-helm/project.json",
+      "libs/ui/ui-tooltip-helm/project.json",
       "nx/core/project-json"
     ],
     "targets.build.configurations.development": [
-      "libs/ui/ui-tabs-helm/project.json",
+      "libs/ui/ui-tooltip-helm/project.json",
       "nx/core/project-json"
     ],
     "targets.build.configurations.development.tsConfig": [
-      "libs/ui/ui-tabs-helm/project.json",
+      "libs/ui/ui-tooltip-helm/project.json",
       "nx/core/project-json"
     ],
     "targets.test": [
-      "libs/ui/ui-tabs-helm/project.json",
+      "libs/ui/ui-tooltip-helm/project.json",
       "nx/core/project-json"
     ],
     "targets.test.executor": [
-      "libs/ui/ui-tabs-helm/project.json",
+      "libs/ui/ui-tooltip-helm/project.json",
       "nx/core/project-json"
     ],
     "targets.test.outputs": [
-      "libs/ui/ui-tabs-helm/project.json",
+      "libs/ui/ui-tooltip-helm/project.json",
       "nx/core/project-json"
     ],
     "targets.test.options": [
-      "libs/ui/ui-tabs-helm/project.json",
+      "libs/ui/ui-tooltip-helm/project.json",
       "nx/core/project-json"
     ],
     "targets.test.options.jestConfig": [
-      "libs/ui/ui-tabs-helm/project.json",
+      "libs/ui/ui-tooltip-helm/project.json",
       "nx/core/project-json"
     ],
     "targets.lint": [
-      "libs/ui/ui-tabs-helm/project.json",
+      "libs/ui/ui-tooltip-helm/project.json",
       "nx/core/project-json"
     ],
     "targets.lint.executor": [
-      "libs/ui/ui-tabs-helm/project.json",
+      "libs/ui/ui-tooltip-helm/project.json",
       "nx/core/project-json"
     ],
     "targets.build.cache": [
@@ -6674,31 +7466,31 @@
       "package.json",
       "nx/core/package-json"
     ],
-    "targets.serve:ssr:orchestration_library-front": [
+    "targets.serve:ssr": [
       "package.json",
       "nx/core/package-json"
     ],
-    "targets.serve:ssr:orchestration_library-front.executor": [
+    "targets.serve:ssr.executor": [
       "package.json",
       "nx/core/package-json"
     ],
-    "targets.serve:ssr:orchestration_library-front.options": [
+    "targets.serve:ssr.options": [
       "package.json",
       "nx/core/package-json"
     ],
-    "targets.serve:ssr:orchestration_library-front.metadata": [
+    "targets.serve:ssr.metadata": [
       "package.json",
       "nx/core/package-json"
     ],
-    "targets.serve:ssr:orchestration_library-front.options.script": [
+    "targets.serve:ssr.options.script": [
       "package.json",
       "nx/core/package-json"
     ],
-    "targets.serve:ssr:orchestration_library-front.metadata.scriptContent": [
+    "targets.serve:ssr.metadata.scriptContent": [
       "package.json",
       "nx/core/package-json"
     ],
-    "targets.serve:ssr:orchestration_library-front.metadata.runCommand": [
+    "targets.serve:ssr.metadata.runCommand": [
       "package.json",
       "nx/core/package-json"
     ],
@@ -6870,6 +7662,10 @@
       "project.json",
       "nx/core/project-json"
     ],
+    "targets.build.cache": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
     "targets.build.dependsOn": [
       "nx.json",
       "nx/target-defaults"
@@ -6879,6 +7675,10 @@
       "nx/target-defaults"
     ],
     "targets.build.parallelism": [
+      "nx.json",
+      "nx/target-defaults"
+    ],
+    "targets.test.cache": [
       "nx.json",
       "nx/target-defaults"
     ],
