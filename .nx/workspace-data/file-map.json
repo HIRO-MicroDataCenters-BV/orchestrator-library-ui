@@ -2713,7 +2713,7 @@
         },
         {
           "file": "src/app/app.routes.ts",
-          "hash": "13493036292986176746",
+          "hash": "15494744598143718896",
           "deps": [
             "npm:@angular/router"
           ]
@@ -2725,6 +2725,14 @@
             "npm:@angular/core",
             "npm:@angular/router",
             "npm:@jsverse/transloco"
+          ]
+        },
+        {
+          "file": "src/app/components/app-circle-progress/app-circle-progress.component.ts",
+          "hash": "2529574610804932568",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/common"
           ]
         },
         {
@@ -2747,11 +2755,11 @@
         },
         {
           "file": "src/app/components/app-table/app-table.component.html",
-          "hash": "18196909032249883580"
+          "hash": "1435117872989102265"
         },
         {
           "file": "src/app/components/app-table/app-table.component.ts",
-          "hash": "13719224665895855111",
+          "hash": "4280881368616155826",
           "deps": [
             "npm:@angular/cdk",
             "npm:@angular/common",
@@ -2769,6 +2777,14 @@
             "ui-select-helm",
             "npm:@ng-icons/core",
             "npm:rxjs"
+          ]
+        },
+        {
+          "file": "src/app/components/circle-progress/circle-progress.component.ts",
+          "hash": "14362899088218483031",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/common"
           ]
         },
         {
@@ -2999,11 +3015,11 @@
         },
         {
           "file": "src/app/pages/ui-kit/ui-kit.component.html",
-          "hash": "13629861177037803617"
+          "hash": "1753868711569666805"
         },
         {
           "file": "src/app/pages/ui-kit/ui-kit.component.ts",
-          "hash": "6655760597077963484",
+          "hash": "17583080601403927144",
           "deps": [
             "npm:@angular/core",
             "npm:@jsverse/transloco",

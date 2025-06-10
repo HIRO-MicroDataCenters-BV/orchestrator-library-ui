@@ -32,6 +32,7 @@ import { BrnSelectModule } from '@spartan-ng/brain/select';
 import { HlmSelectModule } from '@spartan-ng/ui-select-helm';
 import { provideIcons } from '@ng-icons/core';
 import { debounceTime, map } from 'rxjs';
+import { AppCircleProgressComponent } from '../app-circle-progress/app-circle-progress.component';
 
 export type TableData = {
   id: string;
@@ -50,8 +51,8 @@ const TABLE_DATA: TableData[] = [
     status: 1,
     workloads: 24,
     nodes: 5,
-    cpu_usage: 78,
-    memory_usage: 65,
+    cpu_usage: 28,
+    memory_usage: 15,
   },
   {
     id: 'cls-002',
@@ -59,7 +60,7 @@ const TABLE_DATA: TableData[] = [
     status: -1,
     workloads: 12,
     nodes: 3,
-    cpu_usage: 45,
+    cpu_usage: 65,
     memory_usage: 38,
   },
   {
@@ -69,7 +70,7 @@ const TABLE_DATA: TableData[] = [
     workloads: 8,
     nodes: 2,
     cpu_usage: 20,
-    memory_usage: 15,
+    memory_usage: 90,
   },
   {
     id: 'cls-004',
@@ -250,6 +251,7 @@ const TABLE_DATA: TableData[] = [
     BrnSelectModule,
     HlmSelectModule,
     TranslocoModule,
+    AppCircleProgressComponent,
   ],
   providers: [
     provideIcons({ lucideChevronDown, lucideEllipsis, lucideArrowUpDown }),
@@ -347,6 +349,16 @@ export class AppTableComponent {
         return 'text-gray-700';
       default:
         return 'text-gray-700';
+    }
+  }
+
+  getProgressColor(percent: number): string {
+    if (percent >= 80) {
+      return 'text-red-500';
+    } else if (percent >= 60) {
+      return 'text-yellow-700';
+    } else {
+      return 'text-green-700';
     }
   }
 

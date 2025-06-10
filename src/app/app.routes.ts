@@ -51,11 +51,6 @@ export const routes: Routes = [
     component: AuthLayoutComponent,
     children: [
       {
-        path: '',
-        redirectTo: '/auth/login',
-        pathMatch: 'full',
-      },
-      {
         path: 'login',
         loadComponent: () =>
           import('./pages/auth/login/login.component').then(
@@ -69,7 +64,7 @@ export const routes: Routes = [
           import('./pages/auth/register/register.component').then(
             (m) => m.RegisterComponent
           ),
-        data: { title: 'Registration' },
+        data: { title: 'Register' },
       },
     ],
   },
@@ -83,15 +78,7 @@ export const routes: Routes = [
           import('./pages/error/not-found/not-found.component').then(
             (m) => m.NotFoundComponent
           ),
-        data: { title: 'Not Found' },
-      },
-      {
-        path: '403',
-        loadComponent: () =>
-          import('./pages/error/forbidden/forbidden.component').then(
-            (m) => m.ForbiddenComponent
-          ),
-        data: { title: 'Forbidden' },
+        data: { title: '404 - Not Found' },
       },
       {
         path: '500',
@@ -99,12 +86,9 @@ export const routes: Routes = [
           import('./pages/error/server-error/server-error.component').then(
             (m) => m.ServerErrorComponent
           ),
-        data: { title: 'Internal Server Error' },
+        data: { title: '500 - Server Error' },
       },
     ],
   },
-  {
-    path: '**',
-    redirectTo: '/error/404',
-  },
+  { path: '**', redirectTo: '/error/404' },
 ];
