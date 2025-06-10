@@ -10,6 +10,20 @@
   "inputs": {
     "placeholder": "Placeholder"
   },
+  "section": {
+    "dashboard": "Dashboard",
+    "workloads": "Workloads",
+    "clusters": "Clusters",
+    "nodes": "Nodes",
+    "emdc": "EMDC"
+  },
+  "action": {
+    "previous": "Previous",
+    "next": "Next"
+  },
+  "placeholder": {
+    "search_clusters": "Search clusters..."
+  },
   "common": {
     "title": "Orchestration Library",
     "navigation": {
@@ -21,8 +35,12 @@
     }
   },
   "app": {
-    "title": "Orchestration Library",
+    "title": "ACES",
+    "description": "Orchestration Panel",
     "footer": "All rights reserved"
+  },
+  "hint": {
+    "page": "page"
   },
   "auth": {
     "login": {

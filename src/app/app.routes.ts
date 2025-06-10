@@ -1,12 +1,11 @@
 import { Routes } from '@angular/router';
 import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
-import { DefaultLayoutComponent } from './layouts/default-layout/default-layout.component';
 import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component';
 import { ErrorLayoutComponent } from './layouts/error-layout/error-layout.component';
 import { authGuard, adminGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
-  // Защищенные маршруты (требуют авторизации)
+  // Protected routes (require authentication)
   {
     path: '',
     component: MainLayoutComponent,
@@ -14,74 +13,82 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: '/home',
-        pathMatch: 'full'
+        redirectTo: '/emdc/clusters',
+        pathMatch: 'full',
       },
       {
-        path: 'home',
-        loadComponent: () => import('./pages/home/home.component').then(m => m.HomeComponent)
-      },
-      {
-        path: 'ui-kit',
-        loadComponent: () => import('./pages/ui-kit/ui-kit.component').then(m => m.UiKitComponent)
-      },
-      {
-        path: 'profile',
-        loadComponent: () => import('./pages/profile/profile.component').then(m => m.ProfileComponent)
+        path: 'emdc',
+        children: [
+          {
+            path: 'clusters',
+            loadComponent: () =>
+              import('./pages/emdc/clusters/clusters.component').then(
+                (m) => m.ClustersComponent
+              ),
+            data: { title: 'Clusters' },
+          },
+          {
+            path: 'ui-kit',
+            loadComponent: () =>
+              import('./pages/ui-kit/ui-kit.component').then(
+                (m) => m.UiKitComponent
+              ),
+            data: { title: 'UI Kit' },
+          },
+        ],
       },
       {
         path: 'admin',
         canActivate: [adminGuard],
-        loadComponent: () => import('./pages/home/home.component').then(m => m.HomeComponent),
-        // В реальном приложении здесь будет компонент админ-панели
-      }
-    ]
+        loadComponent: () =>
+          import('./pages/home/home.component').then((m) => m.HomeComponent),
+        data: { title: 'Admin' },
+      },
+    ],
   },
-  
-  // Маршруты авторизации (публичные)
   {
     path: 'auth',
     component: AuthLayoutComponent,
     children: [
       {
-        path: '',
-        redirectTo: '/auth/login',
-        pathMatch: 'full'
-      },
-      {
         path: 'login',
-        loadComponent: () => import('./pages/auth/login/login.component').then(m => m.LoginComponent)
+        loadComponent: () =>
+          import('./pages/auth/login/login.component').then(
+            (m) => m.LoginComponent
+          ),
+        data: { title: 'Login' },
       },
       {
         path: 'register',
-        loadComponent: () => import('./pages/auth/register/register.component').then(m => m.RegisterComponent)
-      }
-    ]
+        loadComponent: () =>
+          import('./pages/auth/register/register.component').then(
+            (m) => m.RegisterComponent
+          ),
+        data: { title: 'Register' },
+      },
+    ],
   },
-  
-  // Маршруты ошибок
   {
     path: 'error',
     component: ErrorLayoutComponent,
     children: [
       {
         path: '404',
-        loadComponent: () => import('./pages/error/not-found/not-found.component').then(m => m.NotFoundComponent)
-      },
-      {
-        path: '403',
-        loadComponent: () => import('./pages/error/forbidden/forbidden.component').then(m => m.ForbiddenComponent)
+        loadComponent: () =>
+          import('./pages/error/not-found/not-found.component').then(
+            (m) => m.NotFoundComponent
+          ),
+        data: { title: '404 - Not Found' },
       },
       {
         path: '500',
-        loadComponent: () => import('./pages/error/server-error/server-error.component').then(m => m.ServerErrorComponent)
-      }
-    ]
+        loadComponent: () =>
+          import('./pages/error/server-error/server-error.component').then(
+            (m) => m.ServerErrorComponent
+          ),
+        data: { title: '500 - Server Error' },
+      },
+    ],
   },
-  
-  // Перенаправление на страницу 404 для несуществующих маршрутов
-  {
-    path: '**',
-    redirectTo: '/error/404'
-  }
+  { path: '**', redirectTo: '/error/404' },
 ];
