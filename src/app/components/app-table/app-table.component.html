@@ -1,0 +1,158 @@
+<div class="flex flex-col justify-between gap-4 sm:flex-row pb-2">
+  <input
+    hlmInput
+    class="w-full md:w-64"
+    [placeholder]="'placeholder.search_clusters' | transloco"
+    [ngModel]="_colFilter()"
+    (ngModelChange)="_rawFilterInput.set($event)"
+  />
+</div>
+
+<brn-table
+  hlm
+  stickyHeader
+  class="border-border mt-4 block h-[calc(100vh-250px)] overflow-auto rounded-md border"
+  [dataSource]="_filteredSortedPaginatedItems()"
+  [displayedColumns]="_allDisplayedColumns()"
+  [trackBy]="_trackBy"
+>
+  <brn-column-def name="cluster_name" class="w-32 sm:w-40">
+    <hlm-th truncate *brnHeaderDef>Cluster Name</hlm-th>
+    <hlm-td truncate *brnCellDef="let element">
+      <p class="text-sm mb-1">{{ element.cluster_name }}</p>
+      <p class="text-sm text-gray-500">{{ element.id }}</p>
+    </hlm-td>
+  </brn-column-def>
+  <brn-column-def name="status" class="w-32 sm:w-40">
+    <hlm-th truncate *brnHeaderDef>Status</hlm-th>
+    <hlm-td truncate *brnCellDef="let element">
+      <span [class]="getStatusColor(element.status)">{{
+        getStatus(element.status)
+      }}</span>
+    </hlm-td>
+  </brn-column-def>
+  <brn-column-def name="workloads" class="w-32 sm:w-40">
+    <hlm-th truncate *brnHeaderDef>Workloads</hlm-th>
+    <hlm-td truncate *brnCellDef="let element">
+      {{ element.workloads }}
+    </hlm-td>
+  </brn-column-def>
+  <brn-column-def name="nodes" class="w-32 sm:w-40">
+    <hlm-th truncate *brnHeaderDef>Nodes</hlm-th>
+    <hlm-td truncate *brnCellDef="let element">
+      {{ element.nodes }}
+    </hlm-td>
+  </brn-column-def>
+  <brn-column-def name="cpu_usage" class="w-32 sm:w-40">
+    <hlm-th truncate *brnHeaderDef>CPU Usage</hlm-th>
+    <hlm-td truncate *brnCellDef="let element">
+      {{ element.cpu_usage }}
+    </hlm-td>
+  </brn-column-def>
+  <brn-column-def name="memory_usage" class="w-32 sm:w-40">
+    <hlm-th truncate *brnHeaderDef>Memory Usage</hlm-th>
+    <hlm-td truncate *brnCellDef="let element">
+      {{ element.memory_usage }}
+    </hlm-td>
+  </brn-column-def>
+  <brn-column-def name="email" class="w-60 lg:flex-1">
+    <hlm-th *brnHeaderDef>
+      <button hlmBtn size="sm" variant="ghost" (click)="handleColSortChange()">
+        Email
+        <ng-icon hlm class="ml-3" size="sm" name="lucideArrowUpDown" />
+      </button>
+    </hlm-th>
+    <hlm-td truncate *brnCellDef="let element">
+      {{ element.email }}
+    </hlm-td>
+  </brn-column-def>
+  <brn-column-def name="amount" class="justify-end w-20">
+    <hlm-th *brnHeaderDef>Amount</hlm-th>
+    <hlm-td class="font-medium tabular-nums" *brnCellDef="let element">
+      $ {{ element.amount | number : '1.2-2' }}
+    </hlm-td>
+  </brn-column-def>
+  <brn-column-def name="actions" class="w-16">
+    <hlm-th *brnHeaderDef></hlm-th>
+    <hlm-td *brnCellDef="let element">
+      <button
+        hlmBtn
+        variant="ghost"
+        class="h-6 w-6 p-0.5"
+        align="end"
+        [brnMenuTriggerFor]="menu"
+      >
+        <ng-icon hlm size="sm" name="lucideEllipsis" />
+      </button>
+
+      <ng-template #menu>
+        <hlm-menu>
+          <hlm-menu-label>Actions</hlm-menu-label>
+          <hlm-menu-separator />
+          <hlm-menu-group>
+            <button hlmMenuItem>Copy payment ID</button>
+          </hlm-menu-group>
+          <hlm-menu-separator />
+          <hlm-menu-group>
+            <button hlmMenuItem>View customer</button>
+            <button hlmMenuItem>View payment details</button>
+          </hlm-menu-group>
+        </hlm-menu>
+      </ng-template>
+    </hlm-td>
+  </brn-column-def>
+  <div
+    class="flex items-center justify-center p-20 text-muted-foreground"
+    brnNoDataRow
+  >
+    No data
+  </div>
+</brn-table>
+<div
+  class="flex flex-col justify-between mt-4 sm:flex-row sm:items-center"
+  *brnPaginator="
+    let ctx;
+    totalElements: _totalElements();
+    pageSize: _pageSize();
+    onStateChange: _onStateChange
+  "
+>
+  <div class="flex items-center justify-between w-full">
+    <brn-select
+      placeholder="{{ _availablePageSizes[0] }}"
+      [(ngModel)]="_pageSize"
+    >
+      <hlm-select-trigger class="inline-flex mr-1 w-20 h-9">
+        <hlm-select-value />
+      </hlm-select-trigger>
+      <hlm-select-content>
+        @for (size of _availablePageSizes; track size) {
+        <hlm-option [value]="size">
+          {{ size === 10000 ? 'All' : size }}
+        </hlm-option>
+        }
+      </hlm-select-content>
+    </brn-select>
+
+    <div class="flex gap-2">
+      <button
+        size="sm"
+        variant="outline"
+        hlmBtn
+        [disabled]="!ctx.decrementable()"
+        (click)="ctx.decrement()"
+      >
+        {{ 'action.previous' | transloco }}
+      </button>
+      <button
+        size="sm"
+        variant="outline"
+        hlmBtn
+        [disabled]="!ctx.incrementable()"
+        (click)="ctx.increment()"
+      >
+        {{ 'action.next' | transloco }}
+      </button>
+    </div>
+  </div>
+</div>

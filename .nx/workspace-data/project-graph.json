@@ -21525,6 +21525,26 @@
       },
       {
         "source": "orchestration_library-front",
+        "target": "ui-checkbox-helm",
+        "type": "static"
+      },
+      {
+        "source": "orchestration_library-front",
+        "target": "ui-menu-helm",
+        "type": "static"
+      },
+      {
+        "source": "orchestration_library-front",
+        "target": "ui-table-helm",
+        "type": "static"
+      },
+      {
+        "source": "orchestration_library-front",
+        "target": "ui-select-helm",
+        "type": "static"
+      },
+      {
+        "source": "orchestration_library-front",
         "target": "ui-label-helm",
         "type": "static"
       },
@@ -21535,17 +21555,7 @@
       },
       {
         "source": "orchestration_library-front",
-        "target": "ui-table-helm",
-        "type": "static"
-      },
-      {
-        "source": "orchestration_library-front",
         "target": "ui-accordion-helm",
-        "type": "static"
-      },
-      {
-        "source": "orchestration_library-front",
-        "target": "ui-checkbox-helm",
         "type": "static"
       },
       {
@@ -44683,5 +44693,5 @@
   },
   "version": "6.0",
   "errors": [],
-  "computedAt": 1749584996194
+  "computedAt": 1749597376755
 }

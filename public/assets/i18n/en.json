@@ -17,6 +17,13 @@
     "nodes": "Nodes",
     "emdc": "EMDC"
   },
+  "action": {
+    "previous": "Previous",
+    "next": "Next"
+  },
+  "placeholder": {
+    "search_clusters": "Search clusters..."
+  },
   "common": {
     "title": "Orchestration Library",
     "navigation": {
@@ -31,6 +38,9 @@
     "title": "ACES",
     "description": "Orchestration Panel",
     "footer": "All rights reserved"
+  },
+  "hint": {
+    "page": "page"
   },
   "auth": {
     "login": {

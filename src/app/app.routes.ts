@@ -5,7 +5,7 @@ import { ErrorLayoutComponent } from './layouts/error-layout/error-layout.compon
 import { authGuard, adminGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
-  // Защищенные маршруты (требуют авторизации)
+  // Protected routes (require authentication)
   {
     path: '',
     component: MainLayoutComponent,
@@ -22,10 +22,10 @@ export const routes: Routes = [
           {
             path: 'clusters',
             loadComponent: () =>
-              import('./pages/home/home.component').then(
-                (m) => m.HomeComponent
+              import('./pages/emdc/clusters/clusters.component').then(
+                (m) => m.ClustersComponent
               ),
-            data: { title: 'Панель управления' },
+            data: { title: 'Clusters' },
           },
           {
             path: 'ui-kit',
@@ -61,7 +61,7 @@ export const routes: Routes = [
           import('./pages/auth/login/login.component').then(
             (m) => m.LoginComponent
           ),
-        data: { title: 'Вход' },
+        data: { title: 'Login' },
       },
       {
         path: 'register',
@@ -69,7 +69,7 @@ export const routes: Routes = [
           import('./pages/auth/register/register.component').then(
             (m) => m.RegisterComponent
           ),
-        data: { title: 'Регистрация' },
+        data: { title: 'Registration' },
       },
     ],
   },

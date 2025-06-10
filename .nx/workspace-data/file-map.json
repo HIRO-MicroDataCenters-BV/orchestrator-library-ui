@@ -2611,7 +2611,7 @@
         },
         {
           "file": "public/assets/i18n/en.json",
-          "hash": "3326394889392114956"
+          "hash": "13489698663801222198"
         },
         {
           "file": "public/browserconfig.xml",
@@ -2713,7 +2713,7 @@
         },
         {
           "file": "src/app/app.routes.ts",
-          "hash": "14372046400040674401",
+          "hash": "13493036292986176746",
           "deps": [
             "npm:@angular/router"
           ]
@@ -2742,6 +2742,32 @@
             "npm:@ng-icons/core",
             "npm:@ng-icons/lucide",
             "ui-icon-helm",
+            "npm:rxjs"
+          ]
+        },
+        {
+          "file": "src/app/components/app-table/app-table.component.html",
+          "hash": "18196909032249883580"
+        },
+        {
+          "file": "src/app/components/app-table/app-table.component.ts",
+          "hash": "13719224665895855111",
+          "deps": [
+            "npm:@angular/cdk",
+            "npm:@angular/common",
+            "npm:@jsverse/transloco",
+            "npm:@angular/core",
+            "npm:@angular/forms",
+            "npm:@ng-icons/lucide",
+            "ui-button-helm",
+            "ui-checkbox-helm",
+            "ui-icon-helm",
+            "ui-input-helm",
+            "npm:@spartan-ng/brain",
+            "ui-menu-helm",
+            "ui-table-helm",
+            "ui-select-helm",
+            "npm:@ng-icons/core",
             "npm:rxjs"
           ]
         },
@@ -2830,7 +2856,7 @@
         },
         {
           "file": "src/app/layouts/main-layout/main-layout.component.ts",
-          "hash": "11293042699731396017",
+          "hash": "8648699956262701327",
           "deps": [
             "npm:@angular/core",
             "npm:@angular/common",
@@ -2881,6 +2907,18 @@
             "ui-label-helm",
             "ui-card-helm",
             "npm:rxjs"
+          ]
+        },
+        {
+          "file": "src/app/pages/emdc/clusters/clusters.component.html",
+          "hash": "13903094924482307487"
+        },
+        {
+          "file": "src/app/pages/emdc/clusters/clusters.component.ts",
+          "hash": "11295579561027698577",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@jsverse/transloco"
           ]
         },
         {
@@ -3033,7 +3071,7 @@
         },
         {
           "file": "src/index.html",
-          "hash": "6463521201116798608"
+          "hash": "7837719575966323484"
         },
         {
           "file": "src/main.server.ts",

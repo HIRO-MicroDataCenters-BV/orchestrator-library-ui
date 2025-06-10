@@ -90,9 +90,9 @@ export class MainLayoutComponent {
   currentRoute: string | null = null;
   menuItems: MenuItem[] = [
     {
-      label: 'edmc',
+      label: 'emdc',
       icon: null,
-      route: '/edmc',
+      route: '/emdc',
       items: [
         { label: 'clusters', icon: 'lucideServer', route: '/clusters' },
         { label: 'workloads', icon: 'lucideLayers', route: '/workloads' },
