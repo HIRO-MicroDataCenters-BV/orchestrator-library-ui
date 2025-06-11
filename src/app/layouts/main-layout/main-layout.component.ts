@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { NgFor, NgIf } from '@angular/common';
 import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 import { TranslocoModule } from '@jsverse/transloco';
@@ -26,7 +26,6 @@ import {
   HlmSidebarHeaderDirective,
   HlmSidebarMenuDirective,
   HlmSidebarMenuItemDirective,
-  HlmSidebarMenuButtonDirective,
   HlmSidebarFooterDirective,
   HlmSidebarSeparatorDirective,
   HlmSidebarService,
@@ -58,7 +57,6 @@ interface MenuItem {
     HlmSidebarHeaderDirective,
     HlmSidebarMenuDirective,
     HlmSidebarMenuItemDirective,
-    HlmSidebarMenuButtonDirective,
     HlmSidebarFooterDirective,
     BrnSeparatorComponent,
     HlmSeparatorDirective,

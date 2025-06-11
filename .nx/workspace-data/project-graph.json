@@ -21525,11 +21525,6 @@
       },
       {
         "source": "orchestration_library-front",
-        "target": "ui-checkbox-helm",
-        "type": "static"
-      },
-      {
-        "source": "orchestration_library-front",
         "target": "ui-menu-helm",
         "type": "static"
       },
@@ -21556,6 +21551,11 @@
       {
         "source": "orchestration_library-front",
         "target": "ui-accordion-helm",
+        "type": "static"
+      },
+      {
+        "source": "orchestration_library-front",
+        "target": "ui-checkbox-helm",
         "type": "static"
       },
       {
@@ -44693,5 +44693,5 @@
   },
   "version": "6.0",
   "errors": [],
-  "computedAt": 1749599157681
+  "computedAt": 1749668497096
 }

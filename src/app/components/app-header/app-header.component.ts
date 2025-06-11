@@ -1,7 +1,6 @@
-import { NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { Component } from '@angular/core';
 import {
-  RouterOutlet,
   Router,
   NavigationEnd,
   RouterLink,
@@ -21,12 +20,10 @@ export interface BreadcrumbsItem {
   selector: 'app-header',
   standalone: true,
   imports: [
-    RouterOutlet,
     RouterLink,
     TranslocoModule,
     NgIcon,
     HlmIconDirective,
-    NgTemplateOutlet,
     NgFor,
     NgIf,
   ],

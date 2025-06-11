@@ -5,7 +5,7 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
 import { User } from '../models/user.model';
-import { AuthRequest, AuthResponse, RefreshTokenRequest } from '../models/auth.model';
+import { AuthRequest, AuthResponse } from '../models/auth.model';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -61,7 +61,7 @@ export class AuthService {
           const user = JSON.parse(userJson) as User;
           this.currentUserSubject.next(user);
           this.isAuthenticatedSubject.next(true);
-        } catch (error) {
+        } catch (_error) {
           this.clearStorage();
         }
       }
@@ -88,7 +88,7 @@ export class AuthService {
     // Check credentials
     if (user && credentials.password === user.password) {
       // Create a copy of user without password for security
-      const { password, ...userWithoutPassword } = user;
+      const { password: _, ...userWithoutPassword } = user;
       
       const mockResponse: AuthResponse = {
         accessToken: `mock-jwt-token-${user.id}`,
@@ -139,7 +139,7 @@ export class AuthService {
     this.mockUsers.push(newUser);
     
     // Create a copy of user without password for security
-    const { password, ...userWithoutPassword } = newUser;
+    const { password: _, ...userWithoutPassword } = newUser;
     
     // Create response
     const mockResponse: AuthResponse = {
@@ -176,7 +176,7 @@ export class AuthService {
   }
   
   // Method for demonstration, simulates API request for token refresh
-  private mockRefreshToken(refreshToken: string): Observable<AuthResponse> {
+  private mockRefreshToken(_refreshToken: string): Observable<AuthResponse> {
     // Get current user
     const currentUser = this.currentUserSubject.value;
     if (!currentUser) {

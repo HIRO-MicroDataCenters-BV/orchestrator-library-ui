@@ -123,7 +123,7 @@
   "ui_kit": {
     "title": "Design System",
     "subtitle": "Explore our comprehensive collection of UI components built with Angular and Spartan UI. Each component is crafted with attention to detail and modern design principles.",
-    "badge": "✨ UI Components Showcase",
+    "showcase_badge": "✨ UI Components Showcase",
     "sections": {
       "typography": "Typography",
       "buttons": "Buttons",
@@ -131,7 +131,7 @@
       "accordion": "Accordion",
       "alert": "Alert",
       "avatar": "Avatar",
-      "badge": "Badge",
+      "badge_section": "Badge",
       "card": "Card",
       "checkbox": "Checkbox",
       "dialog": "Dialog",

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { AppTableComponent } from '../../../components/app-table/app-table.component';
 import { TranslocoModule } from '@jsverse/transloco';
 
@@ -8,7 +8,7 @@ import { TranslocoModule } from '@jsverse/transloco';
   imports: [AppTableComponent, TranslocoModule],
   templateUrl: './clusters.component.html',
 })
-export class ClustersComponent implements OnInit {
+export class ClustersComponent {
   clusters = [];
   columns = [
     'cluster_name',
@@ -27,6 +27,4 @@ export class ClustersComponent implements OnInit {
     'drain_cluster',
     'delete_cluster',
   ];
-
-  ngOnInit() {}
 }
