@@ -8380,3 +8380,27 @@ Error: This workspace is more than three days old and is not connected. Workspac
 [NX v21.1.2 Daemon Server] - 2025-06-10T23:45:40.204Z - [SYNC]: project graph hash is the same, not collecting task sync generators
 [NX v21.1.2 Daemon Server] - 2025-06-10T23:45:40.204Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
 [NX v21.1.2 Daemon Server] - 2025-06-10T23:45:40.204Z - Time taken for 'total execution time for createProjectGraph()' 73.6443329975009ms
+[NX v21.1.2 Daemon Server] - 2025-06-10T23:45:51.073Z - [WATCHER]: 0 file(s) created or restored, 3 file(s) modified, 0 file(s) deleted
+[NX v21.1.2 Daemon Server] - 2025-06-10T23:45:51.073Z - [WATCHER]: Processing file changes in outputs
+[NX v21.1.2 Daemon Server] - 2025-06-10T23:45:51.755Z - [WATCHER]: Processing file changes in outputs
+[NX v21.1.2 Daemon Server] - 2025-06-10T23:45:53.850Z - [WATCHER]: Processing file changes in outputs
+[NX v21.1.2 Daemon Server] - 2025-06-10T23:45:57.479Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX v21.1.2 Daemon Server] - 2025-06-10T23:45:57.480Z - [REQUEST]: src/app/components/app-circle-progress/app-circle-progress.component.ts,src/app/components/app-table/app-table.component.html,src/app/components/app-table/app-table.component.ts
+[NX v21.1.2 Daemon Server] - 2025-06-10T23:45:57.480Z - [REQUEST]: 
+[NX v21.1.2 Daemon Server] - 2025-06-10T23:45:57.491Z - Time taken for 'hash changed files from watcher' 5.115249998867512ms
+[NX v21.1.2 Daemon Server] - 2025-06-10T23:45:57.568Z - Time taken for 'build-project-configs' 64.06666699796915ms
+[NX v21.1.2 Daemon Server] - 2025-06-10T23:45:57.692Z - [SYNC]: collect registered sync generators
+[NX v21.1.2 Daemon Server] - 2025-06-10T23:45:57.696Z - [SYNC]: project graph hash is the same, not collecting task sync generators
+[NX v21.1.2 Daemon Server] - 2025-06-10T23:45:57.696Z - [SYNC]: nx.json hash is the same, not collecting global sync generators
+[NX v21.1.2 Daemon Server] - 2025-06-10T23:45:57.698Z - Time taken for 'total execution time for createProjectGraph()' 111.44945799931884ms
+[NX v21.1.2 Daemon Server] - 2025-06-10T23:46:02.748Z - [WATCHER]: Processing file changes in outputs
+[NX v21.1.2 Daemon Server] - 2025-06-10T23:46:07.758Z - [WATCHER]: Processing file changes in outputs
+[NX v21.1.2 Daemon Server] - 2025-06-10T23:46:15.267Z - [WATCHER]: Processing file changes in outputs
+[NX v21.1.2 Daemon Server] - 2025-06-10T23:46:30.813Z - [WATCHER]: Processing file changes in outputs
+[NX v21.1.2 Daemon Server] - 2025-06-10T23:48:37.961Z - [WATCHER]: Processing file changes in outputs
+[NX v21.1.2 Daemon Server] - 2025-06-11T02:45:51.286Z - Closed a connection. Number of open connections: 2
+[NX v21.1.2 Daemon Server] - 2025-06-11T02:45:51.290Z - Closed a connection. Number of open connections: 1
+[NX v21.1.2 Daemon Server] - 2025-06-11T02:45:51.290Z - Closed a connection. Number of open connections: 0
+[NX v21.1.2 Daemon Server] - 2025-06-11T02:45:51.295Z - [WATCHER]: Stopping the watcher for /Users/kaaboeld/Documents/pets/orchestrator-library-ui (sources)
+[NX v21.1.2 Daemon Server] - 2025-06-11T02:45:51.296Z - [WATCHER]: Stopping the watcher for /Users/kaaboeld/Documents/pets/orchestrator-library-ui (outputs)
+[NX v21.1.2 Daemon Server] - 2025-06-11T02:45:51.315Z - Server stopped because: "10800000ms of inactivity"

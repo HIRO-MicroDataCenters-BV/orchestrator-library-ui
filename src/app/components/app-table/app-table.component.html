@@ -16,7 +16,7 @@
   [displayedColumns]="_allDisplayedColumns()"
   [trackBy]="_trackBy"
 >
-  <brn-column-def name="cluster_name" class="w-32 sm:w-40">
+  <brn-column-def name="cluster_name" class="w-64">
     <hlm-th truncate *brnHeaderDef>Cluster Name</hlm-th>
     <hlm-td truncate *brnCellDef="let element">
       <p class="text-sm mb-1">{{ element.cluster_name }}</p>
@@ -78,29 +78,32 @@
     </hlm-td>
   </brn-column-def>
   <brn-column-def name="actions" class="w-16">
-    <hlm-th *brnHeaderDef></hlm-th>
+    <hlm-th *brnHeaderDef>Actions</hlm-th>
     <hlm-td *brnCellDef="let element">
       <button
         hlmBtn
-        variant="ghost"
-        class="h-6 w-6 p-0.5"
+        variant="outline"
+        class="h-8 w-8 p-0.5"
         align="end"
         [brnMenuTriggerFor]="menu"
       >
-        <ng-icon hlm size="sm" name="lucideEllipsis" />
+        <ng-icon hlm size="sm" name="lucideEllipsisVertical" />
       </button>
 
       <ng-template #menu>
-        <hlm-menu>
-          <hlm-menu-label>Actions</hlm-menu-label>
+        <hlm-menu class="w-52">
+          <!-- TODO: replace with region aws -->
+          <hlm-menu-label>{{ element.id }}</hlm-menu-label>
           <hlm-menu-separator />
           <hlm-menu-group>
-            <button hlmMenuItem>Copy payment ID</button>
-          </hlm-menu-group>
-          <hlm-menu-separator />
-          <hlm-menu-group>
-            <button hlmMenuItem>View customer</button>
-            <button hlmMenuItem>View payment details</button>
+            <button
+              *ngFor="let action of _actions()"
+              hlmMenuItem
+              class="flex gap-2"
+            >
+              <ng-icon hlm size="sm" [svg]="ACTION_ICONS[action]" />
+              <span>{{ `action.${action}` | transloco }}</span>
+            </button>
           </hlm-menu-group>
         </hlm-menu>
       </ng-template>
@@ -110,7 +113,7 @@
     class="flex items-center justify-center p-20 text-muted-foreground"
     brnNoDataRow
   >
-    No data
+    {{ 'hint.no_data' | transloco }}
   </div>
 </brn-table>
 <div

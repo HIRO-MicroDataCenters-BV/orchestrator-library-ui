@@ -6,11 +6,27 @@ import { TranslocoModule } from '@jsverse/transloco';
   selector: 'app-clusters',
   standalone: true,
   imports: [AppTableComponent, TranslocoModule],
-  templateUrl: './clusters.component.html'
+  templateUrl: './clusters.component.html',
 })
 export class ClustersComponent implements OnInit {
   clusters = [];
-  
-  ngOnInit() {
-  }
+  columns = [
+    'cluster_name',
+    'status',
+    'workloads',
+    'nodes',
+    'cpu_usage',
+    'memory_usage',
+  ];
+  actions = [
+    'view_details',
+    'view_logs',
+    'scale_cluster',
+    'add_nodes',
+    'cordon_cluster',
+    'drain_cluster',
+    'delete_cluster',
+  ];
+
+  ngOnInit() {}
 }
