@@ -1,5 +1,4 @@
-import { SelectionModel } from '@angular/cdk/collections';
-import { DecimalPipe, TitleCasePipe } from '@angular/common';
+import { DecimalPipe, NgFor, TitleCasePipe } from '@angular/common';
 import { TranslocoModule } from '@jsverse/transloco';
 import {
   Component,
@@ -8,13 +7,21 @@ import {
   effect,
   signal,
   untracked,
+  Input,
 } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import {
   lucideArrowUpDown,
   lucideChevronDown,
-  lucideEllipsis,
+  lucideCog,
+  lucideEllipsisVertical,
+  lucideInfo,
+  lucidePause,
+  lucidePlus,
+  lucideTerminal,
+  lucideTrash2,
+  lucideDownload,
 } from '@ng-icons/lucide';
 import { HlmButtonModule } from '@spartan-ng/ui-button-helm';
 import { HlmCheckboxComponent } from '@spartan-ng/ui-checkbox-helm';
@@ -30,7 +37,7 @@ import {
 import { HlmTableModule } from '@spartan-ng/ui-table-helm';
 import { BrnSelectModule } from '@spartan-ng/brain/select';
 import { HlmSelectModule } from '@spartan-ng/ui-select-helm';
-import { provideIcons } from '@ng-icons/core';
+import { provideIcons, NgIcon } from '@ng-icons/core';
 import { debounceTime, map } from 'rxjs';
 import { AppCircleProgressComponent } from '../app-circle-progress/app-circle-progress.component';
 
@@ -42,6 +49,18 @@ export type TableData = {
   nodes: number;
   cpu_usage: number; // percent
   memory_usage: number; // percent
+};
+
+export type TableAction = {
+  id: string;
+  label: string;
+  icon: NgIcon;
+};
+
+export type TableActionGroup = {
+  id: string;
+  label?: string | null;
+  actions: TableAction[];
 };
 
 const TABLE_DATA: TableData[] = [
@@ -232,7 +251,7 @@ const TABLE_DATA: TableData[] = [
   standalone: true,
   imports: [
     FormsModule,
-
+    NgIcon,
     BrnMenuTriggerDirective,
     HlmMenuModule,
 
@@ -252,9 +271,21 @@ const TABLE_DATA: TableData[] = [
     HlmSelectModule,
     TranslocoModule,
     AppCircleProgressComponent,
+    NgFor,
   ],
   providers: [
-    provideIcons({ lucideChevronDown, lucideEllipsis, lucideArrowUpDown }),
+    provideIcons({
+      lucideChevronDown,
+      lucideEllipsisVertical,
+      lucideArrowUpDown,
+      lucideInfo,
+      lucideDownload,
+      lucideTerminal,
+      lucidePlus,
+      lucideCog,
+      lucidePause,
+      lucideTrash2,
+    }),
   ],
   host: {
     class: 'w-full',
@@ -262,6 +293,19 @@ const TABLE_DATA: TableData[] = [
   templateUrl: './app-table.component.html',
 })
 export class AppTableComponent {
+  @Input('columns') columns: string[] = [];
+  @Input('actions') actions: string[] = [];
+
+  ACTION_ICONS: Record<string, string> = {
+    view_details: lucideInfo,
+    view_logs: lucideTerminal,
+    scale_cluster: lucideCog,
+    add_nodes: lucidePlus,
+    cordon_cluster: lucidePause,
+    drain_cluster: lucideDownload,
+    delete_cluster: lucideTrash2,
+  };
+
   protected readonly _rawFilterInput = signal('');
   protected readonly _colFilter = signal('');
   private readonly _debouncedFilter = toSignal(
@@ -272,16 +316,12 @@ export class AppTableComponent {
   protected readonly _availablePageSizes = [5, 10, 20, 10000];
   protected readonly _pageSize = signal(this._availablePageSizes[0]);
 
-  protected readonly _columns = useBrnColumnManager({
-    cluster_name: { visible: true, label: 'Cluster Name' },
-    status: { visible: true, label: 'Status' },
-    workloads: { visible: true, label: 'Workloads' },
-    nodes: { visible: true, label: 'Nodes' },
-    cpu_usage: { visible: true, label: 'CPU Usage' },
-    memory_usage: { visible: true, label: 'Memory Usage' },
-  });
+  protected readonly _columns = computed(() => [...this.columns]);
+
+  protected readonly _actions = computed(() => [...this.actions]);
+
   protected readonly _allDisplayedColumns = computed(() => [
-    ...this._columns.displayedColumns(),
+    ...this._columns(),
     'actions',
   ]);
 
@@ -363,7 +403,6 @@ export class AppTableComponent {
   }
 
   getStatus(status: number): string {
-    console.log(status);
     switch (status) {
       case -2:
         return 'failed';

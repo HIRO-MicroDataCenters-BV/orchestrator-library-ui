@@ -19,7 +19,14 @@
   },
   "action": {
     "previous": "Previous",
-    "next": "Next"
+    "next": "Next",
+    "view_details": "View Details",
+    "view_logs": "View Logs",
+    "scale_cluster": "Scale Cluster",
+    "add_nodes": "Add Nodes",
+    "cordon_cluster": "Cordon Cluster",
+    "drain_cluster": "Drain Cluster",
+    "delete_cluster": "Delete Cluster"
   },
   "placeholder": {
     "search_clusters": "Search clusters..."
@@ -40,7 +47,8 @@
     "footer": "All rights reserved"
   },
   "hint": {
-    "page": "page"
+    "page": "page",
+    "no_data": "No data"
   },
   "auth": {
     "login": {
