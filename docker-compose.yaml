@@ -1,0 +1,11 @@
+version: "3.9"
+
+services:
+  orchestrator-library-ui:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: orchestrator-library-ui:latest
+    ports:
+      - "8008:80"
+    restart: unless-stopped

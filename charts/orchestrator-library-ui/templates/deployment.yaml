@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "orchestrator-library-ui.fullname" . }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "orchestrator-library-ui.name" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "orchestrator-library-ui.name" . }}
+    spec:
+      containers:
+        - name: orchestrator-library-ui
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: 80
+          resources: {{- toYaml .Values.resources | nindent 12 }}
