@@ -40,11 +40,13 @@ jobs:
           node-version: 20
           cache: 'pnpm'
 
-      - name: Install pnpm and dependencies
+      - name: Install pnpm
         uses: pnpm/action-setup@v2
         with:
-          version: 8
-          run_install: true
+          version: 8.15.4  # or your specific version
+
+      - name: Install dependencies
+        run: pnpm install
 
       - name: Run tests
         run: pnpm test
