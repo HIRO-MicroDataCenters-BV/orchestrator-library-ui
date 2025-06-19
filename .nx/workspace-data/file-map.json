@@ -3855,6 +3855,10 @@
           "hash": "1767715096802293777"
         },
         {
+          "file": "charts/orchestrator-library-ui/chart.yaml",
+          "hash": "1767715096802293777"
+        },
+        {
           "file": "charts/orchestrator-library-ui/templates/configmap.yaml",
           "hash": "9994015184872889276"
         },
