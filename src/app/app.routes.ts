@@ -16,6 +16,7 @@ export const routes: Routes = [
         redirectTo: '/emdc/clusters',
         pathMatch: 'full',
       },
+      
       {
         path: 'emdc',
         children: [
@@ -34,6 +35,12 @@ export const routes: Routes = [
                 (m) => m.UiKitComponent
               ),
             data: { title: 'UI Kit' },
+          },
+          {
+            path: 'k8s',
+            loadComponent: () =>
+              import('./pages/dashboard/dashboard.component').then((m) => m.DashboardComponent),
+            data: { title: 'K8s' },
           },
         ],
       },

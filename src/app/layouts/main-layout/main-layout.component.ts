@@ -95,6 +95,7 @@ export class MainLayoutComponent {
         { label: 'clusters', icon: 'lucideServer', route: '/clusters' },
         { label: 'workloads', icon: 'lucideLayers', route: '/workloads' },
         { label: 'nodes', icon: 'lucideHardDrive', route: '/nodes' },
+        { label: 'k8s', icon: 'lucideHardDrive', route: '/k8s' },
       ],
     },
   ];

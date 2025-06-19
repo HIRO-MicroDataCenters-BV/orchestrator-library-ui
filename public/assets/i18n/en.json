@@ -15,7 +15,8 @@
     "workloads": "Workloads",
     "clusters": "Clusters",
     "nodes": "Nodes",
-    "emdc": "EMDC"
+    "emdc": "EMDC",
+    "k8s": "K8s"
   },
   "action": {
     "previous": "Previous",
