@@ -59,7 +59,7 @@ jobs:
           version: 'latest'
 
       - name: Lint Helm chart
-        run: helm lint charts/orchestration-library-ui
+        run: helm lint charts/orchestrator-library-ui
 
   build-and-push:
     name: Build and Push Docker Image
@@ -127,7 +127,7 @@ jobs:
 
       - name: Deploy Orchestration API Helm chart
         run: |
-          helm upgrade --install ${{ vars.ORCHRESTRATION_API_RELEASE_NAME }} ./charts/orchestration-library-ui \
+          helm upgrade --install ${{ vars.ORCHRESTRATION_API_RELEASE_NAME }} ./charts/orchestrator-library-ui \
             --namespace ${{ vars.ORCHESTRATION_LIBRARY_UI_NAMESPACE }} \
             --create-namespace \
             --set namespace=${{ vars.ORCHESTRATION_LIBRARY_UI_NAMESPACE }} \
