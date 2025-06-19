@@ -40,10 +40,13 @@ jobs:
           node-version: 20
           cache: 'pnpm'
 
-      - name: Install pnpm
+      - name: Set up pnpm
         uses: pnpm/action-setup@v2
         with:
-          version: 8.15.4  # or your specific version
+          version: 8.15.4
+
+      - name: Check if pnpm is available
+        run: which pnpm && pnpm --version
 
       - name: Install dependencies
         run: pnpm install
