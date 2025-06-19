@@ -34,8 +34,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      #pnpm test run this for unit tests execution
+      - name: Install dependencies
+        run: npm install -g pnpm && pnpm install
 
+      - name: Run unit tests
+        run: pnpm test  
+      
       - name: Set up Helm
         uses: azure/setup-helm@v3
         with:
