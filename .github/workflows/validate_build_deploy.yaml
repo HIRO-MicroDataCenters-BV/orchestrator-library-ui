@@ -34,19 +34,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Use Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'pnpm'
 
-      - name: Set up pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 8.15.4
+      - name: Install pnpm
+        run: npm install -g pnpm
 
-      - name: Check if pnpm is available
-        run: which pnpm && pnpm --version
+      - name: Show versions
+        run: |
+          node -v
+          pnpm -v
 
       - name: Install dependencies
         run: pnpm install
