@@ -24,7 +24,7 @@ echo "Load Image to Kind cluster named '$CLUSTER_NAME'"
 kind load docker-image --name $CLUSTER_NAME $ORCHRESTRATION_LIBRARY_UI_IMAGE_NAME:$ORCHRESTRATION_LIBRARY_UI_IMAGE_TAG
 
 echo "Deploy the orchestration-api to the Kind cluster"
-helm upgrade --install $ORCHRESTRATION_LIBRARY_UI_RELEASE_NAME ./charts/orchestration-api \
+helm upgrade --install $ORCHRESTRATION_LIBRARY_UI_RELEASE_NAME ./charts/orchestration-library-ui \
   --namespace $ORCHRESTRATION_LIBRARY_UI_NAMESPACE \
   --create-namespace \
   --set app.image.repository=$ORCHRESTRATION_LIBRARY_UI_IMAGE_NAME \

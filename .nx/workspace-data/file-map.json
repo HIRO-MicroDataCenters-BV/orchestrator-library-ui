@@ -123,6 +123,14 @@
     "projectFileMap": {
       "orchestration_library-front": [
         {
+          "file": ".github copy/workflows/validate_build_deploy.yaml",
+          "hash": "450879789150509173"
+        },
+        {
+          "file": ".github/workflows/validate_build_deploy.yaml",
+          "hash": "9908883850896816746"
+        },
+        {
           "file": ".gitignore",
           "hash": "13692021171950330352"
         },
@@ -147,6 +155,10 @@
           "hash": "17038929134016848735"
         },
         {
+          "file": ".vscode/settings.json",
+          "hash": "95285166216195769"
+        },
+        {
           "file": ".vscode/tasks.json",
           "hash": "5336636969995539451"
         },
@@ -168,15 +180,15 @@
         },
         {
           "file": "charts/orchestrator-library-ui/templates/configmap.yaml",
-          "hash": "17106448692961274035"
+          "hash": "9994015184872889276"
         },
         {
           "file": "charts/orchestrator-library-ui/templates/deployment.yaml",
-          "hash": "1232411274647163762"
+          "hash": "8986740737747070549"
         },
         {
           "file": "charts/orchestrator-library-ui/templates/service.yaml",
-          "hash": "5176064088739078930"
+          "hash": "1417708411032380506"
         },
         {
           "file": "charts/orchestrator-library-ui/values.yaml",
@@ -613,7 +625,7 @@
         },
         {
           "file": "scripts/deploy_orchestration_api.sh",
-          "hash": "4490995264672521862"
+          "hash": "9221977926560207414"
         },
         {
           "file": "src/app/app.config.server.ts",
