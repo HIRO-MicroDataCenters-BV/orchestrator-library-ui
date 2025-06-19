@@ -2,10 +2,11 @@
 
 CLUSTER_NAME=${1:-sample}
 
-ORCHRESTRATION_LIBRARY_UI_NAMESPACE="aces-orchestration-library-ui"
-ORCHRESTRATION_LIBRARY_UI_RELEASE_NAME="aces-orchestration-library-ui"
-ORCHRESTRATION_LIBRARY_UI_APP_NAME="aces-orchestration-library-ui"
-ORCHRESTRATION_LIBRARY_UI_IMAGE_NAME="orchestration-library-ui"
+ORCHRESTRATION_LIBRARY_UI_CHART_PATH="./charts/orchestrator-library-ui"
+ORCHRESTRATION_LIBRARY_UI_NAMESPACE="aces-orchestrator-library-ui"
+ORCHRESTRATION_LIBRARY_UI_RELEASE_NAME="aces-orchestrator-library-ui"
+ORCHRESTRATION_LIBRARY_UI_APP_NAME="aces-orchestrator-library-ui"
+ORCHRESTRATION_LIBRARY_UI_IMAGE_NAME="orchestrator-library-ui"
 ORCHRESTRATION_LIBRARY_UI_IMAGE_TAG="alpha1"
 
 if [ -z "$CLUSTER_NAME" ]; then
@@ -24,9 +25,10 @@ echo "Load Image to Kind cluster named '$CLUSTER_NAME'"
 kind load docker-image --name $CLUSTER_NAME $ORCHRESTRATION_LIBRARY_UI_IMAGE_NAME:$ORCHRESTRATION_LIBRARY_UI_IMAGE_TAG
 
 echo "Deploy the orchestration-api to the Kind cluster"
-helm upgrade --install $ORCHRESTRATION_LIBRARY_UI_RELEASE_NAME ./charts/orchestration-library-ui \
+helm upgrade --install $ORCHRESTRATION_LIBRARY_UI_RELEASE_NAME $ORCHRESTRATION_LIBRARY_UI_CHART_PATH \
   --namespace $ORCHRESTRATION_LIBRARY_UI_NAMESPACE \
   --create-namespace \
+  --set app.name=$ORCHRESTRATION_LIBRARY_UI_APP_NAME \
   --set app.image.repository=$ORCHRESTRATION_LIBRARY_UI_IMAGE_NAME \
   --set app.image.tag=$ORCHRESTRATION_LIBRARY_UI_IMAGE_TAG \
   --set namespace=$ORCHRESTRATION_LIBRARY_UI_NAMESPACE \

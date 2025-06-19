@@ -6,14 +6,14 @@ spec:
   replicas: {{ .Values.app.replicaCount }}
   selector:
     matchLabels:
-      app: {{ include "orchestrator-library-ui.name" . }}
+      app: {{ .Values.app.name }}
   template:
     metadata:
       labels:
-        app: {{ include "orchestrator-library-ui.name" . }}
+        app: {{ .Values.app.name }}
     spec:
       containers:
-        - name: orchestrator-library-ui
+        - name: {{ .Values.app.name }}
           image: "{{ .Values.app.image.repository }}:{{ .Values.app.image.tag }}"
           imagePullPolicy: {{ .Values.app.image.pullPolicy }}
           ports:

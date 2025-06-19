@@ -612,6 +612,10 @@
           "hash": "5385690830194208425"
         },
         {
+          "file": "charts/orchestrator-library-ui/Chart.yaml",
+          "hash": "1767715096802293777"
+        },
+        {
           "file": "charts/orchestrator-library-ui/chart.yaml",
           "hash": "1767715096802293777"
         },
@@ -625,7 +629,7 @@
         },
         {
           "file": "charts/orchestrator-library-ui/templates/deployment.yaml",
-          "hash": "8986740737747070549"
+          "hash": "7701536393136100076"
         },
         {
           "file": "charts/orchestrator-library-ui/templates/service.yaml",
@@ -1065,8 +1069,8 @@
           "hash": "6427419822106664316"
         },
         {
-          "file": "scripts/deploy_orchestration_api.sh",
-          "hash": "9221977926560207414"
+          "file": "scripts/deploy_orchestration_library_ui.sh",
+          "hash": "13695082924320275569"
         },
         {
           "file": "src/app/app.config.server.ts",
