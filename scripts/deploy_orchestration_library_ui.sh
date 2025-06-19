@@ -24,7 +24,7 @@ kubectl config use-context kind-$CLUSTER_NAME
 echo "Load Image to Kind cluster named '$CLUSTER_NAME'"
 kind load docker-image --name $CLUSTER_NAME $ORCHRESTRATION_LIBRARY_UI_IMAGE_NAME:$ORCHRESTRATION_LIBRARY_UI_IMAGE_TAG
 
-echo "Deploy the orchestration-api to the Kind cluster"
+echo "Deploy the $ORCHRESTRATION_LIBRARY_UI_RELEASE_NAME to the Kind cluster"
 helm upgrade --install $ORCHRESTRATION_LIBRARY_UI_RELEASE_NAME $ORCHRESTRATION_LIBRARY_UI_CHART_PATH \
   --namespace $ORCHRESTRATION_LIBRARY_UI_NAMESPACE \
   --create-namespace \
