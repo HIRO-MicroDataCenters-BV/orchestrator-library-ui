@@ -82,15 +82,15 @@ jobs:
       - name: Build Docker image
         id: set-image
         run: |
-          IMAGE_TAG=${{ ORCHESTRATOR_LIBRARY_UI_IMAGE_TAG }}-$(date +%Y%m%d%H%M%S)
-          docker build -t ${{ ORCHESTRATOR_LIBRARY_UI_IMAGE_NAME }}:$IMAGE_TAG .
+          IMAGE_TAG=${{ vars.ORCHESTRATOR_LIBRARY_UI_IMAGE_TAG }}-$(date +%Y%m%d%H%M%S)
+          docker build -t ${{ vars.ORCHESTRATOR_LIBRARY_UI_IMAGE_NAME }}:$IMAGE_TAG .
           echo "image_tag=$IMAGE_TAG" >> $GITHUB_OUTPUT
-          echo "image_name=${{ ORCHESTRATOR_LIBRARY_UI_IMAGE_NAME }}" >> $GITHUB_OUTPUT
+          echo "image_name=${{ vars.ORCHESTRATOR_LIBRARY_UI_IMAGE_NAME }}" >> $GITHUB_OUTPUT
 
       - name: Push Docker image
         if: github.event_name == 'push'
         run: |
-          docker push ${{ ORCHESTRATOR_LIBRARY_UI_IMAGE_NAME }}:${{ steps.set-image.outputs.image_tag }}
+          docker push ${{ vars.ORCHESTRATOR_LIBRARY_UI_IMAGE_NAME }}:${{ steps.set-image.outputs.image_tag }}
 
   deploy:
     name: Deploy to Kubernetes
@@ -128,10 +128,10 @@ jobs:
 
       - name: Deploy Orchestration API Helm chart
         run: |
-          helm upgrade --install ${{ ORCHESTRATOR_LIBRARY_UI_RELEASE_NAME }} ./charts/orchestrator-library-ui \
-            --namespace ${{ ORCHESTRATOR_LIBRARY_UI_NAMESPACE }} \
+          helm upgrade --install ${{ vars.ORCHESTRATOR_LIBRARY_UI_RELEASE_NAME }} ./charts/orchestrator-library-ui \
+            --namespace ${{ vars.ORCHESTRATOR_LIBRARY_UI_NAMESPACE }} \
             --create-namespace \
-            --set namespace=${{ ORCHESTRATOR_LIBRARY_UI_NAMESPACE }} \
-            --set app.image.repository=${{ ORCHESTRATOR_LIBRARY_UI_IMAGE_NAME }} \
+            --set namespace=${{ vars.ORCHESTRATOR_LIBRARY_UI_NAMESPACE }} \
+            --set app.image.repository=${{ vars.ORCHESTRATOR_LIBRARY_UI_IMAGE_NAME }} \
             --set app.image.tag=${{ needs.build-and-push.outputs.image_tag }} \
             ${{ steps.helm-dry-run.outputs.flag }}
