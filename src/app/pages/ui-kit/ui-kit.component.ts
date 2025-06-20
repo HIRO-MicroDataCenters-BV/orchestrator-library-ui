@@ -45,6 +45,7 @@ import {
 } from '@spartan-ng/ui-avatar-helm';
 import { HlmSeparatorDirective } from '@spartan-ng/ui-separator-helm';
 import { AppCircleProgressComponent } from '../../components/app-circle-progress/app-circle-progress.component';
+import { ApiExampleComponent } from '../../components/api-example/api-example.component';
 
 @Component({
   selector: 'app-ui-kit',
@@ -84,9 +85,8 @@ import { AppCircleProgressComponent } from '../../components/app-circle-progress
     HlmAvatarFallbackDirective,
     HlmAvatarImageDirective,
     HlmSeparatorDirective,
+    ApiExampleComponent,
   ],
   templateUrl: './ui-kit.component.html',
 })
-export class UiKitComponent {
-  // Метод openDialog удален
-}
+export class UiKitComponent {}

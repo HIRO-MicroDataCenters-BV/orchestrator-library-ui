@@ -3719,6 +3719,9 @@
           },
           "serve": {
             "executor": "@angular/build:dev-server",
+            "options": {
+              "proxyConfig": "proxy.conf.json"
+            },
             "configurations": {
               "production": {
                 "buildTarget": "orchestration_library-front:build:production"
@@ -3728,7 +3731,6 @@
               }
             },
             "defaultConfiguration": "development",
-            "options": {},
             "parallelism": true
           },
           "extract-i18n": {
@@ -44693,5 +44695,5 @@
   },
   "version": "6.0",
   "errors": [],
-  "computedAt": 1750410604106
+  "computedAt": 1750425827238
 }
