@@ -33,6 +33,9 @@ helm upgrade --install $ORCHRESTRATION_LIBRARY_UI_RELEASE_NAME $ORCHRESTRATION_L
   --set app.image.tag=$ORCHRESTRATION_LIBRARY_UI_IMAGE_TAG \
   --set namespace=$ORCHRESTRATION_LIBRARY_UI_NAMESPACE \
   --set app.image.pullPolicy=IfNotPresent \
+  --set app.service.type=NodePort \
+  --set app.service.port=80 \
+  --set app.service.nodePort=30010 \
   --set dummyRedeployTimestamp=$(date +%s)
   # set to pullPolicy=IfNotPresent to avoid pulling the image from the registry only for kind cluster
   # set dummyRedeployTimestamp to force redeploy
