@@ -58,6 +58,9 @@ jobs:
         uses: azure/setup-helm@v3
         with:
           version: 'latest'
+      
+      - name: Debug repo structure
+        run: ls -R
 
       - name: Lint Helm chart
         run: helm lint charts/orchestrator-library-ui
