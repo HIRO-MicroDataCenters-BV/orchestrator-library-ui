@@ -58,9 +58,6 @@ jobs:
         uses: azure/setup-helm@v3
         with:
           version: 'latest'
-      
-      - name: Debug repo structure
-        run: ls -R ./charts/orchestrator-library-ui
 
       - name: Lint Helm chart
         run: helm lint ./charts/orchestrator-library-ui
@@ -131,7 +128,7 @@ jobs:
 
       - name: Deploy Orchestration API Helm chart
         run: |
-          helm upgrade --install ${{ vars.ORCHRESTRATION_API_RELEASE_NAME }} ./charts/orchestrator-library-ui \
+          helm upgrade --install ${{ vars.ORCHESTRATION_LIBRARY_UI_RELEASE_NAME }} ./charts/orchestrator-library-ui \
             --namespace ${{ vars.ORCHESTRATION_LIBRARY_UI_NAMESPACE }} \
             --create-namespace \
             --set namespace=${{ vars.ORCHESTRATION_LIBRARY_UI_NAMESPACE }} \
