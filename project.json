@@ -10,9 +10,7 @@
       "executor": "@angular/build:application",
       "options": {
         "browser": "src/main.ts",
-        "polyfills": [
-          "zone.js"
-        ],
+        "polyfills": ["zone.js"],
         "tsConfig": "tsconfig.app.json",
         "assets": [
           {
@@ -20,9 +18,7 @@
             "input": "public"
           }
         ],
-        "styles": [
-          "src/styles.css"
-        ],
+        "styles": ["src/styles.css"],
         "server": "src/main.server.ts",
         "outputMode": "server",
         "ssr": {
@@ -55,6 +51,9 @@
     },
     "serve": {
       "executor": "@angular/build:dev-server",
+      "options": {
+        "proxyConfig": "proxy.conf.json"
+      },
       "configurations": {
         "production": {
           "buildTarget": "orchestration_library-front:build:production"
@@ -71,10 +70,7 @@
     "test": {
       "executor": "@angular/build:karma",
       "options": {
-        "polyfills": [
-          "zone.js",
-          "zone.js/testing"
-        ],
+        "polyfills": ["zone.js", "zone.js/testing"],
         "tsConfig": "tsconfig.spec.json",
         "assets": [
           {
@@ -82,9 +78,7 @@
             "input": "public"
           }
         ],
-        "styles": [
-          "src/styles.css"
-        ]
+        "styles": ["src/styles.css"]
       }
     }
   }

@@ -7602,11 +7602,19 @@
       "project.json",
       "nx/core/project-json"
     ],
+    "targets.serve.options": [
+      "project.json",
+      "nx/core/project-json"
+    ],
     "targets.serve.configurations": [
       "project.json",
       "nx/core/project-json"
     ],
     "targets.serve.defaultConfiguration": [
+      "project.json",
+      "nx/core/project-json"
+    ],
+    "targets.serve.options.proxyConfig": [
       "project.json",
       "nx/core/project-json"
     ],
