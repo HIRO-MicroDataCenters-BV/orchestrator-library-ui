@@ -60,10 +60,10 @@ jobs:
           version: 'latest'
       
       - name: Debug repo structure
-        run: ls -R
+        run: ls -R ./charts/orchestrator-library-ui
 
       - name: Lint Helm chart
-        run: helm lint charts/orchestrator-library-ui
+        run: helm lint ./charts/orchestrator-library-ui
 
   build-and-push:
     name: Build and Push Docker Image
