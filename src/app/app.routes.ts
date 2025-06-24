@@ -33,8 +33,8 @@ export const routes: Routes = [
               {
                 path: 'actions',
                 loadComponent: () =>
-                  import('./pages/emdc/clusters/clusters.component').then(
-                    (m) => m.ClustersComponent
+                  import('./pages/emdc/actions/actions.component').then(
+                    (m) => m.ActionsComponent
                   ),
                 data: { title: 'Actions' },
               },

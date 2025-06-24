@@ -9,7 +9,7 @@
     />
   </div>
   <div class="flex gap-2">
-    <div>
+    <div *ngIf="tabs.length > 0">
       <hlm-tabs [tab]="tabs[0]" class="w-full">
         <hlm-tabs-list class="w-full flex">
           <button
@@ -92,6 +92,42 @@
       <p class="text-sm text-gray-500">{{ element.demand_cpu }}</p>
     </hlm-td>
   </brn-column-def>
+  <brn-column-def name="action_type" class="w-64">
+    <hlm-th truncate *brnHeaderDef>{{
+      'column.action_type' | transloco
+    }}</hlm-th>
+    <hlm-td truncate *brnCellDef="let element">
+      <span
+        [class]="`${getStatusColor(element.action_type)} capitalize`"
+        hlmBadge
+        >{{ element.action_type }}</span
+      >
+    </hlm-td>
+  </brn-column-def>
+  <brn-column-def name="bound_pod_name" class="w-64">
+    <hlm-th truncate *brnHeaderDef>{{
+      'column.bound_pod_name' | transloco
+    }}</hlm-th>
+    <hlm-td truncate *brnCellDef="let element">
+      <p class="text-sm text-gray-500">{{ element.bound_pod_name }}</p>
+    </hlm-td>
+  </brn-column-def>
+  <brn-column-def name="pod_parent_name" class="w-64">
+    <hlm-th truncate *brnHeaderDef>{{
+      'column.pod_parent_name' | transloco
+    }}</hlm-th>
+    <hlm-td truncate *brnCellDef="let element">
+      <p class="text-sm text-gray-500">{{ element.pod_parent_name }}</p>
+    </hlm-td>
+  </brn-column-def>
+  <brn-column-def name="action_reason" class="w-64">
+    <hlm-th truncate *brnHeaderDef>{{
+      'column.action_reason' | transloco
+    }}</hlm-th>
+    <hlm-td truncate *brnCellDef="let element">
+      <p class="text-sm text-gray-500">{{ element.action_reason }}</p>
+    </hlm-td>
+  </brn-column-def>
   <brn-column-def name="demand_memory" class="w-64">
     <hlm-th truncate *brnHeaderDef>{{
       'column.demand_memory' | transloco
@@ -137,6 +173,36 @@
       </div>
     </hlm-td>
   </brn-column-def>
+  <brn-column-def name="action_start_time" class="w-64">
+    <hlm-th truncate *brnHeaderDef>{{
+      'column.action_start_time' | transloco
+    }}</hlm-th>
+    <hlm-td truncate *brnCellDef="let element">
+      <div class="flex flex-col">
+        <p class="text-sm text-gray-500">
+          {{ element.action_start_time | date : 'dd/MM/yyyy' }}
+        </p>
+        <p class="text-xs text-gray-400">
+          {{ element.action_start_time | date : 'HH:mm:ss' }}
+        </p>
+      </div>
+    </hlm-td>
+  </brn-column-def>
+  <brn-column-def name="action_end_time" class="w-64">
+    <hlm-th truncate *brnHeaderDef>{{
+      'column.action_end_time' | transloco
+    }}</hlm-th>
+    <hlm-td truncate *brnCellDef="let element">
+      <div class="flex flex-col">
+        <p class="text-sm text-gray-500">
+          {{ element.action_end_time | date : 'dd/MM/yyyy' }}
+        </p>
+        <p class="text-xs text-gray-400">
+          {{ element.action_end_time | date : 'HH:mm:ss' }}
+        </p>
+      </div>
+    </hlm-td>
+  </brn-column-def>
   <brn-column-def name="cluster_name" class="w-64">
     <hlm-th truncate *brnHeaderDef>Cluster Name</hlm-th>
     <hlm-td truncate *brnCellDef="let element">
@@ -144,11 +210,19 @@
       <p class="text-sm text-gray-500">{{ element.id }}</p>
     </hlm-td>
   </brn-column-def>
-  <brn-column-def name="status" class="w-32 sm:w-40">
-    <hlm-th truncate *brnHeaderDef>Status</hlm-th>
+  <brn-column-def name="action_status" class="w-32 sm:w-40">
+    <hlm-th truncate *brnHeaderDef>{{ 'column.status' | transloco }}</hlm-th>
     <hlm-td truncate *brnCellDef="let element">
-      <span [class]="getStatusColor(element.status)">{{
-        getStatus(element.status)
+      <span [class]="`${getStatusColor(element.status)} capitalize`" hlmBadge>{{
+        element.action_status
+      }}</span>
+    </hlm-td>
+  </brn-column-def>
+  <brn-column-def name="status" class="w-32 sm:w-40">
+    <hlm-th truncate *brnHeaderDef>{{ 'column.status' | transloco }}</hlm-th>
+    <hlm-td truncate *brnCellDef="let element">
+      <span [class]="getStatusColor(element.status)" hlmBadge>{{
+        element.status
       }}</span>
     </hlm-td>
   </brn-column-def>

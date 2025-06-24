@@ -48,6 +48,7 @@ import { BrnSelectModule } from '@spartan-ng/brain/select';
 import { HlmSelectModule } from '@spartan-ng/ui-select-helm';
 import { provideIcons, NgIcon } from '@ng-icons/core';
 import { debounceTime, map } from 'rxjs';
+import { HlmBadgeDirective } from '@spartan-ng/ui-badge-helm';
 import { AppCircleProgressComponent } from '../app-circle-progress/app-circle-progress.component';
 import { Observable } from 'rxjs';
 
@@ -283,7 +284,7 @@ const TABLE_DATA: TableData[] = [
     HlmTabsTriggerDirective,
     HlmMenuItemCheckComponent,
     HlmMenuItemCheckboxDirective,
-
+    HlmBadgeDirective,
     BrnSelectModule,
     HlmSelectModule,
     TranslocoModule,
@@ -452,20 +453,22 @@ export class AppTableComponent implements OnChanges, OnInit {
     console.log('tab', tab);
   }
 
-  getStatusColor(status: number): string {
-    switch (status) {
-      case -2:
-        return 'text-red-700';
-      case 1:
-        return 'text-green-700';
-      case 2:
-        return 'text-blue-700';
-      case -1:
-        return 'text-yellow-700';
-      case 0:
-        return 'text-gray-700';
+  getStatusColor(status: string): string {
+    const type = status && status.toLowerCase();
+    console.log('type', type);
+    switch (type) {
+      case 'created':
+      case 'running':
+        return 'text-blue-700 bg-blue-100';
+      case 'bound':
+      case 'bind':
+        return 'text-green-700 bg-green-100';
+      case 'failed':
+        return 'text-red-700 bg-red-100';
+      case 'deleted':
+        return 'text-red-700 bg-red-100';
       default:
-        return 'text-gray-700';
+        return 'text-gray-700 bg-gray-100';
     }
   }
 
