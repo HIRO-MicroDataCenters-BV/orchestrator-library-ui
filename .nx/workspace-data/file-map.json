@@ -814,10 +814,11 @@
         },
         {
           "file": "libs/ui/ui-tabs-helm/src/lib/hlm-tabs-paginated-list.component.ts",
-          "hash": "16415910517314007094",
+          "hash": "15508258765538873345",
           "deps": [
             "npm:@angular/cdk",
             "npm:@angular/core",
+            "npm:rxjs",
             "npm:@ng-icons/core",
             "npm:@ng-icons/lucide",
             "npm:@spartan-ng/brain",
@@ -1836,7 +1837,7 @@
       "orchestration_library-front": [
         {
           "file": ".github/workflows/validate_build_deploy.yaml",
-          "hash": "2004012945912754443"
+          "hash": "14921464360354583854"
         },
         {
           "file": ".gitignore",
@@ -1876,11 +1877,11 @@
         },
         {
           "file": "charts/orchestrator-library-ui/templates/service.yaml",
-          "hash": "1417708411032380506"
+          "hash": "5057235956235783832"
         },
         {
           "file": "charts/orchestrator-library-ui/values.yaml",
-          "hash": "17414576531555466015"
+          "hash": "14948423832811977319"
         },
         {
           "file": "components.json",
@@ -2225,7 +2226,7 @@
         },
         {
           "file": "public/assets/i18n/en.json",
-          "hash": "16006193251949569143"
+          "hash": "14839037822025245693"
         },
         {
           "file": "public/browserconfig.xml",
@@ -2325,7 +2326,7 @@
         },
         {
           "file": "scripts/deploy_orchestration_library_ui.sh",
-          "hash": "915697504254410573"
+          "hash": "7360312127068441520"
         },
         {
           "file": "src/app/app.config.server.ts",
@@ -2359,7 +2360,7 @@
         },
         {
           "file": "src/app/app.routes.ts",
-          "hash": "17883623351012224843",
+          "hash": "17367786123737483620",
           "deps": [
             "npm:@angular/router"
           ]
@@ -2410,11 +2411,11 @@
         },
         {
           "file": "src/app/components/app-table/app-table.component.html",
-          "hash": "2696373342839131673"
+          "hash": "626944644914919247"
         },
         {
           "file": "src/app/components/app-table/app-table.component.ts",
-          "hash": "9901263988810691270",
+          "hash": "9945344174134261665",
           "deps": [
             "npm:@angular/common",
             "npm:@jsverse/transloco",
@@ -2431,7 +2432,8 @@
             "ui-table-helm",
             "ui-select-helm",
             "npm:@ng-icons/core",
-            "npm:rxjs"
+            "npm:rxjs",
+            "ui-badge-helm"
           ]
         },
         {
@@ -2641,6 +2643,19 @@
           ]
         },
         {
+          "file": "src/app/pages/emdc/actions/actions.component.html",
+          "hash": "3436482106360490151"
+        },
+        {
+          "file": "src/app/pages/emdc/actions/actions.component.ts",
+          "hash": "4634761247626861508",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@jsverse/transloco",
+            "npm:rxjs"
+          ]
+        },
+        {
           "file": "src/app/pages/emdc/clusters/clusters.component.html",
           "hash": "5971744494411554896"
         },
@@ -2653,12 +2668,25 @@
           ]
         },
         {
+          "file": "src/app/pages/emdc/request_decisions copy/request_decisions.component.html",
+          "hash": "3436482106360490151"
+        },
+        {
+          "file": "src/app/pages/emdc/request_decisions copy/request_decisions.component.ts",
+          "hash": "13272875848821839118",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@jsverse/transloco",
+            "npm:rxjs"
+          ]
+        },
+        {
           "file": "src/app/pages/emdc/request_decisions/request_decisions.component.html",
           "hash": "3436482106360490151"
         },
         {
           "file": "src/app/pages/emdc/request_decisions/request_decisions.component.ts",
-          "hash": "13272875848821839118",
+          "hash": "13179345865093589021",
           "deps": [
             "npm:@angular/core",
             "npm:@jsverse/transloco",

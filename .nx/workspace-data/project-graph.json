@@ -21269,6 +21269,11 @@
       },
       {
         "source": "ui-tabs-helm",
+        "target": "npm:rxjs",
+        "type": "static"
+      },
+      {
+        "source": "ui-tabs-helm",
         "target": "npm:@ng-icons/core",
         "type": "static"
       },
@@ -21716,6 +21721,11 @@
       },
       {
         "source": "orchestration_library-front",
+        "target": "ui-badge-helm",
+        "type": "static"
+      },
+      {
+        "source": "orchestration_library-front",
         "target": "ui-label-helm",
         "type": "static"
       },
@@ -21742,11 +21752,6 @@
       {
         "source": "orchestration_library-front",
         "target": "ui-progress-helm",
-        "type": "static"
-      },
-      {
-        "source": "orchestration_library-front",
-        "target": "ui-badge-helm",
         "type": "static"
       },
       {
@@ -44854,5 +44859,5 @@
   },
   "version": "6.0",
   "errors": [],
-  "computedAt": 1750774179633
+  "computedAt": 1750784658966
 }
