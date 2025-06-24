@@ -9,6 +9,7 @@ import {
   viewChild,
 } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
+import { Observable } from 'rxjs';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideChevronLeft, lucideChevronRight } from '@ng-icons/lucide';
 import { hlm } from '@spartan-ng/brain/core';
@@ -86,7 +87,9 @@ export class HlmTabsPaginatedListComponent extends BrnTabsPaginatedListDirective
   public readonly _items = contentChildren(BrnTabsTriggerDirective, {
     descendants: false,
   });
-  public readonly _itemsChanges = toObservable(this._items);
+  public readonly _itemsChanges = toObservable(this._items) as Observable<
+    BrnTabsTriggerDirective[]
+  >;
 
   public readonly _tabListContainer =
     viewChild.required<ElementRef<HTMLElement>>('tabListContainer');
