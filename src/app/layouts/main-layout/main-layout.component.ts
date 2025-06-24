@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { NgFor, NgIf } from '@angular/common';
 import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 import { TranslocoModule } from '@jsverse/transloco';
@@ -13,6 +13,11 @@ import {
   lucideHardDrive,
   lucideServer,
   lucideLayoutDashboard,
+  lucideSiren,
+  lucideChartColumnStacked,
+  lucideCog,
+  lucideChevronDown,
+  lucideChevronRight,
 } from '@ng-icons/lucide';
 import { HlmIconDirective } from '@spartan-ng/ui-icon-helm';
 import { BrnSeparatorComponent } from '@spartan-ng/brain/separator';
@@ -33,13 +38,15 @@ import {
 } from '@spartan-ng/ui-sidebar-helm';
 import { AppHeaderComponent } from '../../components/app-header/app-header.component';
 import { AuthService } from '../../core/services/auth.service';
+import { ApiService } from '../../core/services/api.service';
 import { User } from '../../core/models/user.model';
 
 interface MenuItem {
-  label: string;
+  label: string | null;
   icon: string | null;
   route: string;
   items?: MenuItem[];
+  expanded?: boolean;
 }
 
 @Component({
@@ -79,6 +86,11 @@ interface MenuItem {
       lucideHardDrive,
       lucideServer,
       lucideLayoutDashboard,
+      lucideSiren,
+      lucideCog,
+      lucideChartColumnStacked,
+      lucideChevronDown,
+      lucideChevronRight,
     }),
   ],
   templateUrl: './main-layout.component.html',
@@ -88,20 +100,46 @@ export class MainLayoutComponent {
   private readonly authService = inject(AuthService);
   currentUser: User | null = null;
   currentRoute: string | null = null;
+  showSubmenuOnHover: MenuItem | null = null;
   menuItems: MenuItem[] = [
     {
-      label: 'emdc',
+      label: null,
       icon: null,
       route: '/emdc',
       items: [
-        { label: 'clusters', icon: 'lucideServer', route: '/clusters' },
-        { label: 'workloads', icon: 'lucideLayers', route: '/workloads' },
-        { label: 'nodes', icon: 'lucideHardDrive', route: '/nodes' },
+        { label: 'k8s', icon: 'lucideLayoutDashboard', route: '/dashboard' },
+        {
+          label: 'workloads',
+          icon: 'lucideLayers',
+          route: '/workloads',
+          items: [
+            {
+              label: 'request_decisions',
+              icon: null,
+              route: '/request_decisions',
+            },
+            { label: 'actions', icon: null, route: '/actions' },
+          ],
+        },
+        { label: 'alerts', icon: 'lucideSiren', route: '/alerts' },
+        {
+          label: 'monitoring',
+          icon: 'lucideChartColumnStacked',
+          route: '/monitoring',
+        },
+        { label: 'cog', icon: 'lucideCog', route: '/cog' },
       ],
     },
   ];
 
-  constructor(public sidebarService: HlmSidebarService) {
+  constructor(
+    public sidebarService: HlmSidebarService,
+    private readonly apiService: ApiService
+  ) {
+    const namespace = 'hiros';
+    const serviceAccountName = 'readonly-user';
+    this.apiService.getK8sToken(namespace, serviceAccountName).subscribe();
+
     this.authService.currentUser$.subscribe((user) => {
       this.currentUser = user;
     });
@@ -109,5 +147,25 @@ export class MainLayoutComponent {
 
   logout(): void {
     this.authService.logout();
+  }
+
+  toggleSubmenu(item: MenuItem): void {
+    item.expanded = !item.expanded;
+  }
+
+  onMenuItemHover(item: MenuItem): void {
+    if (
+      this.sidebarService.state() === 'collapsed' &&
+      item.items &&
+      item.items.length > 0
+    ) {
+      this.showSubmenuOnHover = item;
+    }
+  }
+
+  onMenuItemLeave(): void {
+    if (this.sidebarService.state() === 'collapsed') {
+      this.showSubmenuOnHover = null;
+    }
   }
 }

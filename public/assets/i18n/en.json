@@ -15,7 +15,13 @@
     "workloads": "Workloads",
     "clusters": "Clusters",
     "nodes": "Nodes",
-    "emdc": "EMDC"
+    "emdc": "EMDC",
+    "k8s": "Kubernetes Dashboard",
+    "alerts": "Alerts",
+    "cog": "Cognitive Framework",
+    "monitoring": "Monitoring",
+    "request_decisions": "Request Decisions",
+    "actions": "Actions"
   },
   "action": {
     "previous": "Previous",
@@ -29,7 +35,23 @@
     "delete_cluster": "Delete Cluster"
   },
   "placeholder": {
-    "search_clusters": "Search clusters..."
+    "search_clusters": "Search clusters...",
+    "columns": "Columns"
+  },
+  "column": {
+    "request_id": "Request ID",
+    "status": "Status",
+    "updated_at": "Updated At",
+    "action": "Action",
+    "queue_name": "Queue Name",
+    "demand_cpu": "CPU Demand",
+    "demand_memory": "Mem. Demand",
+    "namespace": "Namespace",
+    "pod_name": "Pod Name",
+    "pod_parent_kind": "Parent",
+    "node_id": "Node ID",
+    "decision_status": "Decision Status",
+    "created_at": "Created At"
   },
   "common": {
     "title": "Orchestration Library",

@@ -113,7 +113,6 @@
       "@spartan-ng/ui-table-helm": [
         "libs/ui/ui-table-helm/src/index.ts"
       ],
-      // Удалена ссылка на ui-tabs-helm
       "@spartan-ng/ui-tooltip-helm": [
         "libs/ui/ui-tooltip-helm/src/index.ts"
       ],
@@ -122,6 +121,9 @@
       ],
       "@spartan-ng/ui-sidebar-helm": [
         "libs/ui/ui-sidebar-helm/src/index.ts"
+      ],
+      "@spartan-ng/helm/tabs": [
+        "libs/ui/ui-tabs-helm/src/index.ts"
       ]
     }
   }

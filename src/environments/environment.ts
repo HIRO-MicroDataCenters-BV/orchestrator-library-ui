@@ -4,4 +4,5 @@ export const environment = {
   tokenKey: 'access_token',
   refreshTokenKey: 'refresh_token',
   userKey: 'user',
+  dashboardUrl: '/iframe',
 };

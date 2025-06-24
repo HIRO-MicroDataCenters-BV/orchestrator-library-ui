@@ -20,12 +20,25 @@ export const routes: Routes = [
         path: 'emdc',
         children: [
           {
-            path: 'clusters',
-            loadComponent: () =>
-              import('./pages/emdc/clusters/clusters.component').then(
-                (m) => m.ClustersComponent
-              ),
-            data: { title: 'Clusters' },
+            path: 'workloads',
+            children: [
+              {
+                path: 'request_decisions',
+                loadComponent: () =>
+                  import(
+                    './pages/emdc/request_decisions/request_decisions.component'
+                  ).then((m) => m.RequestDecisionsComponent),
+                data: { title: 'Request Decisions' },
+              },
+              {
+                path: 'actions',
+                loadComponent: () =>
+                  import('./pages/emdc/clusters/clusters.component').then(
+                    (m) => m.ClustersComponent
+                  ),
+                data: { title: 'Actions' },
+              },
+            ],
           },
           {
             path: 'ui-kit',
@@ -35,14 +48,15 @@ export const routes: Routes = [
               ),
             data: { title: 'UI Kit' },
           },
+          {
+            path: 'dashboard',
+            loadComponent: () =>
+              import('./pages/dashboard/dashboard.component').then(
+                (m) => m.DashboardComponent
+              ),
+            data: { title: 'Dashboard' },
+          },
         ],
-      },
-      {
-        path: 'admin',
-        canActivate: [adminGuard],
-        loadComponent: () =>
-          import('./pages/home/home.component').then((m) => m.HomeComponent),
-        data: { title: 'Admin' },
       },
     ],
   },
