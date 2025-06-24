@@ -6,32 +6,29 @@ import { O } from 'node_modules/@angular/cdk/overlay-module.d-CVO-IcaN';
 import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'app-request-decisions',
+  selector: 'app-actions',
   standalone: true,
   imports: [AppTableComponent, TranslocoModule],
-  templateUrl: './request_decisions.component.html',
+  templateUrl: './actions.component.html',
 })
-export class RequestDecisionsComponent {
+export class ActionsComponent {
   clusters = [];
   columns = [
-    'request_id',
-    'pod_name',
-    'namespace',
-    'queue_name',
-    'demand_cpu',
-    'demand_memory',
-    'pod_parent_kind',
-    'node_id',
-    'decision_status',
-    'created_at',
+    'action_type',
+    'action_status',
+    'bound_pod_name',
+    'pod_parent_name',
+    'action_reason',
+    'action_start_time',
+    'action_end_time',
   ];
   actions = [];
 
-  tabs = ['all', 'successful', 'pending', 'failed'];
+  tabs = [];
 
   dataSource: Observable<unknown[]> | null = null;
 
   constructor(apiService: ApiService) {
-    this.dataSource = apiService.getPodRequestDecisions();
+    this.dataSource = apiService.getWorkloadActions();
   }
 }

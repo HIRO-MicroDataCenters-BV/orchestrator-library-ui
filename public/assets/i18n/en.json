@@ -39,6 +39,7 @@
     "columns": "Columns"
   },
   "column": {
+    "action_type": "Action Type",
     "request_id": "Request ID",
     "status": "Status",
     "updated_at": "Updated At",
@@ -51,7 +52,12 @@
     "pod_parent_kind": "Parent",
     "node_id": "Node ID",
     "decision_status": "Decision Status",
-    "created_at": "Created At"
+    "created_at": "Created At",
+    "action_start_time": "Start Time",
+    "action_end_time": "End Time",
+    "bound_pod_name": "Target Pod",
+    "pod_parent_name": "Parent Workload",
+    "action_reason": "Reason"
   },
   "common": {
     "title": "Orchestration Library",
