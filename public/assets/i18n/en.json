@@ -35,10 +35,12 @@
     "delete_cluster": "Delete Cluster"
   },
   "placeholder": {
-    "search_clusters": "Search clusters...",
+    "search": "Search...",
     "columns": "Columns"
   },
   "column": {
+    "alert_type": "Alert",
+    "alert_description": "Description",
     "action_type": "Action Type",
     "request_id": "Request ID",
     "status": "Status",
@@ -51,6 +53,7 @@
     "pod_name": "Pod Name",
     "pod_parent_kind": "Parent",
     "node_id": "Node ID",
+    "pod_id": "Pod ID",
     "decision_status": "Decision Status",
     "created_at": "Created At",
     "action_start_time": "Start Time",

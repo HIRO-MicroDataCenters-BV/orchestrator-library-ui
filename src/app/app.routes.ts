@@ -41,6 +41,14 @@ export const routes: Routes = [
             ],
           },
           {
+            path: 'alerts',
+            loadComponent: () =>
+              import('./pages/emdc/alerts/alerts.component').then(
+                (m) => m.AlertsComponent
+              ),
+            data: { title: 'Actions' },
+          },
+          {
             path: 'ui-kit',
             loadComponent: () =>
               import('./pages/ui-kit/ui-kit.component').then(
