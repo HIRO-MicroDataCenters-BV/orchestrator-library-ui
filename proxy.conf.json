@@ -1,11 +1,20 @@
 {
   "/api/**": {
-    "target": "http://localhost:28000",
+    "target": "http://51.44.28.47:30015",
     "secure": false,
     "changeOrigin": true,
     "logLevel": "debug",
     "pathRewrite": {
       "^/api": ""
+    }
+  },
+  "/iframe/**": {
+    "target": "http://51.44.28.47:30016",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/iframe": ""
     }
   }
 }

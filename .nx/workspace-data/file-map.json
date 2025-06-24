@@ -115,19 +115,22 @@
     ],
     "@spartan-ng/ui-sidebar-helm": [
       "libs/ui/ui-sidebar-helm/src/index.ts"
+    ],
+    "@spartan-ng/helm/tabs": [
+      "libs/ui/ui-tabs-helm/src/index.ts"
     ]
   },
   "nxJsonPlugins": [],
   "fileMap": {
     "nonProjectFiles": [],
     "projectFileMap": {
-      "ui-carousel-helm": [
+      "ui-card-helm": [
         {
-          "file": "libs/ui/ui-carousel-helm/README.md",
-          "hash": "2391404358197967970"
+          "file": "libs/ui/ui-card-helm/README.md",
+          "hash": "18146213264392725776"
         },
         {
-          "file": "libs/ui/ui-carousel-helm/eslint.config.mjs",
+          "file": "libs/ui/ui-card-helm/eslint.config.mjs",
           "hash": "8485609504886944637",
           "deps": [
             "npm:@nx/eslint-plugin",
@@ -138,387 +141,35 @@
           ]
         },
         {
-          "file": "libs/ui/ui-carousel-helm/jest.config.ts",
-          "hash": "16623629358686998077"
+          "file": "libs/ui/ui-card-helm/jest.config.ts",
+          "hash": "17423972472752211436"
         },
         {
-          "file": "libs/ui/ui-carousel-helm/ng-package.json",
-          "hash": "15198224731716421966"
+          "file": "libs/ui/ui-card-helm/ng-package.json",
+          "hash": "3811223636166175484"
         },
         {
-          "file": "libs/ui/ui-carousel-helm/package.json",
-          "hash": "15125011196502725045",
+          "file": "libs/ui/ui-card-helm/package.json",
+          "hash": "9158886452595514934",
           "deps": [
             "npm:@angular/common",
             "npm:@angular/core"
           ]
         },
         {
-          "file": "libs/ui/ui-carousel-helm/project.json",
-          "hash": "9385679655493346434"
+          "file": "libs/ui/ui-card-helm/project.json",
+          "hash": "11504871186620069896"
         },
         {
-          "file": "libs/ui/ui-carousel-helm/src/index.ts",
-          "hash": "419082828947510611",
+          "file": "libs/ui/ui-card-helm/src/index.ts",
+          "hash": "16562238750490677596",
           "deps": [
             "npm:@angular/core"
           ]
         },
         {
-          "file": "libs/ui/ui-carousel-helm/src/lib/hlm-carousel-content.component.ts",
-          "hash": "12532381650023935189",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-carousel-helm/src/lib/hlm-carousel-item.component.ts",
-          "hash": "1930165786088351138",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-carousel-helm/src/lib/hlm-carousel-next.component.ts",
-          "hash": "12434816606660605546",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@ng-icons/core",
-            "npm:@ng-icons/lucide",
-            "npm:@spartan-ng/brain",
-            "ui-button-helm",
-            "ui-icon-helm",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-carousel-helm/src/lib/hlm-carousel-previous.component.ts",
-          "hash": "8404919924316864459",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@ng-icons/core",
-            "npm:@ng-icons/lucide",
-            "npm:@spartan-ng/brain",
-            "ui-button-helm",
-            "ui-icon-helm",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-carousel-helm/src/lib/hlm-carousel-slide-display.component.ts",
-          "hash": "17351508297724888879",
-          "deps": [
-            "npm:@angular/core",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-carousel-helm/src/lib/hlm-carousel.component.ts",
-          "hash": "3325962996876877518",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain",
-            "npm:clsx",
-            "npm:embla-carousel-angular"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-carousel-helm/src/test-setup.ts",
-          "hash": "2674404341416425809",
-          "deps": [
-            "npm:jest-preset-angular"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-carousel-helm/tsconfig.json",
-          "hash": "2396403117919940161"
-        },
-        {
-          "file": "libs/ui/ui-carousel-helm/tsconfig.lib.json",
-          "hash": "4533240314544279514"
-        },
-        {
-          "file": "libs/ui/ui-carousel-helm/tsconfig.lib.prod.json",
-          "hash": "10809217796916261822"
-        },
-        {
-          "file": "libs/ui/ui-carousel-helm/tsconfig.spec.json",
-          "hash": "8574249004436160025"
-        }
-      ],
-      "ui-scrollarea-helm": [
-        {
-          "file": "libs/ui/ui-scrollarea-helm/README.md",
-          "hash": "2005394850374671707"
-        },
-        {
-          "file": "libs/ui/ui-scrollarea-helm/eslint.config.mjs",
-          "hash": "8485609504886944637",
-          "deps": [
-            "npm:@nx/eslint-plugin",
-            [
-              "npm:jsonc-eslint-parser",
-              "dynamic"
-            ]
-          ]
-        },
-        {
-          "file": "libs/ui/ui-scrollarea-helm/jest.config.ts",
-          "hash": "16837415891075233412"
-        },
-        {
-          "file": "libs/ui/ui-scrollarea-helm/ng-package.json",
-          "hash": "15994023469232232685"
-        },
-        {
-          "file": "libs/ui/ui-scrollarea-helm/package.json",
-          "hash": "189953006302323079",
-          "deps": [
-            "npm:@angular/common",
-            "npm:@angular/core"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-scrollarea-helm/project.json",
-          "hash": "15067628594233930968"
-        },
-        {
-          "file": "libs/ui/ui-scrollarea-helm/src/index.ts",
-          "hash": "10381852457681001058",
-          "deps": [
-            "npm:@angular/core"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-scrollarea-helm/src/lib/hlm-scroll-area.directive.ts",
-          "hash": "2925042699299357654",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-scrollarea-helm/src/test-setup.ts",
-          "hash": "2674404341416425809",
-          "deps": [
-            "npm:jest-preset-angular"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-scrollarea-helm/tsconfig.json",
-          "hash": "2396403117919940161"
-        },
-        {
-          "file": "libs/ui/ui-scrollarea-helm/tsconfig.lib.json",
-          "hash": "4533240314544279514"
-        },
-        {
-          "file": "libs/ui/ui-scrollarea-helm/tsconfig.lib.prod.json",
-          "hash": "10809217796916261822"
-        },
-        {
-          "file": "libs/ui/ui-scrollarea-helm/tsconfig.spec.json",
-          "hash": "8574249004436160025"
-        }
-      ],
-      "ui-alertdialog-helm": [
-        {
-          "file": "libs/ui/ui-alertdialog-helm/README.md",
-          "hash": "11368131812813882552"
-        },
-        {
-          "file": "libs/ui/ui-alertdialog-helm/eslint.config.mjs",
-          "hash": "8485609504886944637",
-          "deps": [
-            "npm:@nx/eslint-plugin",
-            [
-              "npm:jsonc-eslint-parser",
-              "dynamic"
-            ]
-          ]
-        },
-        {
-          "file": "libs/ui/ui-alertdialog-helm/jest.config.ts",
-          "hash": "2699612480992670542"
-        },
-        {
-          "file": "libs/ui/ui-alertdialog-helm/ng-package.json",
-          "hash": "16517782769585423606"
-        },
-        {
-          "file": "libs/ui/ui-alertdialog-helm/package.json",
-          "hash": "16608135974117581359",
-          "deps": [
-            "npm:@angular/common",
-            "npm:@angular/core"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-alertdialog-helm/project.json",
-          "hash": "17057260328625937585"
-        },
-        {
-          "file": "libs/ui/ui-alertdialog-helm/src/index.ts",
-          "hash": "8146933523089635701",
-          "deps": [
-            "npm:@angular/core"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-alertdialog-helm/src/lib/hlm-alert-dialog-action-button.directive.ts",
-          "hash": "1422241331487409646",
-          "deps": [
-            "npm:@angular/core",
-            "ui-button-helm"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-alertdialog-helm/src/lib/hlm-alert-dialog-cancel-button.directive.ts",
-          "hash": "14830594565982339429",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain",
-            "ui-button-helm",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-alertdialog-helm/src/lib/hlm-alert-dialog-content.component.ts",
-          "hash": "10092501886584486457",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-alertdialog-helm/src/lib/hlm-alert-dialog-description.directive.ts",
-          "hash": "9811652057824537648",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-alertdialog-helm/src/lib/hlm-alert-dialog-footer.component.ts",
-          "hash": "16661942140075421979",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-alertdialog-helm/src/lib/hlm-alert-dialog-header.component.ts",
-          "hash": "12114381417388294290",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-alertdialog-helm/src/lib/hlm-alert-dialog-overlay.directive.ts",
-          "hash": "6987357437767768949",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-alertdialog-helm/src/lib/hlm-alert-dialog-title.directive.ts",
-          "hash": "18055364843113896742",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-alertdialog-helm/src/lib/hlm-alert-dialog.component.ts",
-          "hash": "8498035084345322100",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-alertdialog-helm/src/test-setup.ts",
-          "hash": "2674404341416425809",
-          "deps": [
-            "npm:jest-preset-angular"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-alertdialog-helm/tsconfig.json",
-          "hash": "2396403117919940161"
-        },
-        {
-          "file": "libs/ui/ui-alertdialog-helm/tsconfig.lib.json",
-          "hash": "4533240314544279514"
-        },
-        {
-          "file": "libs/ui/ui-alertdialog-helm/tsconfig.lib.prod.json",
-          "hash": "10809217796916261822"
-        },
-        {
-          "file": "libs/ui/ui-alertdialog-helm/tsconfig.spec.json",
-          "hash": "8574249004436160025"
-        }
-      ],
-      "ui-label-helm": [
-        {
-          "file": "libs/ui/ui-label-helm/README.md",
-          "hash": "18138997968541594490"
-        },
-        {
-          "file": "libs/ui/ui-label-helm/eslint.config.mjs",
-          "hash": "8485609504886944637",
-          "deps": [
-            "npm:@nx/eslint-plugin",
-            [
-              "npm:jsonc-eslint-parser",
-              "dynamic"
-            ]
-          ]
-        },
-        {
-          "file": "libs/ui/ui-label-helm/jest.config.ts",
-          "hash": "396898712112851258"
-        },
-        {
-          "file": "libs/ui/ui-label-helm/ng-package.json",
-          "hash": "3781308498757049038"
-        },
-        {
-          "file": "libs/ui/ui-label-helm/package.json",
-          "hash": "8718811450471833288",
-          "deps": [
-            "npm:@angular/common",
-            "npm:@angular/core"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-label-helm/project.json",
-          "hash": "16064701356079284142"
-        },
-        {
-          "file": "libs/ui/ui-label-helm/src/index.ts",
-          "hash": "11520514252818889827",
-          "deps": [
-            "npm:@angular/core"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-label-helm/src/lib/hlm-label.directive.ts",
-          "hash": "9552035975350433381",
+          "file": "libs/ui/ui-card-helm/src/lib/hlm-card-content.directive.ts",
+          "hash": "14120040773416496629",
           "deps": [
             "npm:@angular/core",
             "npm:@spartan-ng/brain",
@@ -527,86 +178,8 @@
           ]
         },
         {
-          "file": "libs/ui/ui-label-helm/src/test-setup.ts",
-          "hash": "2674404341416425809",
-          "deps": [
-            "npm:jest-preset-angular"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-label-helm/tsconfig.json",
-          "hash": "2396403117919940161"
-        },
-        {
-          "file": "libs/ui/ui-label-helm/tsconfig.lib.json",
-          "hash": "4533240314544279514"
-        },
-        {
-          "file": "libs/ui/ui-label-helm/tsconfig.lib.prod.json",
-          "hash": "10809217796916261822"
-        },
-        {
-          "file": "libs/ui/ui-label-helm/tsconfig.spec.json",
-          "hash": "8574249004436160025"
-        }
-      ],
-      "ui-pagination-helm": [
-        {
-          "file": "libs/ui/ui-pagination-helm/README.md",
-          "hash": "14157236961644398144"
-        },
-        {
-          "file": "libs/ui/ui-pagination-helm/eslint.config.mjs",
-          "hash": "8485609504886944637",
-          "deps": [
-            "npm:@nx/eslint-plugin",
-            [
-              "npm:jsonc-eslint-parser",
-              "dynamic"
-            ]
-          ]
-        },
-        {
-          "file": "libs/ui/ui-pagination-helm/jest.config.ts",
-          "hash": "4171896458887214185"
-        },
-        {
-          "file": "libs/ui/ui-pagination-helm/ng-package.json",
-          "hash": "11750731428121054933"
-        },
-        {
-          "file": "libs/ui/ui-pagination-helm/package.json",
-          "hash": "15307484452433836825",
-          "deps": [
-            "npm:@angular/common",
-            "npm:@angular/core"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-pagination-helm/project.json",
-          "hash": "12002312168063546243"
-        },
-        {
-          "file": "libs/ui/ui-pagination-helm/src/index.ts",
-          "hash": "12922800490575513826",
-          "deps": [
-            "npm:@angular/core"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-pagination-helm/src/lib/hlm-numbered-pagination.component.ts",
-          "hash": "17055511735176407473",
-          "deps": [
-            "npm:@angular/cdk",
-            "npm:@angular/core",
-            "npm:@angular/forms",
-            "npm:@spartan-ng/brain",
-            "ui-select-helm"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-pagination-helm/src/lib/hlm-pagination-content.directive.ts",
-          "hash": "7892213548080297620",
+          "file": "libs/ui/ui-card-helm/src/lib/hlm-card-description.directive.ts",
+          "hash": "11379924620899130749",
           "deps": [
             "npm:@angular/core",
             "npm:@spartan-ng/brain",
@@ -615,20 +188,8 @@
           ]
         },
         {
-          "file": "libs/ui/ui-pagination-helm/src/lib/hlm-pagination-ellipsis.component.ts",
-          "hash": "17829861933065760413",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@ng-icons/core",
-            "npm:@ng-icons/lucide",
-            "npm:@spartan-ng/brain",
-            "ui-icon-helm",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-pagination-helm/src/lib/hlm-pagination-item.directive.ts",
-          "hash": "12997319324972270123",
+          "file": "libs/ui/ui-card-helm/src/lib/hlm-card-footer.directive.ts",
+          "hash": "10967238700823552868",
           "deps": [
             "npm:@angular/core",
             "npm:@spartan-ng/brain",
@@ -637,51 +198,8 @@
           ]
         },
         {
-          "file": "libs/ui/ui-pagination-helm/src/lib/hlm-pagination-link.directive.ts",
-          "hash": "932862498842812371",
-          "deps": [
-            "npm:@angular/cdk",
-            "npm:@angular/core",
-            "npm:@angular/router",
-            "npm:@spartan-ng/brain",
-            "ui-button-helm",
-            "npm:class-variance-authority",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-pagination-helm/src/lib/hlm-pagination-next.component.ts",
-          "hash": "10617257991272632933",
-          "deps": [
-            "npm:@angular/cdk",
-            "npm:@angular/core",
-            "npm:@angular/router",
-            "npm:@ng-icons/core",
-            "npm:@ng-icons/lucide",
-            "npm:@spartan-ng/brain",
-            "ui-button-helm",
-            "ui-icon-helm",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-pagination-helm/src/lib/hlm-pagination-previous.component.ts",
-          "hash": "15282568977746413212",
-          "deps": [
-            "npm:@angular/cdk",
-            "npm:@angular/core",
-            "npm:@angular/router",
-            "npm:@ng-icons/core",
-            "npm:@ng-icons/lucide",
-            "npm:@spartan-ng/brain",
-            "ui-button-helm",
-            "ui-icon-helm",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-pagination-helm/src/lib/hlm-pagination.directive.ts",
-          "hash": "10328511587801846707",
+          "file": "libs/ui/ui-card-helm/src/lib/hlm-card-header.directive.ts",
+          "hash": "15901871804019604030",
           "deps": [
             "npm:@angular/core",
             "npm:@spartan-ng/brain",
@@ -690,385 +208,8 @@
           ]
         },
         {
-          "file": "libs/ui/ui-pagination-helm/src/test-setup.ts",
-          "hash": "2674404341416425809",
-          "deps": [
-            "npm:jest-preset-angular"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-pagination-helm/tsconfig.json",
-          "hash": "2396403117919940161"
-        },
-        {
-          "file": "libs/ui/ui-pagination-helm/tsconfig.lib.json",
-          "hash": "4533240314544279514"
-        },
-        {
-          "file": "libs/ui/ui-pagination-helm/tsconfig.lib.prod.json",
-          "hash": "10809217796916261822"
-        },
-        {
-          "file": "libs/ui/ui-pagination-helm/tsconfig.spec.json",
-          "hash": "8574249004436160025"
-        }
-      ],
-      "ui-separator-helm": [
-        {
-          "file": "libs/ui/ui-separator-helm/README.md",
-          "hash": "6511199684768309158"
-        },
-        {
-          "file": "libs/ui/ui-separator-helm/eslint.config.mjs",
-          "hash": "8485609504886944637",
-          "deps": [
-            "npm:@nx/eslint-plugin",
-            [
-              "npm:jsonc-eslint-parser",
-              "dynamic"
-            ]
-          ]
-        },
-        {
-          "file": "libs/ui/ui-separator-helm/jest.config.ts",
-          "hash": "6387913899337787881"
-        },
-        {
-          "file": "libs/ui/ui-separator-helm/ng-package.json",
-          "hash": "16236306579455593160"
-        },
-        {
-          "file": "libs/ui/ui-separator-helm/package.json",
-          "hash": "1445631454434537094",
-          "deps": [
-            "npm:@angular/common",
-            "npm:@angular/core"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-separator-helm/project.json",
-          "hash": "17253797776775351370"
-        },
-        {
-          "file": "libs/ui/ui-separator-helm/src/index.ts",
-          "hash": "11009445571986260606",
-          "deps": [
-            "npm:@angular/core"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-separator-helm/src/lib/hlm-separator.directive.ts",
-          "hash": "12686284008461116903",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-separator-helm/src/test-setup.ts",
-          "hash": "2674404341416425809",
-          "deps": [
-            "npm:jest-preset-angular"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-separator-helm/tsconfig.json",
-          "hash": "2396403117919940161"
-        },
-        {
-          "file": "libs/ui/ui-separator-helm/tsconfig.lib.json",
-          "hash": "4533240314544279514"
-        },
-        {
-          "file": "libs/ui/ui-separator-helm/tsconfig.lib.prod.json",
-          "hash": "10809217796916261822"
-        },
-        {
-          "file": "libs/ui/ui-separator-helm/tsconfig.spec.json",
-          "hash": "8574249004436160025"
-        }
-      ],
-      "ui-aspectratio-helm": [
-        {
-          "file": "libs/ui/ui-aspectratio-helm/README.md",
-          "hash": "8112322121380447425"
-        },
-        {
-          "file": "libs/ui/ui-aspectratio-helm/eslint.config.mjs",
-          "hash": "8485609504886944637",
-          "deps": [
-            "npm:@nx/eslint-plugin",
-            [
-              "npm:jsonc-eslint-parser",
-              "dynamic"
-            ]
-          ]
-        },
-        {
-          "file": "libs/ui/ui-aspectratio-helm/jest.config.ts",
-          "hash": "10527292612171735120"
-        },
-        {
-          "file": "libs/ui/ui-aspectratio-helm/ng-package.json",
-          "hash": "732458600135168127"
-        },
-        {
-          "file": "libs/ui/ui-aspectratio-helm/package.json",
-          "hash": "9411452924564596621",
-          "deps": [
-            "npm:@angular/common",
-            "npm:@angular/core"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-aspectratio-helm/project.json",
-          "hash": "15915920712321403614"
-        },
-        {
-          "file": "libs/ui/ui-aspectratio-helm/src/index.ts",
-          "hash": "6600508035470287061",
-          "deps": [
-            "npm:@angular/core"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-aspectratio-helm/src/lib/helm-aspect-ratio.directive.ts",
-          "hash": "1754965119494222111",
-          "deps": [
-            "npm:@angular/cdk",
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-aspectratio-helm/src/test-setup.ts",
-          "hash": "2674404341416425809",
-          "deps": [
-            "npm:jest-preset-angular"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-aspectratio-helm/tsconfig.json",
-          "hash": "2396403117919940161"
-        },
-        {
-          "file": "libs/ui/ui-aspectratio-helm/tsconfig.lib.json",
-          "hash": "4533240314544279514"
-        },
-        {
-          "file": "libs/ui/ui-aspectratio-helm/tsconfig.lib.prod.json",
-          "hash": "10809217796916261822"
-        },
-        {
-          "file": "libs/ui/ui-aspectratio-helm/tsconfig.spec.json",
-          "hash": "8574249004436160025"
-        }
-      ],
-      "ui-select-helm": [
-        {
-          "file": "libs/ui/ui-select-helm/README.md",
-          "hash": "13807035262028774161"
-        },
-        {
-          "file": "libs/ui/ui-select-helm/eslint.config.mjs",
-          "hash": "8485609504886944637",
-          "deps": [
-            "npm:@nx/eslint-plugin",
-            [
-              "npm:jsonc-eslint-parser",
-              "dynamic"
-            ]
-          ]
-        },
-        {
-          "file": "libs/ui/ui-select-helm/jest.config.ts",
-          "hash": "5350467193415845491"
-        },
-        {
-          "file": "libs/ui/ui-select-helm/ng-package.json",
-          "hash": "10601311100995659520"
-        },
-        {
-          "file": "libs/ui/ui-select-helm/package.json",
-          "hash": "15245069385150594987",
-          "deps": [
-            "npm:@angular/common",
-            "npm:@angular/core"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-select-helm/project.json",
-          "hash": "3757797695451449068"
-        },
-        {
-          "file": "libs/ui/ui-select-helm/src/index.ts",
-          "hash": "14018309011524926443",
-          "deps": [
-            "npm:@angular/core"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-select-helm/src/lib/hlm-select-content.directive.ts",
-          "hash": "13777679391543875655",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-select-helm/src/lib/hlm-select-group.directive.ts",
-          "hash": "10104144719712809790",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-select-helm/src/lib/hlm-select-label.directive.ts",
-          "hash": "2154633510682930564",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-select-helm/src/lib/hlm-select-option.component.ts",
-          "hash": "6344241916605108194",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@ng-icons/core",
-            "npm:@ng-icons/lucide",
-            "npm:@spartan-ng/brain",
-            "ui-icon-helm",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-select-helm/src/lib/hlm-select-scroll-down.component.ts",
-          "hash": "9268832728392784249",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@ng-icons/core",
-            "npm:@ng-icons/lucide",
-            "ui-icon-helm"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-select-helm/src/lib/hlm-select-scroll-up.component.ts",
-          "hash": "14205754900920695476",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@ng-icons/core",
-            "npm:@ng-icons/lucide",
-            "ui-icon-helm"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-select-helm/src/lib/hlm-select-trigger.component.ts",
-          "hash": "12653672144658689108",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@ng-icons/core",
-            "npm:@ng-icons/lucide",
-            "npm:@spartan-ng/brain",
-            "ui-icon-helm",
-            "npm:class-variance-authority",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-select-helm/src/lib/hlm-select-value.directive.ts",
-          "hash": "10414791879790285753",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-select-helm/src/lib/hlm-select.directive.ts",
-          "hash": "13558601816034201677",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-select-helm/src/test-setup.ts",
-          "hash": "2674404341416425809",
-          "deps": [
-            "npm:jest-preset-angular"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-select-helm/tsconfig.json",
-          "hash": "2396403117919940161"
-        },
-        {
-          "file": "libs/ui/ui-select-helm/tsconfig.lib.json",
-          "hash": "4533240314544279514"
-        },
-        {
-          "file": "libs/ui/ui-select-helm/tsconfig.lib.prod.json",
-          "hash": "10809217796916261822"
-        },
-        {
-          "file": "libs/ui/ui-select-helm/tsconfig.spec.json",
-          "hash": "8574249004436160025"
-        }
-      ],
-      "ui-alert-helm": [
-        {
-          "file": "libs/ui/ui-alert-helm/README.md",
-          "hash": "11262874486819078131"
-        },
-        {
-          "file": "libs/ui/ui-alert-helm/eslint.config.mjs",
-          "hash": "8485609504886944637",
-          "deps": [
-            "npm:@nx/eslint-plugin",
-            [
-              "npm:jsonc-eslint-parser",
-              "dynamic"
-            ]
-          ]
-        },
-        {
-          "file": "libs/ui/ui-alert-helm/jest.config.ts",
-          "hash": "3278324257493649494"
-        },
-        {
-          "file": "libs/ui/ui-alert-helm/ng-package.json",
-          "hash": "10602157764419018020"
-        },
-        {
-          "file": "libs/ui/ui-alert-helm/package.json",
-          "hash": "468315932079409962",
-          "deps": [
-            "npm:@angular/common",
-            "npm:@angular/core"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-alert-helm/project.json",
-          "hash": "9595396587471818006"
-        },
-        {
-          "file": "libs/ui/ui-alert-helm/src/index.ts",
-          "hash": "3791802788218093072",
-          "deps": [
-            "npm:@angular/core"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-alert-helm/src/lib/hlm-alert-description.directive.ts",
-          "hash": "10054372904229832760",
+          "file": "libs/ui/ui-card-helm/src/lib/hlm-card-title.directive.ts",
+          "hash": "12874525138222134681",
           "deps": [
             "npm:@angular/core",
             "npm:@spartan-ng/brain",
@@ -1077,16 +218,8 @@
           ]
         },
         {
-          "file": "libs/ui/ui-alert-helm/src/lib/hlm-alert-icon.directive.ts",
-          "hash": "12879871385254423897",
-          "deps": [
-            "npm:@angular/core",
-            "ui-icon-helm"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-alert-helm/src/lib/hlm-alert-title.directive.ts",
-          "hash": "6737690058252919623",
+          "file": "libs/ui/ui-card-helm/src/lib/hlm-card.directive.ts",
+          "hash": "17507123041101396637",
           "deps": [
             "npm:@angular/core",
             "npm:@spartan-ng/brain",
@@ -1095,766 +228,26 @@
           ]
         },
         {
-          "file": "libs/ui/ui-alert-helm/src/lib/hlm-alert.directive.ts",
-          "hash": "6674817542479002104",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain",
-            "npm:class-variance-authority",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-alert-helm/src/test-setup.ts",
+          "file": "libs/ui/ui-card-helm/src/test-setup.ts",
           "hash": "2674404341416425809",
           "deps": [
             "npm:jest-preset-angular"
           ]
         },
         {
-          "file": "libs/ui/ui-alert-helm/tsconfig.json",
+          "file": "libs/ui/ui-card-helm/tsconfig.json",
           "hash": "2396403117919940161"
         },
         {
-          "file": "libs/ui/ui-alert-helm/tsconfig.lib.json",
+          "file": "libs/ui/ui-card-helm/tsconfig.lib.json",
           "hash": "4533240314544279514"
         },
         {
-          "file": "libs/ui/ui-alert-helm/tsconfig.lib.prod.json",
+          "file": "libs/ui/ui-card-helm/tsconfig.lib.prod.json",
           "hash": "10809217796916261822"
         },
         {
-          "file": "libs/ui/ui-alert-helm/tsconfig.spec.json",
-          "hash": "8574249004436160025"
-        }
-      ],
-      "ui-icon-helm": [
-        {
-          "file": "libs/ui/ui-icon-helm/README.md",
-          "hash": "7434381925416293136"
-        },
-        {
-          "file": "libs/ui/ui-icon-helm/eslint.config.mjs",
-          "hash": "8485609504886944637",
-          "deps": [
-            "npm:@nx/eslint-plugin",
-            [
-              "npm:jsonc-eslint-parser",
-              "dynamic"
-            ]
-          ]
-        },
-        {
-          "file": "libs/ui/ui-icon-helm/jest.config.ts",
-          "hash": "6871076987113233250"
-        },
-        {
-          "file": "libs/ui/ui-icon-helm/ng-package.json",
-          "hash": "6896611471761540214"
-        },
-        {
-          "file": "libs/ui/ui-icon-helm/package.json",
-          "hash": "6902774505492035694",
-          "deps": [
-            "npm:@angular/common",
-            "npm:@angular/core"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-icon-helm/project.json",
-          "hash": "945190115823879680"
-        },
-        {
-          "file": "libs/ui/ui-icon-helm/src/index.ts",
-          "hash": "13072002477516072914",
-          "deps": [
-            "npm:@angular/core"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-icon-helm/src/lib/hlm-icon.directive.ts",
-          "hash": "1190767095705292823",
-          "deps": [
-            "npm:@angular/core"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-icon-helm/src/lib/hlm-icon.token.ts",
-          "hash": "1780499468245078594",
-          "deps": [
-            "npm:@angular/core"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-icon-helm/src/test-setup.ts",
-          "hash": "2674404341416425809",
-          "deps": [
-            "npm:jest-preset-angular"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-icon-helm/tsconfig.json",
-          "hash": "2396403117919940161"
-        },
-        {
-          "file": "libs/ui/ui-icon-helm/tsconfig.lib.json",
-          "hash": "4533240314544279514"
-        },
-        {
-          "file": "libs/ui/ui-icon-helm/tsconfig.lib.prod.json",
-          "hash": "10809217796916261822"
-        },
-        {
-          "file": "libs/ui/ui-icon-helm/tsconfig.spec.json",
-          "hash": "8574249004436160025"
-        }
-      ],
-      "ui-hovercard-helm": [
-        {
-          "file": "libs/ui/ui-hovercard-helm/README.md",
-          "hash": "1415090799285988699"
-        },
-        {
-          "file": "libs/ui/ui-hovercard-helm/eslint.config.mjs",
-          "hash": "8485609504886944637",
-          "deps": [
-            "npm:@nx/eslint-plugin",
-            [
-              "npm:jsonc-eslint-parser",
-              "dynamic"
-            ]
-          ]
-        },
-        {
-          "file": "libs/ui/ui-hovercard-helm/jest.config.ts",
-          "hash": "14352548038701180956"
-        },
-        {
-          "file": "libs/ui/ui-hovercard-helm/ng-package.json",
-          "hash": "6333861991765805246"
-        },
-        {
-          "file": "libs/ui/ui-hovercard-helm/package.json",
-          "hash": "14782935924923412654",
-          "deps": [
-            "npm:@angular/common",
-            "npm:@angular/core"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-hovercard-helm/project.json",
-          "hash": "16435520925279186801"
-        },
-        {
-          "file": "libs/ui/ui-hovercard-helm/src/index.ts",
-          "hash": "8060148645644534703",
-          "deps": [
-            "npm:@angular/core"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-hovercard-helm/src/lib/hlm-hover-card-content.component.ts",
-          "hash": "2142296894006101392",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-hovercard-helm/src/test-setup.ts",
-          "hash": "2674404341416425809",
-          "deps": [
-            "npm:jest-preset-angular"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-hovercard-helm/tsconfig.json",
-          "hash": "2396403117919940161"
-        },
-        {
-          "file": "libs/ui/ui-hovercard-helm/tsconfig.lib.json",
-          "hash": "4533240314544279514"
-        },
-        {
-          "file": "libs/ui/ui-hovercard-helm/tsconfig.lib.prod.json",
-          "hash": "10809217796916261822"
-        },
-        {
-          "file": "libs/ui/ui-hovercard-helm/tsconfig.spec.json",
-          "hash": "8574249004436160025"
-        }
-      ],
-      "ui-switch-helm": [
-        {
-          "file": "libs/ui/ui-switch-helm/README.md",
-          "hash": "10138161073350012359"
-        },
-        {
-          "file": "libs/ui/ui-switch-helm/eslint.config.mjs",
-          "hash": "8485609504886944637",
-          "deps": [
-            "npm:@nx/eslint-plugin",
-            [
-              "npm:jsonc-eslint-parser",
-              "dynamic"
-            ]
-          ]
-        },
-        {
-          "file": "libs/ui/ui-switch-helm/jest.config.ts",
-          "hash": "1953041860167052183"
-        },
-        {
-          "file": "libs/ui/ui-switch-helm/ng-package.json",
-          "hash": "9679856030039135872"
-        },
-        {
-          "file": "libs/ui/ui-switch-helm/package.json",
-          "hash": "13070275248475025299",
-          "deps": [
-            "npm:@angular/common",
-            "npm:@angular/core"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-switch-helm/project.json",
-          "hash": "4891347859445656744"
-        },
-        {
-          "file": "libs/ui/ui-switch-helm/src/index.ts",
-          "hash": "4397783043409069349",
-          "deps": [
-            "npm:@angular/core"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-switch-helm/src/lib/hlm-switch-thumb.directive.ts",
-          "hash": "22823153044774548",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-switch-helm/src/lib/hlm-switch.component.ts",
-          "hash": "6021207681979836935",
-          "deps": [
-            "npm:@angular/cdk",
-            "npm:@angular/core",
-            "npm:@angular/forms",
-            "npm:@spartan-ng/brain",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-switch-helm/src/test-setup.ts",
-          "hash": "2674404341416425809",
-          "deps": [
-            "npm:jest-preset-angular"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-switch-helm/tsconfig.json",
-          "hash": "2396403117919940161"
-        },
-        {
-          "file": "libs/ui/ui-switch-helm/tsconfig.lib.json",
-          "hash": "4533240314544279514"
-        },
-        {
-          "file": "libs/ui/ui-switch-helm/tsconfig.lib.prod.json",
-          "hash": "10809217796916261822"
-        },
-        {
-          "file": "libs/ui/ui-switch-helm/tsconfig.spec.json",
-          "hash": "8574249004436160025"
-        }
-      ],
-      "ui-slider-helm": [
-        {
-          "file": "libs/ui/ui-slider-helm/README.md",
-          "hash": "7697686141183108082"
-        },
-        {
-          "file": "libs/ui/ui-slider-helm/eslint.config.mjs",
-          "hash": "8485609504886944637",
-          "deps": [
-            "npm:@nx/eslint-plugin",
-            [
-              "npm:jsonc-eslint-parser",
-              "dynamic"
-            ]
-          ]
-        },
-        {
-          "file": "libs/ui/ui-slider-helm/jest.config.ts",
-          "hash": "15392086890197336594"
-        },
-        {
-          "file": "libs/ui/ui-slider-helm/ng-package.json",
-          "hash": "5752733645164216060"
-        },
-        {
-          "file": "libs/ui/ui-slider-helm/package.json",
-          "hash": "5982702452658627646",
-          "deps": [
-            "npm:@angular/common",
-            "npm:@angular/core"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-slider-helm/project.json",
-          "hash": "7888276280892226145"
-        },
-        {
-          "file": "libs/ui/ui-slider-helm/src/index.ts",
-          "hash": "14853643963028369995"
-        },
-        {
-          "file": "libs/ui/ui-slider-helm/src/lib/hlm-slider.component.ts",
-          "hash": "133403493150471290",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-slider-helm/src/test-setup.ts",
-          "hash": "2674404341416425809",
-          "deps": [
-            "npm:jest-preset-angular"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-slider-helm/tsconfig.json",
-          "hash": "2396403117919940161"
-        },
-        {
-          "file": "libs/ui/ui-slider-helm/tsconfig.lib.json",
-          "hash": "4533240314544279514"
-        },
-        {
-          "file": "libs/ui/ui-slider-helm/tsconfig.lib.prod.json",
-          "hash": "10809217796916261822"
-        },
-        {
-          "file": "libs/ui/ui-slider-helm/tsconfig.spec.json",
-          "hash": "8574249004436160025"
-        }
-      ],
-      "ui-table-helm": [
-        {
-          "file": "libs/ui/ui-table-helm/README.md",
-          "hash": "3883691503648991422"
-        },
-        {
-          "file": "libs/ui/ui-table-helm/eslint.config.mjs",
-          "hash": "8485609504886944637",
-          "deps": [
-            "npm:@nx/eslint-plugin",
-            [
-              "npm:jsonc-eslint-parser",
-              "dynamic"
-            ]
-          ]
-        },
-        {
-          "file": "libs/ui/ui-table-helm/jest.config.ts",
-          "hash": "1413883115850649038"
-        },
-        {
-          "file": "libs/ui/ui-table-helm/ng-package.json",
-          "hash": "18152399033268444742"
-        },
-        {
-          "file": "libs/ui/ui-table-helm/package.json",
-          "hash": "10005960445928108195",
-          "deps": [
-            "npm:@angular/common",
-            "npm:@angular/core"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-table-helm/project.json",
-          "hash": "5190831200199121881"
-        },
-        {
-          "file": "libs/ui/ui-table-helm/src/index.ts",
-          "hash": "10469680382427192649",
-          "deps": [
-            "npm:@angular/core"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-table-helm/src/lib/hlm-caption.component.ts",
-          "hash": "8365153485822053352",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-table-helm/src/lib/hlm-table.component.ts",
-          "hash": "11435970391368970768",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-table-helm/src/lib/hlm-table.directive.ts",
-          "hash": "16926324896027948178",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-table-helm/src/lib/hlm-td.component.ts",
-          "hash": "128832280663156114",
-          "deps": [
-            "npm:@angular/common",
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-table-helm/src/lib/hlm-th.component.ts",
-          "hash": "13159417758523778545",
-          "deps": [
-            "npm:@angular/common",
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-table-helm/src/lib/hlm-trow.component.ts",
-          "hash": "17656523312901049612",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-table-helm/src/test-setup.ts",
-          "hash": "2674404341416425809",
-          "deps": [
-            "npm:jest-preset-angular"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-table-helm/tsconfig.json",
-          "hash": "2396403117919940161"
-        },
-        {
-          "file": "libs/ui/ui-table-helm/tsconfig.lib.json",
-          "hash": "4533240314544279514"
-        },
-        {
-          "file": "libs/ui/ui-table-helm/tsconfig.lib.prod.json",
-          "hash": "10809217796916261822"
-        },
-        {
-          "file": "libs/ui/ui-table-helm/tsconfig.spec.json",
-          "hash": "8574249004436160025"
-        }
-      ],
-      "ui-badge-helm": [
-        {
-          "file": "libs/ui/ui-badge-helm/README.md",
-          "hash": "7734232781881816606"
-        },
-        {
-          "file": "libs/ui/ui-badge-helm/eslint.config.mjs",
-          "hash": "8485609504886944637",
-          "deps": [
-            "npm:@nx/eslint-plugin",
-            [
-              "npm:jsonc-eslint-parser",
-              "dynamic"
-            ]
-          ]
-        },
-        {
-          "file": "libs/ui/ui-badge-helm/jest.config.ts",
-          "hash": "16166989666128761579"
-        },
-        {
-          "file": "libs/ui/ui-badge-helm/ng-package.json",
-          "hash": "13382441798775787807"
-        },
-        {
-          "file": "libs/ui/ui-badge-helm/package.json",
-          "hash": "17393025418268012263",
-          "deps": [
-            "npm:@angular/common",
-            "npm:@angular/core"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-badge-helm/project.json",
-          "hash": "13617008778409333549"
-        },
-        {
-          "file": "libs/ui/ui-badge-helm/src/index.ts",
-          "hash": "6405281052730795437",
-          "deps": [
-            "npm:@angular/core"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-badge-helm/src/lib/hlm-badge.directive.ts",
-          "hash": "4803382876565833571",
-          "deps": [
-            "npm:@angular/cdk",
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain",
-            "npm:class-variance-authority",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-badge-helm/src/test-setup.ts",
-          "hash": "2674404341416425809",
-          "deps": [
-            "npm:jest-preset-angular"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-badge-helm/tsconfig.json",
-          "hash": "2396403117919940161"
-        },
-        {
-          "file": "libs/ui/ui-badge-helm/tsconfig.lib.json",
-          "hash": "4533240314544279514"
-        },
-        {
-          "file": "libs/ui/ui-badge-helm/tsconfig.lib.prod.json",
-          "hash": "10809217796916261822"
-        },
-        {
-          "file": "libs/ui/ui-badge-helm/tsconfig.spec.json",
-          "hash": "8574249004436160025"
-        }
-      ],
-      "ui-menu-helm": [
-        {
-          "file": "libs/ui/ui-menu-helm/README.md",
-          "hash": "5713398180368020083"
-        },
-        {
-          "file": "libs/ui/ui-menu-helm/eslint.config.mjs",
-          "hash": "8485609504886944637",
-          "deps": [
-            "npm:@nx/eslint-plugin",
-            [
-              "npm:jsonc-eslint-parser",
-              "dynamic"
-            ]
-          ]
-        },
-        {
-          "file": "libs/ui/ui-menu-helm/jest.config.ts",
-          "hash": "9235933886660154670"
-        },
-        {
-          "file": "libs/ui/ui-menu-helm/ng-package.json",
-          "hash": "9520718386770061733"
-        },
-        {
-          "file": "libs/ui/ui-menu-helm/package.json",
-          "hash": "12411945376011558783",
-          "deps": [
-            "npm:@angular/common",
-            "npm:@angular/core"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-menu-helm/project.json",
-          "hash": "10476010265751767997"
-        },
-        {
-          "file": "libs/ui/ui-menu-helm/src/index.ts",
-          "hash": "13241682308641820299",
-          "deps": [
-            "npm:@angular/core"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-menu-helm/src/lib/hlm-menu-bar-item.directive.ts",
-          "hash": "11437929096136180",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-menu-helm/src/lib/hlm-menu-bar.component.ts",
-          "hash": "6655735691116238903",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-menu-helm/src/lib/hlm-menu-group.component.ts",
-          "hash": "6846266400957472113",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-menu-helm/src/lib/hlm-menu-item-check.component.ts",
-          "hash": "8636272170176834066",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@ng-icons/core",
-            "npm:@ng-icons/lucide",
-            "npm:@spartan-ng/brain",
-            "ui-icon-helm",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-menu-helm/src/lib/hlm-menu-item-checkbox.directive.ts",
-          "hash": "11560211814346861548",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-menu-helm/src/lib/hlm-menu-item-icon.directive.ts",
-          "hash": "14520891761131757131",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain",
-            "ui-icon-helm",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-menu-helm/src/lib/hlm-menu-item-radio.component.ts",
-          "hash": "1023302277755685536",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@ng-icons/core",
-            "npm:@ng-icons/lucide",
-            "npm:@spartan-ng/brain",
-            "ui-icon-helm",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-menu-helm/src/lib/hlm-menu-item-radio.directive.ts",
-          "hash": "13485989789522020501",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-menu-helm/src/lib/hlm-menu-item-sub-indicator.component.ts",
-          "hash": "6734237183715160902",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@ng-icons/core",
-            "npm:@ng-icons/lucide",
-            "npm:@spartan-ng/brain",
-            "ui-icon-helm",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-menu-helm/src/lib/hlm-menu-item.directive.ts",
-          "hash": "6169519930476572327",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain",
-            "npm:class-variance-authority",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-menu-helm/src/lib/hlm-menu-label.component.ts",
-          "hash": "1649853905716803216",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-menu-helm/src/lib/hlm-menu-separator.component.ts",
-          "hash": "18150510877081283376",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-menu-helm/src/lib/hlm-menu-shortcut.component.ts",
-          "hash": "67115142914665669",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-menu-helm/src/lib/hlm-menu.component.ts",
-          "hash": "3285153513198734767",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain",
-            "npm:class-variance-authority",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-menu-helm/src/lib/hlm-sub-menu.component.ts",
-          "hash": "979679571005302953",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-menu-helm/src/test-setup.ts",
-          "hash": "2674404341416425809",
-          "deps": [
-            "npm:jest-preset-angular"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-menu-helm/tsconfig.json",
-          "hash": "2396403117919940161"
-        },
-        {
-          "file": "libs/ui/ui-menu-helm/tsconfig.lib.json",
-          "hash": "4533240314544279514"
-        },
-        {
-          "file": "libs/ui/ui-menu-helm/tsconfig.lib.prod.json",
-          "hash": "10809217796916261822"
-        },
-        {
-          "file": "libs/ui/ui-menu-helm/tsconfig.spec.json",
+          "file": "libs/ui/ui-card-helm/tsconfig.spec.json",
           "hash": "8574249004436160025"
         }
       ],
@@ -2035,437 +428,6 @@
           "hash": "8574249004436160025"
         }
       ],
-      "ui-tooltip-helm": [
-        {
-          "file": "libs/ui/ui-tooltip-helm/README.md",
-          "hash": "3313350338983881090"
-        },
-        {
-          "file": "libs/ui/ui-tooltip-helm/eslint.config.mjs",
-          "hash": "8485609504886944637",
-          "deps": [
-            "npm:@nx/eslint-plugin",
-            [
-              "npm:jsonc-eslint-parser",
-              "dynamic"
-            ]
-          ]
-        },
-        {
-          "file": "libs/ui/ui-tooltip-helm/jest.config.ts",
-          "hash": "4563328346510423989"
-        },
-        {
-          "file": "libs/ui/ui-tooltip-helm/ng-package.json",
-          "hash": "13207987554730061141"
-        },
-        {
-          "file": "libs/ui/ui-tooltip-helm/package.json",
-          "hash": "15451939779038893798",
-          "deps": [
-            "npm:@angular/common",
-            "npm:@angular/core"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-tooltip-helm/project.json",
-          "hash": "3595630967317877245"
-        },
-        {
-          "file": "libs/ui/ui-tooltip-helm/src/index.ts",
-          "hash": "2474707846373977238",
-          "deps": [
-            "npm:@angular/core"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-tooltip-helm/src/lib/hlm-tooltip-trigger.directive.ts",
-          "hash": "6496040202770270579",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-tooltip-helm/src/lib/hlm-tooltip.component.ts",
-          "hash": "9865109726480907659",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-tooltip-helm/src/test-setup.ts",
-          "hash": "2674404341416425809",
-          "deps": [
-            "npm:jest-preset-angular"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-tooltip-helm/tsconfig.json",
-          "hash": "2396403117919940161"
-        },
-        {
-          "file": "libs/ui/ui-tooltip-helm/tsconfig.lib.json",
-          "hash": "4533240314544279514"
-        },
-        {
-          "file": "libs/ui/ui-tooltip-helm/tsconfig.lib.prod.json",
-          "hash": "10809217796916261822"
-        },
-        {
-          "file": "libs/ui/ui-tooltip-helm/tsconfig.spec.json",
-          "hash": "8574249004436160025"
-        }
-      ],
-      "ui-avatar-helm": [
-        {
-          "file": "libs/ui/ui-avatar-helm/README.md",
-          "hash": "5295916329525327067"
-        },
-        {
-          "file": "libs/ui/ui-avatar-helm/eslint.config.mjs",
-          "hash": "8485609504886944637",
-          "deps": [
-            "npm:@nx/eslint-plugin",
-            [
-              "npm:jsonc-eslint-parser",
-              "dynamic"
-            ]
-          ]
-        },
-        {
-          "file": "libs/ui/ui-avatar-helm/jest.config.ts",
-          "hash": "7951641468327980326"
-        },
-        {
-          "file": "libs/ui/ui-avatar-helm/ng-package.json",
-          "hash": "5345933007390341952"
-        },
-        {
-          "file": "libs/ui/ui-avatar-helm/package.json",
-          "hash": "13880809446105762852",
-          "deps": [
-            "npm:@angular/common",
-            "npm:@angular/core"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-avatar-helm/project.json",
-          "hash": "8585912588175873814"
-        },
-        {
-          "file": "libs/ui/ui-avatar-helm/src/index.ts",
-          "hash": "16111783170664857174",
-          "deps": [
-            "npm:@angular/core"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-avatar-helm/src/lib/fallback/hlm-avatar-fallback.directive.ts",
-          "hash": "3043200561153424807",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-avatar-helm/src/lib/fallback/index.ts",
-          "hash": "4095308081400682735"
-        },
-        {
-          "file": "libs/ui/ui-avatar-helm/src/lib/hlm-avatar.component.ts",
-          "hash": "11408779159342565034",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain",
-            "npm:class-variance-authority",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-avatar-helm/src/lib/image/hlm-avatar-image.directive.ts",
-          "hash": "7663715249789096625",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-avatar-helm/src/lib/image/index.ts",
-          "hash": "725402389627633520"
-        },
-        {
-          "file": "libs/ui/ui-avatar-helm/src/test-setup.ts",
-          "hash": "2674404341416425809",
-          "deps": [
-            "npm:jest-preset-angular"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-avatar-helm/tsconfig.json",
-          "hash": "2396403117919940161"
-        },
-        {
-          "file": "libs/ui/ui-avatar-helm/tsconfig.lib.json",
-          "hash": "4533240314544279514"
-        },
-        {
-          "file": "libs/ui/ui-avatar-helm/tsconfig.lib.prod.json",
-          "hash": "10809217796916261822"
-        },
-        {
-          "file": "libs/ui/ui-avatar-helm/tsconfig.spec.json",
-          "hash": "8574249004436160025"
-        }
-      ],
-      "ui-sonner-helm": [
-        {
-          "file": "libs/ui/ui-sonner-helm/README.md",
-          "hash": "2318807823720318543"
-        },
-        {
-          "file": "libs/ui/ui-sonner-helm/eslint.config.mjs",
-          "hash": "8485609504886944637",
-          "deps": [
-            "npm:@nx/eslint-plugin",
-            [
-              "npm:jsonc-eslint-parser",
-              "dynamic"
-            ]
-          ]
-        },
-        {
-          "file": "libs/ui/ui-sonner-helm/jest.config.ts",
-          "hash": "18312938872365904806"
-        },
-        {
-          "file": "libs/ui/ui-sonner-helm/ng-package.json",
-          "hash": "5282493203451195436"
-        },
-        {
-          "file": "libs/ui/ui-sonner-helm/package.json",
-          "hash": "10078279406125487668",
-          "deps": [
-            "npm:@angular/common",
-            "npm:@angular/core"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-sonner-helm/project.json",
-          "hash": "8570421925456008805"
-        },
-        {
-          "file": "libs/ui/ui-sonner-helm/src/index.ts",
-          "hash": "3266071164489127345",
-          "deps": [
-            "npm:@angular/core"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-sonner-helm/src/lib/hlm-toaster.component.ts",
-          "hash": "17267968514933975336",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain",
-            "npm:clsx",
-            "npm:ngx-sonner"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-sonner-helm/src/test-setup.ts",
-          "hash": "2674404341416425809",
-          "deps": [
-            "npm:jest-preset-angular"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-sonner-helm/tsconfig.json",
-          "hash": "2396403117919940161"
-        },
-        {
-          "file": "libs/ui/ui-sonner-helm/tsconfig.lib.json",
-          "hash": "4533240314544279514"
-        },
-        {
-          "file": "libs/ui/ui-sonner-helm/tsconfig.lib.prod.json",
-          "hash": "10809217796916261822"
-        },
-        {
-          "file": "libs/ui/ui-sonner-helm/tsconfig.spec.json",
-          "hash": "8574249004436160025"
-        }
-      ],
-      "ui-checkbox-helm": [
-        {
-          "file": "libs/ui/ui-checkbox-helm/README.md",
-          "hash": "6340951503271655961"
-        },
-        {
-          "file": "libs/ui/ui-checkbox-helm/eslint.config.mjs",
-          "hash": "8485609504886944637",
-          "deps": [
-            "npm:@nx/eslint-plugin",
-            [
-              "npm:jsonc-eslint-parser",
-              "dynamic"
-            ]
-          ]
-        },
-        {
-          "file": "libs/ui/ui-checkbox-helm/jest.config.ts",
-          "hash": "6105163302557270581"
-        },
-        {
-          "file": "libs/ui/ui-checkbox-helm/ng-package.json",
-          "hash": "16432900444300841196"
-        },
-        {
-          "file": "libs/ui/ui-checkbox-helm/package.json",
-          "hash": "17040963018864125957",
-          "deps": [
-            "npm:@angular/common",
-            "npm:@angular/core"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-checkbox-helm/project.json",
-          "hash": "1549453207290383300"
-        },
-        {
-          "file": "libs/ui/ui-checkbox-helm/src/index.ts",
-          "hash": "8707675592414440616",
-          "deps": [
-            "npm:@angular/core"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-checkbox-helm/src/lib/hlm-checkbox.component.ts",
-          "hash": "4426878884259586757",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@angular/forms",
-            "npm:@ng-icons/core",
-            "npm:@ng-icons/lucide",
-            "npm:@spartan-ng/brain",
-            "ui-icon-helm",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-checkbox-helm/src/test-setup.ts",
-          "hash": "2674404341416425809",
-          "deps": [
-            "npm:jest-preset-angular"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-checkbox-helm/tsconfig.json",
-          "hash": "2396403117919940161"
-        },
-        {
-          "file": "libs/ui/ui-checkbox-helm/tsconfig.lib.json",
-          "hash": "4533240314544279514"
-        },
-        {
-          "file": "libs/ui/ui-checkbox-helm/tsconfig.lib.prod.json",
-          "hash": "10809217796916261822"
-        },
-        {
-          "file": "libs/ui/ui-checkbox-helm/tsconfig.spec.json",
-          "hash": "8574249004436160025"
-        }
-      ],
-      "ui-formfield-helm": [
-        {
-          "file": "libs/ui/ui-formfield-helm/README.md",
-          "hash": "13743927200447898542"
-        },
-        {
-          "file": "libs/ui/ui-formfield-helm/eslint.config.mjs",
-          "hash": "8485609504886944637",
-          "deps": [
-            "npm:@nx/eslint-plugin",
-            [
-              "npm:jsonc-eslint-parser",
-              "dynamic"
-            ]
-          ]
-        },
-        {
-          "file": "libs/ui/ui-formfield-helm/jest.config.ts",
-          "hash": "7131213346267751621"
-        },
-        {
-          "file": "libs/ui/ui-formfield-helm/ng-package.json",
-          "hash": "5021981949781235997"
-        },
-        {
-          "file": "libs/ui/ui-formfield-helm/package.json",
-          "hash": "12900820509451350103",
-          "deps": [
-            "npm:@angular/common",
-            "npm:@angular/core"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-formfield-helm/project.json",
-          "hash": "15111898452120652433"
-        },
-        {
-          "file": "libs/ui/ui-formfield-helm/src/index.ts",
-          "hash": "1379682831294187538",
-          "deps": [
-            "npm:@angular/core"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-formfield-helm/src/lib/hlm-error.directive.ts",
-          "hash": "8559813530759281347",
-          "deps": [
-            "npm:@angular/core"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-formfield-helm/src/lib/hlm-form-field.component.ts",
-          "hash": "4179701583270018576",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-formfield-helm/src/lib/hlm-hint.directive.ts",
-          "hash": "6215421755390582281",
-          "deps": [
-            "npm:@angular/core"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-formfield-helm/src/test-setup.ts",
-          "hash": "2674404341416425809",
-          "deps": [
-            "npm:jest-preset-angular"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-formfield-helm/tsconfig.json",
-          "hash": "2396403117919940161"
-        },
-        {
-          "file": "libs/ui/ui-formfield-helm/tsconfig.lib.json",
-          "hash": "4533240314544279514"
-        },
-        {
-          "file": "libs/ui/ui-formfield-helm/tsconfig.lib.prod.json",
-          "hash": "10809217796916261822"
-        },
-        {
-          "file": "libs/ui/ui-formfield-helm/tsconfig.spec.json",
-          "hash": "8574249004436160025"
-        }
-      ],
       "ui-input-helm": [
         {
           "file": "libs/ui/ui-input-helm/README.md",
@@ -2639,13 +601,13 @@
           "hash": "8574249004436160025"
         }
       ],
-      "ui-spinner-helm": [
+      "ui-hovercard-helm": [
         {
-          "file": "libs/ui/ui-spinner-helm/README.md",
-          "hash": "6035444329881206340"
+          "file": "libs/ui/ui-hovercard-helm/README.md",
+          "hash": "1415090799285988699"
         },
         {
-          "file": "libs/ui/ui-spinner-helm/eslint.config.mjs",
+          "file": "libs/ui/ui-hovercard-helm/eslint.config.mjs",
           "hash": "8485609504886944637",
           "deps": [
             "npm:@nx/eslint-plugin",
@@ -2656,35 +618,193 @@
           ]
         },
         {
-          "file": "libs/ui/ui-spinner-helm/jest.config.ts",
-          "hash": "14341601605984566420"
+          "file": "libs/ui/ui-hovercard-helm/jest.config.ts",
+          "hash": "14352548038701180956"
         },
         {
-          "file": "libs/ui/ui-spinner-helm/ng-package.json",
-          "hash": "14678467917657222146"
+          "file": "libs/ui/ui-hovercard-helm/ng-package.json",
+          "hash": "6333861991765805246"
         },
         {
-          "file": "libs/ui/ui-spinner-helm/package.json",
-          "hash": "14013538014216776082",
+          "file": "libs/ui/ui-hovercard-helm/package.json",
+          "hash": "14782935924923412654",
           "deps": [
             "npm:@angular/common",
             "npm:@angular/core"
           ]
         },
         {
-          "file": "libs/ui/ui-spinner-helm/project.json",
-          "hash": "16540398483299380801"
+          "file": "libs/ui/ui-hovercard-helm/project.json",
+          "hash": "16435520925279186801"
         },
         {
-          "file": "libs/ui/ui-spinner-helm/src/index.ts",
-          "hash": "9931764571277820309",
+          "file": "libs/ui/ui-hovercard-helm/src/index.ts",
+          "hash": "8060148645644534703",
           "deps": [
             "npm:@angular/core"
           ]
         },
         {
-          "file": "libs/ui/ui-spinner-helm/src/lib/hlm-spinner.component.ts",
-          "hash": "11739429249995975698",
+          "file": "libs/ui/ui-hovercard-helm/src/lib/hlm-hover-card-content.component.ts",
+          "hash": "2142296894006101392",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-hovercard-helm/src/test-setup.ts",
+          "hash": "2674404341416425809",
+          "deps": [
+            "npm:jest-preset-angular"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-hovercard-helm/tsconfig.json",
+          "hash": "2396403117919940161"
+        },
+        {
+          "file": "libs/ui/ui-hovercard-helm/tsconfig.lib.json",
+          "hash": "4533240314544279514"
+        },
+        {
+          "file": "libs/ui/ui-hovercard-helm/tsconfig.lib.prod.json",
+          "hash": "10809217796916261822"
+        },
+        {
+          "file": "libs/ui/ui-hovercard-helm/tsconfig.spec.json",
+          "hash": "8574249004436160025"
+        }
+      ],
+      "ui-slider-helm": [
+        {
+          "file": "libs/ui/ui-slider-helm/README.md",
+          "hash": "7697686141183108082"
+        },
+        {
+          "file": "libs/ui/ui-slider-helm/eslint.config.mjs",
+          "hash": "8485609504886944637",
+          "deps": [
+            "npm:@nx/eslint-plugin",
+            [
+              "npm:jsonc-eslint-parser",
+              "dynamic"
+            ]
+          ]
+        },
+        {
+          "file": "libs/ui/ui-slider-helm/jest.config.ts",
+          "hash": "15392086890197336594"
+        },
+        {
+          "file": "libs/ui/ui-slider-helm/ng-package.json",
+          "hash": "5752733645164216060"
+        },
+        {
+          "file": "libs/ui/ui-slider-helm/package.json",
+          "hash": "5982702452658627646",
+          "deps": [
+            "npm:@angular/common",
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-slider-helm/project.json",
+          "hash": "7888276280892226145"
+        },
+        {
+          "file": "libs/ui/ui-slider-helm/src/index.ts",
+          "hash": "14853643963028369995"
+        },
+        {
+          "file": "libs/ui/ui-slider-helm/src/lib/hlm-slider.component.ts",
+          "hash": "133403493150471290",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-slider-helm/src/test-setup.ts",
+          "hash": "2674404341416425809",
+          "deps": [
+            "npm:jest-preset-angular"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-slider-helm/tsconfig.json",
+          "hash": "2396403117919940161"
+        },
+        {
+          "file": "libs/ui/ui-slider-helm/tsconfig.lib.json",
+          "hash": "4533240314544279514"
+        },
+        {
+          "file": "libs/ui/ui-slider-helm/tsconfig.lib.prod.json",
+          "hash": "10809217796916261822"
+        },
+        {
+          "file": "libs/ui/ui-slider-helm/tsconfig.spec.json",
+          "hash": "8574249004436160025"
+        }
+      ],
+      "ui-tabs-helm": [
+        {
+          "file": "libs/ui/ui-tabs-helm/README.md",
+          "hash": "9272971599694401061"
+        },
+        {
+          "file": "libs/ui/ui-tabs-helm/eslint.config.mjs",
+          "hash": "8485609504886944637",
+          "deps": [
+            "npm:@nx/eslint-plugin",
+            [
+              "npm:jsonc-eslint-parser",
+              "dynamic"
+            ]
+          ]
+        },
+        {
+          "file": "libs/ui/ui-tabs-helm/jest.config.ts",
+          "hash": "11657712158942832207"
+        },
+        {
+          "file": "libs/ui/ui-tabs-helm/ng-package.json",
+          "hash": "3129192138102245935"
+        },
+        {
+          "file": "libs/ui/ui-tabs-helm/package.json",
+          "hash": "547686720497170480",
+          "deps": [
+            "npm:@angular/common",
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-tabs-helm/project.json",
+          "hash": "14046060394238747983"
+        },
+        {
+          "file": "libs/ui/ui-tabs-helm/src/index.ts",
+          "hash": "1841781438202689908",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-tabs-helm/src/lib/hlm-tabs-content.directive.ts",
+          "hash": "2696862438070259346",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-tabs-helm/src/lib/hlm-tabs-list.component.ts",
+          "hash": "10979878181834394526",
           "deps": [
             "npm:@angular/core",
             "npm:@spartan-ng/brain",
@@ -2693,26 +813,315 @@
           ]
         },
         {
-          "file": "libs/ui/ui-spinner-helm/src/test-setup.ts",
+          "file": "libs/ui/ui-tabs-helm/src/lib/hlm-tabs-paginated-list.component.ts",
+          "hash": "16415910517314007094",
+          "deps": [
+            "npm:@angular/cdk",
+            "npm:@angular/core",
+            "npm:@ng-icons/core",
+            "npm:@ng-icons/lucide",
+            "npm:@spartan-ng/brain",
+            "ui-button-helm",
+            "ui-icon-helm",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-tabs-helm/src/lib/hlm-tabs-trigger.directive.ts",
+          "hash": "8061236442068126127",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-tabs-helm/src/lib/hlm-tabs.component.ts",
+          "hash": "9790497245331658265",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-tabs-helm/src/test-setup.ts",
           "hash": "2674404341416425809",
           "deps": [
             "npm:jest-preset-angular"
           ]
         },
         {
-          "file": "libs/ui/ui-spinner-helm/tsconfig.json",
+          "file": "libs/ui/ui-tabs-helm/tsconfig.json",
           "hash": "2396403117919940161"
         },
         {
-          "file": "libs/ui/ui-spinner-helm/tsconfig.lib.json",
+          "file": "libs/ui/ui-tabs-helm/tsconfig.lib.json",
           "hash": "4533240314544279514"
         },
         {
-          "file": "libs/ui/ui-spinner-helm/tsconfig.lib.prod.json",
+          "file": "libs/ui/ui-tabs-helm/tsconfig.lib.prod.json",
           "hash": "10809217796916261822"
         },
         {
-          "file": "libs/ui/ui-spinner-helm/tsconfig.spec.json",
+          "file": "libs/ui/ui-tabs-helm/tsconfig.spec.json",
+          "hash": "8574249004436160025"
+        }
+      ],
+      "ui-radiogroup-helm": [
+        {
+          "file": "libs/ui/ui-radiogroup-helm/README.md",
+          "hash": "14353236555555679925"
+        },
+        {
+          "file": "libs/ui/ui-radiogroup-helm/eslint.config.mjs",
+          "hash": "8485609504886944637",
+          "deps": [
+            "npm:@nx/eslint-plugin",
+            [
+              "npm:jsonc-eslint-parser",
+              "dynamic"
+            ]
+          ]
+        },
+        {
+          "file": "libs/ui/ui-radiogroup-helm/jest.config.ts",
+          "hash": "11343552296107510055"
+        },
+        {
+          "file": "libs/ui/ui-radiogroup-helm/ng-package.json",
+          "hash": "503277401863137582"
+        },
+        {
+          "file": "libs/ui/ui-radiogroup-helm/package.json",
+          "hash": "12072009768989769355",
+          "deps": [
+            "npm:@angular/common",
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-radiogroup-helm/project.json",
+          "hash": "4763302800318920084"
+        },
+        {
+          "file": "libs/ui/ui-radiogroup-helm/src/index.ts",
+          "hash": "8402057214600689162",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-radiogroup-helm/src/lib/hlm-radio-group.component.ts",
+          "hash": "10418338929178426294",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-radiogroup-helm/src/lib/hlm-radio-indicator.component.ts",
+          "hash": "16441913304991503152",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-radiogroup-helm/src/lib/hlm-radio.component.ts",
+          "hash": "5259970789076854326",
+          "deps": [
+            "npm:@angular/common",
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-radiogroup-helm/src/test-setup.ts",
+          "hash": "2674404341416425809",
+          "deps": [
+            "npm:jest-preset-angular"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-radiogroup-helm/tsconfig.json",
+          "hash": "2396403117919940161"
+        },
+        {
+          "file": "libs/ui/ui-radiogroup-helm/tsconfig.lib.json",
+          "hash": "4533240314544279514"
+        },
+        {
+          "file": "libs/ui/ui-radiogroup-helm/tsconfig.lib.prod.json",
+          "hash": "10809217796916261822"
+        },
+        {
+          "file": "libs/ui/ui-radiogroup-helm/tsconfig.spec.json",
+          "hash": "8574249004436160025"
+        }
+      ],
+      "ui-pagination-helm": [
+        {
+          "file": "libs/ui/ui-pagination-helm/README.md",
+          "hash": "14157236961644398144"
+        },
+        {
+          "file": "libs/ui/ui-pagination-helm/eslint.config.mjs",
+          "hash": "8485609504886944637",
+          "deps": [
+            "npm:@nx/eslint-plugin",
+            [
+              "npm:jsonc-eslint-parser",
+              "dynamic"
+            ]
+          ]
+        },
+        {
+          "file": "libs/ui/ui-pagination-helm/jest.config.ts",
+          "hash": "4171896458887214185"
+        },
+        {
+          "file": "libs/ui/ui-pagination-helm/ng-package.json",
+          "hash": "11750731428121054933"
+        },
+        {
+          "file": "libs/ui/ui-pagination-helm/package.json",
+          "hash": "15307484452433836825",
+          "deps": [
+            "npm:@angular/common",
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-pagination-helm/project.json",
+          "hash": "12002312168063546243"
+        },
+        {
+          "file": "libs/ui/ui-pagination-helm/src/index.ts",
+          "hash": "12922800490575513826",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-pagination-helm/src/lib/hlm-numbered-pagination.component.ts",
+          "hash": "17055511735176407473",
+          "deps": [
+            "npm:@angular/cdk",
+            "npm:@angular/core",
+            "npm:@angular/forms",
+            "npm:@spartan-ng/brain",
+            "ui-select-helm"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-pagination-helm/src/lib/hlm-pagination-content.directive.ts",
+          "hash": "7892213548080297620",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain",
+            "npm:class-variance-authority",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-pagination-helm/src/lib/hlm-pagination-ellipsis.component.ts",
+          "hash": "17829861933065760413",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@ng-icons/core",
+            "npm:@ng-icons/lucide",
+            "npm:@spartan-ng/brain",
+            "ui-icon-helm",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-pagination-helm/src/lib/hlm-pagination-item.directive.ts",
+          "hash": "12997319324972270123",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain",
+            "npm:class-variance-authority",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-pagination-helm/src/lib/hlm-pagination-link.directive.ts",
+          "hash": "932862498842812371",
+          "deps": [
+            "npm:@angular/cdk",
+            "npm:@angular/core",
+            "npm:@angular/router",
+            "npm:@spartan-ng/brain",
+            "ui-button-helm",
+            "npm:class-variance-authority",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-pagination-helm/src/lib/hlm-pagination-next.component.ts",
+          "hash": "10617257991272632933",
+          "deps": [
+            "npm:@angular/cdk",
+            "npm:@angular/core",
+            "npm:@angular/router",
+            "npm:@ng-icons/core",
+            "npm:@ng-icons/lucide",
+            "npm:@spartan-ng/brain",
+            "ui-button-helm",
+            "ui-icon-helm",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-pagination-helm/src/lib/hlm-pagination-previous.component.ts",
+          "hash": "15282568977746413212",
+          "deps": [
+            "npm:@angular/cdk",
+            "npm:@angular/core",
+            "npm:@angular/router",
+            "npm:@ng-icons/core",
+            "npm:@ng-icons/lucide",
+            "npm:@spartan-ng/brain",
+            "ui-button-helm",
+            "ui-icon-helm",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-pagination-helm/src/lib/hlm-pagination.directive.ts",
+          "hash": "10328511587801846707",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain",
+            "npm:class-variance-authority",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-pagination-helm/src/test-setup.ts",
+          "hash": "2674404341416425809",
+          "deps": [
+            "npm:jest-preset-angular"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-pagination-helm/tsconfig.json",
+          "hash": "2396403117919940161"
+        },
+        {
+          "file": "libs/ui/ui-pagination-helm/tsconfig.lib.json",
+          "hash": "4533240314544279514"
+        },
+        {
+          "file": "libs/ui/ui-pagination-helm/tsconfig.lib.prod.json",
+          "hash": "10809217796916261822"
+        },
+        {
+          "file": "libs/ui/ui-pagination-helm/tsconfig.spec.json",
           "hash": "8574249004436160025"
         }
       ],
@@ -2800,13 +1209,13 @@
           "hash": "8574249004436160025"
         }
       ],
-      "ui-inputotp-helm": [
+      "ui-accordion-helm": [
         {
-          "file": "libs/ui/ui-inputotp-helm/README.md",
-          "hash": "11147822395920206533"
+          "file": "libs/ui/ui-accordion-helm/README.md",
+          "hash": "2082434690987895293"
         },
         {
-          "file": "libs/ui/ui-inputotp-helm/eslint.config.mjs",
+          "file": "libs/ui/ui-accordion-helm/eslint.config.mjs",
           "hash": "8485609504886944637",
           "deps": [
             "npm:@nx/eslint-plugin",
@@ -2817,42 +1226,35 @@
           ]
         },
         {
-          "file": "libs/ui/ui-inputotp-helm/jest.config.ts",
-          "hash": "9282894904116143928"
+          "file": "libs/ui/ui-accordion-helm/jest.config.ts",
+          "hash": "4023933285851668443"
         },
         {
-          "file": "libs/ui/ui-inputotp-helm/ng-package.json",
-          "hash": "589650609958216338"
+          "file": "libs/ui/ui-accordion-helm/ng-package.json",
+          "hash": "7603991674643510401"
         },
         {
-          "file": "libs/ui/ui-inputotp-helm/package.json",
-          "hash": "1175047283642330061",
+          "file": "libs/ui/ui-accordion-helm/package.json",
+          "hash": "13631864631082416283",
           "deps": [
             "npm:@angular/common",
             "npm:@angular/core"
           ]
         },
         {
-          "file": "libs/ui/ui-inputotp-helm/project.json",
-          "hash": "17046846175580303347"
+          "file": "libs/ui/ui-accordion-helm/project.json",
+          "hash": "13432111373707324145"
         },
         {
-          "file": "libs/ui/ui-inputotp-helm/src/index.ts",
-          "hash": "2745631525753963717",
+          "file": "libs/ui/ui-accordion-helm/src/index.ts",
+          "hash": "16966080643737820728",
           "deps": [
             "npm:@angular/core"
           ]
         },
         {
-          "file": "libs/ui/ui-inputotp-helm/src/lib/hlm-input-otp-fake-caret.component.ts",
-          "hash": "7256394946139592278",
-          "deps": [
-            "npm:@angular/core"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-inputotp-helm/src/lib/hlm-input-otp-group.directive.ts",
-          "hash": "16318681803104019153",
+          "file": "libs/ui/ui-accordion-helm/src/lib/hlm-accordion-content.component.ts",
+          "hash": "11724863858532011957",
           "deps": [
             "npm:@angular/core",
             "npm:@spartan-ng/brain",
@@ -2860,8 +1262,8 @@
           ]
         },
         {
-          "file": "libs/ui/ui-inputotp-helm/src/lib/hlm-input-otp-separator.component.ts",
-          "hash": "17215652529114926735",
+          "file": "libs/ui/ui-accordion-helm/src/lib/hlm-accordion-icon.directive.ts",
+          "hash": "14539338016631095992",
           "deps": [
             "npm:@angular/core",
             "npm:@ng-icons/core",
@@ -2872,18 +1274,8 @@
           ]
         },
         {
-          "file": "libs/ui/ui-inputotp-helm/src/lib/hlm-input-otp-slot.component.ts",
-          "hash": "17262156428722604440",
-          "deps": [
-            "npm:@angular/cdk",
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-inputotp-helm/src/lib/hlm-input-otp.directive.ts",
-          "hash": "15088070439788325215",
+          "file": "libs/ui/ui-accordion-helm/src/lib/hlm-accordion-item.directive.ts",
+          "hash": "7568680538804025114",
           "deps": [
             "npm:@angular/core",
             "npm:@spartan-ng/brain",
@@ -2891,26 +1283,296 @@
           ]
         },
         {
-          "file": "libs/ui/ui-inputotp-helm/src/test-setup.ts",
+          "file": "libs/ui/ui-accordion-helm/src/lib/hlm-accordion-trigger.directive.ts",
+          "hash": "15391231394143943689",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-accordion-helm/src/lib/hlm-accordion.directive.ts",
+          "hash": "3956324860249874113",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-accordion-helm/src/test-setup.ts",
           "hash": "2674404341416425809",
           "deps": [
             "npm:jest-preset-angular"
           ]
         },
         {
-          "file": "libs/ui/ui-inputotp-helm/tsconfig.json",
+          "file": "libs/ui/ui-accordion-helm/tsconfig.json",
           "hash": "2396403117919940161"
         },
         {
-          "file": "libs/ui/ui-inputotp-helm/tsconfig.lib.json",
+          "file": "libs/ui/ui-accordion-helm/tsconfig.lib.json",
           "hash": "4533240314544279514"
         },
         {
-          "file": "libs/ui/ui-inputotp-helm/tsconfig.lib.prod.json",
+          "file": "libs/ui/ui-accordion-helm/tsconfig.lib.prod.json",
           "hash": "10809217796916261822"
         },
         {
-          "file": "libs/ui/ui-inputotp-helm/tsconfig.spec.json",
+          "file": "libs/ui/ui-accordion-helm/tsconfig.spec.json",
+          "hash": "8574249004436160025"
+        }
+      ],
+      "ui-calendar-helm": [
+        {
+          "file": "libs/ui/ui-calendar-helm/README.md",
+          "hash": "10889739022530968107"
+        },
+        {
+          "file": "libs/ui/ui-calendar-helm/eslint.config.mjs",
+          "hash": "8485609504886944637",
+          "deps": [
+            "npm:@nx/eslint-plugin",
+            [
+              "npm:jsonc-eslint-parser",
+              "dynamic"
+            ]
+          ]
+        },
+        {
+          "file": "libs/ui/ui-calendar-helm/jest.config.ts",
+          "hash": "18269850829336365110"
+        },
+        {
+          "file": "libs/ui/ui-calendar-helm/ng-package.json",
+          "hash": "12939045854833751549"
+        },
+        {
+          "file": "libs/ui/ui-calendar-helm/package.json",
+          "hash": "3556173464858263324",
+          "deps": [
+            "npm:@angular/common",
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-calendar-helm/project.json",
+          "hash": "5403139867025323939"
+        },
+        {
+          "file": "libs/ui/ui-calendar-helm/src/index.ts",
+          "hash": "5080598221786873996",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-calendar-helm/src/lib/hlm-calendar-multi.component.ts",
+          "hash": "3688004964147585222",
+          "deps": [
+            "npm:@angular/cdk",
+            "npm:@angular/core",
+            "npm:@ng-icons/core",
+            "npm:@ng-icons/lucide",
+            "npm:@spartan-ng/brain",
+            "ui-button-helm",
+            "ui-icon-helm",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-calendar-helm/src/lib/hlm-calendar.component.ts",
+          "hash": "8829064454866849143",
+          "deps": [
+            "npm:@angular/cdk",
+            "npm:@angular/core",
+            "npm:@ng-icons/core",
+            "npm:@ng-icons/lucide",
+            "npm:@spartan-ng/brain",
+            "ui-button-helm",
+            "ui-icon-helm",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-calendar-helm/src/test-setup.ts",
+          "hash": "2674404341416425809",
+          "deps": [
+            "npm:jest-preset-angular"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-calendar-helm/tsconfig.json",
+          "hash": "2396403117919940161"
+        },
+        {
+          "file": "libs/ui/ui-calendar-helm/tsconfig.lib.json",
+          "hash": "4533240314544279514"
+        },
+        {
+          "file": "libs/ui/ui-calendar-helm/tsconfig.lib.prod.json",
+          "hash": "10809217796916261822"
+        },
+        {
+          "file": "libs/ui/ui-calendar-helm/tsconfig.spec.json",
+          "hash": "8574249004436160025"
+        }
+      ],
+      "ui-select-helm": [
+        {
+          "file": "libs/ui/ui-select-helm/README.md",
+          "hash": "13807035262028774161"
+        },
+        {
+          "file": "libs/ui/ui-select-helm/eslint.config.mjs",
+          "hash": "8485609504886944637",
+          "deps": [
+            "npm:@nx/eslint-plugin",
+            [
+              "npm:jsonc-eslint-parser",
+              "dynamic"
+            ]
+          ]
+        },
+        {
+          "file": "libs/ui/ui-select-helm/jest.config.ts",
+          "hash": "5350467193415845491"
+        },
+        {
+          "file": "libs/ui/ui-select-helm/ng-package.json",
+          "hash": "10601311100995659520"
+        },
+        {
+          "file": "libs/ui/ui-select-helm/package.json",
+          "hash": "15245069385150594987",
+          "deps": [
+            "npm:@angular/common",
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-select-helm/project.json",
+          "hash": "3757797695451449068"
+        },
+        {
+          "file": "libs/ui/ui-select-helm/src/index.ts",
+          "hash": "14018309011524926443",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-select-helm/src/lib/hlm-select-content.directive.ts",
+          "hash": "13777679391543875655",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-select-helm/src/lib/hlm-select-group.directive.ts",
+          "hash": "10104144719712809790",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-select-helm/src/lib/hlm-select-label.directive.ts",
+          "hash": "2154633510682930564",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-select-helm/src/lib/hlm-select-option.component.ts",
+          "hash": "6344241916605108194",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@ng-icons/core",
+            "npm:@ng-icons/lucide",
+            "npm:@spartan-ng/brain",
+            "ui-icon-helm",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-select-helm/src/lib/hlm-select-scroll-down.component.ts",
+          "hash": "9268832728392784249",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@ng-icons/core",
+            "npm:@ng-icons/lucide",
+            "ui-icon-helm"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-select-helm/src/lib/hlm-select-scroll-up.component.ts",
+          "hash": "14205754900920695476",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@ng-icons/core",
+            "npm:@ng-icons/lucide",
+            "ui-icon-helm"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-select-helm/src/lib/hlm-select-trigger.component.ts",
+          "hash": "12653672144658689108",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@ng-icons/core",
+            "npm:@ng-icons/lucide",
+            "npm:@spartan-ng/brain",
+            "ui-icon-helm",
+            "npm:class-variance-authority",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-select-helm/src/lib/hlm-select-value.directive.ts",
+          "hash": "10414791879790285753",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-select-helm/src/lib/hlm-select.directive.ts",
+          "hash": "13558601816034201677",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-select-helm/src/test-setup.ts",
+          "hash": "2674404341416425809",
+          "deps": [
+            "npm:jest-preset-angular"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-select-helm/tsconfig.json",
+          "hash": "2396403117919940161"
+        },
+        {
+          "file": "libs/ui/ui-select-helm/tsconfig.lib.json",
+          "hash": "4533240314544279514"
+        },
+        {
+          "file": "libs/ui/ui-select-helm/tsconfig.lib.prod.json",
+          "hash": "10809217796916261822"
+        },
+        {
+          "file": "libs/ui/ui-select-helm/tsconfig.spec.json",
           "hash": "8574249004436160025"
         }
       ],
@@ -3171,241 +1833,10 @@
           "hash": "8574249004436160025"
         }
       ],
-      "ui-breadcrumb-helm": [
-        {
-          "file": "libs/ui/ui-breadcrumb-helm/README.md",
-          "hash": "16961971990519681567"
-        },
-        {
-          "file": "libs/ui/ui-breadcrumb-helm/eslint.config.mjs",
-          "hash": "8485609504886944637",
-          "deps": [
-            "npm:@nx/eslint-plugin",
-            [
-              "npm:jsonc-eslint-parser",
-              "dynamic"
-            ]
-          ]
-        },
-        {
-          "file": "libs/ui/ui-breadcrumb-helm/jest.config.ts",
-          "hash": "7424943178032194310"
-        },
-        {
-          "file": "libs/ui/ui-breadcrumb-helm/ng-package.json",
-          "hash": "4684695196329366834"
-        },
-        {
-          "file": "libs/ui/ui-breadcrumb-helm/package.json",
-          "hash": "15389683645875419042",
-          "deps": [
-            "npm:@angular/common",
-            "npm:@angular/core"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-breadcrumb-helm/project.json",
-          "hash": "18060031279336174884"
-        },
-        {
-          "file": "libs/ui/ui-breadcrumb-helm/src/index.ts",
-          "hash": "18342480858812674561",
-          "deps": [
-            "npm:@angular/core"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-breadcrumb-helm/src/lib/hlm-breadcrumb-ellipsis.component.ts",
-          "hash": "9848581571302988978",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@ng-icons/core",
-            "npm:@ng-icons/lucide",
-            "npm:@spartan-ng/brain",
-            "ui-icon-helm",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-breadcrumb-helm/src/lib/hlm-breadcrumb-item.directive.ts",
-          "hash": "4093580449928154687",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-breadcrumb-helm/src/lib/hlm-breadcrumb-link.directive.ts",
-          "hash": "4114390786229047607",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@angular/router",
-            "npm:@spartan-ng/brain",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-breadcrumb-helm/src/lib/hlm-breadcrumb-list.directive.ts",
-          "hash": "599360742497585501",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-breadcrumb-helm/src/lib/hlm-breadcrumb-page.directive.ts",
-          "hash": "7073020064516959333",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-breadcrumb-helm/src/lib/hlm-breadcrumb-separator.component.ts",
-          "hash": "3731199446128040690",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@ng-icons/core",
-            "npm:@ng-icons/lucide",
-            "npm:@spartan-ng/brain",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-breadcrumb-helm/src/lib/hlm-breadcrumb.directive.ts",
-          "hash": "17003434731199743371",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-breadcrumb-helm/src/test-setup.ts",
-          "hash": "2674404341416425809",
-          "deps": [
-            "npm:jest-preset-angular"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-breadcrumb-helm/tsconfig.json",
-          "hash": "2396403117919940161"
-        },
-        {
-          "file": "libs/ui/ui-breadcrumb-helm/tsconfig.lib.json",
-          "hash": "4533240314544279514"
-        },
-        {
-          "file": "libs/ui/ui-breadcrumb-helm/tsconfig.lib.prod.json",
-          "hash": "10809217796916261822"
-        },
-        {
-          "file": "libs/ui/ui-breadcrumb-helm/tsconfig.spec.json",
-          "hash": "8574249004436160025"
-        }
-      ],
-      "ui-radiogroup-helm": [
-        {
-          "file": "libs/ui/ui-radiogroup-helm/README.md",
-          "hash": "14353236555555679925"
-        },
-        {
-          "file": "libs/ui/ui-radiogroup-helm/eslint.config.mjs",
-          "hash": "8485609504886944637",
-          "deps": [
-            "npm:@nx/eslint-plugin",
-            [
-              "npm:jsonc-eslint-parser",
-              "dynamic"
-            ]
-          ]
-        },
-        {
-          "file": "libs/ui/ui-radiogroup-helm/jest.config.ts",
-          "hash": "11343552296107510055"
-        },
-        {
-          "file": "libs/ui/ui-radiogroup-helm/ng-package.json",
-          "hash": "503277401863137582"
-        },
-        {
-          "file": "libs/ui/ui-radiogroup-helm/package.json",
-          "hash": "12072009768989769355",
-          "deps": [
-            "npm:@angular/common",
-            "npm:@angular/core"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-radiogroup-helm/project.json",
-          "hash": "4763302800318920084"
-        },
-        {
-          "file": "libs/ui/ui-radiogroup-helm/src/index.ts",
-          "hash": "8402057214600689162",
-          "deps": [
-            "npm:@angular/core"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-radiogroup-helm/src/lib/hlm-radio-group.component.ts",
-          "hash": "10418338929178426294",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-radiogroup-helm/src/lib/hlm-radio-indicator.component.ts",
-          "hash": "16441913304991503152",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-radiogroup-helm/src/lib/hlm-radio.component.ts",
-          "hash": "5259970789076854326",
-          "deps": [
-            "npm:@angular/common",
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-radiogroup-helm/src/test-setup.ts",
-          "hash": "2674404341416425809",
-          "deps": [
-            "npm:jest-preset-angular"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-radiogroup-helm/tsconfig.json",
-          "hash": "2396403117919940161"
-        },
-        {
-          "file": "libs/ui/ui-radiogroup-helm/tsconfig.lib.json",
-          "hash": "4533240314544279514"
-        },
-        {
-          "file": "libs/ui/ui-radiogroup-helm/tsconfig.lib.prod.json",
-          "hash": "10809217796916261822"
-        },
-        {
-          "file": "libs/ui/ui-radiogroup-helm/tsconfig.spec.json",
-          "hash": "8574249004436160025"
-        }
-      ],
       "orchestration_library-front": [
         {
           "file": ".github/workflows/validate_build_deploy.yaml",
-          "hash": "14921464360354583854"
+          "hash": "2004012945912754443"
         },
         {
           "file": ".gitignore",
@@ -3436,10 +1867,6 @@
           "hash": "9603309578036482862"
         },
         {
-          "file": "charts/orchestrator-library-ui/chart.yaml",
-          "hash": "9603309578036482862"
-        },
-        {
           "file": "charts/orchestrator-library-ui/templates/configmap.yaml",
           "hash": "9994015184872889276"
         },
@@ -3449,11 +1876,11 @@
         },
         {
           "file": "charts/orchestrator-library-ui/templates/service.yaml",
-          "hash": "5057235956235783832"
+          "hash": "1417708411032380506"
         },
         {
           "file": "charts/orchestrator-library-ui/values.yaml",
-          "hash": "14948423832811977319"
+          "hash": "17414576531555466015"
         },
         {
           "file": "components.json",
@@ -3702,8 +2129,12 @@
           "hash": "6955572545684659392"
         },
         {
+          "file": "openapi_doc.json",
+          "hash": "4473734463065609490"
+        },
+        {
           "file": "package.json",
-          "hash": "9395110329535475417",
+          "hash": "15833854796867449860",
           "deps": [
             "npm:@angular-devkit/build-angular",
             "npm:@angular-devkit/core",
@@ -3782,7 +2213,7 @@
         },
         {
           "file": "pnpm-lock.yaml",
-          "hash": "2735931801682269853"
+          "hash": "104030473975870673"
         },
         {
           "file": "project.json",
@@ -3790,11 +2221,11 @@
         },
         {
           "file": "proxy.conf.json",
-          "hash": "14669051023421096738"
+          "hash": "559768084456637437"
         },
         {
           "file": "public/assets/i18n/en.json",
-          "hash": "3627412233336826313"
+          "hash": "16006193251949569143"
         },
         {
           "file": "public/browserconfig.xml",
@@ -3881,6 +2312,10 @@
           "hash": "9739985577354265166"
         },
         {
+          "file": "public/logo_footer.svg",
+          "hash": "15635745052876026035"
+        },
+        {
           "file": "public/site.webmanifest",
           "hash": "1795404213542763189"
         },
@@ -3890,7 +2325,7 @@
         },
         {
           "file": "scripts/deploy_orchestration_library_ui.sh",
-          "hash": "7360312127068441520"
+          "hash": "915697504254410573"
         },
         {
           "file": "src/app/app.config.server.ts",
@@ -3924,7 +2359,7 @@
         },
         {
           "file": "src/app/app.routes.ts",
-          "hash": "15494744598143718896",
+          "hash": "17883623351012224843",
           "deps": [
             "npm:@angular/router"
           ]
@@ -3975,11 +2410,11 @@
         },
         {
           "file": "src/app/components/app-table/app-table.component.html",
-          "hash": "7033727970753532936"
+          "hash": "2696373342839131673"
         },
         {
           "file": "src/app/components/app-table/app-table.component.ts",
-          "hash": "9181610998761523616",
+          "hash": "9901263988810691270",
           "deps": [
             "npm:@angular/common",
             "npm:@jsverse/transloco",
@@ -3992,6 +2427,7 @@
             "ui-input-helm",
             "npm:@spartan-ng/brain",
             "ui-menu-helm",
+            "ui-tabs-helm",
             "ui-table-helm",
             "ui-select-helm",
             "npm:@ng-icons/core",
@@ -4018,7 +2454,7 @@
         },
         {
           "file": "src/app/core/models/api.model.ts",
-          "hash": "12415092275688848124"
+          "hash": "192209053301630404"
         },
         {
           "file": "src/app/core/models/auth.model.ts",
@@ -4046,7 +2482,7 @@
         },
         {
           "file": "src/app/core/services/api.service.ts",
-          "hash": "15699869991550435559",
+          "hash": "16244992371956185094",
           "deps": [
             "npm:@angular/core",
             "npm:@angular/common",
@@ -4132,7 +2568,7 @@
         },
         {
           "file": "src/app/layouts/main-layout/main-layout.component.html",
-          "hash": "70284362848610432"
+          "hash": "5150077281987252489"
         },
         {
           "file": "src/app/layouts/main-layout/main-layout.component.scss",
@@ -4140,7 +2576,7 @@
         },
         {
           "file": "src/app/layouts/main-layout/main-layout.component.ts",
-          "hash": "8648699956262701327",
+          "hash": "1002435890511807125",
           "deps": [
             "npm:@angular/core",
             "npm:@angular/common",
@@ -4194,6 +2630,17 @@
           ]
         },
         {
+          "file": "src/app/pages/dashboard/dashboard.component.scss",
+          "hash": "247318370654500938"
+        },
+        {
+          "file": "src/app/pages/dashboard/dashboard.component.ts",
+          "hash": "15304051414853382907",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
           "file": "src/app/pages/emdc/clusters/clusters.component.html",
           "hash": "5971744494411554896"
         },
@@ -4203,6 +2650,19 @@
           "deps": [
             "npm:@angular/core",
             "npm:@jsverse/transloco"
+          ]
+        },
+        {
+          "file": "src/app/pages/emdc/request_decisions/request_decisions.component.html",
+          "hash": "3436482106360490151"
+        },
+        {
+          "file": "src/app/pages/emdc/request_decisions/request_decisions.component.ts",
+          "hash": "13272875848821839118",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@jsverse/transloco",
+            "npm:rxjs"
           ]
         },
         {
@@ -4308,6 +2768,14 @@
           ]
         },
         {
+          "file": "src/app/pipes/safe.pipe.ts",
+          "hash": "15181003418348326003",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/platform-browser"
+          ]
+        },
+        {
           "file": "src/app/transloco-config.ts",
           "hash": "741271019678995369",
           "deps": [
@@ -4319,11 +2787,11 @@
         },
         {
           "file": "src/environments/environment.prod.ts",
-          "hash": "5943139685793158267"
+          "hash": "17043771166900113081"
         },
         {
           "file": "src/environments/environment.ts",
-          "hash": "10007093986089804698"
+          "hash": "11765451996643640187"
         },
         {
           "file": "src/index.html",
@@ -4365,7 +2833,7 @@
         },
         {
           "file": "tsconfig.base.json",
-          "hash": "11708609394974615445"
+          "hash": "13500735064555365480"
         },
         {
           "file": "tsconfig.json",
@@ -4376,13 +2844,13 @@
           "hash": "647795770471502525"
         }
       ],
-      "ui-card-helm": [
+      "ui-aspectratio-helm": [
         {
-          "file": "libs/ui/ui-card-helm/README.md",
-          "hash": "18146213264392725776"
+          "file": "libs/ui/ui-aspectratio-helm/README.md",
+          "hash": "8112322121380447425"
         },
         {
-          "file": "libs/ui/ui-card-helm/eslint.config.mjs",
+          "file": "libs/ui/ui-aspectratio-helm/eslint.config.mjs",
           "hash": "8485609504886944637",
           "deps": [
             "npm:@nx/eslint-plugin",
@@ -4393,113 +2861,562 @@
           ]
         },
         {
-          "file": "libs/ui/ui-card-helm/jest.config.ts",
-          "hash": "17423972472752211436"
+          "file": "libs/ui/ui-aspectratio-helm/jest.config.ts",
+          "hash": "10527292612171735120"
         },
         {
-          "file": "libs/ui/ui-card-helm/ng-package.json",
-          "hash": "3811223636166175484"
+          "file": "libs/ui/ui-aspectratio-helm/ng-package.json",
+          "hash": "732458600135168127"
         },
         {
-          "file": "libs/ui/ui-card-helm/package.json",
-          "hash": "9158886452595514934",
+          "file": "libs/ui/ui-aspectratio-helm/package.json",
+          "hash": "9411452924564596621",
           "deps": [
             "npm:@angular/common",
             "npm:@angular/core"
           ]
         },
         {
-          "file": "libs/ui/ui-card-helm/project.json",
-          "hash": "11504871186620069896"
+          "file": "libs/ui/ui-aspectratio-helm/project.json",
+          "hash": "15915920712321403614"
         },
         {
-          "file": "libs/ui/ui-card-helm/src/index.ts",
-          "hash": "16562238750490677596",
+          "file": "libs/ui/ui-aspectratio-helm/src/index.ts",
+          "hash": "6600508035470287061",
           "deps": [
             "npm:@angular/core"
           ]
         },
         {
-          "file": "libs/ui/ui-card-helm/src/lib/hlm-card-content.directive.ts",
-          "hash": "14120040773416496629",
+          "file": "libs/ui/ui-aspectratio-helm/src/lib/helm-aspect-ratio.directive.ts",
+          "hash": "1754965119494222111",
           "deps": [
+            "npm:@angular/cdk",
             "npm:@angular/core",
             "npm:@spartan-ng/brain",
-            "npm:class-variance-authority",
             "npm:clsx"
           ]
         },
         {
-          "file": "libs/ui/ui-card-helm/src/lib/hlm-card-description.directive.ts",
-          "hash": "11379924620899130749",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain",
-            "npm:class-variance-authority",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-card-helm/src/lib/hlm-card-footer.directive.ts",
-          "hash": "10967238700823552868",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain",
-            "npm:class-variance-authority",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-card-helm/src/lib/hlm-card-header.directive.ts",
-          "hash": "15901871804019604030",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain",
-            "npm:class-variance-authority",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-card-helm/src/lib/hlm-card-title.directive.ts",
-          "hash": "12874525138222134681",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain",
-            "npm:class-variance-authority",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-card-helm/src/lib/hlm-card.directive.ts",
-          "hash": "17507123041101396637",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain",
-            "npm:class-variance-authority",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-card-helm/src/test-setup.ts",
+          "file": "libs/ui/ui-aspectratio-helm/src/test-setup.ts",
           "hash": "2674404341416425809",
           "deps": [
             "npm:jest-preset-angular"
           ]
         },
         {
-          "file": "libs/ui/ui-card-helm/tsconfig.json",
+          "file": "libs/ui/ui-aspectratio-helm/tsconfig.json",
           "hash": "2396403117919940161"
         },
         {
-          "file": "libs/ui/ui-card-helm/tsconfig.lib.json",
+          "file": "libs/ui/ui-aspectratio-helm/tsconfig.lib.json",
           "hash": "4533240314544279514"
         },
         {
-          "file": "libs/ui/ui-card-helm/tsconfig.lib.prod.json",
+          "file": "libs/ui/ui-aspectratio-helm/tsconfig.lib.prod.json",
           "hash": "10809217796916261822"
         },
         {
-          "file": "libs/ui/ui-card-helm/tsconfig.spec.json",
+          "file": "libs/ui/ui-aspectratio-helm/tsconfig.spec.json",
+          "hash": "8574249004436160025"
+        }
+      ],
+      "ui-checkbox-helm": [
+        {
+          "file": "libs/ui/ui-checkbox-helm/README.md",
+          "hash": "6340951503271655961"
+        },
+        {
+          "file": "libs/ui/ui-checkbox-helm/eslint.config.mjs",
+          "hash": "8485609504886944637",
+          "deps": [
+            "npm:@nx/eslint-plugin",
+            [
+              "npm:jsonc-eslint-parser",
+              "dynamic"
+            ]
+          ]
+        },
+        {
+          "file": "libs/ui/ui-checkbox-helm/jest.config.ts",
+          "hash": "6105163302557270581"
+        },
+        {
+          "file": "libs/ui/ui-checkbox-helm/ng-package.json",
+          "hash": "16432900444300841196"
+        },
+        {
+          "file": "libs/ui/ui-checkbox-helm/package.json",
+          "hash": "17040963018864125957",
+          "deps": [
+            "npm:@angular/common",
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-checkbox-helm/project.json",
+          "hash": "1549453207290383300"
+        },
+        {
+          "file": "libs/ui/ui-checkbox-helm/src/index.ts",
+          "hash": "8707675592414440616",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-checkbox-helm/src/lib/hlm-checkbox.component.ts",
+          "hash": "4426878884259586757",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/forms",
+            "npm:@ng-icons/core",
+            "npm:@ng-icons/lucide",
+            "npm:@spartan-ng/brain",
+            "ui-icon-helm",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-checkbox-helm/src/test-setup.ts",
+          "hash": "2674404341416425809",
+          "deps": [
+            "npm:jest-preset-angular"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-checkbox-helm/tsconfig.json",
+          "hash": "2396403117919940161"
+        },
+        {
+          "file": "libs/ui/ui-checkbox-helm/tsconfig.lib.json",
+          "hash": "4533240314544279514"
+        },
+        {
+          "file": "libs/ui/ui-checkbox-helm/tsconfig.lib.prod.json",
+          "hash": "10809217796916261822"
+        },
+        {
+          "file": "libs/ui/ui-checkbox-helm/tsconfig.spec.json",
+          "hash": "8574249004436160025"
+        }
+      ],
+      "ui-icon-helm": [
+        {
+          "file": "libs/ui/ui-icon-helm/README.md",
+          "hash": "7434381925416293136"
+        },
+        {
+          "file": "libs/ui/ui-icon-helm/eslint.config.mjs",
+          "hash": "8485609504886944637",
+          "deps": [
+            "npm:@nx/eslint-plugin",
+            [
+              "npm:jsonc-eslint-parser",
+              "dynamic"
+            ]
+          ]
+        },
+        {
+          "file": "libs/ui/ui-icon-helm/jest.config.ts",
+          "hash": "6871076987113233250"
+        },
+        {
+          "file": "libs/ui/ui-icon-helm/ng-package.json",
+          "hash": "6896611471761540214"
+        },
+        {
+          "file": "libs/ui/ui-icon-helm/package.json",
+          "hash": "6902774505492035694",
+          "deps": [
+            "npm:@angular/common",
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-icon-helm/project.json",
+          "hash": "945190115823879680"
+        },
+        {
+          "file": "libs/ui/ui-icon-helm/src/index.ts",
+          "hash": "13072002477516072914",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-icon-helm/src/lib/hlm-icon.directive.ts",
+          "hash": "1190767095705292823",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-icon-helm/src/lib/hlm-icon.token.ts",
+          "hash": "1780499468245078594",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-icon-helm/src/test-setup.ts",
+          "hash": "2674404341416425809",
+          "deps": [
+            "npm:jest-preset-angular"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-icon-helm/tsconfig.json",
+          "hash": "2396403117919940161"
+        },
+        {
+          "file": "libs/ui/ui-icon-helm/tsconfig.lib.json",
+          "hash": "4533240314544279514"
+        },
+        {
+          "file": "libs/ui/ui-icon-helm/tsconfig.lib.prod.json",
+          "hash": "10809217796916261822"
+        },
+        {
+          "file": "libs/ui/ui-icon-helm/tsconfig.spec.json",
+          "hash": "8574249004436160025"
+        }
+      ],
+      "ui-alertdialog-helm": [
+        {
+          "file": "libs/ui/ui-alertdialog-helm/README.md",
+          "hash": "11368131812813882552"
+        },
+        {
+          "file": "libs/ui/ui-alertdialog-helm/eslint.config.mjs",
+          "hash": "8485609504886944637",
+          "deps": [
+            "npm:@nx/eslint-plugin",
+            [
+              "npm:jsonc-eslint-parser",
+              "dynamic"
+            ]
+          ]
+        },
+        {
+          "file": "libs/ui/ui-alertdialog-helm/jest.config.ts",
+          "hash": "2699612480992670542"
+        },
+        {
+          "file": "libs/ui/ui-alertdialog-helm/ng-package.json",
+          "hash": "16517782769585423606"
+        },
+        {
+          "file": "libs/ui/ui-alertdialog-helm/package.json",
+          "hash": "16608135974117581359",
+          "deps": [
+            "npm:@angular/common",
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-alertdialog-helm/project.json",
+          "hash": "17057260328625937585"
+        },
+        {
+          "file": "libs/ui/ui-alertdialog-helm/src/index.ts",
+          "hash": "8146933523089635701",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-alertdialog-helm/src/lib/hlm-alert-dialog-action-button.directive.ts",
+          "hash": "1422241331487409646",
+          "deps": [
+            "npm:@angular/core",
+            "ui-button-helm"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-alertdialog-helm/src/lib/hlm-alert-dialog-cancel-button.directive.ts",
+          "hash": "14830594565982339429",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain",
+            "ui-button-helm",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-alertdialog-helm/src/lib/hlm-alert-dialog-content.component.ts",
+          "hash": "10092501886584486457",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-alertdialog-helm/src/lib/hlm-alert-dialog-description.directive.ts",
+          "hash": "9811652057824537648",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-alertdialog-helm/src/lib/hlm-alert-dialog-footer.component.ts",
+          "hash": "16661942140075421979",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-alertdialog-helm/src/lib/hlm-alert-dialog-header.component.ts",
+          "hash": "12114381417388294290",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-alertdialog-helm/src/lib/hlm-alert-dialog-overlay.directive.ts",
+          "hash": "6987357437767768949",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-alertdialog-helm/src/lib/hlm-alert-dialog-title.directive.ts",
+          "hash": "18055364843113896742",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-alertdialog-helm/src/lib/hlm-alert-dialog.component.ts",
+          "hash": "8498035084345322100",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-alertdialog-helm/src/test-setup.ts",
+          "hash": "2674404341416425809",
+          "deps": [
+            "npm:jest-preset-angular"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-alertdialog-helm/tsconfig.json",
+          "hash": "2396403117919940161"
+        },
+        {
+          "file": "libs/ui/ui-alertdialog-helm/tsconfig.lib.json",
+          "hash": "4533240314544279514"
+        },
+        {
+          "file": "libs/ui/ui-alertdialog-helm/tsconfig.lib.prod.json",
+          "hash": "10809217796916261822"
+        },
+        {
+          "file": "libs/ui/ui-alertdialog-helm/tsconfig.spec.json",
+          "hash": "8574249004436160025"
+        }
+      ],
+      "ui-formfield-helm": [
+        {
+          "file": "libs/ui/ui-formfield-helm/README.md",
+          "hash": "13743927200447898542"
+        },
+        {
+          "file": "libs/ui/ui-formfield-helm/eslint.config.mjs",
+          "hash": "8485609504886944637",
+          "deps": [
+            "npm:@nx/eslint-plugin",
+            [
+              "npm:jsonc-eslint-parser",
+              "dynamic"
+            ]
+          ]
+        },
+        {
+          "file": "libs/ui/ui-formfield-helm/jest.config.ts",
+          "hash": "7131213346267751621"
+        },
+        {
+          "file": "libs/ui/ui-formfield-helm/ng-package.json",
+          "hash": "5021981949781235997"
+        },
+        {
+          "file": "libs/ui/ui-formfield-helm/package.json",
+          "hash": "12900820509451350103",
+          "deps": [
+            "npm:@angular/common",
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-formfield-helm/project.json",
+          "hash": "15111898452120652433"
+        },
+        {
+          "file": "libs/ui/ui-formfield-helm/src/index.ts",
+          "hash": "1379682831294187538",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-formfield-helm/src/lib/hlm-error.directive.ts",
+          "hash": "8559813530759281347",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-formfield-helm/src/lib/hlm-form-field.component.ts",
+          "hash": "4179701583270018576",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-formfield-helm/src/lib/hlm-hint.directive.ts",
+          "hash": "6215421755390582281",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-formfield-helm/src/test-setup.ts",
+          "hash": "2674404341416425809",
+          "deps": [
+            "npm:jest-preset-angular"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-formfield-helm/tsconfig.json",
+          "hash": "2396403117919940161"
+        },
+        {
+          "file": "libs/ui/ui-formfield-helm/tsconfig.lib.json",
+          "hash": "4533240314544279514"
+        },
+        {
+          "file": "libs/ui/ui-formfield-helm/tsconfig.lib.prod.json",
+          "hash": "10809217796916261822"
+        },
+        {
+          "file": "libs/ui/ui-formfield-helm/tsconfig.spec.json",
+          "hash": "8574249004436160025"
+        }
+      ],
+      "ui-avatar-helm": [
+        {
+          "file": "libs/ui/ui-avatar-helm/README.md",
+          "hash": "5295916329525327067"
+        },
+        {
+          "file": "libs/ui/ui-avatar-helm/eslint.config.mjs",
+          "hash": "8485609504886944637",
+          "deps": [
+            "npm:@nx/eslint-plugin",
+            [
+              "npm:jsonc-eslint-parser",
+              "dynamic"
+            ]
+          ]
+        },
+        {
+          "file": "libs/ui/ui-avatar-helm/jest.config.ts",
+          "hash": "7951641468327980326"
+        },
+        {
+          "file": "libs/ui/ui-avatar-helm/ng-package.json",
+          "hash": "5345933007390341952"
+        },
+        {
+          "file": "libs/ui/ui-avatar-helm/package.json",
+          "hash": "13880809446105762852",
+          "deps": [
+            "npm:@angular/common",
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-avatar-helm/project.json",
+          "hash": "8585912588175873814"
+        },
+        {
+          "file": "libs/ui/ui-avatar-helm/src/index.ts",
+          "hash": "16111783170664857174",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-avatar-helm/src/lib/fallback/hlm-avatar-fallback.directive.ts",
+          "hash": "3043200561153424807",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-avatar-helm/src/lib/fallback/index.ts",
+          "hash": "4095308081400682735"
+        },
+        {
+          "file": "libs/ui/ui-avatar-helm/src/lib/hlm-avatar.component.ts",
+          "hash": "11408779159342565034",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain",
+            "npm:class-variance-authority",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-avatar-helm/src/lib/image/hlm-avatar-image.directive.ts",
+          "hash": "7663715249789096625",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-avatar-helm/src/lib/image/index.ts",
+          "hash": "725402389627633520"
+        },
+        {
+          "file": "libs/ui/ui-avatar-helm/src/test-setup.ts",
+          "hash": "2674404341416425809",
+          "deps": [
+            "npm:jest-preset-angular"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-avatar-helm/tsconfig.json",
+          "hash": "2396403117919940161"
+        },
+        {
+          "file": "libs/ui/ui-avatar-helm/tsconfig.lib.json",
+          "hash": "4533240314544279514"
+        },
+        {
+          "file": "libs/ui/ui-avatar-helm/tsconfig.lib.prod.json",
+          "hash": "10809217796916261822"
+        },
+        {
+          "file": "libs/ui/ui-avatar-helm/tsconfig.spec.json",
           "hash": "8574249004436160025"
         }
       ],
@@ -4576,6 +3493,1569 @@
         },
         {
           "file": "libs/ui/ui-skeleton-helm/tsconfig.spec.json",
+          "hash": "8574249004436160025"
+        }
+      ],
+      "ui-menu-helm": [
+        {
+          "file": "libs/ui/ui-menu-helm/README.md",
+          "hash": "5713398180368020083"
+        },
+        {
+          "file": "libs/ui/ui-menu-helm/eslint.config.mjs",
+          "hash": "8485609504886944637",
+          "deps": [
+            "npm:@nx/eslint-plugin",
+            [
+              "npm:jsonc-eslint-parser",
+              "dynamic"
+            ]
+          ]
+        },
+        {
+          "file": "libs/ui/ui-menu-helm/jest.config.ts",
+          "hash": "9235933886660154670"
+        },
+        {
+          "file": "libs/ui/ui-menu-helm/ng-package.json",
+          "hash": "9520718386770061733"
+        },
+        {
+          "file": "libs/ui/ui-menu-helm/package.json",
+          "hash": "12411945376011558783",
+          "deps": [
+            "npm:@angular/common",
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-menu-helm/project.json",
+          "hash": "10476010265751767997"
+        },
+        {
+          "file": "libs/ui/ui-menu-helm/src/index.ts",
+          "hash": "13241682308641820299",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-menu-helm/src/lib/hlm-menu-bar-item.directive.ts",
+          "hash": "11437929096136180",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-menu-helm/src/lib/hlm-menu-bar.component.ts",
+          "hash": "6655735691116238903",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-menu-helm/src/lib/hlm-menu-group.component.ts",
+          "hash": "6846266400957472113",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-menu-helm/src/lib/hlm-menu-item-check.component.ts",
+          "hash": "8636272170176834066",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@ng-icons/core",
+            "npm:@ng-icons/lucide",
+            "npm:@spartan-ng/brain",
+            "ui-icon-helm",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-menu-helm/src/lib/hlm-menu-item-checkbox.directive.ts",
+          "hash": "11560211814346861548",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-menu-helm/src/lib/hlm-menu-item-icon.directive.ts",
+          "hash": "14520891761131757131",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain",
+            "ui-icon-helm",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-menu-helm/src/lib/hlm-menu-item-radio.component.ts",
+          "hash": "1023302277755685536",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@ng-icons/core",
+            "npm:@ng-icons/lucide",
+            "npm:@spartan-ng/brain",
+            "ui-icon-helm",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-menu-helm/src/lib/hlm-menu-item-radio.directive.ts",
+          "hash": "13485989789522020501",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-menu-helm/src/lib/hlm-menu-item-sub-indicator.component.ts",
+          "hash": "6734237183715160902",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@ng-icons/core",
+            "npm:@ng-icons/lucide",
+            "npm:@spartan-ng/brain",
+            "ui-icon-helm",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-menu-helm/src/lib/hlm-menu-item.directive.ts",
+          "hash": "6169519930476572327",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain",
+            "npm:class-variance-authority",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-menu-helm/src/lib/hlm-menu-label.component.ts",
+          "hash": "1649853905716803216",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-menu-helm/src/lib/hlm-menu-separator.component.ts",
+          "hash": "18150510877081283376",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-menu-helm/src/lib/hlm-menu-shortcut.component.ts",
+          "hash": "67115142914665669",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-menu-helm/src/lib/hlm-menu.component.ts",
+          "hash": "3285153513198734767",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain",
+            "npm:class-variance-authority",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-menu-helm/src/lib/hlm-sub-menu.component.ts",
+          "hash": "979679571005302953",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-menu-helm/src/test-setup.ts",
+          "hash": "2674404341416425809",
+          "deps": [
+            "npm:jest-preset-angular"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-menu-helm/tsconfig.json",
+          "hash": "2396403117919940161"
+        },
+        {
+          "file": "libs/ui/ui-menu-helm/tsconfig.lib.json",
+          "hash": "4533240314544279514"
+        },
+        {
+          "file": "libs/ui/ui-menu-helm/tsconfig.lib.prod.json",
+          "hash": "10809217796916261822"
+        },
+        {
+          "file": "libs/ui/ui-menu-helm/tsconfig.spec.json",
+          "hash": "8574249004436160025"
+        }
+      ],
+      "ui-datepicker-helm": [
+        {
+          "file": "libs/ui/ui-datepicker-helm/README.md",
+          "hash": "14091800651752675226"
+        },
+        {
+          "file": "libs/ui/ui-datepicker-helm/eslint.config.mjs",
+          "hash": "8485609504886944637",
+          "deps": [
+            "npm:@nx/eslint-plugin",
+            [
+              "npm:jsonc-eslint-parser",
+              "dynamic"
+            ]
+          ]
+        },
+        {
+          "file": "libs/ui/ui-datepicker-helm/jest.config.ts",
+          "hash": "16775024404335196390"
+        },
+        {
+          "file": "libs/ui/ui-datepicker-helm/ng-package.json",
+          "hash": "3284592429818367354"
+        },
+        {
+          "file": "libs/ui/ui-datepicker-helm/package.json",
+          "hash": "15527050780567254185",
+          "deps": [
+            "npm:@angular/common",
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-datepicker-helm/project.json",
+          "hash": "12092773552892168896"
+        },
+        {
+          "file": "libs/ui/ui-datepicker-helm/src/index.ts",
+          "hash": "5897543250460257809",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-datepicker-helm/src/lib/hlm-date-picker-multi.component.ts",
+          "hash": "14953140017117197905",
+          "deps": [
+            "npm:@angular/cdk",
+            "npm:@angular/core",
+            "npm:@angular/forms",
+            "npm:@ng-icons/core",
+            "npm:@ng-icons/lucide",
+            "npm:@spartan-ng/brain",
+            "ui-calendar-helm",
+            "ui-icon-helm",
+            "ui-popover-helm",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-datepicker-helm/src/lib/hlm-date-picker-multi.token.ts",
+          "hash": "6936144603524779537",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-datepicker-helm/src/lib/hlm-date-picker.component.ts",
+          "hash": "14396326521788725537",
+          "deps": [
+            "npm:@angular/cdk",
+            "npm:@angular/core",
+            "npm:@angular/forms",
+            "npm:@ng-icons/core",
+            "npm:@ng-icons/lucide",
+            "npm:@spartan-ng/brain",
+            "ui-calendar-helm",
+            "ui-icon-helm",
+            "ui-popover-helm",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-datepicker-helm/src/lib/hlm-date-picker.token.ts",
+          "hash": "5081939093810712570",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-datepicker-helm/src/test-setup.ts",
+          "hash": "2674404341416425809",
+          "deps": [
+            "npm:jest-preset-angular"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-datepicker-helm/tsconfig.json",
+          "hash": "2396403117919940161"
+        },
+        {
+          "file": "libs/ui/ui-datepicker-helm/tsconfig.lib.json",
+          "hash": "4533240314544279514"
+        },
+        {
+          "file": "libs/ui/ui-datepicker-helm/tsconfig.lib.prod.json",
+          "hash": "10809217796916261822"
+        },
+        {
+          "file": "libs/ui/ui-datepicker-helm/tsconfig.spec.json",
+          "hash": "8574249004436160025"
+        }
+      ],
+      "ui-scrollarea-helm": [
+        {
+          "file": "libs/ui/ui-scrollarea-helm/README.md",
+          "hash": "2005394850374671707"
+        },
+        {
+          "file": "libs/ui/ui-scrollarea-helm/eslint.config.mjs",
+          "hash": "8485609504886944637",
+          "deps": [
+            "npm:@nx/eslint-plugin",
+            [
+              "npm:jsonc-eslint-parser",
+              "dynamic"
+            ]
+          ]
+        },
+        {
+          "file": "libs/ui/ui-scrollarea-helm/jest.config.ts",
+          "hash": "16837415891075233412"
+        },
+        {
+          "file": "libs/ui/ui-scrollarea-helm/ng-package.json",
+          "hash": "15994023469232232685"
+        },
+        {
+          "file": "libs/ui/ui-scrollarea-helm/package.json",
+          "hash": "189953006302323079",
+          "deps": [
+            "npm:@angular/common",
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-scrollarea-helm/project.json",
+          "hash": "15067628594233930968"
+        },
+        {
+          "file": "libs/ui/ui-scrollarea-helm/src/index.ts",
+          "hash": "10381852457681001058",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-scrollarea-helm/src/lib/hlm-scroll-area.directive.ts",
+          "hash": "2925042699299357654",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-scrollarea-helm/src/test-setup.ts",
+          "hash": "2674404341416425809",
+          "deps": [
+            "npm:jest-preset-angular"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-scrollarea-helm/tsconfig.json",
+          "hash": "2396403117919940161"
+        },
+        {
+          "file": "libs/ui/ui-scrollarea-helm/tsconfig.lib.json",
+          "hash": "4533240314544279514"
+        },
+        {
+          "file": "libs/ui/ui-scrollarea-helm/tsconfig.lib.prod.json",
+          "hash": "10809217796916261822"
+        },
+        {
+          "file": "libs/ui/ui-scrollarea-helm/tsconfig.spec.json",
+          "hash": "8574249004436160025"
+        }
+      ],
+      "ui-sonner-helm": [
+        {
+          "file": "libs/ui/ui-sonner-helm/README.md",
+          "hash": "2318807823720318543"
+        },
+        {
+          "file": "libs/ui/ui-sonner-helm/eslint.config.mjs",
+          "hash": "8485609504886944637",
+          "deps": [
+            "npm:@nx/eslint-plugin",
+            [
+              "npm:jsonc-eslint-parser",
+              "dynamic"
+            ]
+          ]
+        },
+        {
+          "file": "libs/ui/ui-sonner-helm/jest.config.ts",
+          "hash": "18312938872365904806"
+        },
+        {
+          "file": "libs/ui/ui-sonner-helm/ng-package.json",
+          "hash": "5282493203451195436"
+        },
+        {
+          "file": "libs/ui/ui-sonner-helm/package.json",
+          "hash": "10078279406125487668",
+          "deps": [
+            "npm:@angular/common",
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-sonner-helm/project.json",
+          "hash": "8570421925456008805"
+        },
+        {
+          "file": "libs/ui/ui-sonner-helm/src/index.ts",
+          "hash": "3266071164489127345",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-sonner-helm/src/lib/hlm-toaster.component.ts",
+          "hash": "17267968514933975336",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain",
+            "npm:clsx",
+            "npm:ngx-sonner"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-sonner-helm/src/test-setup.ts",
+          "hash": "2674404341416425809",
+          "deps": [
+            "npm:jest-preset-angular"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-sonner-helm/tsconfig.json",
+          "hash": "2396403117919940161"
+        },
+        {
+          "file": "libs/ui/ui-sonner-helm/tsconfig.lib.json",
+          "hash": "4533240314544279514"
+        },
+        {
+          "file": "libs/ui/ui-sonner-helm/tsconfig.lib.prod.json",
+          "hash": "10809217796916261822"
+        },
+        {
+          "file": "libs/ui/ui-sonner-helm/tsconfig.spec.json",
+          "hash": "8574249004436160025"
+        }
+      ],
+      "ui-alert-helm": [
+        {
+          "file": "libs/ui/ui-alert-helm/README.md",
+          "hash": "11262874486819078131"
+        },
+        {
+          "file": "libs/ui/ui-alert-helm/eslint.config.mjs",
+          "hash": "8485609504886944637",
+          "deps": [
+            "npm:@nx/eslint-plugin",
+            [
+              "npm:jsonc-eslint-parser",
+              "dynamic"
+            ]
+          ]
+        },
+        {
+          "file": "libs/ui/ui-alert-helm/jest.config.ts",
+          "hash": "3278324257493649494"
+        },
+        {
+          "file": "libs/ui/ui-alert-helm/ng-package.json",
+          "hash": "10602157764419018020"
+        },
+        {
+          "file": "libs/ui/ui-alert-helm/package.json",
+          "hash": "468315932079409962",
+          "deps": [
+            "npm:@angular/common",
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-alert-helm/project.json",
+          "hash": "9595396587471818006"
+        },
+        {
+          "file": "libs/ui/ui-alert-helm/src/index.ts",
+          "hash": "3791802788218093072",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-alert-helm/src/lib/hlm-alert-description.directive.ts",
+          "hash": "10054372904229832760",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain",
+            "npm:class-variance-authority",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-alert-helm/src/lib/hlm-alert-icon.directive.ts",
+          "hash": "12879871385254423897",
+          "deps": [
+            "npm:@angular/core",
+            "ui-icon-helm"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-alert-helm/src/lib/hlm-alert-title.directive.ts",
+          "hash": "6737690058252919623",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain",
+            "npm:class-variance-authority",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-alert-helm/src/lib/hlm-alert.directive.ts",
+          "hash": "6674817542479002104",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain",
+            "npm:class-variance-authority",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-alert-helm/src/test-setup.ts",
+          "hash": "2674404341416425809",
+          "deps": [
+            "npm:jest-preset-angular"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-alert-helm/tsconfig.json",
+          "hash": "2396403117919940161"
+        },
+        {
+          "file": "libs/ui/ui-alert-helm/tsconfig.lib.json",
+          "hash": "4533240314544279514"
+        },
+        {
+          "file": "libs/ui/ui-alert-helm/tsconfig.lib.prod.json",
+          "hash": "10809217796916261822"
+        },
+        {
+          "file": "libs/ui/ui-alert-helm/tsconfig.spec.json",
+          "hash": "8574249004436160025"
+        }
+      ],
+      "ui-inputotp-helm": [
+        {
+          "file": "libs/ui/ui-inputotp-helm/README.md",
+          "hash": "11147822395920206533"
+        },
+        {
+          "file": "libs/ui/ui-inputotp-helm/eslint.config.mjs",
+          "hash": "8485609504886944637",
+          "deps": [
+            "npm:@nx/eslint-plugin",
+            [
+              "npm:jsonc-eslint-parser",
+              "dynamic"
+            ]
+          ]
+        },
+        {
+          "file": "libs/ui/ui-inputotp-helm/jest.config.ts",
+          "hash": "9282894904116143928"
+        },
+        {
+          "file": "libs/ui/ui-inputotp-helm/ng-package.json",
+          "hash": "589650609958216338"
+        },
+        {
+          "file": "libs/ui/ui-inputotp-helm/package.json",
+          "hash": "1175047283642330061",
+          "deps": [
+            "npm:@angular/common",
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-inputotp-helm/project.json",
+          "hash": "17046846175580303347"
+        },
+        {
+          "file": "libs/ui/ui-inputotp-helm/src/index.ts",
+          "hash": "2745631525753963717",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-inputotp-helm/src/lib/hlm-input-otp-fake-caret.component.ts",
+          "hash": "7256394946139592278",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-inputotp-helm/src/lib/hlm-input-otp-group.directive.ts",
+          "hash": "16318681803104019153",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-inputotp-helm/src/lib/hlm-input-otp-separator.component.ts",
+          "hash": "17215652529114926735",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@ng-icons/core",
+            "npm:@ng-icons/lucide",
+            "npm:@spartan-ng/brain",
+            "ui-icon-helm",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-inputotp-helm/src/lib/hlm-input-otp-slot.component.ts",
+          "hash": "17262156428722604440",
+          "deps": [
+            "npm:@angular/cdk",
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-inputotp-helm/src/lib/hlm-input-otp.directive.ts",
+          "hash": "15088070439788325215",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-inputotp-helm/src/test-setup.ts",
+          "hash": "2674404341416425809",
+          "deps": [
+            "npm:jest-preset-angular"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-inputotp-helm/tsconfig.json",
+          "hash": "2396403117919940161"
+        },
+        {
+          "file": "libs/ui/ui-inputotp-helm/tsconfig.lib.json",
+          "hash": "4533240314544279514"
+        },
+        {
+          "file": "libs/ui/ui-inputotp-helm/tsconfig.lib.prod.json",
+          "hash": "10809217796916261822"
+        },
+        {
+          "file": "libs/ui/ui-inputotp-helm/tsconfig.spec.json",
+          "hash": "8574249004436160025"
+        }
+      ],
+      "ui-badge-helm": [
+        {
+          "file": "libs/ui/ui-badge-helm/README.md",
+          "hash": "7734232781881816606"
+        },
+        {
+          "file": "libs/ui/ui-badge-helm/eslint.config.mjs",
+          "hash": "8485609504886944637",
+          "deps": [
+            "npm:@nx/eslint-plugin",
+            [
+              "npm:jsonc-eslint-parser",
+              "dynamic"
+            ]
+          ]
+        },
+        {
+          "file": "libs/ui/ui-badge-helm/jest.config.ts",
+          "hash": "16166989666128761579"
+        },
+        {
+          "file": "libs/ui/ui-badge-helm/ng-package.json",
+          "hash": "13382441798775787807"
+        },
+        {
+          "file": "libs/ui/ui-badge-helm/package.json",
+          "hash": "17393025418268012263",
+          "deps": [
+            "npm:@angular/common",
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-badge-helm/project.json",
+          "hash": "13617008778409333549"
+        },
+        {
+          "file": "libs/ui/ui-badge-helm/src/index.ts",
+          "hash": "6405281052730795437",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-badge-helm/src/lib/hlm-badge.directive.ts",
+          "hash": "4803382876565833571",
+          "deps": [
+            "npm:@angular/cdk",
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain",
+            "npm:class-variance-authority",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-badge-helm/src/test-setup.ts",
+          "hash": "2674404341416425809",
+          "deps": [
+            "npm:jest-preset-angular"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-badge-helm/tsconfig.json",
+          "hash": "2396403117919940161"
+        },
+        {
+          "file": "libs/ui/ui-badge-helm/tsconfig.lib.json",
+          "hash": "4533240314544279514"
+        },
+        {
+          "file": "libs/ui/ui-badge-helm/tsconfig.lib.prod.json",
+          "hash": "10809217796916261822"
+        },
+        {
+          "file": "libs/ui/ui-badge-helm/tsconfig.spec.json",
+          "hash": "8574249004436160025"
+        }
+      ],
+      "ui-carousel-helm": [
+        {
+          "file": "libs/ui/ui-carousel-helm/README.md",
+          "hash": "2391404358197967970"
+        },
+        {
+          "file": "libs/ui/ui-carousel-helm/eslint.config.mjs",
+          "hash": "8485609504886944637",
+          "deps": [
+            "npm:@nx/eslint-plugin",
+            [
+              "npm:jsonc-eslint-parser",
+              "dynamic"
+            ]
+          ]
+        },
+        {
+          "file": "libs/ui/ui-carousel-helm/jest.config.ts",
+          "hash": "16623629358686998077"
+        },
+        {
+          "file": "libs/ui/ui-carousel-helm/ng-package.json",
+          "hash": "15198224731716421966"
+        },
+        {
+          "file": "libs/ui/ui-carousel-helm/package.json",
+          "hash": "15125011196502725045",
+          "deps": [
+            "npm:@angular/common",
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-carousel-helm/project.json",
+          "hash": "9385679655493346434"
+        },
+        {
+          "file": "libs/ui/ui-carousel-helm/src/index.ts",
+          "hash": "419082828947510611",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-carousel-helm/src/lib/hlm-carousel-content.component.ts",
+          "hash": "12532381650023935189",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-carousel-helm/src/lib/hlm-carousel-item.component.ts",
+          "hash": "1930165786088351138",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-carousel-helm/src/lib/hlm-carousel-next.component.ts",
+          "hash": "12434816606660605546",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@ng-icons/core",
+            "npm:@ng-icons/lucide",
+            "npm:@spartan-ng/brain",
+            "ui-button-helm",
+            "ui-icon-helm",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-carousel-helm/src/lib/hlm-carousel-previous.component.ts",
+          "hash": "8404919924316864459",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@ng-icons/core",
+            "npm:@ng-icons/lucide",
+            "npm:@spartan-ng/brain",
+            "ui-button-helm",
+            "ui-icon-helm",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-carousel-helm/src/lib/hlm-carousel-slide-display.component.ts",
+          "hash": "17351508297724888879",
+          "deps": [
+            "npm:@angular/core",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-carousel-helm/src/lib/hlm-carousel.component.ts",
+          "hash": "3325962996876877518",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain",
+            "npm:clsx",
+            "npm:embla-carousel-angular"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-carousel-helm/src/test-setup.ts",
+          "hash": "2674404341416425809",
+          "deps": [
+            "npm:jest-preset-angular"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-carousel-helm/tsconfig.json",
+          "hash": "2396403117919940161"
+        },
+        {
+          "file": "libs/ui/ui-carousel-helm/tsconfig.lib.json",
+          "hash": "4533240314544279514"
+        },
+        {
+          "file": "libs/ui/ui-carousel-helm/tsconfig.lib.prod.json",
+          "hash": "10809217796916261822"
+        },
+        {
+          "file": "libs/ui/ui-carousel-helm/tsconfig.spec.json",
+          "hash": "8574249004436160025"
+        }
+      ],
+      "ui-switch-helm": [
+        {
+          "file": "libs/ui/ui-switch-helm/README.md",
+          "hash": "10138161073350012359"
+        },
+        {
+          "file": "libs/ui/ui-switch-helm/eslint.config.mjs",
+          "hash": "8485609504886944637",
+          "deps": [
+            "npm:@nx/eslint-plugin",
+            [
+              "npm:jsonc-eslint-parser",
+              "dynamic"
+            ]
+          ]
+        },
+        {
+          "file": "libs/ui/ui-switch-helm/jest.config.ts",
+          "hash": "1953041860167052183"
+        },
+        {
+          "file": "libs/ui/ui-switch-helm/ng-package.json",
+          "hash": "9679856030039135872"
+        },
+        {
+          "file": "libs/ui/ui-switch-helm/package.json",
+          "hash": "13070275248475025299",
+          "deps": [
+            "npm:@angular/common",
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-switch-helm/project.json",
+          "hash": "4891347859445656744"
+        },
+        {
+          "file": "libs/ui/ui-switch-helm/src/index.ts",
+          "hash": "4397783043409069349",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-switch-helm/src/lib/hlm-switch-thumb.directive.ts",
+          "hash": "22823153044774548",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-switch-helm/src/lib/hlm-switch.component.ts",
+          "hash": "6021207681979836935",
+          "deps": [
+            "npm:@angular/cdk",
+            "npm:@angular/core",
+            "npm:@angular/forms",
+            "npm:@spartan-ng/brain",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-switch-helm/src/test-setup.ts",
+          "hash": "2674404341416425809",
+          "deps": [
+            "npm:jest-preset-angular"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-switch-helm/tsconfig.json",
+          "hash": "2396403117919940161"
+        },
+        {
+          "file": "libs/ui/ui-switch-helm/tsconfig.lib.json",
+          "hash": "4533240314544279514"
+        },
+        {
+          "file": "libs/ui/ui-switch-helm/tsconfig.lib.prod.json",
+          "hash": "10809217796916261822"
+        },
+        {
+          "file": "libs/ui/ui-switch-helm/tsconfig.spec.json",
+          "hash": "8574249004436160025"
+        }
+      ],
+      "ui-table-helm": [
+        {
+          "file": "libs/ui/ui-table-helm/README.md",
+          "hash": "3883691503648991422"
+        },
+        {
+          "file": "libs/ui/ui-table-helm/eslint.config.mjs",
+          "hash": "8485609504886944637",
+          "deps": [
+            "npm:@nx/eslint-plugin",
+            [
+              "npm:jsonc-eslint-parser",
+              "dynamic"
+            ]
+          ]
+        },
+        {
+          "file": "libs/ui/ui-table-helm/jest.config.ts",
+          "hash": "1413883115850649038"
+        },
+        {
+          "file": "libs/ui/ui-table-helm/ng-package.json",
+          "hash": "18152399033268444742"
+        },
+        {
+          "file": "libs/ui/ui-table-helm/package.json",
+          "hash": "10005960445928108195",
+          "deps": [
+            "npm:@angular/common",
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-table-helm/project.json",
+          "hash": "5190831200199121881"
+        },
+        {
+          "file": "libs/ui/ui-table-helm/src/index.ts",
+          "hash": "10469680382427192649",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-table-helm/src/lib/hlm-caption.component.ts",
+          "hash": "8365153485822053352",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-table-helm/src/lib/hlm-table.component.ts",
+          "hash": "11435970391368970768",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-table-helm/src/lib/hlm-table.directive.ts",
+          "hash": "16926324896027948178",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-table-helm/src/lib/hlm-td.component.ts",
+          "hash": "128832280663156114",
+          "deps": [
+            "npm:@angular/common",
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-table-helm/src/lib/hlm-th.component.ts",
+          "hash": "13159417758523778545",
+          "deps": [
+            "npm:@angular/common",
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-table-helm/src/lib/hlm-trow.component.ts",
+          "hash": "17656523312901049612",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-table-helm/src/test-setup.ts",
+          "hash": "2674404341416425809",
+          "deps": [
+            "npm:jest-preset-angular"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-table-helm/tsconfig.json",
+          "hash": "2396403117919940161"
+        },
+        {
+          "file": "libs/ui/ui-table-helm/tsconfig.lib.json",
+          "hash": "4533240314544279514"
+        },
+        {
+          "file": "libs/ui/ui-table-helm/tsconfig.lib.prod.json",
+          "hash": "10809217796916261822"
+        },
+        {
+          "file": "libs/ui/ui-table-helm/tsconfig.spec.json",
+          "hash": "8574249004436160025"
+        }
+      ],
+      "ui-tooltip-helm": [
+        {
+          "file": "libs/ui/ui-tooltip-helm/README.md",
+          "hash": "3313350338983881090"
+        },
+        {
+          "file": "libs/ui/ui-tooltip-helm/eslint.config.mjs",
+          "hash": "8485609504886944637",
+          "deps": [
+            "npm:@nx/eslint-plugin",
+            [
+              "npm:jsonc-eslint-parser",
+              "dynamic"
+            ]
+          ]
+        },
+        {
+          "file": "libs/ui/ui-tooltip-helm/jest.config.ts",
+          "hash": "4563328346510423989"
+        },
+        {
+          "file": "libs/ui/ui-tooltip-helm/ng-package.json",
+          "hash": "13207987554730061141"
+        },
+        {
+          "file": "libs/ui/ui-tooltip-helm/package.json",
+          "hash": "15451939779038893798",
+          "deps": [
+            "npm:@angular/common",
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-tooltip-helm/project.json",
+          "hash": "3595630967317877245"
+        },
+        {
+          "file": "libs/ui/ui-tooltip-helm/src/index.ts",
+          "hash": "2474707846373977238",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-tooltip-helm/src/lib/hlm-tooltip-trigger.directive.ts",
+          "hash": "6496040202770270579",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-tooltip-helm/src/lib/hlm-tooltip.component.ts",
+          "hash": "9865109726480907659",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-tooltip-helm/src/test-setup.ts",
+          "hash": "2674404341416425809",
+          "deps": [
+            "npm:jest-preset-angular"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-tooltip-helm/tsconfig.json",
+          "hash": "2396403117919940161"
+        },
+        {
+          "file": "libs/ui/ui-tooltip-helm/tsconfig.lib.json",
+          "hash": "4533240314544279514"
+        },
+        {
+          "file": "libs/ui/ui-tooltip-helm/tsconfig.lib.prod.json",
+          "hash": "10809217796916261822"
+        },
+        {
+          "file": "libs/ui/ui-tooltip-helm/tsconfig.spec.json",
+          "hash": "8574249004436160025"
+        }
+      ],
+      "ui-breadcrumb-helm": [
+        {
+          "file": "libs/ui/ui-breadcrumb-helm/README.md",
+          "hash": "16961971990519681567"
+        },
+        {
+          "file": "libs/ui/ui-breadcrumb-helm/eslint.config.mjs",
+          "hash": "8485609504886944637",
+          "deps": [
+            "npm:@nx/eslint-plugin",
+            [
+              "npm:jsonc-eslint-parser",
+              "dynamic"
+            ]
+          ]
+        },
+        {
+          "file": "libs/ui/ui-breadcrumb-helm/jest.config.ts",
+          "hash": "7424943178032194310"
+        },
+        {
+          "file": "libs/ui/ui-breadcrumb-helm/ng-package.json",
+          "hash": "4684695196329366834"
+        },
+        {
+          "file": "libs/ui/ui-breadcrumb-helm/package.json",
+          "hash": "15389683645875419042",
+          "deps": [
+            "npm:@angular/common",
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-breadcrumb-helm/project.json",
+          "hash": "18060031279336174884"
+        },
+        {
+          "file": "libs/ui/ui-breadcrumb-helm/src/index.ts",
+          "hash": "18342480858812674561",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-breadcrumb-helm/src/lib/hlm-breadcrumb-ellipsis.component.ts",
+          "hash": "9848581571302988978",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@ng-icons/core",
+            "npm:@ng-icons/lucide",
+            "npm:@spartan-ng/brain",
+            "ui-icon-helm",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-breadcrumb-helm/src/lib/hlm-breadcrumb-item.directive.ts",
+          "hash": "4093580449928154687",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-breadcrumb-helm/src/lib/hlm-breadcrumb-link.directive.ts",
+          "hash": "4114390786229047607",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/router",
+            "npm:@spartan-ng/brain",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-breadcrumb-helm/src/lib/hlm-breadcrumb-list.directive.ts",
+          "hash": "599360742497585501",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-breadcrumb-helm/src/lib/hlm-breadcrumb-page.directive.ts",
+          "hash": "7073020064516959333",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-breadcrumb-helm/src/lib/hlm-breadcrumb-separator.component.ts",
+          "hash": "3731199446128040690",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@ng-icons/core",
+            "npm:@ng-icons/lucide",
+            "npm:@spartan-ng/brain",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-breadcrumb-helm/src/lib/hlm-breadcrumb.directive.ts",
+          "hash": "17003434731199743371",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-breadcrumb-helm/src/test-setup.ts",
+          "hash": "2674404341416425809",
+          "deps": [
+            "npm:jest-preset-angular"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-breadcrumb-helm/tsconfig.json",
+          "hash": "2396403117919940161"
+        },
+        {
+          "file": "libs/ui/ui-breadcrumb-helm/tsconfig.lib.json",
+          "hash": "4533240314544279514"
+        },
+        {
+          "file": "libs/ui/ui-breadcrumb-helm/tsconfig.lib.prod.json",
+          "hash": "10809217796916261822"
+        },
+        {
+          "file": "libs/ui/ui-breadcrumb-helm/tsconfig.spec.json",
+          "hash": "8574249004436160025"
+        }
+      ],
+      "ui-separator-helm": [
+        {
+          "file": "libs/ui/ui-separator-helm/README.md",
+          "hash": "6511199684768309158"
+        },
+        {
+          "file": "libs/ui/ui-separator-helm/eslint.config.mjs",
+          "hash": "8485609504886944637",
+          "deps": [
+            "npm:@nx/eslint-plugin",
+            [
+              "npm:jsonc-eslint-parser",
+              "dynamic"
+            ]
+          ]
+        },
+        {
+          "file": "libs/ui/ui-separator-helm/jest.config.ts",
+          "hash": "6387913899337787881"
+        },
+        {
+          "file": "libs/ui/ui-separator-helm/ng-package.json",
+          "hash": "16236306579455593160"
+        },
+        {
+          "file": "libs/ui/ui-separator-helm/package.json",
+          "hash": "1445631454434537094",
+          "deps": [
+            "npm:@angular/common",
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-separator-helm/project.json",
+          "hash": "17253797776775351370"
+        },
+        {
+          "file": "libs/ui/ui-separator-helm/src/index.ts",
+          "hash": "11009445571986260606",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-separator-helm/src/lib/hlm-separator.directive.ts",
+          "hash": "12686284008461116903",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-separator-helm/src/test-setup.ts",
+          "hash": "2674404341416425809",
+          "deps": [
+            "npm:jest-preset-angular"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-separator-helm/tsconfig.json",
+          "hash": "2396403117919940161"
+        },
+        {
+          "file": "libs/ui/ui-separator-helm/tsconfig.lib.json",
+          "hash": "4533240314544279514"
+        },
+        {
+          "file": "libs/ui/ui-separator-helm/tsconfig.lib.prod.json",
+          "hash": "10809217796916261822"
+        },
+        {
+          "file": "libs/ui/ui-separator-helm/tsconfig.spec.json",
+          "hash": "8574249004436160025"
+        }
+      ],
+      "ui-label-helm": [
+        {
+          "file": "libs/ui/ui-label-helm/README.md",
+          "hash": "18138997968541594490"
+        },
+        {
+          "file": "libs/ui/ui-label-helm/eslint.config.mjs",
+          "hash": "8485609504886944637",
+          "deps": [
+            "npm:@nx/eslint-plugin",
+            [
+              "npm:jsonc-eslint-parser",
+              "dynamic"
+            ]
+          ]
+        },
+        {
+          "file": "libs/ui/ui-label-helm/jest.config.ts",
+          "hash": "396898712112851258"
+        },
+        {
+          "file": "libs/ui/ui-label-helm/ng-package.json",
+          "hash": "3781308498757049038"
+        },
+        {
+          "file": "libs/ui/ui-label-helm/package.json",
+          "hash": "8718811450471833288",
+          "deps": [
+            "npm:@angular/common",
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-label-helm/project.json",
+          "hash": "16064701356079284142"
+        },
+        {
+          "file": "libs/ui/ui-label-helm/src/index.ts",
+          "hash": "11520514252818889827",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-label-helm/src/lib/hlm-label.directive.ts",
+          "hash": "9552035975350433381",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain",
+            "npm:class-variance-authority",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-label-helm/src/test-setup.ts",
+          "hash": "2674404341416425809",
+          "deps": [
+            "npm:jest-preset-angular"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-label-helm/tsconfig.json",
+          "hash": "2396403117919940161"
+        },
+        {
+          "file": "libs/ui/ui-label-helm/tsconfig.lib.json",
+          "hash": "4533240314544279514"
+        },
+        {
+          "file": "libs/ui/ui-label-helm/tsconfig.lib.prod.json",
+          "hash": "10809217796916261822"
+        },
+        {
+          "file": "libs/ui/ui-label-helm/tsconfig.spec.json",
+          "hash": "8574249004436160025"
+        }
+      ],
+      "ui-spinner-helm": [
+        {
+          "file": "libs/ui/ui-spinner-helm/README.md",
+          "hash": "6035444329881206340"
+        },
+        {
+          "file": "libs/ui/ui-spinner-helm/eslint.config.mjs",
+          "hash": "8485609504886944637",
+          "deps": [
+            "npm:@nx/eslint-plugin",
+            [
+              "npm:jsonc-eslint-parser",
+              "dynamic"
+            ]
+          ]
+        },
+        {
+          "file": "libs/ui/ui-spinner-helm/jest.config.ts",
+          "hash": "14341601605984566420"
+        },
+        {
+          "file": "libs/ui/ui-spinner-helm/ng-package.json",
+          "hash": "14678467917657222146"
+        },
+        {
+          "file": "libs/ui/ui-spinner-helm/package.json",
+          "hash": "14013538014216776082",
+          "deps": [
+            "npm:@angular/common",
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-spinner-helm/project.json",
+          "hash": "16540398483299380801"
+        },
+        {
+          "file": "libs/ui/ui-spinner-helm/src/index.ts",
+          "hash": "9931764571277820309",
+          "deps": [
+            "npm:@angular/core"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-spinner-helm/src/lib/hlm-spinner.component.ts",
+          "hash": "11739429249995975698",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@spartan-ng/brain",
+            "npm:class-variance-authority",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-spinner-helm/src/test-setup.ts",
+          "hash": "2674404341416425809",
+          "deps": [
+            "npm:jest-preset-angular"
+          ]
+        },
+        {
+          "file": "libs/ui/ui-spinner-helm/tsconfig.json",
+          "hash": "2396403117919940161"
+        },
+        {
+          "file": "libs/ui/ui-spinner-helm/tsconfig.lib.json",
+          "hash": "4533240314544279514"
+        },
+        {
+          "file": "libs/ui/ui-spinner-helm/tsconfig.lib.prod.json",
+          "hash": "10809217796916261822"
+        },
+        {
+          "file": "libs/ui/ui-spinner-helm/tsconfig.spec.json",
           "hash": "8574249004436160025"
         }
       ],
@@ -4718,329 +5198,6 @@
         },
         {
           "file": "libs/ui/ui-sheet-helm/tsconfig.spec.json",
-          "hash": "8574249004436160025"
-        }
-      ],
-      "ui-calendar-helm": [
-        {
-          "file": "libs/ui/ui-calendar-helm/README.md",
-          "hash": "10889739022530968107"
-        },
-        {
-          "file": "libs/ui/ui-calendar-helm/eslint.config.mjs",
-          "hash": "8485609504886944637",
-          "deps": [
-            "npm:@nx/eslint-plugin",
-            [
-              "npm:jsonc-eslint-parser",
-              "dynamic"
-            ]
-          ]
-        },
-        {
-          "file": "libs/ui/ui-calendar-helm/jest.config.ts",
-          "hash": "18269850829336365110"
-        },
-        {
-          "file": "libs/ui/ui-calendar-helm/ng-package.json",
-          "hash": "12939045854833751549"
-        },
-        {
-          "file": "libs/ui/ui-calendar-helm/package.json",
-          "hash": "3556173464858263324",
-          "deps": [
-            "npm:@angular/common",
-            "npm:@angular/core"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-calendar-helm/project.json",
-          "hash": "5403139867025323939"
-        },
-        {
-          "file": "libs/ui/ui-calendar-helm/src/index.ts",
-          "hash": "5080598221786873996",
-          "deps": [
-            "npm:@angular/core"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-calendar-helm/src/lib/hlm-calendar-multi.component.ts",
-          "hash": "3688004964147585222",
-          "deps": [
-            "npm:@angular/cdk",
-            "npm:@angular/core",
-            "npm:@ng-icons/core",
-            "npm:@ng-icons/lucide",
-            "npm:@spartan-ng/brain",
-            "ui-button-helm",
-            "ui-icon-helm",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-calendar-helm/src/lib/hlm-calendar.component.ts",
-          "hash": "8829064454866849143",
-          "deps": [
-            "npm:@angular/cdk",
-            "npm:@angular/core",
-            "npm:@ng-icons/core",
-            "npm:@ng-icons/lucide",
-            "npm:@spartan-ng/brain",
-            "ui-button-helm",
-            "ui-icon-helm",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-calendar-helm/src/test-setup.ts",
-          "hash": "2674404341416425809",
-          "deps": [
-            "npm:jest-preset-angular"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-calendar-helm/tsconfig.json",
-          "hash": "2396403117919940161"
-        },
-        {
-          "file": "libs/ui/ui-calendar-helm/tsconfig.lib.json",
-          "hash": "4533240314544279514"
-        },
-        {
-          "file": "libs/ui/ui-calendar-helm/tsconfig.lib.prod.json",
-          "hash": "10809217796916261822"
-        },
-        {
-          "file": "libs/ui/ui-calendar-helm/tsconfig.spec.json",
-          "hash": "8574249004436160025"
-        }
-      ],
-      "ui-accordion-helm": [
-        {
-          "file": "libs/ui/ui-accordion-helm/README.md",
-          "hash": "2082434690987895293"
-        },
-        {
-          "file": "libs/ui/ui-accordion-helm/eslint.config.mjs",
-          "hash": "8485609504886944637",
-          "deps": [
-            "npm:@nx/eslint-plugin",
-            [
-              "npm:jsonc-eslint-parser",
-              "dynamic"
-            ]
-          ]
-        },
-        {
-          "file": "libs/ui/ui-accordion-helm/jest.config.ts",
-          "hash": "4023933285851668443"
-        },
-        {
-          "file": "libs/ui/ui-accordion-helm/ng-package.json",
-          "hash": "7603991674643510401"
-        },
-        {
-          "file": "libs/ui/ui-accordion-helm/package.json",
-          "hash": "13631864631082416283",
-          "deps": [
-            "npm:@angular/common",
-            "npm:@angular/core"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-accordion-helm/project.json",
-          "hash": "13432111373707324145"
-        },
-        {
-          "file": "libs/ui/ui-accordion-helm/src/index.ts",
-          "hash": "16966080643737820728",
-          "deps": [
-            "npm:@angular/core"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-accordion-helm/src/lib/hlm-accordion-content.component.ts",
-          "hash": "11724863858532011957",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-accordion-helm/src/lib/hlm-accordion-icon.directive.ts",
-          "hash": "14539338016631095992",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@ng-icons/core",
-            "npm:@ng-icons/lucide",
-            "npm:@spartan-ng/brain",
-            "ui-icon-helm",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-accordion-helm/src/lib/hlm-accordion-item.directive.ts",
-          "hash": "7568680538804025114",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-accordion-helm/src/lib/hlm-accordion-trigger.directive.ts",
-          "hash": "15391231394143943689",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-accordion-helm/src/lib/hlm-accordion.directive.ts",
-          "hash": "3956324860249874113",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@spartan-ng/brain",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-accordion-helm/src/test-setup.ts",
-          "hash": "2674404341416425809",
-          "deps": [
-            "npm:jest-preset-angular"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-accordion-helm/tsconfig.json",
-          "hash": "2396403117919940161"
-        },
-        {
-          "file": "libs/ui/ui-accordion-helm/tsconfig.lib.json",
-          "hash": "4533240314544279514"
-        },
-        {
-          "file": "libs/ui/ui-accordion-helm/tsconfig.lib.prod.json",
-          "hash": "10809217796916261822"
-        },
-        {
-          "file": "libs/ui/ui-accordion-helm/tsconfig.spec.json",
-          "hash": "8574249004436160025"
-        }
-      ],
-      "ui-datepicker-helm": [
-        {
-          "file": "libs/ui/ui-datepicker-helm/README.md",
-          "hash": "14091800651752675226"
-        },
-        {
-          "file": "libs/ui/ui-datepicker-helm/eslint.config.mjs",
-          "hash": "8485609504886944637",
-          "deps": [
-            "npm:@nx/eslint-plugin",
-            [
-              "npm:jsonc-eslint-parser",
-              "dynamic"
-            ]
-          ]
-        },
-        {
-          "file": "libs/ui/ui-datepicker-helm/jest.config.ts",
-          "hash": "16775024404335196390"
-        },
-        {
-          "file": "libs/ui/ui-datepicker-helm/ng-package.json",
-          "hash": "3284592429818367354"
-        },
-        {
-          "file": "libs/ui/ui-datepicker-helm/package.json",
-          "hash": "15527050780567254185",
-          "deps": [
-            "npm:@angular/common",
-            "npm:@angular/core"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-datepicker-helm/project.json",
-          "hash": "12092773552892168896"
-        },
-        {
-          "file": "libs/ui/ui-datepicker-helm/src/index.ts",
-          "hash": "5897543250460257809",
-          "deps": [
-            "npm:@angular/core"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-datepicker-helm/src/lib/hlm-date-picker-multi.component.ts",
-          "hash": "14953140017117197905",
-          "deps": [
-            "npm:@angular/cdk",
-            "npm:@angular/core",
-            "npm:@angular/forms",
-            "npm:@ng-icons/core",
-            "npm:@ng-icons/lucide",
-            "npm:@spartan-ng/brain",
-            "ui-calendar-helm",
-            "ui-icon-helm",
-            "ui-popover-helm",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-datepicker-helm/src/lib/hlm-date-picker-multi.token.ts",
-          "hash": "6936144603524779537",
-          "deps": [
-            "npm:@angular/core"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-datepicker-helm/src/lib/hlm-date-picker.component.ts",
-          "hash": "14396326521788725537",
-          "deps": [
-            "npm:@angular/cdk",
-            "npm:@angular/core",
-            "npm:@angular/forms",
-            "npm:@ng-icons/core",
-            "npm:@ng-icons/lucide",
-            "npm:@spartan-ng/brain",
-            "ui-calendar-helm",
-            "ui-icon-helm",
-            "ui-popover-helm",
-            "npm:clsx"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-datepicker-helm/src/lib/hlm-date-picker.token.ts",
-          "hash": "5081939093810712570",
-          "deps": [
-            "npm:@angular/core"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-datepicker-helm/src/test-setup.ts",
-          "hash": "2674404341416425809",
-          "deps": [
-            "npm:jest-preset-angular"
-          ]
-        },
-        {
-          "file": "libs/ui/ui-datepicker-helm/tsconfig.json",
-          "hash": "2396403117919940161"
-        },
-        {
-          "file": "libs/ui/ui-datepicker-helm/tsconfig.lib.json",
-          "hash": "4533240314544279514"
-        },
-        {
-          "file": "libs/ui/ui-datepicker-helm/tsconfig.lib.prod.json",
-          "hash": "10809217796916261822"
-        },
-        {
-          "file": "libs/ui/ui-datepicker-helm/tsconfig.spec.json",
           "hash": "8574249004436160025"
         }
       ]

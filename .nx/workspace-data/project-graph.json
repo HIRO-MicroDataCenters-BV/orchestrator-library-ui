@@ -3589,6 +3589,103 @@
         "implicitDependencies": []
       }
     },
+    "ui-tabs-helm": {
+      "name": "ui-tabs-helm",
+      "type": "lib",
+      "data": {
+        "root": "libs/ui/ui-tabs-helm",
+        "name": "ui-tabs-helm",
+        "tags": [
+          "npm:public"
+        ],
+        "metadata": {
+          "targetGroups": {},
+          "js": {
+            "packageName": "@spartan-ng/helm/tabs",
+            "isInPackageManagerWorkspaces": false
+          }
+        },
+        "targets": {
+          "nx-release-publish": {
+            "executor": "@nx/js:release-publish",
+            "dependsOn": [
+              "^nx-release-publish"
+            ],
+            "options": {},
+            "configurations": {},
+            "parallelism": true
+          },
+          "build": {
+            "executor": "@nx/angular:ng-packagr-lite",
+            "outputs": [
+              "{workspaceRoot}/dist/{projectRoot}"
+            ],
+            "options": {
+              "project": "libs/ui/ui-tabs-helm/ng-package.json"
+            },
+            "configurations": {
+              "production": {
+                "tsConfig": "libs/ui/ui-tabs-helm/tsconfig.lib.prod.json"
+              },
+              "development": {
+                "tsConfig": "libs/ui/ui-tabs-helm/tsconfig.lib.json"
+              }
+            },
+            "defaultConfiguration": "production",
+            "parallelism": true,
+            "cache": true,
+            "dependsOn": [
+              "^build"
+            ],
+            "inputs": [
+              "production",
+              "^production"
+            ]
+          },
+          "test": {
+            "executor": "@nx/jest:jest",
+            "outputs": [
+              "{workspaceRoot}/coverage/{projectRoot}"
+            ],
+            "options": {
+              "jestConfig": "libs/ui/ui-tabs-helm/jest.config.ts",
+              "passWithNoTests": true
+            },
+            "configurations": {
+              "ci": {
+                "ci": true,
+                "codeCoverage": true
+              }
+            },
+            "parallelism": true,
+            "cache": true,
+            "inputs": [
+              "default",
+              "^production",
+              "{workspaceRoot}/jest.preset.js"
+            ]
+          },
+          "lint": {
+            "executor": "@nx/eslint:lint",
+            "configurations": {},
+            "options": {},
+            "parallelism": true,
+            "cache": true,
+            "inputs": [
+              "default",
+              "{workspaceRoot}/.eslintrc.json",
+              "{workspaceRoot}/.eslintignore",
+              "{workspaceRoot}/eslint.config.mjs"
+            ]
+          }
+        },
+        "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+        "sourceRoot": "libs/ui/ui-tabs-helm/src",
+        "prefix": "hlm",
+        "projectType": "library",
+        "implicitDependencies": []
+      }
+    },
     "orchestration_library-front": {
       "name": "orchestration_library-front",
       "type": "app",
@@ -8415,9 +8512,9 @@
       "type": "npm",
       "name": "npm:@spartan-ng/brain",
       "data": {
-        "version": "0.0.1-alpha.467",
+        "version": "0.0.1-alpha.471",
         "packageName": "@spartan-ng/brain",
-        "hash": "sha512-fQcSIf3BcV4OGzcErNOfolDUw3DN6o1l5JGYl5A+UEspnVyNS9DoDoKLNbmX9zuoJo4mvOWF92DUhZ6DNbOrhw=="
+        "hash": "sha512-6R2Am2uEnT19yz+KfsX6O58n5Oz5YqHoIQbLi5nneMkMtQAmpJWfeOJn0jb8DJH+9qhcWoo9a+mNA/vcPJs0AQ=="
       }
     },
     "npm:@spartan-ng/cli": {
@@ -21129,6 +21226,73 @@
         "type": "static"
       }
     ],
+    "ui-tabs-helm": [
+      {
+        "source": "ui-tabs-helm",
+        "target": "npm:@nx/eslint-plugin",
+        "type": "static"
+      },
+      {
+        "source": "ui-tabs-helm",
+        "target": "npm:jsonc-eslint-parser",
+        "type": "dynamic"
+      },
+      {
+        "source": "ui-tabs-helm",
+        "target": "npm:@angular/common",
+        "type": "static"
+      },
+      {
+        "source": "ui-tabs-helm",
+        "target": "npm:@angular/core",
+        "type": "static"
+      },
+      {
+        "source": "ui-tabs-helm",
+        "target": "npm:@spartan-ng/brain",
+        "type": "static"
+      },
+      {
+        "source": "ui-tabs-helm",
+        "target": "npm:clsx",
+        "type": "static"
+      },
+      {
+        "source": "ui-tabs-helm",
+        "target": "npm:class-variance-authority",
+        "type": "static"
+      },
+      {
+        "source": "ui-tabs-helm",
+        "target": "npm:@angular/cdk",
+        "type": "static"
+      },
+      {
+        "source": "ui-tabs-helm",
+        "target": "npm:@ng-icons/core",
+        "type": "static"
+      },
+      {
+        "source": "ui-tabs-helm",
+        "target": "npm:@ng-icons/lucide",
+        "type": "static"
+      },
+      {
+        "source": "ui-tabs-helm",
+        "target": "ui-button-helm",
+        "type": "static"
+      },
+      {
+        "source": "ui-tabs-helm",
+        "target": "ui-icon-helm",
+        "type": "static"
+      },
+      {
+        "source": "ui-tabs-helm",
+        "target": "npm:jest-preset-angular",
+        "type": "static"
+      }
+    ],
     "orchestration_library-front": [
       {
         "source": "orchestration_library-front",
@@ -21533,6 +21697,11 @@
       {
         "source": "orchestration_library-front",
         "target": "ui-menu-helm",
+        "type": "static"
+      },
+      {
+        "source": "orchestration_library-front",
+        "target": "ui-tabs-helm",
         "type": "static"
       },
       {
@@ -27816,11 +27985,6 @@
       },
       {
         "source": "npm:@module-federation/enhanced@0.15.0",
-        "target": "npm:webpack@5.98.0",
-        "type": "static"
-      },
-      {
-        "source": "npm:@module-federation/enhanced@0.15.0",
         "target": "npm:webpack@5.99.9",
         "type": "static"
       }
@@ -28032,7 +28196,7 @@
       },
       {
         "source": "npm:@module-federation/node",
-        "target": "npm:webpack@5.98.0",
+        "target": "npm:webpack@5.99.9",
         "type": "static"
       },
       {
@@ -28043,11 +28207,6 @@
       {
         "source": "npm:@module-federation/node",
         "target": "npm:react-dom",
-        "type": "static"
-      },
-      {
-        "source": "npm:@module-federation/node",
-        "target": "npm:webpack@5.99.9",
         "type": "static"
       }
     ],
@@ -43972,7 +44131,7 @@
       },
       {
         "source": "npm:webpack-dev-server@5.2.0",
-        "target": "npm:webpack@5.98.0",
+        "target": "npm:webpack@5.99.9",
         "type": "static"
       }
     ],
@@ -44695,5 +44854,5 @@
   },
   "version": "6.0",
   "errors": [],
-  "computedAt": 1750425827238
+  "computedAt": 1750774179633
 }

@@ -23,7 +23,7 @@
     "@jsverse/transloco": "^7.6.1",
     "@ng-icons/core": "^29.10.0",
     "@ng-icons/lucide": "30.3.0",
-    "@spartan-ng/brain": "0.0.1-alpha.467",
+    "@spartan-ng/brain": "0.0.1-alpha.471",
     "@tailwindcss/postcss": "^4.1.8",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",

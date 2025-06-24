@@ -4639,9 +4639,9 @@
       "type": "npm",
       "name": "npm:@spartan-ng/brain",
       "data": {
-        "version": "0.0.1-alpha.467",
+        "version": "0.0.1-alpha.471",
         "packageName": "@spartan-ng/brain",
-        "hash": "sha512-fQcSIf3BcV4OGzcErNOfolDUw3DN6o1l5JGYl5A+UEspnVyNS9DoDoKLNbmX9zuoJo4mvOWF92DUhZ6DNbOrhw=="
+        "hash": "sha512-6R2Am2uEnT19yz+KfsX6O58n5Oz5YqHoIQbLi5nneMkMtQAmpJWfeOJn0jb8DJH+9qhcWoo9a+mNA/vcPJs0AQ=="
       }
     },
     "npm:@spartan-ng/cli": {
@@ -22076,86 +22076,6 @@
     },
     {
       "source": "npm:@module-federation/enhanced@0.15.0",
-      "target": "npm:webpack@5.98.0",
-      "type": "static"
-    },
-    {
-      "source": "npm:@module-federation/enhanced@0.15.0",
-      "target": "npm:@module-federation/bridge-react-webpack-plugin@0.15.0",
-      "type": "static"
-    },
-    {
-      "source": "npm:@module-federation/enhanced@0.15.0",
-      "target": "npm:@module-federation/cli",
-      "type": "static"
-    },
-    {
-      "source": "npm:@module-federation/enhanced@0.15.0",
-      "target": "npm:@module-federation/data-prefetch@0.15.0",
-      "type": "static"
-    },
-    {
-      "source": "npm:@module-federation/enhanced@0.15.0",
-      "target": "npm:@module-federation/dts-plugin@0.15.0",
-      "type": "static"
-    },
-    {
-      "source": "npm:@module-federation/enhanced@0.15.0",
-      "target": "npm:@module-federation/error-codes@0.15.0",
-      "type": "static"
-    },
-    {
-      "source": "npm:@module-federation/enhanced@0.15.0",
-      "target": "npm:@module-federation/inject-external-runtime-core-plugin@0.15.0",
-      "type": "static"
-    },
-    {
-      "source": "npm:@module-federation/enhanced@0.15.0",
-      "target": "npm:@module-federation/managers@0.15.0",
-      "type": "static"
-    },
-    {
-      "source": "npm:@module-federation/enhanced@0.15.0",
-      "target": "npm:@module-federation/manifest@0.15.0",
-      "type": "static"
-    },
-    {
-      "source": "npm:@module-federation/enhanced@0.15.0",
-      "target": "npm:@module-federation/rspack@0.15.0",
-      "type": "static"
-    },
-    {
-      "source": "npm:@module-federation/enhanced@0.15.0",
-      "target": "npm:@module-federation/runtime-tools@0.15.0",
-      "type": "static"
-    },
-    {
-      "source": "npm:@module-federation/enhanced@0.15.0",
-      "target": "npm:@module-federation/sdk@0.15.0",
-      "type": "static"
-    },
-    {
-      "source": "npm:@module-federation/enhanced@0.15.0",
-      "target": "npm:btoa",
-      "type": "static"
-    },
-    {
-      "source": "npm:@module-federation/enhanced@0.15.0",
-      "target": "npm:schema-utils@4.3.2",
-      "type": "static"
-    },
-    {
-      "source": "npm:@module-federation/enhanced@0.15.0",
-      "target": "npm:upath",
-      "type": "static"
-    },
-    {
-      "source": "npm:@module-federation/enhanced@0.15.0",
-      "target": "npm:typescript",
-      "type": "static"
-    },
-    {
-      "source": "npm:@module-federation/enhanced@0.15.0",
       "target": "npm:webpack@5.99.9",
       "type": "static"
     },
@@ -22317,51 +22237,6 @@
     {
       "source": "npm:@module-federation/manifest@0.9.1",
       "target": "npm:find-pkg",
-      "type": "static"
-    },
-    {
-      "source": "npm:@module-federation/node",
-      "target": "npm:@module-federation/enhanced@0.15.0",
-      "type": "static"
-    },
-    {
-      "source": "npm:@module-federation/node",
-      "target": "npm:@module-federation/runtime@0.15.0",
-      "type": "static"
-    },
-    {
-      "source": "npm:@module-federation/node",
-      "target": "npm:@module-federation/sdk@0.15.0",
-      "type": "static"
-    },
-    {
-      "source": "npm:@module-federation/node",
-      "target": "npm:btoa",
-      "type": "static"
-    },
-    {
-      "source": "npm:@module-federation/node",
-      "target": "npm:encoding",
-      "type": "static"
-    },
-    {
-      "source": "npm:@module-federation/node",
-      "target": "npm:node-fetch",
-      "type": "static"
-    },
-    {
-      "source": "npm:@module-federation/node",
-      "target": "npm:webpack@5.98.0",
-      "type": "static"
-    },
-    {
-      "source": "npm:@module-federation/node",
-      "target": "npm:react",
-      "type": "static"
-    },
-    {
-      "source": "npm:@module-federation/node",
-      "target": "npm:react-dom",
       "type": "static"
     },
     {
@@ -32006,6 +31881,16 @@
     },
     {
       "source": "npm:license-webpack-plugin",
+      "target": "npm:webpack@5.98.0",
+      "type": "static"
+    },
+    {
+      "source": "npm:license-webpack-plugin",
+      "target": "npm:webpack-sources",
+      "type": "static"
+    },
+    {
+      "source": "npm:license-webpack-plugin",
       "target": "npm:webpack@5.99.9",
       "type": "static"
     },
@@ -35776,6 +35661,21 @@
     },
     {
       "source": "npm:source-map-loader",
+      "target": "npm:webpack@5.98.0",
+      "type": "static"
+    },
+    {
+      "source": "npm:source-map-loader",
+      "target": "npm:iconv-lite@0.6.3",
+      "type": "static"
+    },
+    {
+      "source": "npm:source-map-loader",
+      "target": "npm:source-map-js",
+      "type": "static"
+    },
+    {
+      "source": "npm:source-map-loader",
       "target": "npm:webpack@5.99.9",
       "type": "static"
     },
@@ -36252,6 +36152,41 @@
     {
       "source": "npm:terser-webpack-plugin",
       "target": "npm:esbuild@0.25.4",
+      "type": "static"
+    },
+    {
+      "source": "npm:terser-webpack-plugin",
+      "target": "npm:@jridgewell/trace-mapping@0.3.25",
+      "type": "static"
+    },
+    {
+      "source": "npm:terser-webpack-plugin",
+      "target": "npm:jest-worker@27.5.1",
+      "type": "static"
+    },
+    {
+      "source": "npm:terser-webpack-plugin",
+      "target": "npm:schema-utils@4.3.2",
+      "type": "static"
+    },
+    {
+      "source": "npm:terser-webpack-plugin",
+      "target": "npm:serialize-javascript",
+      "type": "static"
+    },
+    {
+      "source": "npm:terser-webpack-plugin",
+      "target": "npm:terser",
+      "type": "static"
+    },
+    {
+      "source": "npm:terser-webpack-plugin",
+      "target": "npm:webpack@5.98.0",
+      "type": "static"
+    },
+    {
+      "source": "npm:terser-webpack-plugin",
+      "target": "npm:@swc/core",
       "type": "static"
     },
     {
@@ -37071,6 +37006,41 @@
     },
     {
       "source": "npm:webpack-dev-middleware",
+      "target": "npm:webpack@5.98.0",
+      "type": "static"
+    },
+    {
+      "source": "npm:webpack-dev-middleware",
+      "target": "npm:colorette",
+      "type": "static"
+    },
+    {
+      "source": "npm:webpack-dev-middleware",
+      "target": "npm:memfs@4.17.2",
+      "type": "static"
+    },
+    {
+      "source": "npm:webpack-dev-middleware",
+      "target": "npm:mime-types@2.1.35",
+      "type": "static"
+    },
+    {
+      "source": "npm:webpack-dev-middleware",
+      "target": "npm:on-finished@2.4.1",
+      "type": "static"
+    },
+    {
+      "source": "npm:webpack-dev-middleware",
+      "target": "npm:range-parser",
+      "type": "static"
+    },
+    {
+      "source": "npm:webpack-dev-middleware",
+      "target": "npm:schema-utils@4.3.2",
+      "type": "static"
+    },
+    {
+      "source": "npm:webpack-dev-middleware",
       "target": "npm:webpack@5.99.9",
       "type": "static"
     },
@@ -37211,7 +37181,7 @@
     },
     {
       "source": "npm:webpack-dev-server@5.2.0",
-      "target": "npm:webpack@5.98.0",
+      "target": "npm:webpack@5.99.9",
       "type": "static"
     },
     {
@@ -37542,6 +37512,131 @@
     {
       "source": "npm:webpack-subresource-integrity",
       "target": "npm:webpack@5.98.0",
+      "type": "static"
+    },
+    {
+      "source": "npm:webpack-subresource-integrity",
+      "target": "npm:typed-assert",
+      "type": "static"
+    },
+    {
+      "source": "npm:webpack-subresource-integrity",
+      "target": "npm:webpack@5.98.0",
+      "type": "static"
+    },
+    {
+      "source": "npm:webpack@5.98.0",
+      "target": "npm:@types/eslint-scope",
+      "type": "static"
+    },
+    {
+      "source": "npm:webpack@5.98.0",
+      "target": "npm:@types/estree@1.0.8",
+      "type": "static"
+    },
+    {
+      "source": "npm:webpack@5.98.0",
+      "target": "npm:@webassemblyjs/ast",
+      "type": "static"
+    },
+    {
+      "source": "npm:webpack@5.98.0",
+      "target": "npm:@webassemblyjs/wasm-edit",
+      "type": "static"
+    },
+    {
+      "source": "npm:webpack@5.98.0",
+      "target": "npm:@webassemblyjs/wasm-parser",
+      "type": "static"
+    },
+    {
+      "source": "npm:webpack@5.98.0",
+      "target": "npm:acorn",
+      "type": "static"
+    },
+    {
+      "source": "npm:webpack@5.98.0",
+      "target": "npm:browserslist",
+      "type": "static"
+    },
+    {
+      "source": "npm:webpack@5.98.0",
+      "target": "npm:chrome-trace-event",
+      "type": "static"
+    },
+    {
+      "source": "npm:webpack@5.98.0",
+      "target": "npm:enhanced-resolve",
+      "type": "static"
+    },
+    {
+      "source": "npm:webpack@5.98.0",
+      "target": "npm:es-module-lexer",
+      "type": "static"
+    },
+    {
+      "source": "npm:webpack@5.98.0",
+      "target": "npm:eslint-scope@5.1.1",
+      "type": "static"
+    },
+    {
+      "source": "npm:webpack@5.98.0",
+      "target": "npm:events",
+      "type": "static"
+    },
+    {
+      "source": "npm:webpack@5.98.0",
+      "target": "npm:glob-to-regexp",
+      "type": "static"
+    },
+    {
+      "source": "npm:webpack@5.98.0",
+      "target": "npm:graceful-fs",
+      "type": "static"
+    },
+    {
+      "source": "npm:webpack@5.98.0",
+      "target": "npm:json-parse-even-better-errors@2.3.1",
+      "type": "static"
+    },
+    {
+      "source": "npm:webpack@5.98.0",
+      "target": "npm:loader-runner",
+      "type": "static"
+    },
+    {
+      "source": "npm:webpack@5.98.0",
+      "target": "npm:mime-types@2.1.35",
+      "type": "static"
+    },
+    {
+      "source": "npm:webpack@5.98.0",
+      "target": "npm:neo-async",
+      "type": "static"
+    },
+    {
+      "source": "npm:webpack@5.98.0",
+      "target": "npm:schema-utils@4.3.2",
+      "type": "static"
+    },
+    {
+      "source": "npm:webpack@5.98.0",
+      "target": "npm:tapable",
+      "type": "static"
+    },
+    {
+      "source": "npm:webpack@5.98.0",
+      "target": "npm:terser-webpack-plugin",
+      "type": "static"
+    },
+    {
+      "source": "npm:webpack@5.98.0",
+      "target": "npm:watchpack@2.4.4",
+      "type": "static"
+    },
+    {
+      "source": "npm:webpack@5.98.0",
+      "target": "npm:webpack-sources",
       "type": "static"
     },
     {

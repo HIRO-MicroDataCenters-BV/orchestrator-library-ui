@@ -1,11 +1,50 @@
 <div class="flex flex-col justify-between gap-4 sm:flex-row pb-2">
-  <input
-    hlmInput
-    class="w-full md:w-64"
-    [placeholder]="'placeholder.search_clusters' | transloco"
-    [ngModel]="_colFilter()"
-    (ngModelChange)="_rawFilterInput.set($event)"
-  />
+  <div>
+    <input
+      hlmInput
+      class="w-full md:w-64"
+      [placeholder]="'placeholder.search_clusters' | transloco"
+      [ngModel]="_colFilter()"
+      (ngModelChange)="_rawFilterInput.set($event)"
+    />
+  </div>
+  <div class="flex gap-2">
+    <div>
+      <hlm-tabs [tab]="tabs[0]" class="w-full">
+        <hlm-tabs-list class="w-full flex">
+          <button
+            *ngFor="let tab of tabs"
+            class="capitalize"
+            [hlmTabsTrigger]="tab"
+            (click)="setFilter(tab)"
+          >
+            {{ tab }}
+          </button>
+        </hlm-tabs-list>
+      </hlm-tabs>
+    </div>
+    <div>
+      <button hlmBtn variant="outline" align="end" [brnMenuTriggerFor]="menu">
+        {{ 'placeholder.columns' | transloco }}
+        <ng-icon hlm name="lucideChevronDown" class="ml-2" size="sm" />
+      </button>
+      <ng-template #menu>
+        <hlm-menu>
+          @for (columnOpt of _columnOptions(); track columnOpt.name) {
+          <button
+            hlmMenuItemCheckbox
+            class="capitalize"
+            [checked]="columnOpt.selected"
+            (click)="toggleColumnVisibility(columnOpt.name)"
+          >
+            <hlm-menu-item-check></hlm-menu-item-check>
+            <span>{{ `column.${columnOpt.name}` | transloco }}</span>
+          </button>
+          }
+        </hlm-menu>
+      </ng-template>
+    </div>
+  </div>
 </div>
 
 <brn-table
@@ -16,6 +55,88 @@
   [displayedColumns]="_allDisplayedColumns()"
   [trackBy]="_trackBy"
 >
+  <brn-column-def name="request_id" class="w-64">
+    <hlm-th truncate *brnHeaderDef>{{
+      'column.request_id' | transloco
+    }}</hlm-th>
+    <hlm-td truncate *brnCellDef="let element">
+      <p class="text-sm text-gray-500">{{ element.id }}</p>
+    </hlm-td>
+  </brn-column-def>
+  <brn-column-def name="pod_name" class="w-64">
+    <hlm-th truncate *brnHeaderDef>{{ 'column.pod_name' | transloco }}</hlm-th>
+    <hlm-td truncate *brnCellDef="let element">
+      <p class="text-sm text-gray-500">{{ element.pod_name }}</p>
+    </hlm-td>
+  </brn-column-def>
+  <brn-column-def name="namespace" class="w-64">
+    <hlm-th truncate *brnHeaderDef>{{ 'column.namespace' | transloco }}</hlm-th>
+    <hlm-td truncate *brnCellDef="let element">
+      <p class="text-sm text-gray-500">{{ element.namespace }}</p>
+    </hlm-td>
+  </brn-column-def>
+  <brn-column-def name="queue_name" class="w-64">
+    <hlm-th truncate *brnHeaderDef>{{
+      'column.queue_name' | transloco
+    }}</hlm-th>
+    <hlm-td truncate *brnCellDef="let element">
+      <p class="text-sm text-gray-500">{{ element.queue_name }}</p>
+    </hlm-td>
+  </brn-column-def>
+
+  <brn-column-def name="demand_cpu" class="w-64">
+    <hlm-th truncate *brnHeaderDef>{{
+      'column.demand_cpu' | transloco
+    }}</hlm-th>
+    <hlm-td truncate *brnCellDef="let element">
+      <p class="text-sm text-gray-500">{{ element.demand_cpu }}</p>
+    </hlm-td>
+  </brn-column-def>
+  <brn-column-def name="demand_memory" class="w-64">
+    <hlm-th truncate *brnHeaderDef>{{
+      'column.demand_memory' | transloco
+    }}</hlm-th>
+    <hlm-td truncate *brnCellDef="let element">
+      <p class="text-sm text-gray-500">{{ element.demand_memory }}</p>
+    </hlm-td>
+  </brn-column-def>
+  <brn-column-def name="pod_parent_kind" class="w-64">
+    <hlm-th truncate *brnHeaderDef>{{
+      'column.pod_parent_kind' | transloco
+    }}</hlm-th>
+    <hlm-td truncate *brnCellDef="let element">
+      <p class="text-sm text-gray-500">{{ element.pod_parent_kind }}</p>
+    </hlm-td>
+  </brn-column-def>
+  <brn-column-def name="node_id" class="w-64">
+    <hlm-th truncate *brnHeaderDef>{{ 'column.node_id' | transloco }}</hlm-th>
+    <hlm-td truncate *brnCellDef="let element">
+      <p class="text-sm text-gray-500">{{ element.node_id }}</p>
+    </hlm-td>
+  </brn-column-def>
+  <brn-column-def name="decision_status" class="w-64">
+    <hlm-th truncate *brnHeaderDef>{{
+      'column.decision_status' | transloco
+    }}</hlm-th>
+    <hlm-td truncate *brnCellDef="let element">
+      <p class="text-sm text-gray-500">{{ element.is_decision_status }}</p>
+    </hlm-td>
+  </brn-column-def>
+  <brn-column-def name="created_at" class="w-64">
+    <hlm-th truncate *brnHeaderDef>{{
+      'column.created_at' | transloco
+    }}</hlm-th>
+    <hlm-td truncate *brnCellDef="let element">
+      <div class="flex flex-col">
+        <p class="text-sm text-gray-500">
+          {{ element.created_at | date : 'dd/MM/yyyy' }}
+        </p>
+        <p class="text-xs text-gray-400">
+          {{ element.created_at | date : 'HH:mm:ss' }}
+        </p>
+      </div>
+    </hlm-td>
+  </brn-column-def>
   <brn-column-def name="cluster_name" class="w-64">
     <hlm-th truncate *brnHeaderDef>Cluster Name</hlm-th>
     <hlm-td truncate *brnCellDef="let element">

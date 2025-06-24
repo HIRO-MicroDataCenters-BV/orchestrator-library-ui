@@ -32,8 +32,8 @@ export interface AlertResponse {
   created_at: string;
 }
 
-// Pod Request Decision models
-export interface PodRequestDecisionCreate {
+// Workload Request Decision models
+export interface WorkloadRequestDecisionCreate {
   pod_id: string;
   pod_name: string;
   namespace: string;
@@ -49,7 +49,7 @@ export interface PodRequestDecisionCreate {
   pod_parent_kind: string;
 }
 
-export interface PodRequestDecisionUpdate {
+export interface WorkloadRequestDecisionUpdate {
   pod_name?: string | null;
   namespace?: string | null;
   node_id?: string | null;
@@ -64,7 +64,7 @@ export interface PodRequestDecisionUpdate {
   pod_parent_kind?: string | null;
 }
 
-export interface PodRequestDecisionSchema {
+export interface WorkloadRequestDecisionSchema {
   id: string;
   pod_id: string;
   pod_name: string;
@@ -82,6 +82,11 @@ export interface PodRequestDecisionSchema {
   created_at?: string | null;
   updated_at?: string | null;
 }
+
+// Keep old interfaces for backward compatibility
+export type PodRequestDecisionCreate = WorkloadRequestDecisionCreate;
+export type PodRequestDecisionUpdate = WorkloadRequestDecisionUpdate;
+export type PodRequestDecisionSchema = WorkloadRequestDecisionSchema;
 
 // Tuning Parameter models
 export interface TuningParameterCreate {
@@ -123,6 +128,98 @@ export interface K8sClusterInfoResponse {
 export interface K8sTokenResponse {
   // This would need to be defined based on actual API response
   token: string;
+}
+
+// Workload Action models
+export enum WorkloadActionType {
+  CREATE = 'create',
+  DELETE = 'delete',
+  SCALE = 'scale',
+  MIGRATE = 'migrate',
+  UPDATE = 'update',
+}
+
+export enum WorkloadActionStatus {
+  PENDING = 'pending',
+  RUNNING = 'running',
+  COMPLETED = 'completed',
+  FAILED = 'failed',
+  CANCELLED = 'cancelled',
+}
+
+export enum PodParentType {
+  DEPLOYMENT = 'Deployment',
+  STATEFULSET = 'StatefulSet',
+  DAEMONSET = 'DaemonSet',
+  JOB = 'Job',
+  CRONJOB = 'CronJob',
+  REPLICASET = 'ReplicaSet',
+}
+
+export interface WorkloadActionCreate {
+  action_type: WorkloadActionType;
+  action_status?: WorkloadActionStatus | null;
+  action_start_time?: string | null;
+  action_end_time?: string | null;
+  action_reason?: string | null;
+  pod_parent_name?: string | null;
+  pod_parent_type?: PodParentType | null;
+  pod_parent_uid?: string | null;
+  created_pod_name?: string | null;
+  created_pod_namespace?: string | null;
+  created_node_name?: string | null;
+  deleted_pod_name?: string | null;
+  deleted_pod_namespace?: string | null;
+  deleted_node_name?: string | null;
+  bound_pod_name?: string | null;
+  bound_pod_namespace?: string | null;
+  bound_node_name?: string | null;
+  created_at?: string;
+  updated_at?: string | null;
+}
+
+export interface WorkloadActionUpdate {
+  action_type?: WorkloadActionType | null;
+  action_status?: WorkloadActionStatus | null;
+  action_start_time?: string | null;
+  action_end_time?: string | null;
+  action_reason?: string | null;
+  pod_parent_name?: string | null;
+  pod_parent_type?: PodParentType | null;
+  pod_parent_uid?: string | null;
+  created_pod_name?: string | null;
+  created_pod_namespace?: string | null;
+  created_node_name?: string | null;
+  deleted_pod_name?: string | null;
+  deleted_pod_namespace?: string | null;
+  deleted_node_name?: string | null;
+  bound_pod_name?: string | null;
+  bound_pod_namespace?: string | null;
+  bound_node_name?: string | null;
+  updated_at?: string | null;
+}
+
+export interface WorkloadAction {
+  id: string;
+  action_type: WorkloadActionType;
+  action_status: WorkloadActionStatus | null;
+  action_start_time?: string | null;
+  action_end_time?: string | null;
+  action_reason?: string | null;
+  pod_parent_name?: string | null;
+  pod_parent_type?: PodParentType | null;
+  pod_parent_uid?: string | null;
+  created_pod_name?: string | null;
+  created_pod_namespace?: string | null;
+  created_node_name?: string | null;
+  deleted_pod_name?: string | null;
+  deleted_pod_namespace?: string | null;
+  deleted_node_name?: string | null;
+  bound_pod_name?: string | null;
+  bound_pod_namespace?: string | null;
+  bound_node_name?: string | null;
+  created_at: string;
+  updated_at?: string | null;
 }
 
 // API Request/Response wrapper

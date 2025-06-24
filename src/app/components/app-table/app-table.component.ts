@@ -1,4 +1,4 @@
-import { DecimalPipe, NgFor, TitleCasePipe } from '@angular/common';
+import { DatePipe, DecimalPipe, NgFor, TitleCasePipe } from '@angular/common';
 import { TranslocoModule } from '@jsverse/transloco';
 import {
   Component,
@@ -8,6 +8,9 @@ import {
   signal,
   untracked,
   Input,
+  OnChanges,
+  SimpleChanges,
+  OnInit,
 } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
@@ -28,18 +31,25 @@ import { HlmCheckboxComponent } from '@spartan-ng/ui-checkbox-helm';
 import { HlmIconDirective } from '@spartan-ng/ui-icon-helm';
 import { HlmInputDirective } from '@spartan-ng/ui-input-helm';
 import { BrnMenuTriggerDirective } from '@spartan-ng/brain/menu';
-import { HlmMenuModule } from '@spartan-ng/ui-menu-helm';
 import {
-  BrnTableModule,
-  PaginatorState,
-  useBrnColumnManager,
-} from '@spartan-ng/brain/table';
+  HlmMenuItemCheckboxDirective,
+  HlmMenuItemCheckComponent,
+  HlmMenuModule,
+} from '@spartan-ng/ui-menu-helm';
+import { BrnTableModule, PaginatorState } from '@spartan-ng/brain/table';
+import {
+  HlmTabsComponent,
+  HlmTabsContentDirective,
+  HlmTabsListComponent,
+  HlmTabsTriggerDirective,
+} from '@spartan-ng/helm/tabs';
 import { HlmTableModule } from '@spartan-ng/ui-table-helm';
 import { BrnSelectModule } from '@spartan-ng/brain/select';
 import { HlmSelectModule } from '@spartan-ng/ui-select-helm';
 import { provideIcons, NgIcon } from '@ng-icons/core';
 import { debounceTime, map } from 'rxjs';
 import { AppCircleProgressComponent } from '../app-circle-progress/app-circle-progress.component';
+import { Observable } from 'rxjs';
 
 export type TableData = {
   id: string;
@@ -260,12 +270,19 @@ const TABLE_DATA: TableData[] = [
 
     HlmButtonModule,
 
+    DatePipe,
     DecimalPipe,
     TitleCasePipe,
     HlmIconDirective,
     HlmInputDirective,
 
     HlmCheckboxComponent,
+    HlmTabsComponent,
+    HlmTabsContentDirective,
+    HlmTabsListComponent,
+    HlmTabsTriggerDirective,
+    HlmMenuItemCheckComponent,
+    HlmMenuItemCheckboxDirective,
 
     BrnSelectModule,
     HlmSelectModule,
@@ -292,9 +309,11 @@ const TABLE_DATA: TableData[] = [
   },
   templateUrl: './app-table.component.html',
 })
-export class AppTableComponent {
+export class AppTableComponent implements OnChanges, OnInit {
   @Input('columns') columns: string[] = [];
   @Input('actions') actions: string[] = [];
+  @Input('tabs') tabs: string[] = [];
+  @Input('dataSource') dataSource: Observable<unknown[]> | null = null;
 
   ACTION_ICONS: Record<string, string> = {
     view_details: lucideInfo,
@@ -320,19 +339,32 @@ export class AppTableComponent {
 
   protected readonly _actions = computed(() => [...this.actions]);
 
+  protected readonly _columnOptions = signal(
+    this.columns.map((col) => ({ name: col, selected: true }))
+  );
+
+  protected readonly _selectedColumns = computed(() =>
+    this._columnOptions()
+      .filter((col) => col.selected)
+      .map((col) => col.name)
+  );
+
   protected readonly _allDisplayedColumns = computed(() => [
-    ...this._columns(),
+    ...this._selectedColumns(),
     'actions',
   ]);
 
-  private readonly _items = signal(TABLE_DATA);
+  private _items = signal([]);
   private readonly _filteredItems = computed(() => {
     const colFilter = this._colFilter()?.trim()?.toLowerCase();
     if (colFilter && colFilter.length > 0) {
       // TODO: Implement filtering logic for all columns
+      /*
       return this._items().filter((u) =>
         u.cluster_name.toLowerCase().includes(colFilter)
       );
+      */
+      return this._items();
     }
     return this._items();
   });
@@ -342,26 +374,26 @@ export class AppTableComponent {
     const sort = this._colSort();
     const start = this._displayedIndices().start;
     const end = this._displayedIndices().end + 1;
-    const payments = this._filteredItems();
+    const items = this._filteredItems();
     if (!sort) {
-      return payments.slice(start, end);
+      return items.slice(start, end);
     }
-    return [...payments]
-      .sort(
-        (p1, p2) =>
-          (sort === 'ASC' ? 1 : -1) *
-          p1.cluster_name.localeCompare(p2.cluster_name)
-      )
-      .slice(start, end);
+    /*
+    .sort(
+      (p1, p2) =>
+        (sort === 'ASC' ? 1 : -1) *
+        p1.cluster_name.localeCompare(p2.cluster_name)
+    )
+    */
+    return [...items].slice(start, end);
   });
 
   protected readonly _trackBy: TrackByFunction<TableData> = (
     _: number,
     p: TableData
   ) => p.id;
-  protected readonly _totalElements = computed(
-    () => this._filteredItems().length
-  );
+  protected _totalElements = computed(() => this._filteredItems().length);
+
   protected readonly _onStateChange = ({
     startIndex,
     endIndex,
@@ -373,6 +405,51 @@ export class AppTableComponent {
       const debouncedFilter = this._debouncedFilter();
       untracked(() => this._colFilter.set(debouncedFilter ?? ''));
     });
+  }
+  ngOnInit(): void {
+    console.log('init');
+    if (this.dataSource) {
+      this.fetchData();
+    }
+  }
+
+  fetchData(): void {
+    console.log('fetching data');
+    if (this.dataSource) {
+      this.dataSource.subscribe((res: any) => {
+        console.log('data', res);
+        this._items.set(res);
+      });
+    }
+  }
+
+  toggleColumnVisibility(columnName: string): void {
+    const columnOptions = [...this._columnOptions()];
+    const columnIndex = columnOptions.findIndex(
+      (col) => col.name === columnName
+    );
+
+    if (columnIndex >= 0) {
+      // Don't allow deselecting all columns - at least one must remain selected
+      const selectedCount = columnOptions.filter((col) => col.selected).length;
+      if (selectedCount > 1 || !columnOptions[columnIndex].selected) {
+        columnOptions[columnIndex] = {
+          ...columnOptions[columnIndex],
+          selected: !columnOptions[columnIndex].selected,
+        };
+        this._columnOptions.set(columnOptions);
+      }
+    }
+  }
+
+  isColumnSelected(columnName: string): boolean {
+    const column = this._columnOptions().find((col) => col.name === columnName);
+    return column ? column.selected : false;
+  }
+
+  public setFilter(tab: string) {
+    //this._colFilter.set(tab);
+    console.log('tab', tab);
   }
 
   getStatusColor(status: number): string {
@@ -427,6 +504,20 @@ export class AppTableComponent {
       this._colSort.set(null);
     } else {
       this._colSort.set('ASC');
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['columns']) {
+      this._columnOptions.set(
+        this.columns.map((col) => {
+          const existing = this._columnOptions().find((c) => c.name === col);
+          return {
+            name: col,
+            selected: existing ? existing.selected : true,
+          };
+        })
+      );
     }
   }
 }
