@@ -2226,7 +2226,7 @@
         },
         {
           "file": "public/assets/i18n/en.json",
-          "hash": "14839037822025245693"
+          "hash": "3257287026232197696"
         },
         {
           "file": "public/browserconfig.xml",
@@ -2360,7 +2360,7 @@
         },
         {
           "file": "src/app/app.routes.ts",
-          "hash": "17367786123737483620",
+          "hash": "7088407784430351354",
           "deps": [
             "npm:@angular/router"
           ]
@@ -2411,7 +2411,7 @@
         },
         {
           "file": "src/app/components/app-table/app-table.component.html",
-          "hash": "626944644914919247"
+          "hash": "8220006736138407521"
         },
         {
           "file": "src/app/components/app-table/app-table.component.ts",
@@ -2656,6 +2656,19 @@
           ]
         },
         {
+          "file": "src/app/pages/emdc/alerts/alerts.component.html",
+          "hash": "3436482106360490151"
+        },
+        {
+          "file": "src/app/pages/emdc/alerts/alerts.component.ts",
+          "hash": "5508510195153126729",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@jsverse/transloco",
+            "npm:rxjs"
+          ]
+        },
+        {
           "file": "src/app/pages/emdc/clusters/clusters.component.html",
           "hash": "5971744494411554896"
         },
@@ -2673,7 +2686,7 @@
         },
         {
           "file": "src/app/pages/emdc/request_decisions copy/request_decisions.component.ts",
-          "hash": "13272875848821839118",
+          "hash": "13179345865093589021",
           "deps": [
             "npm:@angular/core",
             "npm:@jsverse/transloco",

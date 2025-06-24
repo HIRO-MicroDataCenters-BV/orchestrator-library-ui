@@ -3,7 +3,7 @@
     <input
       hlmInput
       class="w-full md:w-64"
-      [placeholder]="'placeholder.search_clusters' | transloco"
+      [placeholder]="'placeholder.search' | transloco"
       [ngModel]="_colFilter()"
       (ngModelChange)="_rawFilterInput.set($event)"
     />
@@ -81,6 +81,28 @@
     }}</hlm-th>
     <hlm-td truncate *brnCellDef="let element">
       <p class="text-sm text-gray-500">{{ element.queue_name }}</p>
+    </hlm-td>
+  </brn-column-def>
+  <brn-column-def name="alert_type" class="w-64">
+    <hlm-th truncate *brnHeaderDef>{{
+      'column.alert_type' | transloco
+    }}</hlm-th>
+    <hlm-td truncate *brnCellDef="let element">
+      <p class="text-sm text-gray-500">{{ element.alert_type }}</p>
+    </hlm-td>
+  </brn-column-def>
+  <brn-column-def name="alert_description" class="w-64">
+    <hlm-th truncate *brnHeaderDef>{{
+      'column.alert_description' | transloco
+    }}</hlm-th>
+    <hlm-td truncate *brnCellDef="let element">
+      <p class="text-sm text-gray-500">{{ element.alert_description }}</p>
+    </hlm-td>
+  </brn-column-def>
+  <brn-column-def name="pod_id" class="w-64">
+    <hlm-th truncate *brnHeaderDef>{{ 'column.pod_id' | transloco }}</hlm-th>
+    <hlm-td truncate *brnCellDef="let element">
+      <p class="text-sm text-gray-500">{{ element.pod_id }}</p>
     </hlm-td>
   </brn-column-def>
 
