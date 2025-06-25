@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
 import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component';
 import { ErrorLayoutComponent } from './layouts/error-layout/error-layout.component';
-import { authGuard, adminGuard } from './core/guards/auth.guard';
+import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
   // Protected routes (require authentication)
@@ -13,7 +13,7 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: '/emdc/clusters',
+        redirectTo: '/emdc/workloads/request_decisions',
         pathMatch: 'full',
       },
       {
@@ -29,6 +29,16 @@ export const routes: Routes = [
                     './pages/emdc/request_decisions/request_decisions.component'
                   ).then((m) => m.RequestDecisionsComponent),
                 data: { title: 'Request Decisions' },
+                children: [
+                  {
+                    path: ':id',
+                    loadComponent: () =>
+                      import('./pages/details/details.component').then(
+                        (m) => m.DetailsComponent
+                      ),
+                    data: { title: 'Request Decision Detail' },
+                  },
+                ],
               },
               {
                 path: 'actions',
@@ -37,6 +47,16 @@ export const routes: Routes = [
                     (m) => m.ActionsComponent
                   ),
                 data: { title: 'Actions' },
+                children: [
+                  {
+                    path: ':id',
+                    loadComponent: () =>
+                      import('./pages/details/details.component').then(
+                        (m) => m.DetailsComponent
+                      ),
+                    data: { title: 'Actions Detail' },
+                  },
+                ],
               },
             ],
           },
@@ -47,6 +67,16 @@ export const routes: Routes = [
                 (m) => m.AlertsComponent
               ),
             data: { title: 'Actions' },
+            children: [
+              {
+                path: ':id',
+                loadComponent: () =>
+                  import('./pages/details/details.component').then(
+                    (m) => m.DetailsComponent
+                  ),
+                data: { title: 'Alerts' },
+              },
+            ],
           },
           {
             path: 'ui-kit',

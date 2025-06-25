@@ -295,7 +295,7 @@
     </hlm-td>
   </brn-column-def>
   <brn-column-def name="actions" class="w-16">
-    <hlm-th *brnHeaderDef>Actions</hlm-th>
+    <hlm-th *brnHeaderDef>{{ 'column.actions' | transloco }}</hlm-th>
     <hlm-td *brnCellDef="let element">
       <button
         hlmBtn
@@ -310,17 +310,19 @@
       <ng-template #menu>
         <hlm-menu class="w-52">
           <!-- TODO: replace with region aws -->
-          <hlm-menu-label>{{ element.id }}</hlm-menu-label>
+          <hlm-menu-label>{{ 'column.actions' | transloco }}</hlm-menu-label>
           <hlm-menu-separator />
           <hlm-menu-group>
-            <button
+            <a
               *ngFor="let action of _actions()"
               hlmMenuItem
               class="flex gap-2"
+              [routerLink]="`./${element.id}`"
+              [state]="element"
             >
               <ng-icon hlm size="sm" [svg]="ACTION_ICONS[action]" />
               <span>{{ `action.${action}` | transloco }}</span>
-            </button>
+            </a>
           </hlm-menu-group>
         </hlm-menu>
       </ng-template>

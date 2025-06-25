@@ -1,12 +1,12 @@
 import { NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   RouterOutlet,
   Router,
   NavigationEnd,
   RouterLink,
 } from '@angular/router';
-import { TranslocoModule } from '@jsverse/transloco';
+import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideChevronRight } from '@ng-icons/lucide';
 import { HlmIconDirective } from '@spartan-ng/ui-icon-helm';
@@ -40,6 +40,7 @@ export interface BreadcrumbsItem {
 export class AppHeaderComponent {
   currentRoute: string | null = null;
   breadcrumbs: BreadcrumbsItem[] = [];
+  private translocoService = inject(TranslocoService);
 
   constructor(private router: Router) {
     this.router.events
@@ -57,7 +58,7 @@ export class AppHeaderComponent {
   }
 
   private generateBreadcrumbs(url: string): void {
-    const segments = url.split('/').filter(segment => segment.length > 0);
+    const segments = url.split('/').filter((segment) => segment.length > 0);
     this.breadcrumbs = [];
     if (segments.length === 0) {
       return;
@@ -69,8 +70,14 @@ export class AppHeaderComponent {
       const isLastSegment = i === segments.length - 1;
       this.breadcrumbs.push({
         label: segment,
-        url: isLastSegment ? null : currentPath
+        url: isLastSegment ? null : currentPath,
       });
     }
+  }
+
+  getTranslationWithFallback(key: string, fallback: string): string {
+    const translationKey = `section.${key}`;
+    const translation = this.translocoService.translate(translationKey);
+    return translation === translationKey ? fallback : translation;
   }
 }
