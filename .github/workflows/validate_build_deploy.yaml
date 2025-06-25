@@ -135,6 +135,6 @@ jobs:
             --set app.image.repository=${{ vars.ORCHESTRATOR_LIBRARY_UI_IMAGE_NAME }} \
             --set app.image.tag=${{ needs.build-and-push.outputs.image_tag }} \
             --set app.service.type=NodePort \
-            --set app.service.port=80 \
+            --set app.service.port=4000 \
             --set app.service.nodePort=${{ vars.ORCHESTRATOR_LIBRARY_UI_NODE_PORT }} \
             ${{ steps.helm-dry-run.outputs.flag }}
