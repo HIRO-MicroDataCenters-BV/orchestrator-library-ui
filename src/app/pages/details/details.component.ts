@@ -46,14 +46,14 @@ export class DetailsComponent implements OnInit {
   isDate(value: any): boolean {
     if (typeof value !== 'string') return false;
 
-    // Проверяем ISO даты (например: 2023-12-25T10:30:00Z)
+    // Test ISO date
     const isoDateRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z?$/;
     if (isoDateRegex.test(value)) {
       const date = new Date(value);
       return !isNaN(date.getTime());
     }
 
-    // Проверяем другие форматы дат
+    // Test other date formats
     if (value.includes('-') || value.includes('/')) {
       const date = new Date(value);
       return !isNaN(date.getTime()) && date.getFullYear() > 1900;
