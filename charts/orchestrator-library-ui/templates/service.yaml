@@ -6,7 +6,7 @@ spec:
   type: {{ .Values.app.service.type }}
   ports:
     - port: {{ .Values.app.service.port }}
-      targetPort: 80
+      targetPort: 4000
       {{- if eq .Values.app.service.type "NodePort" }}
       nodePort: {{ .Values.app.service.nodePort }}
       {{- end }}

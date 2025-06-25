@@ -1,8 +1,8 @@
 export const environment = {
   production: true,
-  apiUrl: '/api',
+  apiUrl: 'http://51.44.28.47:30015',
   tokenKey: 'auth_token',
   refreshTokenKey: 'refresh_token',
   userKey: 'user',
-  dashboardUrl: '/iframe',
+  dashboardUrl: 'http://51.44.28.47:30016',
 };

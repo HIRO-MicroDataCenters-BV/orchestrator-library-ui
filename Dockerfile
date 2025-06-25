@@ -16,15 +16,22 @@ COPY . .
 # Build the Angular app
 RUN pnpm build
 
-# Stage 2: Serve the app with Nginx
-FROM nginx:alpine
+# Stage 2: Setup for SSR
+FROM node:20-alpine3.20
 
-# Copy built app from builder
-COPY --from=builder /app/dist/orchestration_library-front/browser /usr/share/nginx/html
+WORKDIR /usr/app
 
-# Copy custom nginx config if needed (optional)
-# COPY nginx.conf /etc/nginx/nginx.conf
+# Copy the dist folder from the builder stage
+COPY --from=builder /app/dist ./dist
 
-EXPOSE 80
+# Copy package.json for potential dependencies
+COPY --from=builder /app/package.json ./
 
-CMD ["nginx", "-g", "daemon off;"]
+# Copy nginx configuration
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Expose the port the app runs on
+EXPOSE 4000
+
+# Command to run the application
+CMD ["node", "dist/orchestration_library-front/server/server.mjs"]
