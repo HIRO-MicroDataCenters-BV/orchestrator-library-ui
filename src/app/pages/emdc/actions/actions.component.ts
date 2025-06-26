@@ -31,7 +31,7 @@ export class ActionsComponent implements OnInit, OnDestroy {
     'action_start_time',
     'action_end_time',
   ];
-  actions = ['view_details'];
+  actions = [];
 
   tabs = [];
 

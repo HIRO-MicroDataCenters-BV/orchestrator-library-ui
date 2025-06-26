@@ -35,7 +35,7 @@ export class RequestDecisionsComponent implements OnInit, OnDestroy {
     'decision_status',
     'created_at',
   ];
-  actions = ['view_details'];
+  actions = [];
 
   tabs = ['all', 'successful', 'pending', 'failed'];
 

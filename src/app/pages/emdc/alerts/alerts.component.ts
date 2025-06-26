@@ -29,7 +29,7 @@ export class AlertsComponent implements OnInit, OnDestroy {
     'node_id',
     'created_at',
   ];
-  actions = ['view_details'];
+  actions = [];
 
   tabs = [];
 

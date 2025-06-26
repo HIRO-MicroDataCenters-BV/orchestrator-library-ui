@@ -6,7 +6,7 @@ import {
   TitleCasePipe,
 } from '@angular/common';
 import { TranslocoModule } from '@jsverse/transloco';
-import { Router, RouterLink } from '@angular/router';
+import { Router, RouterLink, ActivatedRoute } from '@angular/router';
 import {
   Component,
   TrackByFunction,
@@ -18,6 +18,7 @@ import {
   OnChanges,
   SimpleChanges,
   OnInit,
+  inject,
 } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
@@ -135,12 +136,14 @@ export type TableActionGroup = {
     class: 'w-full',
   },
   templateUrl: './app-table.component.html',
+  styleUrls: ['./app-table.component.css'],
 })
 export class AppTableComponent implements OnChanges, OnInit {
   @Input('columns') columns: string[] = [];
   @Input('actions') actions: string[] = [];
   @Input('tabs') tabs: string[] = [];
   @Input('dataSource') dataSource: Observable<unknown[]> | null = null;
+  @Input('hasRowAction') hasRowAction = true;
 
   ACTION_ICONS: Record<string, string> = {
     view_details: lucideInfo,
@@ -176,12 +179,15 @@ export class AppTableComponent implements OnChanges, OnInit {
       .map((col) => col.name)
   );
 
-  protected readonly _allDisplayedColumns = computed(() => [
-    ...this._selectedColumns(),
-    'actions',
-  ]);
+  protected readonly _allDisplayedColumns = computed(() => {
+    const items = this._selectedColumns();
+    if (this.actions.length > 0) {
+      items.push('actions');
+    }
+    return items;
+  });
 
-  private _items = signal([]);
+  private _items = signal<unknown[]>([]);
   private readonly _filteredItems = computed(() => {
     const colFilter = this._colFilter()?.trim()?.toLowerCase();
     if (colFilter && colFilter.length > 0) {
@@ -215,10 +221,10 @@ export class AppTableComponent implements OnChanges, OnInit {
     return [...items].slice(start, end);
   });
 
-  protected readonly _trackBy: TrackByFunction<TableData> = (
+  protected readonly _trackBy: TrackByFunction<unknown> = (
     _: number,
-    p: TableData
-  ) => p.id;
+    p: unknown
+  ) => (p as { id: string }).id;
   protected _totalElements = computed(() => this._filteredItems().length);
 
   protected readonly _onStateChange = ({
@@ -226,6 +232,9 @@ export class AppTableComponent implements OnChanges, OnInit {
     endIndex,
   }: PaginatorState) =>
     this._displayedIndices.set({ start: startIndex, end: endIndex });
+
+  private router = inject(Router, { optional: true });
+  private route = inject(ActivatedRoute, { optional: true });
 
   constructor() {
     effect(() => {
@@ -241,7 +250,7 @@ export class AppTableComponent implements OnChanges, OnInit {
 
   fetchData(): void {
     if (this.dataSource) {
-      this.dataSource.subscribe((res: any) => {
+      this.dataSource.subscribe((res: unknown[]) => {
         this._items.set(res);
       });
     }
@@ -269,6 +278,17 @@ export class AppTableComponent implements OnChanges, OnInit {
   isColumnSelected(columnName: string): boolean {
     const column = this._columnOptions().find((col) => col.name === columnName);
     return column ? column.selected : false;
+  }
+
+  public onRowClick(element: unknown) {
+    if (!this.router || !this.route) {
+      return;
+    }
+    const elementWithId = element as { id: string };
+    this.router.navigate([`./${elementWithId.id}`], {
+      relativeTo: this.route,
+      state: element as Record<string, unknown>,
+    });
   }
 
   public setFilter(tab: string) {
