@@ -1,8 +1,11 @@
 <div class="px-4">
-  <app-table
-    [columns]="columns"
-    [actions]="actions"
-    [tabs]="tabs"
-    [dataSource]="dataSource"
-  ></app-table>
+  <router-outlet>
+    <app-table
+      *ngIf="showParentContent"
+      [columns]="columns"
+      [actions]="actions"
+      [tabs]="tabs"
+      [dataSource]="dataSource"
+    ></app-table>
+  </router-outlet>
 </div>

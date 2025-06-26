@@ -59,19 +59,34 @@
     <hlm-th truncate *brnHeaderDef>{{
       'column.request_id' | transloco
     }}</hlm-th>
-    <hlm-td truncate *brnCellDef="let element">
+    <hlm-td
+      (click)="hasRowAction ? onRowClick(element) : null"
+      [class.cursor-pointer]="hasRowAction"
+      truncate
+      *brnCellDef="let element"
+    >
       <p class="text-sm text-gray-500">{{ element.id }}</p>
     </hlm-td>
   </brn-column-def>
   <brn-column-def name="pod_name" class="w-64">
     <hlm-th truncate *brnHeaderDef>{{ 'column.pod_name' | transloco }}</hlm-th>
-    <hlm-td truncate *brnCellDef="let element">
+    <hlm-td
+      (click)="hasRowAction ? onRowClick(element) : null"
+      [class.cursor-pointer]="hasRowAction"
+      truncate
+      *brnCellDef="let element"
+    >
       <p class="text-sm text-gray-500">{{ element.pod_name }}</p>
     </hlm-td>
   </brn-column-def>
   <brn-column-def name="namespace" class="w-64">
     <hlm-th truncate *brnHeaderDef>{{ 'column.namespace' | transloco }}</hlm-th>
-    <hlm-td truncate *brnCellDef="let element">
+    <hlm-td
+      (click)="hasRowAction ? onRowClick(element) : null"
+      [class.cursor-pointer]="hasRowAction"
+      truncate
+      *brnCellDef="let element"
+    >
       <p class="text-sm text-gray-500">{{ element.namespace }}</p>
     </hlm-td>
   </brn-column-def>
@@ -79,7 +94,12 @@
     <hlm-th truncate *brnHeaderDef>{{
       'column.queue_name' | transloco
     }}</hlm-th>
-    <hlm-td truncate *brnCellDef="let element">
+    <hlm-td
+      (click)="hasRowAction ? onRowClick(element) : null"
+      [class.cursor-pointer]="hasRowAction"
+      truncate
+      *brnCellDef="let element"
+    >
       <p class="text-sm text-gray-500">{{ element.queue_name }}</p>
     </hlm-td>
   </brn-column-def>
@@ -87,7 +107,12 @@
     <hlm-th truncate *brnHeaderDef>{{
       'column.alert_type' | transloco
     }}</hlm-th>
-    <hlm-td truncate *brnCellDef="let element">
+    <hlm-td
+      (click)="hasRowAction ? onRowClick(element) : null"
+      [class.cursor-pointer]="hasRowAction"
+      truncate
+      *brnCellDef="let element"
+    >
       <p class="text-sm text-gray-500">{{ element.alert_type }}</p>
     </hlm-td>
   </brn-column-def>
@@ -95,13 +120,23 @@
     <hlm-th truncate *brnHeaderDef>{{
       'column.alert_description' | transloco
     }}</hlm-th>
-    <hlm-td truncate *brnCellDef="let element">
+    <hlm-td
+      (click)="hasRowAction ? onRowClick(element) : null"
+      [class.cursor-pointer]="hasRowAction"
+      truncate
+      *brnCellDef="let element"
+    >
       <p class="text-sm text-gray-500">{{ element.alert_description }}</p>
     </hlm-td>
   </brn-column-def>
   <brn-column-def name="pod_id" class="w-64">
     <hlm-th truncate *brnHeaderDef>{{ 'column.pod_id' | transloco }}</hlm-th>
-    <hlm-td truncate *brnCellDef="let element">
+    <hlm-td
+      (click)="hasRowAction ? onRowClick(element) : null"
+      [class.cursor-pointer]="hasRowAction"
+      truncate
+      *brnCellDef="let element"
+    >
       <p class="text-sm text-gray-500">{{ element.pod_id }}</p>
     </hlm-td>
   </brn-column-def>
@@ -110,7 +145,12 @@
     <hlm-th truncate *brnHeaderDef>{{
       'column.demand_cpu' | transloco
     }}</hlm-th>
-    <hlm-td truncate *brnCellDef="let element">
+    <hlm-td
+      (click)="hasRowAction ? onRowClick(element) : null"
+      [class.cursor-pointer]="hasRowAction"
+      truncate
+      *brnCellDef="let element"
+    >
       <p class="text-sm text-gray-500">{{ element.demand_cpu }}</p>
     </hlm-td>
   </brn-column-def>
@@ -118,7 +158,12 @@
     <hlm-th truncate *brnHeaderDef>{{
       'column.action_type' | transloco
     }}</hlm-th>
-    <hlm-td truncate *brnCellDef="let element">
+    <hlm-td
+      (click)="hasRowAction ? onRowClick(element) : null"
+      [class.cursor-pointer]="hasRowAction"
+      truncate
+      *brnCellDef="let element"
+    >
       <span
         [class]="`${getStatusColor(element.action_type)} capitalize`"
         hlmBadge
@@ -130,7 +175,12 @@
     <hlm-th truncate *brnHeaderDef>{{
       'column.bound_pod_name' | transloco
     }}</hlm-th>
-    <hlm-td truncate *brnCellDef="let element">
+    <hlm-td
+      (click)="hasRowAction ? onRowClick(element) : null"
+      [class.cursor-pointer]="hasRowAction"
+      truncate
+      *brnCellDef="let element"
+    >
       <p class="text-sm text-gray-500">{{ element.bound_pod_name }}</p>
     </hlm-td>
   </brn-column-def>
@@ -138,7 +188,12 @@
     <hlm-th truncate *brnHeaderDef>{{
       'column.pod_parent_name' | transloco
     }}</hlm-th>
-    <hlm-td truncate *brnCellDef="let element">
+    <hlm-td
+      (click)="hasRowAction ? onRowClick(element) : null"
+      [class.cursor-pointer]="hasRowAction"
+      truncate
+      *brnCellDef="let element"
+    >
       <p class="text-sm text-gray-500">{{ element.pod_parent_name }}</p>
     </hlm-td>
   </brn-column-def>
@@ -146,7 +201,12 @@
     <hlm-th truncate *brnHeaderDef>{{
       'column.action_reason' | transloco
     }}</hlm-th>
-    <hlm-td truncate *brnCellDef="let element">
+    <hlm-td
+      (click)="hasRowAction ? onRowClick(element) : null"
+      [class.cursor-pointer]="hasRowAction"
+      truncate
+      *brnCellDef="let element"
+    >
       <p class="text-sm text-gray-500">{{ element.action_reason }}</p>
     </hlm-td>
   </brn-column-def>
@@ -154,7 +214,12 @@
     <hlm-th truncate *brnHeaderDef>{{
       'column.demand_memory' | transloco
     }}</hlm-th>
-    <hlm-td truncate *brnCellDef="let element">
+    <hlm-td
+      (click)="hasRowAction ? onRowClick(element) : null"
+      [class.cursor-pointer]="hasRowAction"
+      truncate
+      *brnCellDef="let element"
+    >
       <p class="text-sm text-gray-500">{{ element.demand_memory }}</p>
     </hlm-td>
   </brn-column-def>
@@ -162,13 +227,23 @@
     <hlm-th truncate *brnHeaderDef>{{
       'column.pod_parent_kind' | transloco
     }}</hlm-th>
-    <hlm-td truncate *brnCellDef="let element">
+    <hlm-td
+      (click)="hasRowAction ? onRowClick(element) : null"
+      [class.cursor-pointer]="hasRowAction"
+      truncate
+      *brnCellDef="let element"
+    >
       <p class="text-sm text-gray-500">{{ element.pod_parent_kind }}</p>
     </hlm-td>
   </brn-column-def>
   <brn-column-def name="node_id" class="w-64">
     <hlm-th truncate *brnHeaderDef>{{ 'column.node_id' | transloco }}</hlm-th>
-    <hlm-td truncate *brnCellDef="let element">
+    <hlm-td
+      (click)="hasRowAction ? onRowClick(element) : null"
+      [class.cursor-pointer]="hasRowAction"
+      truncate
+      *brnCellDef="let element"
+    >
       <p class="text-sm text-gray-500">{{ element.node_id }}</p>
     </hlm-td>
   </brn-column-def>
@@ -176,7 +251,12 @@
     <hlm-th truncate *brnHeaderDef>{{
       'column.decision_status' | transloco
     }}</hlm-th>
-    <hlm-td truncate *brnCellDef="let element">
+    <hlm-td
+      (click)="hasRowAction ? onRowClick(element) : null"
+      [class.cursor-pointer]="hasRowAction"
+      truncate
+      *brnCellDef="let element"
+    >
       <p class="text-sm text-gray-500">{{ element.is_decision_status }}</p>
     </hlm-td>
   </brn-column-def>
@@ -184,7 +264,12 @@
     <hlm-th truncate *brnHeaderDef>{{
       'column.created_at' | transloco
     }}</hlm-th>
-    <hlm-td truncate *brnCellDef="let element">
+    <hlm-td
+      (click)="hasRowAction ? onRowClick(element) : null"
+      [class.cursor-pointer]="hasRowAction"
+      truncate
+      *brnCellDef="let element"
+    >
       <div class="flex flex-col">
         <p class="text-sm text-gray-500">
           {{ element.created_at | date : 'dd/MM/yyyy' }}
@@ -199,7 +284,12 @@
     <hlm-th truncate *brnHeaderDef>{{
       'column.action_start_time' | transloco
     }}</hlm-th>
-    <hlm-td truncate *brnCellDef="let element">
+    <hlm-td
+      (click)="hasRowAction ? onRowClick(element) : null"
+      [class.cursor-pointer]="hasRowAction"
+      truncate
+      *brnCellDef="let element"
+    >
       <div class="flex flex-col">
         <p class="text-sm text-gray-500">
           {{ element.action_start_time | date : 'dd/MM/yyyy' }}
@@ -214,7 +304,12 @@
     <hlm-th truncate *brnHeaderDef>{{
       'column.action_end_time' | transloco
     }}</hlm-th>
-    <hlm-td truncate *brnCellDef="let element">
+    <hlm-td
+      (click)="hasRowAction ? onRowClick(element) : null"
+      [class.cursor-pointer]="hasRowAction"
+      truncate
+      *brnCellDef="let element"
+    >
       <div class="flex flex-col">
         <p class="text-sm text-gray-500">
           {{ element.action_end_time | date : 'dd/MM/yyyy' }}
@@ -227,14 +322,24 @@
   </brn-column-def>
   <brn-column-def name="cluster_name" class="w-64">
     <hlm-th truncate *brnHeaderDef>Cluster Name</hlm-th>
-    <hlm-td truncate *brnCellDef="let element">
+    <hlm-td
+      (click)="hasRowAction ? onRowClick(element) : null"
+      [class.cursor-pointer]="hasRowAction"
+      truncate
+      *brnCellDef="let element"
+    >
       <p class="text-sm mb-1">{{ element.cluster_name }}</p>
       <p class="text-sm text-gray-500">{{ element.id }}</p>
     </hlm-td>
   </brn-column-def>
   <brn-column-def name="action_status" class="w-32 sm:w-40">
     <hlm-th truncate *brnHeaderDef>{{ 'column.status' | transloco }}</hlm-th>
-    <hlm-td truncate *brnCellDef="let element">
+    <hlm-td
+      (click)="hasRowAction ? onRowClick(element) : null"
+      [class.cursor-pointer]="hasRowAction"
+      truncate
+      *brnCellDef="let element"
+    >
       <span [class]="`${getStatusColor(element.status)} capitalize`" hlmBadge>{{
         element.action_status
       }}</span>
@@ -242,7 +347,12 @@
   </brn-column-def>
   <brn-column-def name="status" class="w-32 sm:w-40">
     <hlm-th truncate *brnHeaderDef>{{ 'column.status' | transloco }}</hlm-th>
-    <hlm-td truncate *brnCellDef="let element">
+    <hlm-td
+      (click)="hasRowAction ? onRowClick(element) : null"
+      [class.cursor-pointer]="hasRowAction"
+      truncate
+      *brnCellDef="let element"
+    >
       <span [class]="getStatusColor(element.status)" hlmBadge>{{
         element.status
       }}</span>
@@ -250,19 +360,34 @@
   </brn-column-def>
   <brn-column-def name="workloads" class="w-32 sm:w-40">
     <hlm-th truncate *brnHeaderDef>Workloads</hlm-th>
-    <hlm-td truncate *brnCellDef="let element">
+    <hlm-td
+      (click)="hasRowAction ? onRowClick(element) : null"
+      [class.cursor-pointer]="hasRowAction"
+      truncate
+      *brnCellDef="let element"
+    >
       {{ element.workloads }}
     </hlm-td>
   </brn-column-def>
   <brn-column-def name="nodes" class="w-32 sm:w-40">
     <hlm-th truncate *brnHeaderDef>Nodes</hlm-th>
-    <hlm-td truncate *brnCellDef="let element">
+    <hlm-td
+      (click)="hasRowAction ? onRowClick(element) : null"
+      [class.cursor-pointer]="hasRowAction"
+      truncate
+      *brnCellDef="let element"
+    >
       {{ element.nodes }}
     </hlm-td>
   </brn-column-def>
   <brn-column-def name="cpu_usage" class="w-32 sm:w-40">
     <hlm-th truncate *brnHeaderDef>CPU Usage</hlm-th>
-    <hlm-td truncate *brnCellDef="let element">
+    <hlm-td
+      (click)="hasRowAction ? onRowClick(element) : null"
+      [class.cursor-pointer]="hasRowAction"
+      truncate
+      *brnCellDef="let element"
+    >
       <span [class]="getProgressColor(element.cpu_usage)">
         <app-circle-progress
           [progress]="element.cpu_usage"
@@ -279,7 +404,12 @@
   </brn-column-def>
   <brn-column-def name="memory_usage" class="w-32 sm:w-40">
     <hlm-th truncate *brnHeaderDef>Memory Usage</hlm-th>
-    <hlm-td truncate *brnCellDef="let element">
+    <hlm-td
+      (click)="hasRowAction ? onRowClick(element) : null"
+      [class.cursor-pointer]="hasRowAction"
+      truncate
+      *brnCellDef="let element"
+    >
       <span [class]="getProgressColor(element.memory_usage)">
         <app-circle-progress
           [progress]="element.memory_usage"
@@ -295,7 +425,7 @@
     </hlm-td>
   </brn-column-def>
   <brn-column-def name="actions" class="w-16">
-    <hlm-th *brnHeaderDef>Actions</hlm-th>
+    <hlm-th *brnHeaderDef>{{ 'column.actions' | transloco }}</hlm-th>
     <hlm-td *brnCellDef="let element">
       <button
         hlmBtn
@@ -310,22 +440,25 @@
       <ng-template #menu>
         <hlm-menu class="w-52">
           <!-- TODO: replace with region aws -->
-          <hlm-menu-label>{{ element.id }}</hlm-menu-label>
+          <hlm-menu-label>{{ 'column.actions' | transloco }}</hlm-menu-label>
           <hlm-menu-separator />
           <hlm-menu-group>
-            <button
+            <a
               *ngFor="let action of _actions()"
               hlmMenuItem
               class="flex gap-2"
+              [routerLink]="`./${element.id}`"
+              [state]="element"
             >
               <ng-icon hlm size="sm" [svg]="ACTION_ICONS[action]" />
               <span>{{ `action.${action}` | transloco }}</span>
-            </button>
+            </a>
           </hlm-menu-group>
         </hlm-menu>
       </ng-template>
     </hlm-td>
   </brn-column-def>
+
   <div
     class="flex items-center justify-center p-20 text-muted-foreground"
     brnNoDataRow

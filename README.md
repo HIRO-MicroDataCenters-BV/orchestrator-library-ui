@@ -95,6 +95,45 @@ nx extract-i18n
 - Component library with Spartan UI
 - Nx workspace for efficient development
 
+## Docker Deployment
+
+This project supports containerization with Docker for easy deployment.
+
+### Building the Docker Image
+
+```bash
+# Build the Docker image
+docker build -t orchestrator-ui:latest .
+```
+
+### Running with Docker
+
+```bash
+# Run the container
+docker run -p 4000:4000 orchestrator-ui:latest
+```
+
+The application will be available at `http://localhost:4000/`.
+
+### Using Docker Compose
+
+```bash
+# Start the application with Docker Compose
+docker-compose up -d
+
+# Stop the application
+docker-compose down
+```
+
+## Docker Architecture
+
+The Docker setup uses a multi-stage build process:
+
+1. **Build Stage**: Compiles the Angular application with SSR support
+2. **Runtime Stage**: Runs the SSR application using Node.js
+
+The container exposes port 4000 for the Node.js server that handles SSR.
+
 ## Learn More
 
 - [Angular Documentation](https://angular.dev/)
