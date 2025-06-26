@@ -21723,46 +21723,6 @@
         "source": "orchestration_library-front",
         "target": "ui-badge-helm",
         "type": "static"
-      },
-      {
-        "source": "orchestration_library-front",
-        "target": "ui-label-helm",
-        "type": "static"
-      },
-      {
-        "source": "orchestration_library-front",
-        "target": "ui-card-helm",
-        "type": "static"
-      },
-      {
-        "source": "orchestration_library-front",
-        "target": "ui-accordion-helm",
-        "type": "static"
-      },
-      {
-        "source": "orchestration_library-front",
-        "target": "ui-skeleton-helm",
-        "type": "static"
-      },
-      {
-        "source": "orchestration_library-front",
-        "target": "ui-switch-helm",
-        "type": "static"
-      },
-      {
-        "source": "orchestration_library-front",
-        "target": "ui-progress-helm",
-        "type": "static"
-      },
-      {
-        "source": "orchestration_library-front",
-        "target": "ui-alert-helm",
-        "type": "static"
-      },
-      {
-        "source": "orchestration_library-front",
-        "target": "ui-avatar-helm",
-        "type": "static"
       }
     ],
     "npm:@ampproject/remapping": [
@@ -44859,5 +44819,5 @@
   },
   "version": "6.0",
   "errors": [],
-  "computedAt": 1750904248875
+  "computedAt": 1750966706821
 }

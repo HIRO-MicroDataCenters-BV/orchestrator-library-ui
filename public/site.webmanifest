@@ -1,19 +1,36 @@
 {
-  "name": "Orchestration Library",
-  "short_name": "OrcLib",
+  "name": "ACES",
+  "short_name": "ACES",
   "icons": [
+    {
+      "src": "favicon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png"
+    },
     {
       "src": "favicon-96x96.png",
       "sizes": "96x96",
       "type": "image/png"
     },
     {
-      "src": "favicon-76x76.png",
-      "sizes": "76x76",
+      "src": "favicon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    },
+    {
+      "src": "favicon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "favicon-310x310.png",
+      "sizes": "310x310",
       "type": "image/png"
     }
   ],
   "theme_color": "#ffffff",
   "background_color": "#ffffff",
-  "display": "standalone"
+  "display": "standalone",
+  "start_url": "/",
+  "scope": "/"
 }

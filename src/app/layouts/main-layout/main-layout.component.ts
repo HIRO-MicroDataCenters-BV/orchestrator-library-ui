@@ -37,9 +37,7 @@ import {
   HlmSidebarService,
 } from '@spartan-ng/ui-sidebar-helm';
 import { AppHeaderComponent } from '../../components/app-header/app-header.component';
-import { AuthService } from '../../core/services/auth.service';
 import { ApiService } from '../../core/services/api.service';
-import { User } from '../../core/models/user.model';
 
 interface MenuItem {
   label: string | null;
@@ -94,20 +92,25 @@ interface MenuItem {
     }),
   ],
   templateUrl: './main-layout.component.html',
-  styleUrls: ['./main-layout.component.scss'],
 })
 export class MainLayoutComponent {
-  private readonly authService = inject(AuthService);
-  currentUser: User | null = null;
   currentRoute: string | null = null;
   showSubmenuOnHover: MenuItem | null = null;
   menuItems: MenuItem[] = [
     {
       label: null,
       icon: null,
+      route: '',
+      items: [
+        { label: 'cog', icon: 'lucideCog', route: '/cog' },
+        { label: 'k8s', icon: 'lucideLayoutDashboard', route: '/k8s' },
+      ],
+    },
+    {
+      label: null,
+      icon: null,
       route: '/emdc',
       items: [
-        { label: 'k8s', icon: 'lucideLayoutDashboard', route: '/dashboard' },
         {
           label: 'workloads',
           icon: 'lucideLayers',
@@ -127,7 +130,6 @@ export class MainLayoutComponent {
           icon: 'lucideChartColumnStacked',
           route: '/monitoring',
         },
-        { label: 'cog', icon: 'lucideCog', route: '/cog' },
       ],
     },
   ];
@@ -139,14 +141,6 @@ export class MainLayoutComponent {
     const namespace = 'hiros';
     const serviceAccountName = 'readonly-user';
     this.apiService.getK8sToken(namespace, serviceAccountName).subscribe();
-
-    this.authService.currentUser$.subscribe((user) => {
-      this.currentUser = user;
-    });
-  }
-
-  logout(): void {
-    this.authService.logout();
   }
 
   toggleSubmenu(item: MenuItem): void {
