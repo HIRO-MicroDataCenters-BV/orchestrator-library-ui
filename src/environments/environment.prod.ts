@@ -5,4 +5,5 @@ export const environment = {
   refreshTokenKey: 'refresh_token',
   userKey: 'user',
   dashboardUrl: 'http://51.44.28.47:30016',
+  cogUrl: 'https://dashboard.cog.hiro-develop.nl/cogui/',
 };

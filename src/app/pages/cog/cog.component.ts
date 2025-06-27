@@ -5,7 +5,7 @@ import { environment } from '../../../environments/environment';
 import { ApiService } from '../../core/services/api.service';
 
 @Component({
-  selector: 'app-dashboard',
+  selector: 'app-cog',
   standalone: true,
   imports: [SafePipe],
   template: `<div class="container">
@@ -15,12 +15,8 @@ import { ApiService } from '../../core/services/api.service';
       allowfullscreen
     ></iframe>
   </div>`,
-  styleUrls: ['./dashboard.component.scss'],
+  styleUrls: ['./cog.component.scss'],
 })
-export class DashboardComponent {
-  url = environment.dashboardUrl;
-  constructor(apiService: ApiService) {
-    console.log('DashboardComponent initialized', apiService.getAccessToken());
-    this.url += '?token=' + apiService.getAccessToken();
-  }
+export class CogComponent {
+  url = environment.cogUrl;
 }

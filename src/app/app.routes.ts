@@ -1,20 +1,29 @@
 import { Routes } from '@angular/router';
 import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
-import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component';
 import { ErrorLayoutComponent } from './layouts/error-layout/error-layout.component';
-import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
   // Protected routes (require authentication)
   {
     path: '',
     component: MainLayoutComponent,
-    canActivate: [authGuard],
     children: [
       {
         path: '',
-        redirectTo: '/emdc/workloads/request_decisions',
+        redirectTo: '/cog',
         pathMatch: 'full',
+      },
+      {
+        path: 'cog',
+        loadComponent: () =>
+          import('./pages/cog/cog.component').then((m) => m.CogComponent),
+        data: { title: 'Cognitive Framework' },
+      },
+      {
+        path: 'k8s',
+        loadComponent: () =>
+          import('./pages/k8s/k8s.component').then((m) => m.K8sComponent),
+        data: { title: 'Dashboard k8s' },
       },
       {
         path: 'emdc',
@@ -66,7 +75,7 @@ export const routes: Routes = [
               import('./pages/emdc/alerts/alerts.component').then(
                 (m) => m.AlertsComponent
               ),
-            data: { title: 'Actions' },
+            data: { title: 'Alerts' },
             children: [
               {
                 path: ':id',
@@ -74,49 +83,11 @@ export const routes: Routes = [
                   import('./pages/details/details.component').then(
                     (m) => m.DetailsComponent
                   ),
-                data: { title: 'Alerts' },
+                data: { title: 'Alerts Details' },
               },
             ],
           },
-          {
-            path: 'ui-kit',
-            loadComponent: () =>
-              import('./pages/ui-kit/ui-kit.component').then(
-                (m) => m.UiKitComponent
-              ),
-            data: { title: 'UI Kit' },
-          },
-          {
-            path: 'dashboard',
-            loadComponent: () =>
-              import('./pages/dashboard/dashboard.component').then(
-                (m) => m.DashboardComponent
-              ),
-            data: { title: 'Dashboard' },
-          },
         ],
-      },
-    ],
-  },
-  {
-    path: 'auth',
-    component: AuthLayoutComponent,
-    children: [
-      {
-        path: 'login',
-        loadComponent: () =>
-          import('./pages/auth/login/login.component').then(
-            (m) => m.LoginComponent
-          ),
-        data: { title: 'Login' },
-      },
-      {
-        path: 'register',
-        loadComponent: () =>
-          import('./pages/auth/register/register.component').then(
-            (m) => m.RegisterComponent
-          ),
-        data: { title: 'Register' },
       },
     ],
   },
