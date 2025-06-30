@@ -1,8 +1,11 @@
-import { Component, inject } from '@angular/core';
-import { NgFor, NgIf } from '@angular/common';
-import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
+import { Component, inject, OnInit } from '@angular/core';
+import { PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { TranslocoModule } from '@jsverse/transloco';
-import { NgIcon, provideIcons } from '@ng-icons/core';
+import { provideIcons } from '@ng-icons/core';
+import { NgIcon } from '@ng-icons/core';
+import { MenuItem } from '../../shared/types/common.types';
 import {
   lucideHouse,
   lucideLayers,
@@ -14,46 +17,37 @@ import {
   lucideServer,
   lucideLayoutDashboard,
   lucideSiren,
-  lucideChartColumnStacked,
   lucideCog,
+  lucideChartColumnStacked,
   lucideChevronDown,
   lucideChevronRight,
 } from '@ng-icons/lucide';
 import { HlmIconDirective } from '@spartan-ng/ui-icon-helm';
+import { HlmSidebarComponent } from '../../../../libs/ui/ui-sidebar-helm/src/lib/hlm-sidebar.component';
+import { HlmSidebarContentDirective } from '../../../../libs/ui/ui-sidebar-helm/src/lib/hlm-sidebar-content.directive';
+import { HlmSidebarTriggerComponent } from '../../../../libs/ui/ui-sidebar-helm/src/lib/hlm-sidebar-trigger.component';
+import { HlmSidebarHeaderDirective } from '../../../../libs/ui/ui-sidebar-helm/src/lib/hlm-sidebar-header.directive';
+import { HlmSidebarMenuDirective } from '../../../../libs/ui/ui-sidebar-helm/src/lib/hlm-sidebar-menu.directive';
+import { HlmSidebarMenuItemDirective } from '../../../../libs/ui/ui-sidebar-helm/src/lib/hlm-sidebar-menu-item.directive';
+import { HlmSidebarMenuButtonDirective } from '../../../../libs/ui/ui-sidebar-helm/src/lib/hlm-sidebar-menu-button.directive';
+import { HlmSidebarFooterDirective } from '../../../../libs/ui/ui-sidebar-helm/src/lib/hlm-sidebar-footer.directive';
+import { HlmSidebarService } from '../../../../libs/ui/ui-sidebar-helm/src/lib/hlm-sidebar.service';
 import { BrnSeparatorComponent } from '@spartan-ng/brain/separator';
 import { HlmSeparatorDirective } from '@spartan-ng/ui-separator-helm';
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
 import { HlmInputDirective } from '@spartan-ng/ui-input-helm';
-import {
-  HlmSidebarComponent,
-  HlmSidebarContentDirective,
-  HlmSidebarTriggerComponent,
-  HlmSidebarHeaderDirective,
-  HlmSidebarMenuDirective,
-  HlmSidebarMenuItemDirective,
-  HlmSidebarMenuButtonDirective,
-  HlmSidebarFooterDirective,
-  HlmSidebarSeparatorDirective,
-  HlmSidebarService,
-} from '@spartan-ng/ui-sidebar-helm';
 import { AppHeaderComponent } from '../../components/app-header/app-header.component';
+import { NgIf, NgFor } from '@angular/common';
 import { ApiService } from '../../core/services/api.service';
-
-interface MenuItem {
-  label: string | null;
-  icon: string | null;
-  route: string;
-  items?: MenuItem[];
-  expanded?: boolean;
-}
+import { K8S_CONSTANTS } from '../../shared/constants';
 
 @Component({
   selector: 'app-main-layout',
   standalone: true,
   imports: [
-    RouterOutlet,
     RouterLink,
     RouterLinkActive,
+    RouterOutlet,
     TranslocoModule,
     NgIcon,
     HlmIconDirective,
@@ -93,7 +87,8 @@ interface MenuItem {
   ],
   templateUrl: './main-layout.component.html',
 })
-export class MainLayoutComponent {
+export class MainLayoutComponent implements OnInit {
+  private readonly platformId = inject(PLATFORM_ID);
   currentRoute: string | null = null;
   showSubmenuOnHover: MenuItem | null = null;
   menuItems: MenuItem[] = [
@@ -137,10 +132,19 @@ export class MainLayoutComponent {
   constructor(
     public sidebarService: HlmSidebarService,
     private readonly apiService: ApiService
-  ) {
-    const namespace = 'hiros';
-    const serviceAccountName = 'readonly-user';
-    this.apiService.getK8sToken(namespace, serviceAccountName).subscribe();
+  ) {}
+
+  ngOnInit(): void {
+    // Only fetch token in browser environment
+    if (isPlatformBrowser(this.platformId)) {
+      this.apiService
+        .getK8sToken({
+          namespace: K8S_CONSTANTS.DEFAULT_VALUES.NAMESPACE,
+          service_account_name:
+            K8S_CONSTANTS.DEFAULT_VALUES.SERVICE_ACCOUNT_NAME,
+        })
+        .subscribe();
+    }
   }
 
   toggleSubmenu(item: MenuItem): void {

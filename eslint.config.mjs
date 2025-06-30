@@ -6,7 +6,8 @@ export default [
     ...nx.configs["flat/javascript"],
     {
         ignores: [
-            "**/dist"
+            "**/dist",
+            "**/*.html" // Игнорируем все HTML файлы, так как они содержат Angular шаблоны
         ]
     },
     {
@@ -22,7 +23,7 @@ export default [
                 {
                     enforceBuildableLibDependency: true,
                     allow: [
-                        "^.*/eslint(\\.base)?\\.config\\.[cm]?js$"
+                        "^.*/eslint(\.base)?\.config\.[cm]?js$"
                     ],
                     depConstraints: [
                         {

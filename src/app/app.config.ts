@@ -9,12 +9,10 @@ import {
   provideHttpClient,
   withFetch,
   withInterceptors,
-  HTTP_INTERCEPTORS,
 } from '@angular/common/http';
 import { provideTransloco } from '@jsverse/transloco';
 import { getTranslocoConfig } from './transloco-config';
 import { routes } from './app.routes';
-
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes, withComponentInputBinding(), withViewTransitions()),

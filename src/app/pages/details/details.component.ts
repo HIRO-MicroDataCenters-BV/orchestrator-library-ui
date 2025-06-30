@@ -31,7 +31,7 @@ export class DetailsComponent implements OnInit {
     console.log('State data:', this.data);
   }
 
-  getValueType(value: any): string {
+  getValueType(value: unknown): string {
     if (typeof value === 'boolean') {
       return 'boolean';
     } else if (typeof value === 'number') {
@@ -43,7 +43,7 @@ export class DetailsComponent implements OnInit {
     }
   }
 
-  isDate(value: any): boolean {
+  isDate(value: unknown): boolean {
     if (typeof value !== 'string') return false;
 
     // Test ISO date

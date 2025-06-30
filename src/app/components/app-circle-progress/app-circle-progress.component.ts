@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -56,8 +56,9 @@ export class AppCircleProgressComponent implements OnChanges {
 
   circumference = 0;
   dashOffset = 0;
+  progressPercentage = 0;
 
-  ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(): void {
     this.calculateCircumference();
     this.calculateDashOffset();
   }
@@ -68,7 +69,7 @@ export class AppCircleProgressComponent implements OnChanges {
   }
 
   private calculateDashOffset(): void {
-    const progressPercentage = Math.min(Math.max(this.progress, 0), 100) / 100;
-    this.dashOffset = this.circumference * (1 - progressPercentage);
+    this.progressPercentage = Math.min(100, Math.max(0, this.progress));
+    this.dashOffset = this.circumference - (this.progressPercentage / 100) * this.circumference;
   }
 }

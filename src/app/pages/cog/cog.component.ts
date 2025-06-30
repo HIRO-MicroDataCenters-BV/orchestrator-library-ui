@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { SafePipe } from '../../pipes/safe.pipe';
 
 import { environment } from '../../../environments/environment';
-import { ApiService } from '../../core/services/api.service';
 
 @Component({
   selector: 'app-cog',

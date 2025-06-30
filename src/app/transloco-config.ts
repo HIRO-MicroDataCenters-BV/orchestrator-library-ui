@@ -2,7 +2,6 @@ import { inject, Injectable, isDevMode } from '@angular/core';
 import {
   Translation,
   TranslocoLoader,
-  TRANSLOCO_CONFIG,
   TranslocoConfig
 } from '@jsverse/transloco';
 import { HttpClient } from '@angular/common/http';

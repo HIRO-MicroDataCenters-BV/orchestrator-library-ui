@@ -8,5 +8,5 @@ import { TranslocoModule } from '@jsverse/transloco';
   templateUrl: './app.html',
 })
 export class App {
-  protected title = 'aces-ui';
+  protected title = 'orchestration_library-front';
 }

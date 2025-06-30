@@ -1,3 +1,9 @@
+/**
+ * Unified API Service
+ * Single service for all API operations based on OpenAPI specification
+ * Uses centralized types and shared constants for clean architecture
+ */
+
 import { Injectable, inject } from '@angular/core';
 import {
   HttpClient,
@@ -5,236 +11,268 @@ import {
   HttpParams,
   HttpErrorResponse,
 } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { Observable, throwError, BehaviorSubject } from 'rxjs';
+import { catchError, map, timeout, retry } from 'rxjs/operators';
 
-import { environment } from '../../../environments/environment';
+// Import shared constants
 import {
-  AlertCreateRequest,
-  AlertResponse,
-  PodRequestDecisionCreate,
-  PodRequestDecisionUpdate,
-  PodRequestDecisionSchema,
-  WorkloadRequestDecisionCreate,
-  WorkloadRequestDecisionUpdate,
-  WorkloadRequestDecisionSchema,
-  WorkloadActionCreate,
-  WorkloadActionUpdate,
-  WorkloadAction,
-  TuningParameterCreate,
-  TuningParameterResponse,
+  API_CONSTANTS,
+  API_PATHS,
+  HTTP_STATUS,
+  STORAGE_KEYS,
+  ERROR_MESSAGES,
+  K8S_CONSTANTS,
+} from '../../shared/constants';
+
+// Import centralized types and models
+import {
+  // Kubernetes types
   K8sPodResponse,
   K8sNodeResponse,
-  K8sClusterInfoResponse,
   K8sTokenResponse,
-  ApiResponse,
-  ApiError,
-  PaginationParams,
-  DateRangeParams,
-} from '../models/api.model';
+  K8sClusterInfoResponse,
+  K8sPodParent,
+  K8sPodQueryParams,
+  K8sNodeQueryParams,
+  K8sPodParentQueryParams,
+  K8sTokenQueryParams,
+  K8sClusterInfoQueryParams,
+  // Alert types
+  AlertCreateRequest,
+  AlertResponse,
+  AlertQueryParams,
+  // Tuning Parameters types
+  TuningParameterCreate,
+  TuningParameterResponse,
+  TuningParameterQueryParams,
+  // Workload Decision types
+  WorkloadRequestDecisionCreate,
+  WorkloadRequestDecisionSchema,
+  WorkloadRequestDecisionUpdate,
+  // Workload Action types
+  WorkloadActionCreate,
+  WorkloadAction,
+  WorkloadActionUpdate,
+  // Common types
+  MessageResponse,
+  CommonQueryParams,
+  HttpMethod,
+} from '../../shared/models';
 
-export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
+// Import safe storage utilities
+import { TokenStorage } from '../../shared/utils';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
   private readonly http = inject(HttpClient);
-  private readonly API_URL = environment.apiUrl;
-  private readonly TOKEN_KEY = environment.tokenKey;
+  private readonly baseUrl = API_CONSTANTS.BASE_URL;
+
+  // Loading state management
+  private readonly loadingSubject = new BehaviorSubject<boolean>(false);
+  public readonly loading$ = this.loadingSubject.asObservable();
 
   /**
-   * Generic request wrapper that handles common functionality
-   * @param method HTTP method
-   * @param url Endpoint URL (relative to API_URL)
-   * @param data Request body data (for POST, PUT, PATCH)
-   * @param params Query parameters
-   * @returns Observable with API response
+   * Universal request method with built-in error handling, retries and timeout
    */
-  private request<T = unknown>(
+  private request<T>(
     method: HttpMethod,
-    url: string,
+    endpoint: string,
     data?: unknown,
     params?: Record<string, unknown>
   ): Observable<T> {
-    const fullUrl = `${this.API_URL}${url}`;
+    this.setLoading(true);
 
-    // Prepare headers
-    let headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-    });
+    const url = `${this.baseUrl}${endpoint}`;
+    const headers = this.buildHeaders();
+    const httpParams = this.buildParams(params);
 
-    // Add authorization token if available
-    const token = this.getAccessToken();
-    if (token) {
-      headers = headers.set('Authorization', `Bearer ${token}`);
-    }
-
-    // Prepare query parameters
-    let httpParams = new HttpParams();
-    if (params) {
-      Object.keys(params).forEach((key) => {
-        if (params[key] !== null && params[key] !== undefined) {
-          httpParams = httpParams.set(key, params[key].toString());
-        }
-      });
-    }
-
-    // Make the request based on method
-    let request$: Observable<any>;
+    let request$: Observable<T>;
+    const options = { headers, params: httpParams };
 
     switch (method) {
       case 'GET':
-        request$ = this.http.get(fullUrl, { headers, params: httpParams });
+        request$ = this.http.get<T>(url, options);
         break;
       case 'POST':
-        request$ = this.http.post(fullUrl, data, {
-          headers,
-          params: httpParams,
-        });
+        request$ = this.http.post<T>(url, data, options);
         break;
       case 'PUT':
-        request$ = this.http.put(fullUrl, data, {
-          headers,
-          params: httpParams,
-        });
+        request$ = this.http.put<T>(url, data, options);
         break;
       case 'DELETE':
-        request$ = this.http.delete(fullUrl, { headers, params: httpParams });
+        request$ = this.http.delete<T>(url, options);
         break;
       case 'PATCH':
-        request$ = this.http.patch(fullUrl, data, {
-          headers,
-          params: httpParams,
-        });
+        request$ = this.http.patch<T>(url, data, options);
         break;
       default:
-        return throwError(
-          () => new Error(`Unsupported HTTP method: ${method}`)
-        );
+        return throwError(() => new Error(`Unsupported method: ${method}`));
     }
 
     return request$.pipe(
-      map((response: any) => response),
-      catchError((error: HttpErrorResponse) => this.handleError(error))
+      timeout(API_CONSTANTS.TIMEOUT),
+      retry({
+        count: API_CONSTANTS.RETRY_ATTEMPTS,
+        delay: API_CONSTANTS.RETRY_DELAY,
+        resetOnSuccess: true,
+      }),
+      map((response) => {
+        this.setLoading(false);
+        return response;
+      }),
+      catchError((error) => {
+        this.setLoading(false);
+        return this.handleError(error);
+      })
     );
   }
 
   /**
-   * Handle HTTP errors
+   * Build HTTP headers with authentication and content type
+   */
+  private buildHeaders(): HttpHeaders {
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    });
+
+    const token = this.getToken();
+    if (token) {
+      headers = headers.set('Authorization', `Bearer ${token}`);
+    }
+
+    return headers;
+  }
+
+  /**
+   * Build HTTP parameters, filtering out empty values
+   */
+  private buildParams(params?: Record<string, unknown>): HttpParams {
+    let httpParams = new HttpParams();
+
+    if (params) {
+      Object.keys(params).forEach((key) => {
+        const value = params[key];
+        if (value !== null && value !== undefined && value !== '') {
+          httpParams = httpParams.set(key, String(value));
+        }
+      });
+    }
+
+    return httpParams;
+  }
+
+  /**
+   * Centralized error handling using application constants
    */
   private handleError(error: HttpErrorResponse): Observable<never> {
-    let apiError: ApiError;
+    let errorMessage = ERROR_MESSAGES.GENERIC as string;
 
     if (error.error instanceof ErrorEvent) {
       // Client-side error
-      apiError = {
-        status: 0,
-        message: `Client Error: ${error.error.message}`,
-        details: error.error,
-      };
+      errorMessage = error.error.message || (ERROR_MESSAGES.NETWORK as string);
     } else {
-      // Server-side error
-      apiError = {
-        status: error.status,
-        message:
-          error.error?.message || error.message || 'Unknown server error',
-        details: error.error,
-      };
+      // Server-side error using HTTP_STATUS constants
+      switch (error.status) {
+        case HTTP_STATUS.UNAUTHORIZED:
+          errorMessage = ERROR_MESSAGES.UNAUTHORIZED as string;
+          this.handleUnauthorizedError();
+          break;
+        case HTTP_STATUS.FORBIDDEN:
+          errorMessage = ERROR_MESSAGES.FORBIDDEN as string;
+          break;
+        case HTTP_STATUS.NOT_FOUND:
+          errorMessage = ERROR_MESSAGES.NOT_FOUND as string;
+          break;
+        case HTTP_STATUS.UNPROCESSABLE_ENTITY:
+          errorMessage = ERROR_MESSAGES.VALIDATION as string;
+          break;
+        case HTTP_STATUS.INTERNAL_SERVER_ERROR:
+          errorMessage = ERROR_MESSAGES.SERVER_ERROR as string;
+          break;
+        default:
+          errorMessage =
+            error.error?.message || (ERROR_MESSAGES.GENERIC as string);
+      }
     }
 
-    console.error('API Error:', apiError);
-    return throwError(() => apiError);
+    console.error('API Error:', errorMessage, error);
+    return throwError(() => new Error(errorMessage));
   }
 
   /**
-   * Get access token from localStorage
+   * Handle unauthorized error by clearing token
    */
-  getAccessToken(): string | null {
-    if (typeof window !== 'undefined' && window.localStorage) {
-      return localStorage.getItem(this.TOKEN_KEY);
-    }
-    return null;
+  private handleUnauthorizedError(): void {
+    this.clearToken();
+    console.warn('Unauthorized access - token cleared');
   }
 
   /**
-   * Save access token to localStorage
+   * Set loading state
    */
-  private saveAccessToken(token: string): void {
-    if (typeof window !== 'undefined' && window.localStorage) {
-      localStorage.setItem(this.TOKEN_KEY, token);
-    }
+  private setLoading(loading: boolean): void {
+    this.loadingSubject.next(loading);
   }
 
-  // ======================
-  // Kubernetes API Methods
-  // ======================
+  // ===================
+  // Token management using safe storage utilities and constants
+  // ===================
+
+  private getToken(): string | null {
+    return TokenStorage.getAccessToken(STORAGE_KEYS.ACCESS_TOKEN);
+  }
+
+  private setToken(token: string): void {
+    TokenStorage.setAccessToken(STORAGE_KEYS.ACCESS_TOKEN, token);
+  }
+
+  private clearToken(): void {
+    TokenStorage.clearAccessToken(STORAGE_KEYS.ACCESS_TOKEN);
+  }
+
+  // ===================
+  // KUBERNETES API
+  // Based on OpenAPI paths: /k8s_*
+  // ===================
 
   /**
-   * Get Kubernetes pods
+   * GET /k8s_pod/ - List all pods in specified namespace
    */
-  getPods(
-    namespace?: string,
-    node_name?: string,
-    pod_name?: string,
-    pod_id?: string
-  ): Observable<K8sPodResponse> {
-    const params: Record<string, string> = {};
-    if (namespace) params['namespace'] = namespace;
-    if (node_name) params['node_name'] = node_name;
-    if (pod_name) params['pod_name'] = pod_name;
-    if (pod_id) params['pod_id'] = pod_id;
-
+  listPods(params?: K8sPodQueryParams): Observable<K8sPodResponse> {
     return this.request<K8sPodResponse>('GET', '/k8s_pod/', undefined, params);
   }
 
   /**
-   * Get Kubernetes pod parents
+   * GET /k8s_pod_parent/ - Get pod parent controller
    */
-  getPodParents(
-    namespace?: string,
-    parent_name?: string,
-    parent_id?: string
-  ): Observable<unknown> {
-    const params: Record<string, string> = {};
-    if (namespace) params['namespace'] = namespace;
-    if (parent_name) params['parent_name'] = parent_name;
-    if (parent_id) params['parent_id'] = parent_id;
-
-    return this.request('GET', '/k8s_pod_parent/', undefined, params);
+  getPodParent(params: K8sPodParentQueryParams): Observable<K8sPodParent> {
+    return this.request<K8sPodParent>(
+      'GET',
+      '/k8s_pod_parent/',
+      undefined,
+      params
+    );
   }
 
   /**
-   * Get Kubernetes user pods
+   * GET /k8s_user_pod/ - List user pods (excluding system pods)
    */
-  getUserPods(
-    namespace?: string,
-    node_name?: string,
-    pod_name?: string,
-    pod_id?: string
-  ): Observable<unknown> {
-    const params: Record<string, string> = {};
-    if (namespace) params['namespace'] = namespace;
-    if (node_name) params['node_name'] = node_name;
-    if (pod_name) params['pod_name'] = pod_name;
-    if (pod_id) params['pod_id'] = pod_id;
-
-    return this.request('GET', '/k8s_user_pod/', undefined, params);
+  listUserPods(params?: K8sPodQueryParams): Observable<K8sPodResponse> {
+    return this.request<K8sPodResponse>(
+      'GET',
+      '/k8s_user_pod/',
+      undefined,
+      params
+    );
   }
 
   /**
-   * Get Kubernetes nodes
+   * GET /k8s_node/ - List all nodes in cluster
    */
-  getNodes(
-    node_name?: string,
-    node_id?: string,
-    namespace?: string
-  ): Observable<K8sNodeResponse> {
-    const params: Record<string, string> = {};
-    if (node_name) params['node_name'] = node_name;
-    if (node_id) params['node_id'] = node_id;
-    if (namespace) params['namespace'] = namespace;
-
+  listNodes(params?: K8sNodeQueryParams): Observable<K8sNodeResponse> {
     return this.request<K8sNodeResponse>(
       'GET',
       '/k8s_node/',
@@ -244,233 +282,227 @@ export class ApiService {
   }
 
   /**
-   * Get Kubernetes cluster info
+   * GET /k8s_cluster_info/ - Get cluster information
    */
-  getClusterInfo(): Observable<K8sClusterInfoResponse> {
-    return this.request<K8sClusterInfoResponse>('GET', '/k8s_cluster_info/');
+  getClusterInfo(
+    params?: K8sClusterInfoQueryParams
+  ): Observable<K8sClusterInfoResponse> {
+    const defaultParams = { advanced: false, ...params };
+    return this.request<K8sClusterInfoResponse>(
+      'GET',
+      '/k8s_cluster_info/',
+      undefined,
+      defaultParams
+    );
   }
 
   /**
-   * Get dummy ACES UI
+   * GET /k8s_get_token/ - Get read-only token for service account
    */
-  getDummyAcesUI(): Observable<string> {
-    return this.request<string>('GET', '/dummy_aces_ui/');
-  }
-
-  /**
-   * Get Kubernetes token and save to localStorage
-   */
-  getK8sToken(
-    namespace: string,
-    service_account_name: string
-  ): Observable<K8sTokenResponse> {
-    const params: Record<string, string> = {
-      namespace,
-      service_account_name,
+  getK8sToken(params?: K8sTokenQueryParams): Observable<K8sTokenResponse> {
+    const defaultParams = {
+      namespace: K8S_CONSTANTS.DEFAULT_VALUES.NAMESPACE,
+      service_account_name: K8S_CONSTANTS.DEFAULT_VALUES.SERVICE_ACCOUNT_NAME,
+      ...params,
     };
 
     return this.request<K8sTokenResponse>(
       'GET',
       '/k8s_get_token/',
       undefined,
-      params
+      defaultParams
     ).pipe(
-      map((response: K8sTokenResponse) => {
-        // Save token to localStorage
+      map((response) => {
         if (response.token) {
-          this.saveAccessToken(response.token);
+          this.setToken(response.token);
         }
         return response;
       })
     );
   }
 
-  // ============================
-  // Tuning Parameters API Methods
-  // ============================
+  // ===================
+  // TUNING PARAMETERS API
+  // Based on OpenAPI paths: /tuning_parameters/*
+  // ===================
 
   /**
-   * Create tuning parameters
+   * POST /tuning_parameters/ - Create tuning parameter
    */
-  createTuningParameters(
+  createTuningParameter(
     data: TuningParameterCreate
   ): Observable<TuningParameterResponse> {
     return this.request<TuningParameterResponse>(
       'POST',
-      '/tuning_parameters/',
+      `${API_PATHS.TUNING_PARAMETERS}/`,
       data
     );
   }
 
   /**
-   * Get tuning parameters with pagination and date filtering
+   * GET /tuning_parameters/ - Get tuning parameters with pagination and filtering
    */
   getTuningParameters(
-    skip = 0,
-    limit = 100,
-    start_date?: string,
-    end_date?: string
+    params?: TuningParameterQueryParams
   ): Observable<TuningParameterResponse[]> {
-    const params: Record<string, unknown> = { skip, limit };
-    if (start_date) params['start_date'] = start_date;
-    if (end_date) params['end_date'] = end_date;
-
+    const defaultParams = { skip: 0, limit: 100, ...params };
     return this.request<TuningParameterResponse[]>(
       'GET',
-      '/tuning_parameters/',
+      `${API_PATHS.TUNING_PARAMETERS}/`,
       undefined,
-      params
+      defaultParams
     );
   }
 
   /**
-   * Get latest tuning parameters
+   * GET /tuning_parameters/latest/{limit} - Get latest tuning parameters
    */
   getLatestTuningParameters(
     limit: number
   ): Observable<TuningParameterResponse[]> {
     return this.request<TuningParameterResponse[]>(
       'GET',
-      `/tuning_parameters/latest/${limit}`
+      `${API_PATHS.TUNING_PARAMETERS}/latest/${limit}`
     );
   }
 
-  // ===============================
-  // Workload Request Decision API Methods
-  // ===============================
+  // ===================
+  // WORKLOAD REQUEST DECISION API
+  // Based on OpenAPI paths: /workload_request_decision/*
+  // ===================
 
   /**
-   * Create workload request decision
+   * POST /workload_request_decision/ - Create workload request decision
    */
-  createWorkloadRequestDecision(
+  createWorkloadDecision(
     data: WorkloadRequestDecisionCreate
   ): Observable<WorkloadRequestDecisionSchema> {
     return this.request<WorkloadRequestDecisionSchema>(
       'POST',
-      '/workload_request_decision/',
+      `${API_PATHS.WORKLOAD_DECISIONS}/`,
       data
     );
   }
 
   /**
-   * Get workload request decisions with pagination
+   * GET /workload_request_decision/ - Get all workload decisions with pagination
    */
-  getWorkloadRequestDecisions(
-    skip = 0,
-    limit = 100
+  getWorkloadDecisions(
+    params?: CommonQueryParams
   ): Observable<WorkloadRequestDecisionSchema[]> {
-    const params = { skip, limit };
+    const defaultParams = { skip: 0, limit: 100, ...params };
     return this.request<WorkloadRequestDecisionSchema[]>(
       'GET',
-      '/workload_request_decision/',
+      `${API_PATHS.WORKLOAD_DECISIONS}/`,
       undefined,
-      params
+      defaultParams
     );
   }
 
   /**
-   * Get workload request decision by ID
+   * GET /workload_request_decision/{decision_id} - Get workload decision by ID
    */
-  getWorkloadRequestDecisionById(
+  getWorkloadDecision(
     decisionId: string
   ): Observable<WorkloadRequestDecisionSchema> {
     return this.request<WorkloadRequestDecisionSchema>(
       'GET',
-      `/workload_request_decision/${decisionId}`
+      `${API_PATHS.WORKLOAD_DECISIONS}/${decisionId}`
     );
   }
 
   /**
-   * Update workload request decision
+   * PUT /workload_request_decision/{decision_id} - Update workload decision
    */
-  updateWorkloadRequestDecision(
+  updateWorkloadDecision(
     decisionId: string,
     data: WorkloadRequestDecisionUpdate
-  ): Observable<WorkloadRequestDecisionSchema> {
-    return this.request<WorkloadRequestDecisionSchema>(
+  ): Observable<WorkloadRequestDecisionUpdate> {
+    return this.request<WorkloadRequestDecisionUpdate>(
       'PUT',
-      `/workload_request_decision/${decisionId}`,
+      `${API_PATHS.WORKLOAD_DECISIONS}/${decisionId}`,
       data
     );
   }
 
   /**
-   * Delete workload request decision
+   * DELETE /workload_request_decision/{decision_id} - Delete workload decision
    */
-  deleteWorkloadRequestDecision(decisionId: string): Observable<any> {
-    return this.request('DELETE', `/workload_request_decision/${decisionId}`);
-  }
-
-  // For backward compatibility
-  createPodRequestDecision(
-    data: PodRequestDecisionCreate
-  ): Observable<PodRequestDecisionSchema> {
-    return this.createWorkloadRequestDecision(data);
-  }
-
-  getPodRequestDecisions(
-    skip = 0,
-    limit = 100
-  ): Observable<PodRequestDecisionSchema[]> {
-    return this.getWorkloadRequestDecisions(skip, limit);
-  }
-
-  getPodRequestDecisionById(
-    podDecisionId: string
-  ): Observable<PodRequestDecisionSchema> {
-    return this.getWorkloadRequestDecisionById(podDecisionId);
-  }
-
-  updatePodRequestDecision(
-    podDecisionId: string,
-    data: PodRequestDecisionUpdate
-  ): Observable<PodRequestDecisionSchema> {
-    return this.updateWorkloadRequestDecision(podDecisionId, data);
-  }
-
-  deletePodRequestDecision(podDecisionId: string): Observable<unknown> {
-    return this.deleteWorkloadRequestDecision(podDecisionId);
+  deleteWorkloadDecision(decisionId: string): Observable<MessageResponse> {
+    return this.request<MessageResponse>(
+      'DELETE',
+      `${API_PATHS.WORKLOAD_DECISIONS}/${decisionId}`
+    );
   }
 
   // ===================
-  // Workload Action API Methods
+  // ALERTS API
+  // Based on OpenAPI paths: /alerts/*
   // ===================
 
   /**
-   * Create workload action
+   * POST /alerts/ - Create alert
+   */
+  createAlert(data: AlertCreateRequest): Observable<AlertResponse> {
+    return this.request<AlertResponse>('POST', `${API_PATHS.ALERTS}/`, data);
+  }
+
+  /**
+   * GET /alerts/ - Get alerts with pagination
+   */
+  getAlerts(params?: AlertQueryParams): Observable<AlertResponse[]> {
+    const defaultParams = { skip: 0, limit: 100, ...params };
+    return this.request<AlertResponse[]>(
+      'GET',
+      `${API_PATHS.ALERTS}/`,
+      undefined,
+      defaultParams
+    );
+  }
+
+  // ===================
+  // WORKLOAD ACTION API
+  // Based on OpenAPI paths: /workload_action/*
+  // ===================
+
+  /**
+   * POST /workload_action/ - Create workload action
    */
   createWorkloadAction(data: WorkloadActionCreate): Observable<WorkloadAction> {
-    return this.request<WorkloadAction>('POST', '/workload_action/', data);
+    return this.request<WorkloadAction>(
+      'POST',
+      `${API_PATHS.WORKLOAD_ACTIONS}/`,
+      data
+    );
   }
 
   /**
-   * Get workload actions with pagination
+   * GET /workload_action/ - Get all workload actions with optional filters
    */
-  getWorkloadActions(
-    action_type?: string,
-    action_status?: string
-  ): Observable<WorkloadAction[]> {
-    const params: Record<string, string> = {};
-    if (action_type) params['action_type'] = action_type;
-    if (action_status) params['action_status'] = action_status;
-
+  getWorkloadActions(params?: {
+    action_type?: string;
+    action_status?: string;
+  }): Observable<WorkloadAction[]> {
     return this.request<WorkloadAction[]>(
       'GET',
-      '/workload_action/',
+      `${API_PATHS.WORKLOAD_ACTIONS}/`,
       undefined,
       params
     );
   }
 
   /**
-   * Get workload action by ID
+   * GET /workload_action/{action_id} - Get workload action by ID
    */
-  getWorkloadActionById(actionId: string): Observable<WorkloadAction> {
-    return this.request<WorkloadAction>('GET', `/workload_action/${actionId}`);
+  getWorkloadAction(actionId: string): Observable<WorkloadAction> {
+    return this.request<WorkloadAction>(
+      'GET',
+      `${API_PATHS.WORKLOAD_ACTIONS}/${actionId}`
+    );
   }
 
   /**
-   * Update workload action
+   * PUT /workload_action/{action_id} - Update workload action
    */
   updateWorkloadAction(
     actionId: string,
@@ -478,77 +510,82 @@ export class ApiService {
   ): Observable<WorkloadAction> {
     return this.request<WorkloadAction>(
       'PUT',
-      `/workload_action/${actionId}`,
+      `${API_PATHS.WORKLOAD_ACTIONS}/${actionId}`,
       data
     );
   }
 
   /**
-   * Delete workload action
+   * DELETE /workload_action/{action_id} - Delete workload action
    */
-  deleteWorkloadAction(actionId: string): Observable<unknown> {
-    return this.request('DELETE', `/workload_action/${actionId}`);
+  deleteWorkloadAction(actionId: string): Observable<MessageResponse> {
+    return this.request<MessageResponse>(
+      'DELETE',
+      `${API_PATHS.WORKLOAD_ACTIONS}/${actionId}`
+    );
   }
 
   // ===================
-  // Alerts API Methods
+  // DUMMY ACES UI API
+  // Based on OpenAPI paths: /dummy_aces_ui/*
   // ===================
 
   /**
-   * Create alert
+   * GET /dummy_aces_ui/ - Get dummy UI HTML
    */
-  createAlert(data: AlertCreateRequest): Observable<AlertResponse> {
-    return this.request<AlertResponse>('POST', '/alerts/', data);
-  }
-
-  /**
-   * Get alerts with pagination
-   */
-  getAlerts(skip = 0, limit = 100): Observable<AlertResponse[]> {
-    const params = { skip, limit };
-    return this.request<AlertResponse[]>('GET', '/alerts/', undefined, params);
+  getDummyAcesUI(): Observable<string> {
+    return this.request<string>('GET', '/dummy_aces_ui/');
   }
 
   // ===================
-  // UI Methods
+  // CONVENIENCE METHODS
   // ===================
 
   /**
-   * Get UI cluster info (legacy endpoint - may be deprecated)
-   */
-  getUIClusterInfo(): Observable<unknown> {
-    return this.request('GET', '/ui_cluster_info/');
-  }
-
-  // ===================
-  // Utility Methods
-  // ===================
-
-  /**
-   * Check if user is authenticated (has valid token)
+   * Check if user is authenticated by checking token existence
    */
   isAuthenticated(): boolean {
-    return !!this.getAccessToken();
+    return !!this.getToken();
   }
 
   /**
-   * Clear access token from localStorage
+   * Logout user by clearing stored token
    */
-  clearToken(): void {
-    if (typeof window !== 'undefined' && window.localStorage) {
-      localStorage.removeItem(this.TOKEN_KEY);
-    }
+  logout(): void {
+    this.clearToken();
   }
 
   /**
-   * Generic method for custom requests (if needed)
+   * Get current loading state as observable
    */
-  customRequest<T = unknown>(
-    method: HttpMethod,
-    url: string,
-    data?: unknown,
-    params?: Record<string, unknown>
-  ): Observable<T> {
-    return this.request<T>(method, url, data, params);
+  isLoading(): Observable<boolean> {
+    return this.loading$;
   }
+
+  /**
+   * Get current loading state synchronously
+   */
+  getLoadingState(): boolean {
+    return this.loadingSubject.value;
+  }
+
+  // ===================
+  // BACKWARD COMPATIBILITY ALIASES
+  // Preserves existing method names for zero breaking changes
+  // ===================
+
+  // Kubernetes aliases
+  getPods = this.listPods;
+  getNodes = this.listNodes;
+  getK8sTokenAlias = this.getK8sToken;
+
+  // Workload Decision aliases
+  getPodRequestDecisions = this.getWorkloadDecisions;
+  getPodRequestDecision = this.getWorkloadDecision;
+  createPodRequestDecision = this.createWorkloadDecision;
+  updatePodRequestDecision = this.updateWorkloadDecision;
+  deletePodRequestDecision = this.deleteWorkloadDecision;
+
+  // Workload Action aliases
+  getWorkloadActionById = this.getWorkloadAction;
 }
