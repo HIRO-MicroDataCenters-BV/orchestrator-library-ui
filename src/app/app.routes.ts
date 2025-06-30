@@ -17,13 +17,11 @@ export const routes: Routes = [
         path: 'cog',
         loadComponent: () =>
           import('./pages/cog/cog.component').then((m) => m.CogComponent),
-        data: { title: 'Cognitive Framework' },
       },
       {
         path: 'k8s',
         loadComponent: () =>
           import('./pages/k8s/k8s.component').then((m) => m.K8sComponent),
-        data: { title: 'Dashboard k8s' },
       },
       {
         path: 'emdc',
@@ -38,16 +36,6 @@ export const routes: Routes = [
                     './pages/emdc/request_decisions/request_decisions.component'
                   ).then((m) => m.RequestDecisionsComponent),
                 data: { title: 'Request Decisions' },
-                children: [
-                  {
-                    path: ':id',
-                    loadComponent: () =>
-                      import('./pages/details/details.component').then(
-                        (m) => m.DetailsComponent
-                      ),
-                    data: { title: 'Request Decision Detail' },
-                  },
-                ],
               },
               {
                 path: 'actions',
@@ -56,16 +44,6 @@ export const routes: Routes = [
                     (m) => m.ActionsComponent
                   ),
                 data: { title: 'Actions' },
-                children: [
-                  {
-                    path: ':id',
-                    loadComponent: () =>
-                      import('./pages/details/details.component').then(
-                        (m) => m.DetailsComponent
-                      ),
-                    data: { title: 'Actions Detail' },
-                  },
-                ],
               },
             ],
           },
@@ -75,17 +53,7 @@ export const routes: Routes = [
               import('./pages/emdc/alerts/alerts.component').then(
                 (m) => m.AlertsComponent
               ),
-            data: { title: 'Alerts' },
-            children: [
-              {
-                path: ':id',
-                loadComponent: () =>
-                  import('./pages/details/details.component').then(
-                    (m) => m.DetailsComponent
-                  ),
-                data: { title: 'Alerts Details' },
-              },
-            ],
+            data: { title: 'Actions' },
           },
         ],
       },

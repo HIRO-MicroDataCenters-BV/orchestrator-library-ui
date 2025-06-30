@@ -3,6 +3,8 @@ import { SafePipe } from '../../pipes/safe.pipe';
 
 import { environment } from '../../../environments/environment';
 import { ApiService } from '../../core/services/api.service';
+import { STORAGE_KEYS } from '../../shared/constants';
+import { TokenStorage } from '../../shared/utils';
 
 @Component({
   selector: 'app-k8s',
@@ -19,7 +21,11 @@ import { ApiService } from '../../core/services/api.service';
 })
 export class K8sComponent {
   url = environment.dashboardUrl;
-  constructor(apiService: ApiService) {
-    this.url += '?token=' + apiService.getAccessToken();
+  constructor(private apiService: ApiService) {
+    // Get token from safe storage if available
+    const token = TokenStorage.getAccessToken(STORAGE_KEYS.ACCESS_TOKEN);
+    if (token) {
+      this.url += '?token=' + token;
+    }
   }
 }

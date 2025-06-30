@@ -16,22 +16,23 @@ export class SafePipe implements PipeTransform {
   constructor(private sanitizer: DomSanitizer) {}
 
   transform(
-    value: any,
+    value: unknown,
     type: string
   ): SafeHtml | SafeStyle | SafeScript | SafeUrl | SafeResourceUrl {
+    const stringValue = String(value);
     switch (type) {
       case 'html':
-        return this.sanitizer.bypassSecurityTrustHtml(value);
+        return this.sanitizer.bypassSecurityTrustHtml(stringValue);
       case 'style':
-        return this.sanitizer.bypassSecurityTrustStyle(value);
+        return this.sanitizer.bypassSecurityTrustStyle(stringValue);
       case 'script':
-        return this.sanitizer.bypassSecurityTrustScript(value);
+        return this.sanitizer.bypassSecurityTrustScript(stringValue);
       case 'url':
-        return this.sanitizer.bypassSecurityTrustUrl(value);
+        return this.sanitizer.bypassSecurityTrustUrl(stringValue);
       case 'resourceUrl':
-        return this.sanitizer.bypassSecurityTrustResourceUrl(value);
+        return this.sanitizer.bypassSecurityTrustResourceUrl(stringValue);
       default:
-        return this.sanitizer.bypassSecurityTrustResourceUrl(value);
+        return this.sanitizer.bypassSecurityTrustResourceUrl(stringValue);
     }
   }
 }

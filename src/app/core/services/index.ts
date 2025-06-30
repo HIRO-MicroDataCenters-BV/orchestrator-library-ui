@@ -1,8 +1,13 @@
-// Main API service
-export * from './api.service';
+/**
+ * Core Services Index
+ * Exports all core services for the application
+ */
 
-// Specialized API services
-export * from './kubernetes.service';
-export * from './tuning-parameters.service';
-export * from './pod-request-decision.service';
-export * from './alerts.service';
+// Main API service - unified service for all API operations
+export { ApiService } from './api.service';
+
+// Re-export for backward compatibility
+export { ApiService as BaseApiService } from './api.service';
+
+// Default export
+export { ApiService as default } from './api.service';
