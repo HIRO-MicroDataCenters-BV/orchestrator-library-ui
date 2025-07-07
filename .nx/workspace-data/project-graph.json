@@ -3700,6 +3700,10 @@
             "NPM Scripts": [
               "ng",
               "start",
+              "start:dev",
+              "start:prod",
+              "build:dev",
+              "build:prod",
               "watch",
               "serve:ssr"
             ]
@@ -3730,6 +3734,54 @@
             "metadata": {
               "scriptContent": "nx serve",
               "runCommand": "pnpm run start"
+            },
+            "configurations": {},
+            "parallelism": true
+          },
+          "start:dev": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "start:dev"
+            },
+            "metadata": {
+              "scriptContent": "nx serve --configuration=development",
+              "runCommand": "pnpm run start:dev"
+            },
+            "configurations": {},
+            "parallelism": true
+          },
+          "start:prod": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "start:prod"
+            },
+            "metadata": {
+              "scriptContent": "nx serve --configuration=production",
+              "runCommand": "pnpm run start:prod"
+            },
+            "configurations": {},
+            "parallelism": true
+          },
+          "build:dev": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "build:dev"
+            },
+            "metadata": {
+              "scriptContent": "nx build --configuration=development",
+              "runCommand": "pnpm run build:dev"
+            },
+            "configurations": {},
+            "parallelism": true
+          },
+          "build:prod": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "build:prod"
+            },
+            "metadata": {
+              "scriptContent": "nx build --configuration=production",
+              "runCommand": "pnpm run build:prod"
             },
             "configurations": {},
             "parallelism": true
@@ -3795,12 +3847,24 @@
                     "maximumError": "8kB"
                   }
                 ],
-                "outputHashing": "all"
+                "outputHashing": "all",
+                "fileReplacements": [
+                  {
+                    "replace": "src/environments/environment.ts",
+                    "with": "src/environments/environment.prod.ts"
+                  }
+                ]
               },
               "development": {
                 "optimization": false,
                 "extractLicenses": false,
-                "sourceMap": true
+                "sourceMap": true,
+                "fileReplacements": [
+                  {
+                    "replace": "src/environments/environment.ts",
+                    "with": "src/environments/environment.development.ts"
+                  }
+                ]
               }
             },
             "defaultConfiguration": "production",
@@ -44819,5 +44883,5 @@
   },
   "version": "6.0",
   "errors": [],
-  "computedAt": 1751279100232
+  "computedAt": 1751910895387
 }
