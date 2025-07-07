@@ -29,12 +29,8 @@ import { HlmSidebarTriggerComponent } from '../../../../libs/ui/ui-sidebar-helm/
 import { HlmSidebarHeaderDirective } from '../../../../libs/ui/ui-sidebar-helm/src/lib/hlm-sidebar-header.directive';
 import { HlmSidebarMenuDirective } from '../../../../libs/ui/ui-sidebar-helm/src/lib/hlm-sidebar-menu.directive';
 import { HlmSidebarMenuItemDirective } from '../../../../libs/ui/ui-sidebar-helm/src/lib/hlm-sidebar-menu-item.directive';
-import { HlmSidebarMenuButtonDirective } from '../../../../libs/ui/ui-sidebar-helm/src/lib/hlm-sidebar-menu-button.directive';
 import { HlmSidebarFooterDirective } from '../../../../libs/ui/ui-sidebar-helm/src/lib/hlm-sidebar-footer.directive';
 import { HlmSidebarService } from '../../../../libs/ui/ui-sidebar-helm/src/lib/hlm-sidebar.service';
-import { BrnSeparatorComponent } from '@spartan-ng/brain/separator';
-import { HlmSeparatorDirective } from '@spartan-ng/ui-separator-helm';
-import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
 import { HlmInputDirective } from '@spartan-ng/ui-input-helm';
 import { AppHeaderComponent } from '../../components/app-header/app-header.component';
 import { NgIf, NgFor } from '@angular/common';
@@ -57,12 +53,7 @@ import { K8S_CONSTANTS } from '../../shared/constants';
     HlmSidebarHeaderDirective,
     HlmSidebarMenuDirective,
     HlmSidebarMenuItemDirective,
-    HlmSidebarMenuButtonDirective,
     HlmSidebarFooterDirective,
-    BrnSeparatorComponent,
-    HlmSeparatorDirective,
-    HlmButtonDirective,
-    HlmInputDirective,
     AppHeaderComponent,
     NgIf,
     NgFor,

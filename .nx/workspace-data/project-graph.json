@@ -3838,7 +3838,7 @@
                 "budgets": [
                   {
                     "type": "initial",
-                    "maximumWarning": "500kB",
+                    "maximumWarning": "1MB",
                     "maximumError": "1MB"
                   },
                   {
@@ -21756,11 +21756,6 @@
       {
         "source": "orchestration_library-front",
         "target": "npm:zone.js",
-        "type": "static"
-      },
-      {
-        "source": "orchestration_library-front",
-        "target": "ui-checkbox-helm",
         "type": "static"
       },
       {
@@ -44883,5 +44878,5 @@
   },
   "version": "6.0",
   "errors": [],
-  "computedAt": 1751910895387
+  "computedAt": 1751915097038
 }
