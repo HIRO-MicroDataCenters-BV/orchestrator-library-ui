@@ -1,22 +1,18 @@
-import {
-  DatePipe,
-  NgFor,
-  NgIf,
-} from '@angular/common';
+import { DatePipe, NgFor, NgIf } from '@angular/common';
 import { TranslocoModule } from '@jsverse/transloco';
-import { Router, RouterLink, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import {
   Component,
-  TrackByFunction,
   computed,
   effect,
-  signal,
-  untracked,
+  inject,
   Input,
   OnChanges,
-  SimpleChanges,
   OnInit,
-  inject,
+  signal,
+  SimpleChanges,
+  TrackByFunction,
+  untracked,
 } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
@@ -24,13 +20,13 @@ import {
   lucideArrowUpDown,
   lucideChevronDown,
   lucideCog,
+  lucideDownload,
   lucideEllipsisVertical,
   lucideInfo,
   lucidePause,
   lucidePlus,
   lucideTerminal,
   lucideTrash2,
-  lucideDownload,
 } from '@ng-icons/lucide';
 import { HlmButtonModule } from '@spartan-ng/ui-button-helm';
 import { HlmIconDirective } from '@spartan-ng/ui-icon-helm';
@@ -50,11 +46,10 @@ import {
 import { HlmTableModule } from '@spartan-ng/ui-table-helm';
 import { BrnSelectModule } from '@spartan-ng/brain/select';
 import { HlmSelectModule } from '@spartan-ng/ui-select-helm';
-import { provideIcons, NgIcon } from '@ng-icons/core';
-import { debounceTime } from 'rxjs';
+import { NgIcon, provideIcons } from '@ng-icons/core';
+import { debounceTime, Observable } from 'rxjs';
 import { HlmBadgeDirective } from '@spartan-ng/ui-badge-helm';
 import { AppCircleProgressComponent } from '../app-circle-progress/app-circle-progress.component';
-import { Observable } from 'rxjs';
 
 export type TableData = {
   id: string;
@@ -179,13 +174,25 @@ export class AppTableComponent implements OnChanges, OnInit {
   private readonly _filteredItems = computed(() => {
     const colFilter = this._colFilter()?.trim()?.toLowerCase();
     if (colFilter && colFilter.length > 0) {
-      // TODO: Implement filtering logic for all columns
-      /*
-      return this._items().filter((u) =>
-        u.cluster_name.toLowerCase().includes(colFilter)
-      );
-      */
-      return this._items();
+      return this._items().filter((item) => {
+        // Search through all string properties of the item
+        return Object.values(item as Record<string, any>).some((value) => {
+          if (typeof value === 'string') {
+            return value.toLowerCase().includes(colFilter);
+          }
+          if (typeof value === 'number') {
+            return value.toString().includes(colFilter);
+          }
+          if (value === null || value === undefined) {
+            return false;
+          }
+          // Handle nested objects and arrays
+          if (typeof value === 'object') {
+            return JSON.stringify(value).toLowerCase().includes(colFilter);
+          }
+          return false;
+        });
+      });
     }
     return this._items();
   });
@@ -196,17 +203,19 @@ export class AppTableComponent implements OnChanges, OnInit {
     const start = this._displayedIndices().start;
     const end = this._displayedIndices().end + 1;
     const items = this._filteredItems();
+    
     if (!sort) {
       return items.slice(start, end);
     }
-    /*
-    .sort(
-      (p1, p2) =>
-        (sort === 'ASC' ? 1 : -1) *
-        p1.cluster_name.localeCompare(p2.cluster_name)
-    )
-    */
-    return [...items].slice(start, end);
+    
+    // Generic sorting for any object with string properties
+    const sortedItems = [...items].sort((p1, p2) => {
+      const p1Str = JSON.stringify(p1).toLowerCase();
+      const p2Str = JSON.stringify(p2).toLowerCase();
+      return (sort === 'ASC' ? 1 : -1) * p1Str.localeCompare(p2Str);
+    });
+    
+    return sortedItems.slice(start, end);
   });
 
   protected readonly _trackBy: TrackByFunction<unknown> = (
