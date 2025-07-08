@@ -1,22 +1,18 @@
-import {
-  DatePipe,
-  NgFor,
-  NgIf,
-} from '@angular/common';
+import { DatePipe, NgFor, NgIf } from '@angular/common';
 import { TranslocoModule } from '@jsverse/transloco';
-import { Router, RouterLink, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import {
   Component,
-  TrackByFunction,
   computed,
   effect,
-  signal,
-  untracked,
+  inject,
   Input,
   OnChanges,
-  SimpleChanges,
   OnInit,
-  inject,
+  signal,
+  SimpleChanges,
+  TrackByFunction,
+  untracked,
 } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
@@ -24,13 +20,13 @@ import {
   lucideArrowUpDown,
   lucideChevronDown,
   lucideCog,
+  lucideDownload,
   lucideEllipsisVertical,
   lucideInfo,
   lucidePause,
   lucidePlus,
   lucideTerminal,
   lucideTrash2,
-  lucideDownload,
 } from '@ng-icons/lucide';
 import { HlmButtonModule } from '@spartan-ng/ui-button-helm';
 import { HlmIconDirective } from '@spartan-ng/ui-icon-helm';
@@ -50,11 +46,10 @@ import {
 import { HlmTableModule } from '@spartan-ng/ui-table-helm';
 import { BrnSelectModule } from '@spartan-ng/brain/select';
 import { HlmSelectModule } from '@spartan-ng/ui-select-helm';
-import { provideIcons, NgIcon } from '@ng-icons/core';
-import { debounceTime } from 'rxjs';
+import { NgIcon, provideIcons } from '@ng-icons/core';
+import { debounceTime, Observable } from 'rxjs';
 import { HlmBadgeDirective } from '@spartan-ng/ui-badge-helm';
 import { AppCircleProgressComponent } from '../app-circle-progress/app-circle-progress.component';
-import { Observable } from 'rxjs';
 
 export type TableData = {
   id: string;
@@ -179,8 +174,7 @@ export class AppTableComponent implements OnChanges, OnInit {
   private readonly _filteredItems = computed(() => {
     const colFilter = this._colFilter()?.trim()?.toLowerCase();
     if (colFilter && colFilter.length > 0) {
-      console.log('Filtering with:', colFilter);
-      const filtered = this._items().filter((item) => {
+      return this._items().filter((item) => {
         // Search through all string properties of the item
         return Object.values(item as Record<string, any>).some((value) => {
           if (typeof value === 'string') {
@@ -199,8 +193,6 @@ export class AppTableComponent implements OnChanges, OnInit {
           return false;
         });
       });
-      console.log('Filtered results:', filtered.length, 'of', this._items().length);
-      return filtered;
     }
     return this._items();
   });
