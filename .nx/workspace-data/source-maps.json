@@ -7564,6 +7564,22 @@
       "package.json",
       "nx/core/package-json"
     ],
+    "metadata.targetGroups.NPM Scripts.4": [
+      "package.json",
+      "nx/core/package-json"
+    ],
+    "metadata.targetGroups.NPM Scripts.5": [
+      "package.json",
+      "nx/core/package-json"
+    ],
+    "metadata.targetGroups.NPM Scripts.6": [
+      "package.json",
+      "nx/core/package-json"
+    ],
+    "metadata.targetGroups.NPM Scripts.7": [
+      "package.json",
+      "nx/core/package-json"
+    ],
     "metadata.js": [
       "package.json",
       "nx/core/package-json"
@@ -7633,6 +7649,118 @@
       "nx/core/package-json"
     ],
     "targets.start.metadata.runCommand": [
+      "package.json",
+      "nx/core/package-json"
+    ],
+    "targets.start:dev": [
+      "package.json",
+      "nx/core/package-json"
+    ],
+    "targets.start:dev.executor": [
+      "package.json",
+      "nx/core/package-json"
+    ],
+    "targets.start:dev.options": [
+      "package.json",
+      "nx/core/package-json"
+    ],
+    "targets.start:dev.metadata": [
+      "package.json",
+      "nx/core/package-json"
+    ],
+    "targets.start:dev.options.script": [
+      "package.json",
+      "nx/core/package-json"
+    ],
+    "targets.start:dev.metadata.scriptContent": [
+      "package.json",
+      "nx/core/package-json"
+    ],
+    "targets.start:dev.metadata.runCommand": [
+      "package.json",
+      "nx/core/package-json"
+    ],
+    "targets.start:prod": [
+      "package.json",
+      "nx/core/package-json"
+    ],
+    "targets.start:prod.executor": [
+      "package.json",
+      "nx/core/package-json"
+    ],
+    "targets.start:prod.options": [
+      "package.json",
+      "nx/core/package-json"
+    ],
+    "targets.start:prod.metadata": [
+      "package.json",
+      "nx/core/package-json"
+    ],
+    "targets.start:prod.options.script": [
+      "package.json",
+      "nx/core/package-json"
+    ],
+    "targets.start:prod.metadata.scriptContent": [
+      "package.json",
+      "nx/core/package-json"
+    ],
+    "targets.start:prod.metadata.runCommand": [
+      "package.json",
+      "nx/core/package-json"
+    ],
+    "targets.build:dev": [
+      "package.json",
+      "nx/core/package-json"
+    ],
+    "targets.build:dev.executor": [
+      "package.json",
+      "nx/core/package-json"
+    ],
+    "targets.build:dev.options": [
+      "package.json",
+      "nx/core/package-json"
+    ],
+    "targets.build:dev.metadata": [
+      "package.json",
+      "nx/core/package-json"
+    ],
+    "targets.build:dev.options.script": [
+      "package.json",
+      "nx/core/package-json"
+    ],
+    "targets.build:dev.metadata.scriptContent": [
+      "package.json",
+      "nx/core/package-json"
+    ],
+    "targets.build:dev.metadata.runCommand": [
+      "package.json",
+      "nx/core/package-json"
+    ],
+    "targets.build:prod": [
+      "package.json",
+      "nx/core/package-json"
+    ],
+    "targets.build:prod.executor": [
+      "package.json",
+      "nx/core/package-json"
+    ],
+    "targets.build:prod.options": [
+      "package.json",
+      "nx/core/package-json"
+    ],
+    "targets.build:prod.metadata": [
+      "package.json",
+      "nx/core/package-json"
+    ],
+    "targets.build:prod.options.script": [
+      "package.json",
+      "nx/core/package-json"
+    ],
+    "targets.build:prod.metadata.scriptContent": [
+      "package.json",
+      "nx/core/package-json"
+    ],
+    "targets.build:prod.metadata.runCommand": [
       "package.json",
       "nx/core/package-json"
     ],
@@ -7776,6 +7904,10 @@
       "project.json",
       "nx/core/project-json"
     ],
+    "targets.build.configurations.production.fileReplacements": [
+      "project.json",
+      "nx/core/project-json"
+    ],
     "targets.build.configurations.development": [
       "project.json",
       "nx/core/project-json"
@@ -7789,6 +7921,10 @@
       "nx/core/project-json"
     ],
     "targets.build.configurations.development.sourceMap": [
+      "project.json",
+      "nx/core/project-json"
+    ],
+    "targets.build.configurations.development.fileReplacements": [
       "project.json",
       "nx/core/project-json"
     ],

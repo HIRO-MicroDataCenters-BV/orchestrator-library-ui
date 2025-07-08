@@ -1,9 +1,7 @@
 import {
   DatePipe,
-  DecimalPipe,
   NgFor,
   NgIf,
-  TitleCasePipe,
 } from '@angular/common';
 import { TranslocoModule } from '@jsverse/transloco';
 import { Router, RouterLink, ActivatedRoute } from '@angular/router';
@@ -35,7 +33,6 @@ import {
   lucideDownload,
 } from '@ng-icons/lucide';
 import { HlmButtonModule } from '@spartan-ng/ui-button-helm';
-import { HlmCheckboxComponent } from '@spartan-ng/ui-checkbox-helm';
 import { HlmIconDirective } from '@spartan-ng/ui-icon-helm';
 import { HlmInputDirective } from '@spartan-ng/ui-input-helm';
 import { BrnMenuTriggerDirective } from '@spartan-ng/brain/menu';
@@ -47,7 +44,6 @@ import {
 import { BrnTableModule, PaginatorState } from '@spartan-ng/brain/table';
 import {
   HlmTabsComponent,
-  HlmTabsContentDirective,
   HlmTabsListComponent,
   HlmTabsTriggerDirective,
 } from '@spartan-ng/helm/tabs';
@@ -90,21 +86,13 @@ export type TableActionGroup = {
     NgIcon,
     BrnMenuTriggerDirective,
     HlmMenuModule,
-
     BrnTableModule,
     HlmTableModule,
-
     HlmButtonModule,
-
     DatePipe,
-    DecimalPipe,
-    TitleCasePipe,
     HlmIconDirective,
     HlmInputDirective,
-
-    HlmCheckboxComponent,
     HlmTabsComponent,
-    HlmTabsContentDirective,
     HlmTabsListComponent,
     HlmTabsTriggerDirective,
     HlmMenuItemCheckComponent,
