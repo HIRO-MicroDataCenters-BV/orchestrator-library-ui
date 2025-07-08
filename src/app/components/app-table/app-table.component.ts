@@ -191,13 +191,28 @@ export class AppTableComponent implements OnChanges, OnInit {
   private readonly _filteredItems = computed(() => {
     const colFilter = this._colFilter()?.trim()?.toLowerCase();
     if (colFilter && colFilter.length > 0) {
-      // TODO: Implement filtering logic for all columns
-      /*
-      return this._items().filter((u) =>
-        u.cluster_name.toLowerCase().includes(colFilter)
-      );
-      */
-      return this._items();
+      console.log('Filtering with:', colFilter);
+      const filtered = this._items().filter((item) => {
+        // Search through all string properties of the item
+        return Object.values(item as Record<string, any>).some((value) => {
+          if (typeof value === 'string') {
+            return value.toLowerCase().includes(colFilter);
+          }
+          if (typeof value === 'number') {
+            return value.toString().includes(colFilter);
+          }
+          if (value === null || value === undefined) {
+            return false;
+          }
+          // Handle nested objects and arrays
+          if (typeof value === 'object') {
+            return JSON.stringify(value).toLowerCase().includes(colFilter);
+          }
+          return false;
+        });
+      });
+      console.log('Filtered results:', filtered.length, 'of', this._items().length);
+      return filtered;
     }
     return this._items();
   });
@@ -208,17 +223,19 @@ export class AppTableComponent implements OnChanges, OnInit {
     const start = this._displayedIndices().start;
     const end = this._displayedIndices().end + 1;
     const items = this._filteredItems();
+    
     if (!sort) {
       return items.slice(start, end);
     }
-    /*
-    .sort(
-      (p1, p2) =>
-        (sort === 'ASC' ? 1 : -1) *
-        p1.cluster_name.localeCompare(p2.cluster_name)
-    )
-    */
-    return [...items].slice(start, end);
+    
+    // Generic sorting for any object with string properties
+    const sortedItems = [...items].sort((p1, p2) => {
+      const p1Str = JSON.stringify(p1).toLowerCase();
+      const p2Str = JSON.stringify(p2).toLowerCase();
+      return (sort === 'ASC' ? 1 : -1) * p1Str.localeCompare(p2Str);
+    });
+    
+    return sortedItems.slice(start, end);
   });
 
   protected readonly _trackBy: TrackByFunction<unknown> = (
