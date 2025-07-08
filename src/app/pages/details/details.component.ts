@@ -1,22 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { KeyValuePipe, NgFor, NgIf, DatePipe } from '@angular/common';
-import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
-import { HlmInputDirective } from '@spartan-ng/ui-input-helm';
 import { TranslocoModule } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-details',
   standalone: true,
-  imports: [
-    HlmButtonDirective,
-    HlmInputDirective,
-    TranslocoModule,
-    KeyValuePipe,
-    NgFor,
-    NgIf,
-    DatePipe,
-  ],
+  imports: [TranslocoModule, KeyValuePipe, NgFor, NgIf, DatePipe],
   templateUrl: './details.component.html',
 })
 export class DetailsComponent implements OnInit {
