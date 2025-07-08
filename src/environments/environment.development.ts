@@ -1,5 +1,5 @@
 export const environment = {
-  production: true,
+  production: false,
   apiUrl: 'http://localhost:8086',
   tokenKey: 'auth_token',
   refreshTokenKey: 'refresh_token',
