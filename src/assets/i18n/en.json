@@ -52,7 +52,7 @@
     "bound_pod_namespace": "Bound Pod Namespace",
     "created_node_name": "Created Node Name",
     "created_pod_name": "Created Pod Name",
-    "created_pod_namespace": "Target Pod Namespace",
+    "created_pod_namespace": "Target Namespace",
     "deleted_node_name": "Deleted Node Name",
     "deleted_pod_name": "Deleted Pod Name",
     "deleted_pod_namespace": "Deleted Pod Namespace",
