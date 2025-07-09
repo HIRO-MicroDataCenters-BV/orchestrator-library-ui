@@ -55,10 +55,8 @@
   [displayedColumns]="_allDisplayedColumns()"
   [trackBy]="_trackBy"
 >
-  <brn-column-def name="request_id" class="w-64">
-    <hlm-th truncate *brnHeaderDef>{{
-      'column.request_id' | transloco
-    }}</hlm-th>
+  <brn-column-def name="id" class="w-64">
+    <hlm-th truncate *brnHeaderDef>{{ 'column.id' | transloco }}</hlm-th>
     <hlm-td
       (click)="hasRowAction ? onRowClick(element) : null"
       [class.cursor-pointer]="hasRowAction"
@@ -66,6 +64,17 @@
       *brnCellDef="let element"
     >
       <p class="text-sm text-gray-500">{{ element.id }}</p>
+    </hlm-td>
+  </brn-column-def>
+  <brn-column-def name="created_pod_namespace" class="w-64">
+    <hlm-th truncate *brnHeaderDef>{{ 'column.created_pod_namespace' | transloco }}</hlm-th>
+    <hlm-td
+      (click)="hasRowAction ? onRowClick(element) : null"
+      [class.cursor-pointer]="hasRowAction"
+      truncate
+      *brnCellDef="let element"
+    >
+      <p class="text-sm text-gray-500">{{ element.bound_pod_namespace }}</p>
     </hlm-td>
   </brn-column-def>
   <brn-column-def name="pod_name" class="w-64">
