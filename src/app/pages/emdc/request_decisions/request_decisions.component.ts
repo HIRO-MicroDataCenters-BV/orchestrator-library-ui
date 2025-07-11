@@ -25,7 +25,7 @@ export class RequestDecisionsComponent implements OnInit, OnDestroy {
   clusters = [];
   columns = [
     'request_id',
-    //'pod_name',
+    'pod_name',
     //'namespace',
     //'queue_name',
     //'demand_cpu',
