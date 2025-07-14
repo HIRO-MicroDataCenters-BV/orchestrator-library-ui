@@ -10,6 +10,14 @@
   "inputs": {
     "placeholder": "Placeholder"
   },
+  "card": {
+    "cluster": "Cluster",
+    "recent_workload_request_decisions": "Recent Workload Request Decisions",
+    "recent_alerts": "Recent Alerts",
+    "recent_saved_models": "Recent Saved Models",
+    "swarm_intelligence": "Swarm Intelligence",
+    "monitoring": "Monitoring"
+  },
   "section": {
     "dashboard": "Dashboard",
     "workloads": "Workloads",
@@ -21,18 +29,21 @@
     "cog": "Cognitive Framework",
     "monitoring": "Monitoring",
     "request_decisions": "Request Decisions",
-    "actions": "Actions"
+    "actions": "Actions",
+    "overview": "Overview"
   },
   "action": {
     "previous": "Previous",
     "next": "Next",
     "view_details": "View Details",
     "view_logs": "View Logs",
+    "view_all": "View All",
     "scale_cluster": "Scale Cluster",
     "add_nodes": "Add Nodes",
     "cordon_cluster": "Cordon Cluster",
     "drain_cluster": "Drain Cluster",
-    "delete_cluster": "Delete Cluster"
+    "delete_cluster": "Delete Cluster",
+    "healthy": "Healthy"
   },
   "placeholder": {
     "search": "Search...",

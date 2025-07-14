@@ -21,7 +21,9 @@
     "cog": "Cognitive Framework",
     "monitoring": "Monitoring",
     "request_decisions": "Request Decisions",
-    "actions": "Actions"
+    "actions": "Actions",
+    "overview": "Overview",
+    "emdc": "EMDC"
   },
   "action": {
     "previous": "Previous",
@@ -80,7 +82,11 @@
     "action_end_time": "End Time",
     "bound_pod_name": "Target Pod",
     "pod_parent_name": "Parent Workload",
-    "action_reason": "Reason"
+    "action_reason": "Reason",
+    "alert_model": "Alert Model",
+    "model_name": "Model Name",
+    "model_version": "Model Version",
+    "model_organization": "Model Organization"
   },
   "common": {
     "title": "Orchestration Library",

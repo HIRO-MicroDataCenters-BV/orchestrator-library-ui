@@ -27,6 +27,10 @@ import {
   lucidePlus,
   lucideTerminal,
   lucideTrash2,
+  lucideCircleCheck,
+  lucideTriangleAlert,
+  lucideCircleX,
+  lucideCircle,
 } from '@ng-icons/lucide';
 import { HlmButtonModule } from '@spartan-ng/ui-button-helm';
 import { HlmIconDirective } from '@spartan-ng/ui-icon-helm';
@@ -73,6 +77,28 @@ export type TableActionGroup = {
   actions: TableAction[];
 };
 
+/**
+ * App Table Component
+ *
+ * A reusable table component with filtering, pagination, and conditional header display.
+ *
+ * @param showHeader - Controls visibility of both search panel and table headers
+ *                    When false, hides the entire header row including th elements
+ * @param showFooter - Controls visibility of pagination footer
+ * @param hasRowAction - Enables row click navigation
+ * @param columns - Array of column names to display
+ * @param actions - Array of action names for row menus
+ * @param tabs - Array of tab names for filtering
+ * @param dataSource - Observable data source for table content
+ *
+ * @example
+ * // Table with headers visible
+ * <app-table [columns]="['name', 'status']" [showHeader]="true"></app-table>
+ *
+ * @example
+ * // Clean table for dashboard embedding (no headers/footer)
+ * <app-table [columns]="['name', 'status']" [showHeader]="false" [showFooter]="false"></app-table>
+ */
 @Component({
   selector: 'app-table',
   standalone: true,
@@ -113,6 +139,10 @@ export type TableActionGroup = {
       lucideCog,
       lucidePause,
       lucideTrash2,
+      lucideCircleCheck,
+      lucideTriangleAlert,
+      lucideCircleX,
+      lucideCircle,
     }),
   ],
   host: {
@@ -127,6 +157,8 @@ export class AppTableComponent implements OnChanges, OnInit {
   @Input('tabs') tabs: string[] = [];
   @Input('dataSource') dataSource: Observable<unknown[]> | null = null;
   @Input('hasRowAction') hasRowAction = true;
+  @Input('showHeader') showHeader = true;
+  @Input('showFooter') showFooter = true;
 
   ACTION_ICONS: Record<string, string> = {
     view_details: lucideInfo,
@@ -203,18 +235,18 @@ export class AppTableComponent implements OnChanges, OnInit {
     const start = this._displayedIndices().start;
     const end = this._displayedIndices().end + 1;
     const items = this._filteredItems();
-    
+
     if (!sort) {
       return items.slice(start, end);
     }
-    
+
     // Generic sorting for any object with string properties
     const sortedItems = [...items].sort((p1, p2) => {
       const p1Str = JSON.stringify(p1).toLowerCase();
       const p2Str = JSON.stringify(p2).toLowerCase();
       return (sort === 'ASC' ? 1 : -1) * p1Str.localeCompare(p2Str);
     });
-    
+
     return sortedItems.slice(start, end);
   });
 
@@ -338,7 +370,7 @@ export class AppTableComponent implements OnChanges, OnInit {
     }
   }
 
-  protected handleColSortChange() {
+  protected handleColSortChange(): void {
     const sort = this._colSort();
     if (sort === 'ASC') {
       this._colSort.set('DESC');
@@ -347,6 +379,94 @@ export class AppTableComponent implements OnChanges, OnInit {
     } else {
       this._colSort.set('ASC');
     }
+  }
+
+  getDashboardStatusIcon(element: unknown): string {
+    const item = element as Record<string, any>;
+    const status =
+      item['status'] ||
+      item['alert_type'] ||
+      item['action_type'] ||
+      item['decision_status'];
+
+    if (typeof status === 'string') {
+      const type = status.toLowerCase();
+      switch (type) {
+        case 'created':
+        case 'running':
+        case 'pending':
+          return 'lucideCircle';
+        case 'bound':
+        case 'bind':
+        case 'success':
+        case 'successful':
+        case 'completed':
+        case 'approved':
+          return 'lucideCircleCheck';
+        case 'failed':
+        case 'error':
+        case 'deleted':
+        case 'network-attack':
+          return 'lucideCircleX';
+        case 'warning':
+        case 'abnormal':
+          return 'lucideTriangleAlert';
+        case 'info':
+        case 'other':
+          return 'lucideInfo';
+        default:
+          return 'lucideCircle';
+      }
+    }
+
+    if (typeof status === 'boolean') {
+      return status ? 'lucideCircleCheck' : 'lucideCircleX';
+    }
+
+    return 'lucideCircle';
+  }
+
+  getDashboardStatusColor(element: unknown): string {
+    const item = element as Record<string, any>;
+    const status =
+      item['status'] ||
+      item['alert_type'] ||
+      item['action_type'] ||
+      item['decision_status'];
+
+    if (status) {
+      return this.getStatusColor(String(status)).split(' ')[0];
+    }
+    return 'text-gray-700';
+  }
+
+  getDashboardMainText(element: unknown): string {
+    const item = element as Record<string, any>;
+    return (
+      item['pod_name'] ||
+      item['alert_description'] ||
+      item['cluster_name'] ||
+      item['name'] ||
+      item['id'] ||
+      'Unknown'
+    );
+  }
+
+  getDashboardSubText(element: unknown): string {
+    const item = element as Record<string, any>;
+    if (item['pod_id']) {
+      return `ID: ${item['pod_id'].substring(0, 8)}...`;
+    }
+    if (item['namespace']) {
+      return `Namespace: ${item['namespace']}`;
+    }
+    if (item['alert_type']) {
+      return `Type: ${item['alert_type']}`;
+    }
+    if (item['pod_parent_kind']) {
+      return `${item['pod_parent_kind']}`;
+    }
+    return item['queue_name'] || item['model_version'] || '';
   }
 
   ngOnChanges(changes: SimpleChanges): void {

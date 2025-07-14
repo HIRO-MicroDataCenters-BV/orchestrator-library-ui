@@ -1,4 +1,7 @@
-<div class="flex flex-col justify-between gap-4 sm:flex-row pb-2">
+<div
+  class="flex flex-col justify-between gap-4 sm:flex-row pb-2"
+  *ngIf="showHeader"
+>
   <div>
     <input
       hlmInput
@@ -50,15 +53,78 @@
 <brn-table
   hlm
   stickyHeader
-  class="border-border mt-4 block h-[calc(100vh-250px)] overflow-auto rounded-md border"
+  class="border-border block h-[calc(100vh-250px)] overflow-auto rounded-md border"
   [dataSource]="_filteredSortedPaginatedItems()"
   [displayedColumns]="_allDisplayedColumns()"
   [trackBy]="_trackBy"
 >
+  <brn-column-def name="dashboard_status" class="w-16">
+    <ng-container *brnHeaderDef>
+      <hlm-th *ngIf="showHeader"></hlm-th>
+    </ng-container>
+    <hlm-td
+      (click)="hasRowAction ? onRowClick(element) : null"
+      [class.cursor-pointer]="hasRowAction"
+      truncate
+      *brnCellDef="let element"
+    >
+      <div class="flex items-center justify-center">
+        <ng-icon
+          hlm
+          size="sm"
+          [name]="getDashboardStatusIcon(element)"
+          [class]="getDashboardStatusColor(element)"
+        />
+      </div>
+    </hlm-td>
+  </brn-column-def>
+
+  <brn-column-def name="dashboard_info" class="flex-1">
+    <ng-container *brnHeaderDef>
+      <hlm-th *ngIf="showHeader"></hlm-th>
+    </ng-container>
+    <hlm-td
+      (click)="hasRowAction ? onRowClick(element) : null"
+      [class.cursor-pointer]="hasRowAction"
+      truncate
+      *brnCellDef="let element"
+    >
+      <div class="flex flex-col">
+        <p class="text-sm font-medium text-gray-900">
+          {{ getDashboardMainText(element) }}
+        </p>
+        <p class="text-xs text-gray-500">{{ getDashboardSubText(element) }}</p>
+      </div>
+    </hlm-td>
+  </brn-column-def>
+
+  <brn-column-def name="dashboard_date" class="w-32">
+    <ng-container *brnHeaderDef>
+      <hlm-th *ngIf="showHeader"></hlm-th>
+    </ng-container>
+    <hlm-td
+      (click)="hasRowAction ? onRowClick(element) : null"
+      [class.cursor-pointer]="hasRowAction"
+      truncate
+      *brnCellDef="let element"
+    >
+      <div class="flex flex-col text-right">
+        <p class="text-xs text-gray-500">
+          {{ element.created_at | date : 'dd/MM/yyyy' }}
+        </p>
+        <p class="text-xs text-gray-400">
+          {{ element.created_at | date : 'HH:mm' }}
+        </p>
+      </div>
+    </hlm-td>
+  </brn-column-def>
+
   <brn-column-def name="request_id" class="w-64">
-    <hlm-th truncate *brnHeaderDef>{{
-      'column.request_id' | transloco
-    }}</hlm-th>
+    <ng-container *brnHeaderDef>
+      <hlm-th truncate *ngIf="showHeader">{{
+        'column.request_id' | transloco
+      }}</hlm-th>
+    </ng-container>
     <hlm-td
       (click)="hasRowAction ? onRowClick(element) : null"
       [class.cursor-pointer]="hasRowAction"
@@ -69,7 +135,11 @@
     </hlm-td>
   </brn-column-def>
   <brn-column-def name="pod_name" class="w-64">
-    <hlm-th truncate *brnHeaderDef>{{ 'column.pod_name' | transloco }}</hlm-th>
+    <ng-container *brnHeaderDef>
+      <hlm-th truncate *ngIf="showHeader">{{
+        'column.pod_name' | transloco
+      }}</hlm-th>
+    </ng-container>
     <hlm-td
       (click)="hasRowAction ? onRowClick(element) : null"
       [class.cursor-pointer]="hasRowAction"
@@ -80,7 +150,11 @@
     </hlm-td>
   </brn-column-def>
   <brn-column-def name="namespace" class="w-64">
-    <hlm-th truncate *brnHeaderDef>{{ 'column.namespace' | transloco }}</hlm-th>
+    <ng-container *brnHeaderDef>
+      <hlm-th truncate *ngIf="showHeader">{{
+        'column.namespace' | transloco
+      }}</hlm-th>
+    </ng-container>
     <hlm-td
       (click)="hasRowAction ? onRowClick(element) : null"
       [class.cursor-pointer]="hasRowAction"
@@ -91,9 +165,11 @@
     </hlm-td>
   </brn-column-def>
   <brn-column-def name="queue_name" class="w-64">
-    <hlm-th truncate *brnHeaderDef>{{
-      'column.queue_name' | transloco
-    }}</hlm-th>
+    <ng-container *brnHeaderDef>
+      <hlm-th truncate *ngIf="showHeader">{{
+        'column.queue_name' | transloco
+      }}</hlm-th>
+    </ng-container>
     <hlm-td
       (click)="hasRowAction ? onRowClick(element) : null"
       [class.cursor-pointer]="hasRowAction"
@@ -104,9 +180,11 @@
     </hlm-td>
   </brn-column-def>
   <brn-column-def name="alert_type" class="w-64">
-    <hlm-th truncate *brnHeaderDef>{{
-      'column.alert_type' | transloco
-    }}</hlm-th>
+    <ng-container *brnHeaderDef>
+      <hlm-th truncate *ngIf="showHeader">{{
+        'column.alert_type' | transloco
+      }}</hlm-th>
+    </ng-container>
     <hlm-td
       (click)="hasRowAction ? onRowClick(element) : null"
       [class.cursor-pointer]="hasRowAction"
@@ -117,9 +195,11 @@
     </hlm-td>
   </brn-column-def>
   <brn-column-def name="alert_description" class="w-64">
-    <hlm-th truncate *brnHeaderDef>{{
-      'column.alert_description' | transloco
-    }}</hlm-th>
+    <ng-container *brnHeaderDef>
+      <hlm-th truncate *ngIf="showHeader">{{
+        'column.alert_description' | transloco
+      }}</hlm-th>
+    </ng-container>
     <hlm-td
       (click)="hasRowAction ? onRowClick(element) : null"
       [class.cursor-pointer]="hasRowAction"
@@ -130,7 +210,11 @@
     </hlm-td>
   </brn-column-def>
   <brn-column-def name="pod_id" class="w-64">
-    <hlm-th truncate *brnHeaderDef>{{ 'column.pod_id' | transloco }}</hlm-th>
+    <ng-container *brnHeaderDef>
+      <hlm-th truncate *ngIf="showHeader">{{
+        'column.pod_id' | transloco
+      }}</hlm-th>
+    </ng-container>
     <hlm-td
       (click)="hasRowAction ? onRowClick(element) : null"
       [class.cursor-pointer]="hasRowAction"
@@ -142,9 +226,11 @@
   </brn-column-def>
 
   <brn-column-def name="demand_cpu" class="w-64">
-    <hlm-th truncate *brnHeaderDef>{{
-      'column.demand_cpu' | transloco
-    }}</hlm-th>
+    <ng-container *brnHeaderDef>
+      <hlm-th truncate *ngIf="showHeader">{{
+        'column.demand_cpu' | transloco
+      }}</hlm-th>
+    </ng-container>
     <hlm-td
       (click)="hasRowAction ? onRowClick(element) : null"
       [class.cursor-pointer]="hasRowAction"
@@ -155,9 +241,11 @@
     </hlm-td>
   </brn-column-def>
   <brn-column-def name="action_type" class="w-64">
-    <hlm-th truncate *brnHeaderDef>{{
-      'column.action_type' | transloco
-    }}</hlm-th>
+    <ng-container *brnHeaderDef>
+      <hlm-th truncate *ngIf="showHeader">{{
+        'column.action_type' | transloco
+      }}</hlm-th>
+    </ng-container>
     <hlm-td
       (click)="hasRowAction ? onRowClick(element) : null"
       [class.cursor-pointer]="hasRowAction"
@@ -172,9 +260,11 @@
     </hlm-td>
   </brn-column-def>
   <brn-column-def name="bound_pod_name" class="w-64">
-    <hlm-th truncate *brnHeaderDef>{{
-      'column.bound_pod_name' | transloco
-    }}</hlm-th>
+    <ng-container *brnHeaderDef>
+      <hlm-th truncate *ngIf="showHeader">{{
+        'column.bound_pod_name' | transloco
+      }}</hlm-th>
+    </ng-container>
     <hlm-td
       (click)="hasRowAction ? onRowClick(element) : null"
       [class.cursor-pointer]="hasRowAction"
@@ -185,9 +275,11 @@
     </hlm-td>
   </brn-column-def>
   <brn-column-def name="pod_parent_name" class="w-64">
-    <hlm-th truncate *brnHeaderDef>{{
-      'column.pod_parent_name' | transloco
-    }}</hlm-th>
+    <ng-container *brnHeaderDef>
+      <hlm-th truncate *ngIf="showHeader">{{
+        'column.pod_parent_name' | transloco
+      }}</hlm-th>
+    </ng-container>
     <hlm-td
       (click)="hasRowAction ? onRowClick(element) : null"
       [class.cursor-pointer]="hasRowAction"
@@ -198,9 +290,11 @@
     </hlm-td>
   </brn-column-def>
   <brn-column-def name="action_reason" class="w-64">
-    <hlm-th truncate *brnHeaderDef>{{
-      'column.action_reason' | transloco
-    }}</hlm-th>
+    <ng-container *brnHeaderDef>
+      <hlm-th truncate *ngIf="showHeader">{{
+        'column.action_reason' | transloco
+      }}</hlm-th>
+    </ng-container>
     <hlm-td
       (click)="hasRowAction ? onRowClick(element) : null"
       [class.cursor-pointer]="hasRowAction"
@@ -211,9 +305,11 @@
     </hlm-td>
   </brn-column-def>
   <brn-column-def name="demand_memory" class="w-64">
-    <hlm-th truncate *brnHeaderDef>{{
-      'column.demand_memory' | transloco
-    }}</hlm-th>
+    <ng-container *brnHeaderDef>
+      <hlm-th truncate *ngIf="showHeader">{{
+        'column.demand_memory' | transloco
+      }}</hlm-th>
+    </ng-container>
     <hlm-td
       (click)="hasRowAction ? onRowClick(element) : null"
       [class.cursor-pointer]="hasRowAction"
@@ -224,9 +320,11 @@
     </hlm-td>
   </brn-column-def>
   <brn-column-def name="pod_parent_kind" class="w-64">
-    <hlm-th truncate *brnHeaderDef>{{
-      'column.pod_parent_kind' | transloco
-    }}</hlm-th>
+    <ng-container *brnHeaderDef>
+      <hlm-th truncate *ngIf="showHeader">{{
+        'column.pod_parent_kind' | transloco
+      }}</hlm-th>
+    </ng-container>
     <hlm-td
       (click)="hasRowAction ? onRowClick(element) : null"
       [class.cursor-pointer]="hasRowAction"
@@ -237,7 +335,11 @@
     </hlm-td>
   </brn-column-def>
   <brn-column-def name="node_id" class="w-64">
-    <hlm-th truncate *brnHeaderDef>{{ 'column.node_id' | transloco }}</hlm-th>
+    <ng-container *brnHeaderDef>
+      <hlm-th truncate *ngIf="showHeader">{{
+        'column.node_id' | transloco
+      }}</hlm-th>
+    </ng-container>
     <hlm-td
       (click)="hasRowAction ? onRowClick(element) : null"
       [class.cursor-pointer]="hasRowAction"
@@ -248,9 +350,11 @@
     </hlm-td>
   </brn-column-def>
   <brn-column-def name="decision_status" class="w-64">
-    <hlm-th truncate *brnHeaderDef>{{
-      'column.decision_status' | transloco
-    }}</hlm-th>
+    <ng-container *brnHeaderDef>
+      <hlm-th truncate *ngIf="showHeader">{{
+        'column.decision_status' | transloco
+      }}</hlm-th>
+    </ng-container>
     <hlm-td
       (click)="hasRowAction ? onRowClick(element) : null"
       [class.cursor-pointer]="hasRowAction"
@@ -261,9 +365,11 @@
     </hlm-td>
   </brn-column-def>
   <brn-column-def name="created_at" class="w-64">
-    <hlm-th truncate *brnHeaderDef>{{
-      'column.created_at' | transloco
-    }}</hlm-th>
+    <ng-container *brnHeaderDef>
+      <hlm-th truncate *ngIf="showHeader">{{
+        'column.created_at' | transloco
+      }}</hlm-th>
+    </ng-container>
     <hlm-td
       (click)="hasRowAction ? onRowClick(element) : null"
       [class.cursor-pointer]="hasRowAction"
@@ -281,9 +387,11 @@
     </hlm-td>
   </brn-column-def>
   <brn-column-def name="action_start_time" class="w-64">
-    <hlm-th truncate *brnHeaderDef>{{
-      'column.action_start_time' | transloco
-    }}</hlm-th>
+    <ng-container *brnHeaderDef>
+      <hlm-th truncate *ngIf="showHeader">{{
+        'column.action_start_time' | transloco
+      }}</hlm-th>
+    </ng-container>
     <hlm-td
       (click)="hasRowAction ? onRowClick(element) : null"
       [class.cursor-pointer]="hasRowAction"
@@ -301,9 +409,11 @@
     </hlm-td>
   </brn-column-def>
   <brn-column-def name="action_end_time" class="w-64">
-    <hlm-th truncate *brnHeaderDef>{{
-      'column.action_end_time' | transloco
-    }}</hlm-th>
+    <ng-container *brnHeaderDef>
+      <hlm-th truncate *ngIf="showHeader">{{
+        'column.action_end_time' | transloco
+      }}</hlm-th>
+    </ng-container>
     <hlm-td
       (click)="hasRowAction ? onRowClick(element) : null"
       [class.cursor-pointer]="hasRowAction"
@@ -321,7 +431,9 @@
     </hlm-td>
   </brn-column-def>
   <brn-column-def name="cluster_name" class="w-64">
-    <hlm-th truncate *brnHeaderDef>Cluster Name</hlm-th>
+    <ng-container *brnHeaderDef>
+      <hlm-th truncate *ngIf="showHeader">Cluster Name</hlm-th>
+    </ng-container>
     <hlm-td
       (click)="hasRowAction ? onRowClick(element) : null"
       [class.cursor-pointer]="hasRowAction"
@@ -333,7 +445,11 @@
     </hlm-td>
   </brn-column-def>
   <brn-column-def name="action_status" class="w-32 sm:w-40">
-    <hlm-th truncate *brnHeaderDef>{{ 'column.status' | transloco }}</hlm-th>
+    <ng-container *brnHeaderDef>
+      <hlm-th truncate *ngIf="showHeader">{{
+        'column.status' | transloco
+      }}</hlm-th>
+    </ng-container>
     <hlm-td
       (click)="hasRowAction ? onRowClick(element) : null"
       [class.cursor-pointer]="hasRowAction"
@@ -346,7 +462,11 @@
     </hlm-td>
   </brn-column-def>
   <brn-column-def name="status" class="w-32 sm:w-40">
-    <hlm-th truncate *brnHeaderDef>{{ 'column.status' | transloco }}</hlm-th>
+    <ng-container *brnHeaderDef>
+      <hlm-th truncate *ngIf="showHeader">{{
+        'column.status' | transloco
+      }}</hlm-th>
+    </ng-container>
     <hlm-td
       (click)="hasRowAction ? onRowClick(element) : null"
       [class.cursor-pointer]="hasRowAction"
@@ -359,7 +479,9 @@
     </hlm-td>
   </brn-column-def>
   <brn-column-def name="workloads" class="w-32 sm:w-40">
-    <hlm-th truncate *brnHeaderDef>Workloads</hlm-th>
+    <ng-container *brnHeaderDef>
+      <hlm-th truncate *ngIf="showHeader">Workloads</hlm-th>
+    </ng-container>
     <hlm-td
       (click)="hasRowAction ? onRowClick(element) : null"
       [class.cursor-pointer]="hasRowAction"
@@ -370,7 +492,9 @@
     </hlm-td>
   </brn-column-def>
   <brn-column-def name="nodes" class="w-32 sm:w-40">
-    <hlm-th truncate *brnHeaderDef>Nodes</hlm-th>
+    <ng-container *brnHeaderDef>
+      <hlm-th truncate *ngIf="showHeader">Nodes</hlm-th>
+    </ng-container>
     <hlm-td
       (click)="hasRowAction ? onRowClick(element) : null"
       [class.cursor-pointer]="hasRowAction"
@@ -381,7 +505,9 @@
     </hlm-td>
   </brn-column-def>
   <brn-column-def name="cpu_usage" class="w-32 sm:w-40">
-    <hlm-th truncate *brnHeaderDef>CPU Usage</hlm-th>
+    <ng-container *brnHeaderDef>
+      <hlm-th truncate *ngIf="showHeader">CPU Usage</hlm-th>
+    </ng-container>
     <hlm-td
       (click)="hasRowAction ? onRowClick(element) : null"
       [class.cursor-pointer]="hasRowAction"
@@ -403,7 +529,9 @@
     </hlm-td>
   </brn-column-def>
   <brn-column-def name="memory_usage" class="w-32 sm:w-40">
-    <hlm-th truncate *brnHeaderDef>Memory Usage</hlm-th>
+    <ng-container *brnHeaderDef>
+      <hlm-th truncate *ngIf="showHeader">Memory Usage</hlm-th>
+    </ng-container>
     <hlm-td
       (click)="hasRowAction ? onRowClick(element) : null"
       [class.cursor-pointer]="hasRowAction"
@@ -425,7 +553,9 @@
     </hlm-td>
   </brn-column-def>
   <brn-column-def name="actions" class="w-16">
-    <hlm-th *brnHeaderDef>{{ 'column.actions' | transloco }}</hlm-th>
+    <ng-container *brnHeaderDef>
+      <hlm-th *ngIf="showHeader">{{ 'column.actions' | transloco }}</hlm-th>
+    </ng-container>
     <hlm-td *brnCellDef="let element">
       <button
         hlmBtn
@@ -466,51 +596,53 @@
     {{ 'hint.no_data' | transloco }}
   </div>
 </brn-table>
-<div
-  class="flex flex-col justify-between mt-4 sm:flex-row sm:items-center"
-  *brnPaginator="
-    let ctx;
-    totalElements: _totalElements();
-    pageSize: _pageSize();
-    onStateChange: _onStateChange
-  "
->
-  <div class="flex items-center justify-between w-full">
-    <brn-select
-      placeholder="{{ _availablePageSizes[0] }}"
-      [(ngModel)]="_pageSize"
-    >
-      <hlm-select-trigger class="inline-flex mr-1 w-20 h-9">
-        <hlm-select-value />
-      </hlm-select-trigger>
-      <hlm-select-content>
-        @for (size of _availablePageSizes; track size) {
-        <hlm-option [value]="size">
-          {{ size === 10000 ? 'All' : size }}
-        </hlm-option>
-        }
-      </hlm-select-content>
-    </brn-select>
+<div *ngIf="showFooter">
+  <div
+    class="flex flex-col justify-between mt-4 sm:flex-row sm:items-center"
+    *brnPaginator="
+      let ctx;
+      totalElements: _totalElements();
+      pageSize: _pageSize();
+      onStateChange: _onStateChange
+    "
+  >
+    <div class="flex items-center justify-between w-full">
+      <brn-select
+        placeholder="{{ _availablePageSizes[0] }}"
+        [(ngModel)]="_pageSize"
+      >
+        <hlm-select-trigger class="inline-flex mr-1 w-20 h-9">
+          <hlm-select-value />
+        </hlm-select-trigger>
+        <hlm-select-content>
+          @for (size of _availablePageSizes; track size) {
+          <hlm-option [value]="size">
+            {{ size === 10000 ? 'All' : size }}
+          </hlm-option>
+          }
+        </hlm-select-content>
+      </brn-select>
 
-    <div class="flex gap-2">
-      <button
-        size="sm"
-        variant="outline"
-        hlmBtn
-        [disabled]="!ctx.decrementable()"
-        (click)="ctx.decrement()"
-      >
-        {{ 'action.previous' | transloco }}
-      </button>
-      <button
-        size="sm"
-        variant="outline"
-        hlmBtn
-        [disabled]="!ctx.incrementable()"
-        (click)="ctx.increment()"
-      >
-        {{ 'action.next' | transloco }}
-      </button>
+      <div class="flex gap-2">
+        <button
+          size="sm"
+          variant="outline"
+          hlmBtn
+          [disabled]="!ctx.decrementable()"
+          (click)="ctx.decrement()"
+        >
+          {{ 'action.previous' | transloco }}
+        </button>
+        <button
+          size="sm"
+          variant="outline"
+          hlmBtn
+          [disabled]="!ctx.incrementable()"
+          (click)="ctx.increment()"
+        >
+          {{ 'action.next' | transloco }}
+        </button>
+      </div>
     </div>
   </div>
 </div>
