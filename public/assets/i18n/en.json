@@ -73,6 +73,7 @@
     "pod_name": "Pod Name",
     "pod_parent_kind": "Parent",
     "node_id": "Node ID",
+    "node_name": "Node Name",
     "pod_id": "Pod ID",
     "decision_status": "Decision Status",
     "created_at": "Created At",

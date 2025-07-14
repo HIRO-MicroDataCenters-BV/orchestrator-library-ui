@@ -30,9 +30,11 @@ export class RequestDecisionsComponent implements OnInit, OnDestroy {
     //'queue_name',
     //'demand_cpu',
     //'demand_memory',
+    // 'node_id',
+    'node_name',
     'pod_parent_kind',
-    'node_id',
     'decision_status',
+    'namespace',
     'created_at',
   ];
   actions = [];

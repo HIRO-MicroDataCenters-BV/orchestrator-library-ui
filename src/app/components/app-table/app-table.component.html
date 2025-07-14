@@ -102,6 +102,17 @@
       <p class="text-sm text-gray-500">{{ element.pod_name }}</p>
     </hlm-td>
   </brn-column-def>
+  <brn-column-def name="node_name" class="w-64">
+    <hlm-th truncate *brnHeaderDef>{{ 'column.node_name' | transloco }}</hlm-th>
+    <hlm-td
+      (click)="hasRowAction ? onRowClick(element) : null"
+      [class.cursor-pointer]="hasRowAction"
+      truncate
+      *brnCellDef="let element"
+    >
+      <p class="text-sm text-gray-500">{{ element.node_name }}</p>
+    </hlm-td>
+  </brn-column-def>
   <brn-column-def name="namespace" class="w-64">
     <hlm-th truncate *brnHeaderDef>{{ 'column.namespace' | transloco }}</hlm-th>
     <hlm-td
