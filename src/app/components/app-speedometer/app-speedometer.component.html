@@ -19,12 +19,14 @@
       />
 
       <path
-        [attr.d]="getArcPath(startAngle, getProgressAngle(), outerRadius)"
+        [attr.d]="getArcPath(startAngle, endAngle, outerRadius)"
         [attr.stroke]="getValueColor()"
         [attr.stroke-width]="strokeWidth"
+        [attr.stroke-dasharray]="getStrokeDasharray()"
+        [attr.stroke-dashoffset]="getStrokeDashoffset()"
         fill="none"
         stroke-linecap="round"
-        class="transition-all duration-500 ease-out"
+        class="speedometer-progress"
       />
     </svg>
 

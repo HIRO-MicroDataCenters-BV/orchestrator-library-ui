@@ -78,13 +78,13 @@ export class AppDashboardCardComponent implements OnInit, OnDestroy {
     const configs = {
       cpu: {
         value: this.getMetricValue('cpu'),
-        lowThreshold: 50,
-        highThreshold: 75,
+        lowThreshold: 30,
+        highThreshold: 60,
       },
       memory: {
         value: this.getMetricValue('memory'),
-        lowThreshold: 60,
-        highThreshold: 80,
+        lowThreshold: 40,
+        highThreshold: 70,
       },
     };
 
@@ -189,8 +189,15 @@ export class AppDashboardCardComponent implements OnInit, OnDestroy {
   }
 
   getMetricValue(type: 'cpu' | 'memory'): number {
-    const mockValues = { cpu: 67.4, memory: 78.2 };
-    return mockValues[type];
+    if (!this.clusterInfo) {
+      return 0;
+    }
+
+    if (type === 'cpu') {
+      return Math.round(this.clusterInfo.cluster_cpu_utilization || 0);
+    } else {
+      return Math.round(this.clusterInfo.cluster_memory_utilization || 0);
+    }
   }
 
   getCpuUsage(): number {

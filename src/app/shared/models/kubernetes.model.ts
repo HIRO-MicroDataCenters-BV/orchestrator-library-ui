@@ -92,6 +92,12 @@ export interface K8sClusterInfoResponse {
   pods_count?: number;
   services_count?: number;
   deployments_count?: number;
+  cluster_cpu_usage?: number;
+  cluster_memory_usage?: number;
+  cluster_cpu_availability?: number;
+  cluster_memory_availability?: number;
+  cluster_cpu_utilization?: number;
+  cluster_memory_utilization?: number;
   advanced_info?: K8sAdvancedClusterInfo;
 }
 

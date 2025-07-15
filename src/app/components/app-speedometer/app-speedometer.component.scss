@@ -15,16 +15,25 @@
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+.speedometer-progress {
+  transition: stroke-dashoffset 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    stroke 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+svg path:not(.speedometer-progress) {
+  transition: stroke 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 .speedometer-value {
   font-weight: 700;
   font-size: 1.5rem;
   line-height: 1.2;
-  transition: color 0.3s ease;
+  transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   font-feature-settings: 'tnum' 1;
 
   &:hover {
     transform: scale(1.05);
-    transition: transform 0.2s ease;
+    transition: transform 0.2s ease, color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   }
 }
 
@@ -33,6 +42,7 @@
   color: #6b7280;
   margin-top: 0.25rem;
   font-weight: 500;
+  transition: color 0.3s ease;
 }
 
 .tick-mark {
@@ -87,6 +97,11 @@
 
 .speedometer-critical {
   animation: pulse-critical 2s infinite;
+
+  .speedometer-value {
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+    text-shadow: 0 0 8px currentColor;
+  }
 }
 
 .speedometer-loading {
@@ -180,7 +195,8 @@
 
 @media (prefers-reduced-motion: reduce) {
   .transition-all,
-  .speedometer-value {
+  .speedometer-value,
+  .speedometer-progress {
     transition: none;
   }
 
