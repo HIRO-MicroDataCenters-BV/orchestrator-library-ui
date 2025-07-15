@@ -16,7 +16,15 @@
     "recent_alerts": "Recent Alerts",
     "recent_saved_models": "Recent Saved Models",
     "swarm_intelligence": "Swarm Intelligence",
-    "monitoring": "Monitoring"
+    "monitoring": "Monitoring",
+    "recent_served_models": "Recent Served Models",
+    "nodes": "Nodes",
+    "pods": "Pods",
+    "out_of": "out of",
+    "ready": "Ready",
+    "failed": "Failed",
+    "cpu_usage": "CPU Usage",
+    "memory_usage": "Memory Usage"
   },
   "section": {
     "dashboard": "Dashboard",

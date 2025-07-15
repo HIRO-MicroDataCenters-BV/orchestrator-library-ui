@@ -1,0 +1,45 @@
+<div
+  class="speedometer-container"
+  [style.width.px]="size"
+  [style.height.px]="size / 2 + 40"
+>
+  <div class="relative w-full h-full">
+    <svg
+      [attr.width]="size"
+      [attr.height]="size / 2 + 40"
+      [attr.viewBox]="'0 0 ' + size + ' ' + (size / 2 + 40)"
+      class="w-full h-full"
+    >
+      <path
+        [attr.d]="getArcPath(startAngle, endAngle, outerRadius)"
+        [attr.stroke]="backgroundColor"
+        [attr.stroke-width]="strokeWidth"
+        fill="none"
+        stroke-linecap="round"
+      />
+
+      <path
+        [attr.d]="getArcPath(startAngle, getProgressAngle(), outerRadius)"
+        [attr.stroke]="getValueColor()"
+        [attr.stroke-width]="strokeWidth"
+        fill="none"
+        stroke-linecap="round"
+        class="transition-all duration-500 ease-out"
+      />
+    </svg>
+
+    <div class="absolute inset-0 flex flex-col items-center justify-end pb-4">
+      <div class="text-center">
+        <div
+          class="text-2xl font-bold speedometer-value"
+          [style.color]="getValueColor()"
+        >
+          {{ displayValue }}{{ unit }}
+        </div>
+        <div class="text-sm text-gray-500 mt-1 speedometer-label" *ngIf="label">
+          {{ label }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -29,13 +29,12 @@ export class OverviewComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    console.log('OverviewComponent initialized');
     this.cards = [
       {
         key: 'cluster',
         title: this.translocoService.translate('card.cluster'),
         type: 'metrics',
-        dataSource: this.apiService.getClusterInfo(),
+        dataSource: this.apiService.getClusterInfo({ advanced: true }),
         actions: [
           {
             label: this.translocoService.translate('action.healthy'),
