@@ -53,8 +53,6 @@ export {
   getStatusValue,
   getProgressValue,
   getFormattedDate,
-  getFormattedDateTime,
-  getResourceUsageText,
   getTruncatedText,
   formatBytes,
   formatNumber,

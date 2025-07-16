@@ -1,4 +1,4 @@
-import { DatePipe, NgFor, NgIf } from '@angular/common';
+import { DatePipe, NgClass, NgFor, NgIf } from '@angular/common';
 import { TranslocoModule } from '@jsverse/transloco';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import {
@@ -114,6 +114,7 @@ import {
     HlmSelectModule,
     TranslocoModule,
     AppCircleProgressComponent,
+    NgClass,
     NgFor,
     NgIf,
     RouterLink,
@@ -228,22 +229,9 @@ export class AppTableComponent implements OnChanges, OnInit {
     const end = this._displayedIndices().end + 1;
     const items = this._filteredItems();
 
-    console.log(
-      'Table pagination computed - start:',
-      start,
-      'end:',
-      end,
-      'total items:',
-      items.length
-    );
-
     if (!sort) {
       const result = items.slice(start, end);
-      console.log(
-        'Table pagination result (unsorted):',
-        result.length,
-        'items'
-      );
+
       return result;
     }
 
@@ -255,7 +243,7 @@ export class AppTableComponent implements OnChanges, OnInit {
     });
 
     const result = sortedItems.slice(start, end);
-    console.log('Table pagination result (sorted):', result.length, 'items');
+
     return result;
   });
 
@@ -270,7 +258,6 @@ export class AppTableComponent implements OnChanges, OnInit {
     endIndex,
   }: PaginatorState) => {
     this._displayedIndices.set({ start: startIndex, end: endIndex });
-    console.log('Paginator state changed:', { startIndex, endIndex });
   };
 
   private router = inject(Router, { optional: true });
@@ -301,34 +288,17 @@ export class AppTableComponent implements OnChanges, OnInit {
     }
   }
 
-  /**
-   * Initialize pagination for dashboard mode (when footer is hidden)
-   */
   private initializeDashboardPagination(): void {
     const currentPageSize = this._pageSize();
     const totalItems = this._totalElements();
     const endIndex = Math.min(currentPageSize - 1, Math.max(0, totalItems - 1));
     this._displayedIndices.set({ start: 0, end: endIndex });
-
-    console.log('Dashboard pagination initialized:', {
-      pageSize: currentPageSize,
-      totalItems,
-      displayedIndices: this._displayedIndices(),
-    });
   }
 
   fetchData(): void {
     if (this.dataSource) {
       this.dataSource.subscribe((res: unknown[]) => {
-        console.log('Table fetchData - raw data:', res);
-        console.log('Table fetchData - data length:', res.length);
-        console.log('Table showHeader:', this.showHeader);
-        console.log('Table showFooter:', this.showFooter);
-        console.log('Table pageSize:', this._pageSize());
-        console.log('Table displayedIndices:', this._displayedIndices());
         this._items.set(res as BaseTableData[]);
-
-        // Initialize display indices after data is loaded for dashboard mode
         if (!this.showFooter) {
           this.initializeDashboardPagination();
         }
@@ -370,9 +340,8 @@ export class AppTableComponent implements OnChanges, OnInit {
     });
   }
 
-  public setFilter(tab: string) {
-    //this._colFilter.set(tab);
-    console.log('tab', tab);
+  public setFilter() {
+    // TODO: Implement tab filtering
   }
 
   getStatusColor(status: string | number | boolean): string {
@@ -381,11 +350,6 @@ export class AppTableComponent implements OnChanges, OnInit {
 
   getProgressColor(percent: number): string {
     return getProgressColor(percent);
-  }
-
-  getStatus(status: number): string {
-    const statusValue = getStatusValue({ id: '', status } as BaseTableData);
-    return String(statusValue);
   }
 
   protected handleColSortChange(): void {

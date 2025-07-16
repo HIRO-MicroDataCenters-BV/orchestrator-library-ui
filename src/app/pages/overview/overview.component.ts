@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslocoModule } from '@jsverse/transloco';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { DashboardCardModel } from '../../shared/models/dashboard-card.model';
 import { TranslocoService } from '@jsverse/transloco';
@@ -25,8 +24,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
 
   constructor(
     private apiService: ApiService,
-    private translocoService: TranslocoService,
-    private router: Router
+    private translocoService: TranslocoService
   ) {}
 
   ngOnInit(): void {

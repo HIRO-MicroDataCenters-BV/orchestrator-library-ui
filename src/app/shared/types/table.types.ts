@@ -4,7 +4,6 @@
  */
 
 import { Observable } from 'rxjs';
-import { NgIcon } from '@ng-icons/core';
 
 /**
  * Generic table data interface
@@ -114,7 +113,13 @@ export interface TableDataSource<T = BaseTableData> {
 export interface TableFilter {
   column: string;
   value: unknown;
-  operator?: 'equals' | 'contains' | 'startsWith' | 'endsWith' | 'greaterThan' | 'lessThan';
+  operator?:
+    | 'equals'
+    | 'contains'
+    | 'startsWith'
+    | 'endsWith'
+    | 'greaterThan'
+    | 'lessThan';
 }
 
 /**

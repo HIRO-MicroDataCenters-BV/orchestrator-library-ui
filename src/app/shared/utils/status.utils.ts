@@ -226,6 +226,66 @@ const STATUS_CONFIG_MAP: Record<string, StatusConfig> = {
     bgColor: 'bg-blue-100',
     icon: 'lucideInfo',
   },
+
+  // Additional mappings for Alert API formats
+  Abnormal: {
+    value: 'Abnormal',
+    label: 'Abnormal',
+    color: 'text-yellow-700',
+    bgColor: 'bg-yellow-100',
+    icon: 'lucideTriangleAlert',
+  },
+  'Network-Attack': {
+    value: 'Network-Attack',
+    label: 'Network Attack',
+    color: 'text-red-700',
+    bgColor: 'bg-red-100',
+    icon: 'lucideCircleX',
+  },
+  Other: {
+    value: 'Other',
+    label: 'Other',
+    color: 'text-gray-700',
+    bgColor: 'bg-gray-100',
+    icon: 'lucideInfo',
+  },
+
+  // Workload Action Status mappings
+  Bind: {
+    value: 'Bind',
+    label: 'Bind',
+    color: 'text-green-700',
+    bgColor: 'bg-green-100',
+    icon: 'lucideCircleCheck',
+  },
+  Create: {
+    value: 'Create',
+    label: 'Create',
+    color: 'text-blue-700',
+    bgColor: 'bg-blue-100',
+    icon: 'lucideCircle',
+  },
+  Delete: {
+    value: 'Delete',
+    label: 'Delete',
+    color: 'text-red-700',
+    bgColor: 'bg-red-100',
+    icon: 'lucideCircleX',
+  },
+  Move: {
+    value: 'Move',
+    label: 'Move',
+    color: 'text-yellow-700',
+    bgColor: 'bg-yellow-100',
+    icon: 'lucideCircle',
+  },
+  Swap: {
+    value: 'Swap',
+    label: 'Swap',
+    color: 'text-yellow-700',
+    bgColor: 'bg-yellow-100',
+    icon: 'lucideCircle',
+  },
 };
 
 /**
@@ -237,6 +297,25 @@ const NUMERIC_STATUS_MAP: Record<number, StatusType> = {
   [0]: StatusType.INACTIVE,
   [1]: StatusType.RUNNING,
   [2]: StatusType.SUCCESS,
+};
+
+/**
+ * Normalize status value to lowercase with underscores
+ */
+const normalizeStatus = (status: string | number | boolean): string => {
+  if (typeof status === 'number') {
+    return String(status);
+  }
+
+  if (typeof status === 'boolean') {
+    return status ? 'approved' : 'rejected';
+  }
+
+  return String(status)
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, '_')
+    .replace(/_+/g, '_')
+    .replace(/^_|_$/g, '');
 };
 
 /**
@@ -260,12 +339,25 @@ export const getStatusConfig = (
       : STATUS_CONFIG_MAP[StatusType.FAILED];
   }
 
-  // Handle string status
+  // Handle string status with normalization
   if (typeof status === 'string') {
-    const normalizedStatus = status.toLowerCase();
+    const normalizedStatus = normalizeStatus(status);
     const config = STATUS_CONFIG_MAP[normalizedStatus];
     if (config) {
       return config;
+    }
+
+    // Also try direct lowercase lookup for backward compatibility
+    const lowercaseStatus = status.toLowerCase();
+    const fallbackConfig = STATUS_CONFIG_MAP[lowercaseStatus];
+    if (fallbackConfig) {
+      return fallbackConfig;
+    }
+
+    // Try exact match with enum values
+    const enumConfig = STATUS_CONFIG_MAP[status as StatusType];
+    if (enumConfig) {
+      return enumConfig;
     }
   }
 

@@ -1,6 +1,13 @@
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  OnDestroy,
+  Inject,
+  PLATFORM_ID,
+} from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideServer, lucideLayers } from '@ng-icons/lucide';
 import { DashboardCardModel } from '../../shared/models/dashboard-card.model';
@@ -13,7 +20,6 @@ import {
   K8sPod,
 } from '../../shared/models/kubernetes.model';
 import { TranslocoModule } from '@jsverse/transloco';
-import { ApiService } from '../../core/services/api.service';
 import {
   LoadingOverlayComponent,
   ErrorOverlayComponent,
@@ -47,8 +53,11 @@ export class AppDashboardCardComponent implements OnInit, OnDestroy {
   isLoading = false;
   hasError = false;
   errorMessage = '';
+  isBrowser = false;
 
-  constructor(private apiService: ApiService) {}
+  constructor(@Inject(PLATFORM_ID) private platformId: object) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+  }
 
   ngOnInit(): void {
     this.loadCardData();
@@ -77,7 +86,6 @@ export class AppDashboardCardComponent implements OnInit, OnDestroy {
     this.subscription.add(
       (this.data.dataSource as Observable<K8sClusterInfoResponse>).subscribe({
         next: (clusterInfo) => {
-          console.log('Dashboard metrics loaded:', clusterInfo);
           this.clusterInfo = clusterInfo;
           this.nodes = Array.isArray(clusterInfo.nodes)
             ? clusterInfo.nodes
@@ -85,22 +93,14 @@ export class AppDashboardCardComponent implements OnInit, OnDestroy {
           this.pods = Array.isArray(clusterInfo.pods) ? clusterInfo.pods : [];
           this.isLoading = false;
           this.hasError = false;
-
-          console.log('Parsed data:', {
-            nodes: this.nodes.length,
-            pods: this.pods.length,
-            cpuUtilization: clusterInfo.cluster_cpu_utilization,
-            memoryUtilization: clusterInfo.cluster_memory_utilization,
-          });
         },
-        error: (error) => {
+        error: () => {
           this.clusterInfo = null;
           this.nodes = [];
           this.pods = [];
           this.isLoading = false;
           this.hasError = true;
           this.errorMessage = 'error.failed_to_load';
-          console.error('Dashboard metrics error:', error);
         },
       })
     );
@@ -109,40 +109,24 @@ export class AppDashboardCardComponent implements OnInit, OnDestroy {
   private loadTableData(): void {
     this.subscription.add(
       (this.data.dataSource as Observable<unknown[]>).subscribe({
-        next: (data) => {
-          console.log(
-            `Dashboard table data loaded for ${this.data.key}:`,
-            data
-          );
+        next: () => {
           this.isLoading = false;
           this.hasError = false;
         },
-        error: (error) => {
+        error: () => {
           this.isLoading = false;
           this.hasError = true;
           this.errorMessage = 'error.failed_to_load';
-          console.error(`Dashboard table error for ${this.data.key}:`, error);
         },
       })
     );
   }
 
-  getSpeedometerConfig(type: 'cpu' | 'memory') {
-    const configs = {
-      cpu: {
-        value: this.getMetricValue('cpu'),
-        lowThreshold: 30,
-        highThreshold: 60,
-      },
-      memory: {
-        value: this.getMetricValue('memory'),
-        lowThreshold: 40,
-        highThreshold: 70,
-      },
-    };
-
+  getCpuSpeedometerConfig() {
     return {
-      ...configs[type],
+      value: this.getMetricValue('cpu'),
+      lowThreshold: 30,
+      highThreshold: 60,
       min: 0,
       max: 100,
       unit: '%',
@@ -152,12 +136,18 @@ export class AppDashboardCardComponent implements OnInit, OnDestroy {
     };
   }
 
-  getCpuSpeedometerConfig() {
-    return this.getSpeedometerConfig('cpu');
-  }
-
   getMemorySpeedometerConfig() {
-    return this.getSpeedometerConfig('memory');
+    return {
+      value: this.getMetricValue('memory'),
+      lowThreshold: 40,
+      highThreshold: 70,
+      min: 0,
+      max: 100,
+      unit: '%',
+      size: 140,
+      showLabels: false,
+      animate: true,
+    };
   }
 
   getNodesReady(): number {
@@ -192,25 +182,15 @@ export class AppDashboardCardComponent implements OnInit, OnDestroy {
   }
 
   arePodsHealthy(): boolean {
-    const failed = this.getPodsFailed();
     const total = this.getTotalPods();
+    if (total === 0) return false;
+
     const running = this.getPodsRunning();
-
-    if (total === 0) {
-      return false;
-    }
-
-    if (failed > 0) {
-      return false;
-    }
-
-    const healthyRatio = running / total;
-    return healthyRatio >= 0.8;
+    return running / total >= 0.8;
   }
 
   getMetricValue(type: 'cpu' | 'memory'): number {
     if (!this.clusterInfo || this.isLoading || this.hasError) {
-      console.log('No cluster info available for metric:', type);
       return 0;
     }
 
@@ -219,18 +199,7 @@ export class AppDashboardCardComponent implements OnInit, OnDestroy {
         ? this.clusterInfo.cluster_cpu_utilization || 0
         : this.clusterInfo.cluster_memory_utilization || 0;
 
-    const rounded = Math.round(value);
-    console.log(`${type} utilization:`, value, '-> rounded:', rounded);
-
-    return rounded;
-  }
-
-  getCpuUsage(): number {
-    return this.getMetricValue('cpu');
-  }
-
-  getMemoryUsage(): number {
-    return this.getMetricValue('memory');
+    return Math.round(value);
   }
 
   getTableColumns(): string[] {
@@ -246,24 +215,11 @@ export class AppDashboardCardComponent implements OnInit, OnDestroy {
   }
 
   getTablePageSize(): number {
-    // Return larger page size for dashboard cards to show all available data
     return 50;
   }
 
   getDataSource(): Observable<unknown[]> | null {
     return this.data.dataSource as Observable<unknown[]> | null;
-  }
-
-  isMetricsLoading(): boolean {
-    return this.isLoading;
-  }
-
-  hasMetricsError(): boolean {
-    return this.hasError;
-  }
-
-  getErrorMessage(): string {
-    return this.errorMessage;
   }
 
   retryLoad(): void {

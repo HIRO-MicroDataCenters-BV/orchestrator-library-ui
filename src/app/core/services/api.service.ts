@@ -198,7 +198,6 @@ export class ApiService {
       }
     }
 
-    console.error('API Error:', errorMessage, error);
     return throwError(() => new Error(errorMessage));
   }
 
@@ -207,7 +206,6 @@ export class ApiService {
    */
   private handleUnauthorizedError(): void {
     this.clearToken();
-    console.warn('Unauthorized access - token cleared');
   }
 
   /**

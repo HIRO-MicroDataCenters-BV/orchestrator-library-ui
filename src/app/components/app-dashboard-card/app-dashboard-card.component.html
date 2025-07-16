@@ -20,7 +20,7 @@
   <section class="relative overlay-container">
     <!-- Universal Loading Overlay -->
     <app-loading-overlay
-      [isVisible]="isMetricsLoading()"
+      [isVisible]="isLoading"
       [showBackdrop]="true"
       size="md"
       theme="primary"
@@ -28,8 +28,8 @@
 
     <!-- Universal Error Overlay -->
     <app-error-overlay
-      [isVisible]="hasMetricsError()"
-      [message]="getErrorMessage()"
+      [isVisible]="hasError"
+      [message]="errorMessage"
       [showBackdrop]="true"
       [showRetry]="true"
       size="md"
@@ -95,6 +95,7 @@
           class="bg-white border-1 border-grey-200 rounded-md p-4 text-center flex items-center justify-center"
         >
           <app-speedometer
+            *ngIf="isBrowser"
             [value]="getCpuSpeedometerConfig().value"
             [min]="getCpuSpeedometerConfig().min"
             [max]="getCpuSpeedometerConfig().max"
@@ -105,12 +106,16 @@
             [highThreshold]="getCpuSpeedometerConfig().highThreshold"
             [animate]="getCpuSpeedometerConfig().animate"
           ></app-speedometer>
+          <div *ngIf="!isBrowser" class="text-gray-600">
+            CPU: {{ getCpuSpeedometerConfig().value }}%
+          </div>
         </div>
 
         <div
           class="bg-white border-1 border-grey-200 p-4 text-center flex items-center justify-center"
         >
           <app-speedometer
+            *ngIf="isBrowser"
             [value]="getMemorySpeedometerConfig().value"
             [min]="getMemorySpeedometerConfig().min"
             [max]="getMemorySpeedometerConfig().max"
@@ -121,6 +126,9 @@
             [highThreshold]="getMemorySpeedometerConfig().highThreshold"
             [animate]="getMemorySpeedometerConfig().animate"
           ></app-speedometer>
+          <div *ngIf="!isBrowser" class="text-gray-600">
+            Memory: {{ getMemorySpeedometerConfig().value }}%
+          </div>
         </div>
       </div>
     </div>

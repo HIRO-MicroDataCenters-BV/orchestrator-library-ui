@@ -211,94 +211,34 @@ export const hasField = (element: BaseTableData, field: string): boolean => {
  */
 export const getFormattedDate = (
   element: BaseTableData,
-  field: string
+  field?: string,
+  includeTime = false
 ): string => {
   const item = element as Record<string, unknown>;
-  let dateValue = item[field];
-
-  // Fallback to other date fields if the specified field is not available
-  if (!dateValue) {
-    dateValue =
-      item['created_at'] ||
+  const dateValue = field
+    ? item[field]
+    : item['created_at'] ||
       item['updated_at'] ||
       item['action_start_time'] ||
       item['action_end_time'];
-  }
 
-  if (!dateValue) {
-    return '';
-  }
+  if (!dateValue) return '';
 
   try {
     const date = new Date(String(dateValue));
-    return date.toLocaleDateString();
+    return includeTime ? date.toLocaleString() : date.toLocaleDateString();
   } catch {
     return String(dateValue);
   }
-};
-
-/**
- * Get formatted date and time string from element
- */
-export const getFormattedDateTime = (
-  element: BaseTableData,
-  field: string
-): string => {
-  const item = element as Record<string, unknown>;
-  let dateValue = item[field];
-
-  // Fallback to other date fields if the specified field is not available
-  if (!dateValue) {
-    dateValue =
-      item['created_at'] ||
-      item['updated_at'] ||
-      item['action_start_time'] ||
-      item['action_end_time'];
-  }
-
-  if (!dateValue) {
-    return '';
-  }
-
-  try {
-    const date = new Date(String(dateValue));
-    return date.toLocaleString();
-  } catch {
-    return String(dateValue);
-  }
-};
-
-/**
- * Get resource usage text (CPU/Memory)
- */
-export const getResourceUsageText = (
-  element: BaseTableData,
-  field: string
-): string => {
-  const item = element as Record<string, unknown>;
-  const value = item[field];
-
-  if (typeof value === 'number') {
-    return `${value.toFixed(1)}%`;
-  }
-
-  if (typeof value === 'string') {
-    const parsed = parseFloat(value);
-    return isNaN(parsed) ? value : `${parsed.toFixed(1)}%`;
-  }
-
-  return '0%';
 };
 
 /**
  * Get truncated text with ellipsis
  */
 export const getTruncatedText = (text: string, maxLength = 50): string => {
-  if (!text || text.length <= maxLength) {
-    return text || '';
-  }
-
-  return `${text.substring(0, maxLength)}...`;
+  return text && text.length > maxLength
+    ? `${text.substring(0, maxLength)}...`
+    : text || '';
 };
 
 /**
@@ -308,10 +248,9 @@ export const getNestedValue = (
   element: BaseTableData,
   path: string
 ): unknown => {
-  const item = element as Record<string, unknown>;
   const keys = path.split('.');
+  let value: unknown = element as Record<string, unknown>;
 
-  let value: unknown = item;
   for (const key of keys) {
     if (value && typeof value === 'object' && key in value) {
       value = (value as Record<string, unknown>)[key];
@@ -319,7 +258,6 @@ export const getNestedValue = (
       return undefined;
     }
   }
-
   return value;
 };
 
@@ -330,12 +268,12 @@ export const formatBytes = (bytes: number, decimals = 2): string => {
   if (bytes === 0) return '0 Bytes';
 
   const k = 1024;
-  const dm = decimals < 0 ? 0 : decimals;
-  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB'];
-
+  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
   const i = Math.floor(Math.log(bytes) / Math.log(k));
 
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+  return `${parseFloat((bytes / Math.pow(k, i)).toFixed(decimals))} ${
+    sizes[i]
+  }`;
 };
 
 /**
@@ -350,7 +288,6 @@ export const formatNumber = (num: number): string => {
  */
 export const isValidUrl = (value: unknown): boolean => {
   if (typeof value !== 'string') return false;
-
   try {
     new URL(value);
     return true;
@@ -360,43 +297,7 @@ export const isValidUrl = (value: unknown): boolean => {
 };
 
 /**
- * Get array field as comma-separated string
- */
-export const getArrayAsString = (
-  element: BaseTableData,
-  field: string,
-  separator = ', '
-): string => {
-  const item = element as Record<string, unknown>;
-  const value = item[field];
-
-  if (Array.isArray(value)) {
-    return value.join(separator);
-  }
-
-  return String(value || '');
-};
-
-/**
- * Get object keys as comma-separated string
- */
-export const getObjectKeysAsString = (
-  element: BaseTableData,
-  field: string,
-  separator = ', '
-): string => {
-  const item = element as Record<string, unknown>;
-  const value = item[field];
-
-  if (value && typeof value === 'object' && !Array.isArray(value)) {
-    return Object.keys(value).join(separator);
-  }
-
-  return '';
-};
-
-/**
- * Get field value with fallback
+ * Get field value with fallback options
  */
 export const getFieldWithFallback = (
   element: BaseTableData,
@@ -409,6 +310,5 @@ export const getFieldWithFallback = (
       return value;
     }
   }
-
   return fallback;
 };

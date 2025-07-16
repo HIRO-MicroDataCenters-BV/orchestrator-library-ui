@@ -1,5 +1,11 @@
-import { Component, Input, OnChanges } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {
+  Component,
+  Input,
+  OnChanges,
+  Inject,
+  PLATFORM_ID,
+} from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-speedometer',
@@ -36,6 +42,13 @@ export class AppSpeedometerComponent implements OnChanges {
   startAngle = -Math.PI;
   endAngle = 0;
 
+  constructor(@Inject(PLATFORM_ID) private platformId: object) {
+    // Disable animation for SSR
+    if (!isPlatformBrowser(this.platformId)) {
+      this.animate = false;
+    }
+  }
+
   ngOnChanges(): void {
     this.calculateDimensions();
     this.updateDisplayValue();
@@ -56,7 +69,12 @@ export class AppSpeedometerComponent implements OnChanges {
   private updateDisplayValue(): void {
     const targetValue = Math.max(this.min, Math.min(this.max, this.value));
 
-    if (this.animate) {
+    if (
+      this.animate &&
+      isPlatformBrowser(this.platformId) &&
+      typeof requestAnimationFrame !== 'undefined' &&
+      typeof performance !== 'undefined'
+    ) {
       const startValue = this.displayValue;
       const duration = 800;
       const startTime = performance.now();
@@ -97,8 +115,16 @@ export class AppSpeedometerComponent implements OnChanges {
         }
       };
 
-      requestAnimationFrame(animate);
+      try {
+        requestAnimationFrame(animate);
+      } catch {
+        // Fallback if requestAnimationFrame fails
+        this.displayValue = targetValue;
+        this.currentColor = this.getValueColorForValue(targetValue);
+        this.updateStrokeDashoffset(targetValue);
+      }
     } else {
+      // No animation or SSR environment - set values directly
       this.displayValue = targetValue;
       this.currentColor = this.getValueColorForValue(targetValue);
       this.updateStrokeDashoffset(targetValue);

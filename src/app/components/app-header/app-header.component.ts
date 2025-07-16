@@ -7,10 +7,7 @@ import { lucideChevronRight } from '@ng-icons/lucide';
 import { HlmIconDirective } from '@spartan-ng/ui-icon-helm';
 import { distinctUntilChanged, filter, map, startWith } from 'rxjs';
 import { BreadcrumbItem } from '../../shared/models';
-import {
-  generateBreadcrumbs,
-  getPageTitle,
-} from '../../shared/utils/navigation.utils';
+import { generateBreadcrumbs } from '../../shared/utils/navigation.utils';
 
 @Component({
   selector: 'app-header',

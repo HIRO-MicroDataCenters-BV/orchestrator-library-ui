@@ -335,7 +335,7 @@
       "small_text": "This is smaller text that might be used for captions or secondary information.",
       "emphasized_text": "This is emphasized text with larger size and medium weight.",
       "blockquote_text": "This is a blockquote example with beautiful styling.",
-      "code_example": "console.log('Hello World');",
+      "code_example": "print('Hello World');",
       "html_elements": "<blockquote> and <code> elements"
     },
     "buttons": {

@@ -142,15 +142,11 @@ export {
   getProgressValue,
   hasField,
   getFormattedDate,
-  getFormattedDateTime,
-  getResourceUsageText,
   getTruncatedText,
   getNestedValue,
   formatBytes,
   formatNumber,
   isValidUrl,
-  getArrayAsString,
-  getObjectKeysAsString,
   getFieldWithFallback,
 } from '../utils/table-data.utils';
 

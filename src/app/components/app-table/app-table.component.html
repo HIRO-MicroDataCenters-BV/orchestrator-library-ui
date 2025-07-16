@@ -19,7 +19,7 @@
             *ngFor="let tab of tabs"
             class="capitalize"
             [hlmTabsTrigger]="tab"
-            (click)="setFilter(tab)"
+            (click)="setFilter()"
           >
             {{ tab }}
           </button>
@@ -73,12 +73,9 @@
       *brnCellDef="let element"
     >
       <div class="flex items-center justify-center">
-        <ng-icon
-          hlm
-          size="sm"
-          [name]="getDashboardStatusIcon(element)"
-          [class]="getDashboardStatusColor(element)"
-        />
+        <div [ngClass]="getDashboardStatusColor(element)">
+          <ng-icon hlm size="sm" [name]="getDashboardStatusIcon(element)" />
+        </div>
       </div>
     </hlm-td>
   </brn-column-def>
