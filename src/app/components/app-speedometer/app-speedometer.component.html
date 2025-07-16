@@ -15,31 +15,80 @@
         [attr.stroke]="backgroundColor"
         [attr.stroke-width]="strokeWidth"
         fill="none"
-        stroke-linecap="round"
+        stroke-linecap="butt"
+      />
+
+      <!-- Custom rounded square start cap for base track -->
+      <rect
+        [attr.x]="getStartCapX()"
+        [attr.y]="getStartCapY()"
+        [attr.width]="strokeWidth"
+        [attr.height]="strokeWidth"
+        [attr.rx]="strokeWidth * 0.4"
+        [attr.ry]="strokeWidth * 0.4"
+        [attr.fill]="backgroundColor"
+        [attr.transform]="getStartCapTransform()"
+      />
+
+      <!-- Custom rounded square end cap for base track -->
+      <rect
+        [attr.x]="getEndCapX()"
+        [attr.y]="getEndCapY()"
+        [attr.width]="strokeWidth"
+        [attr.height]="strokeWidth"
+        [attr.rx]="strokeWidth * 0.4"
+        [attr.ry]="strokeWidth * 0.4"
+        [attr.fill]="backgroundColor"
+        [attr.transform]="getEndCapTransform()"
       />
 
       <path
-        [attr.d]="getArcPath(startAngle, endAngle, outerRadius)"
+        [attr.d]="getProgressArcPath()"
         [attr.stroke]="getValueColor()"
         [attr.stroke-width]="strokeWidth"
-        [attr.stroke-dasharray]="getStrokeDasharray()"
-        [attr.stroke-dashoffset]="getStrokeDashoffset()"
         fill="none"
-        stroke-linecap="round"
+        stroke-linecap="butt"
         class="speedometer-progress"
+      />
+
+      <!-- Custom rounded square progress start cap -->
+      <rect
+        *ngIf="displayValue > min"
+        [attr.x]="getStartCapX()"
+        [attr.y]="getStartCapY()"
+        [attr.width]="strokeWidth"
+        [attr.height]="strokeWidth"
+        [attr.rx]="strokeWidth * 0.4"
+        [attr.ry]="strokeWidth * 0.4"
+        [attr.fill]="getValueColor()"
+        [attr.transform]="getStartCapTransform()"
+      />
+
+      <!-- Custom rounded square progress end cap -->
+      <rect
+        *ngIf="displayValue > min"
+        [attr.x]="getProgressEndCapX()"
+        [attr.y]="getProgressEndCapY()"
+        [attr.width]="strokeWidth"
+        [attr.height]="strokeWidth"
+        [attr.rx]="strokeWidth * 0.4"
+        [attr.ry]="strokeWidth * 0.4"
+        [attr.fill]="getValueColor()"
+        [attr.transform]="getProgressEndCapTransform()"
       />
     </svg>
 
     <div class="absolute inset-0 flex flex-col items-center justify-end pb-4">
       <div class="text-center">
         <div
-          class="text-2xl font-bold speedometer-value"
+          class="text-sm speedometer-label mb-1"
+          *ngIf="label"
           [style.color]="getValueColor()"
         >
-          {{ displayValue }}{{ unit }}
+          {{ getShortLabel() }}
         </div>
-        <div class="text-sm text-gray-500 mt-1 speedometer-label" *ngIf="label">
-          {{ label }}
+        <div class="text-gray-700 text-lg">
+          {{ formatValue(displayValue || 0) }}{{ unit }}
         </div>
       </div>
     </div>

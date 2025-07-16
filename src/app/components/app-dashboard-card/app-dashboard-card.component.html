@@ -41,62 +41,45 @@
       <!-- Content State -->
       <div class="grid grid-cols-2 gap-1 mb-1 h-30">
         <div
+          *ngFor="let metric of getMetrics()"
           class="rounded-md p-4 text-center border-gray-200 border-1 metric-card"
-          [class.healthy]="areNodesHealthy()"
-          [class.unhealthy]="!areNodesHealthy()"
+          [class.healthy]="metric.healthy"
+          [class.unhealthy]="!metric.healthy"
         >
           <div class="flex items-center justify-center mb-3">
             <div
               class="w-4 h-4 mr-2 flex justify-center items-center"
-              [class.text-green-500]="areNodesHealthy()"
-              [class.text-red-500]="!areNodesHealthy()"
+              [class.text-green-500]="metric.healthy"
+              [class.text-red-500]="!metric.healthy"
             >
-              <ng-icon name="lucideServer" />
+              <ng-icon [name]="metric.icon" />
             </div>
-            <span class="text-xs text-gray-700">{{
-              'card.nodes' | transloco
+            <span class="text-xs font-medium text-gray-700">{{
+              metric.title | transloco
             }}</span>
           </div>
           <div class="text-gray-900 mb-1 font-medium">
-            {{ getNodesReady() }} {{ 'card.out_of' | transloco }}
-            {{ getTotalNodes() }}
+            {{ metric.readyCount }} {{ 'card.out_of' | transloco }}
+            {{ metric.totalCount }}
           </div>
           <div class="text-sm text-gray-500">
-            {{ 'card.ready' | transloco }}
-          </div>
-        </div>
-        <div
-          class="rounded-md p-4 text-center border-gray-200 border-1 metric-card"
-          [class.healthy]="arePodsHealthy()"
-          [class.unhealthy]="!arePodsHealthy()"
-        >
-          <div class="flex items-center justify-center mb-3">
-            <div
-              class="w-4 h-4 mr-2 flex justify-center items-center"
-              [class.text-green-500]="arePodsHealthy()"
-              [class.text-red-500]="!arePodsHealthy()"
+            <span *ngIf="metric.failedCount !== undefined"
+              >{{ metric.failedCount }}
+              {{ metric.statusText | transloco }}</span
             >
-              <ng-icon name="lucideLayers" />
-            </div>
-
-            <span class="text-xs font-medium text-gray-700">{{
-              'card.pods' | transloco
+            <span *ngIf="metric.failedCount === undefined">{{
+              metric.statusText | transloco
             }}</span>
           </div>
-          <div class="text-gray-900 mb-1 font-medium">
-            {{ getPodsRunning() }} {{ 'card.out_of' | transloco }}
-            {{ getTotalPods() }}
-          </div>
-          <div class="text-sm text-gray-500">{{ getPodsFailed() }} Failed</div>
         </div>
       </div>
       <div class="grid grid-cols-2 gap-1 h-30">
         <div
-          class="bg-white border-1 border-grey-200 rounded-md p-4 text-center flex items-center justify-center"
+          class="bg-white border-1 border-grey-200 rounded p-4 text-center flex items-center justify-center speedometer-container-minimal"
         >
           <app-speedometer
             *ngIf="isBrowser"
-            [value]="getCpuSpeedometerConfig().value"
+            [value]="getMetricValue('cpu')"
             [min]="getCpuSpeedometerConfig().min"
             [max]="getCpuSpeedometerConfig().max"
             [unit]="getCpuSpeedometerConfig().unit"
@@ -107,16 +90,16 @@
             [animate]="getCpuSpeedometerConfig().animate"
           ></app-speedometer>
           <div *ngIf="!isBrowser" class="text-gray-600">
-            CPU: {{ getCpuSpeedometerConfig().value }}%
+            {{ 'card.cpu_usage' | transloco }}: {{ getMetricValue('cpu') }}%
           </div>
         </div>
 
         <div
-          class="bg-white border-1 border-grey-200 p-4 text-center flex items-center justify-center"
+          class="bg-white border-1 border-grey-200 rounded p-4 text-center flex items-center justify-center speedometer-container-minimal"
         >
           <app-speedometer
             *ngIf="isBrowser"
-            [value]="getMemorySpeedometerConfig().value"
+            [value]="getMetricValue('memory')"
             [min]="getMemorySpeedometerConfig().min"
             [max]="getMemorySpeedometerConfig().max"
             [unit]="getMemorySpeedometerConfig().unit"
@@ -127,7 +110,8 @@
             [animate]="getMemorySpeedometerConfig().animate"
           ></app-speedometer>
           <div *ngIf="!isBrowser" class="text-gray-600">
-            Memory: {{ getMemorySpeedometerConfig().value }}%
+            {{ 'card.memory_usage' | transloco }}:
+            {{ getMetricValue('memory') }}%
           </div>
         </div>
       </div>

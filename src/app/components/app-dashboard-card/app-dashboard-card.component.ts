@@ -25,6 +25,16 @@ import {
   ErrorOverlayComponent,
 } from '../../shared/components';
 
+interface MetricItem {
+  icon: string;
+  title: string;
+  healthy: boolean;
+  readyCount: number;
+  totalCount: number;
+  failedCount?: number;
+  statusText: string;
+}
+
 @Component({
   selector: 'app-dashboard-card',
   standalone: true,
@@ -130,7 +140,7 @@ export class AppDashboardCardComponent implements OnInit, OnDestroy {
       min: 0,
       max: 100,
       unit: '%',
-      size: 140,
+      size: 156,
       showLabels: false,
       animate: true,
     };
@@ -144,7 +154,7 @@ export class AppDashboardCardComponent implements OnInit, OnDestroy {
       min: 0,
       max: 100,
       unit: '%',
-      size: 140,
+      size: 156,
       showLabels: false,
       animate: true,
     };
@@ -185,8 +195,35 @@ export class AppDashboardCardComponent implements OnInit, OnDestroy {
     const total = this.getTotalPods();
     if (total === 0) return false;
 
+    const failed = this.getPodsFailed();
+    // If there are any failed pods, consider unhealthy
+    if (failed > 0) return false;
+
     const running = this.getPodsRunning();
-    return running / total >= 0.8;
+    // All pods should be running for healthy status
+    return running === total;
+  }
+
+  getMetrics(): MetricItem[] {
+    return [
+      {
+        icon: 'lucideServer',
+        title: 'card.nodes',
+        healthy: this.areNodesHealthy(),
+        readyCount: this.getNodesReady(),
+        totalCount: this.getTotalNodes(),
+        statusText: 'card.ready',
+      },
+      {
+        icon: 'lucideLayers',
+        title: 'card.pods',
+        healthy: this.arePodsHealthy(),
+        readyCount: this.getPodsRunning(),
+        totalCount: this.getTotalPods(),
+        failedCount: this.getPodsFailed(),
+        statusText: 'card.failed',
+      },
+    ];
   }
 
   getMetricValue(type: 'cpu' | 'memory'): number {

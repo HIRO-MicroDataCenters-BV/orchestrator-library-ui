@@ -24,19 +24,6 @@ svg path:not(.speedometer-progress) {
   transition: stroke 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.speedometer-value {
-  font-weight: 700;
-  font-size: 1.5rem;
-  line-height: 1.2;
-  transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  font-feature-settings: 'tnum' 1;
-
-  &:hover {
-    transform: scale(1.05);
-    transition: transform 0.2s ease, color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-}
-
 .speedometer-label {
   font-size: 0.875rem;
   color: #6b7280;
