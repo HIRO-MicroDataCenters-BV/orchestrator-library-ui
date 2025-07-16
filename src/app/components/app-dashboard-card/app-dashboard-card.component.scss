@@ -1,3 +1,14 @@
+.dashboard-card {
+  position: relative;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
 .metric-card {
   transition: all 0.2s ease-in-out;
 }
@@ -136,8 +147,40 @@
   }
 }
 
+/* Overlay container styles */
+.overlay-container {
+  position: relative;
+  min-height: 200px;
+}
+
+/* Enhanced card styling */
+.dashboard-card header {
+  border-bottom: 1px solid #f3f4f6;
+  background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+}
+
+.dashboard-card section {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Loading and error state improvements */
+.dashboard-card .loading-overlay,
+.dashboard-card .error-overlay {
+  border-radius: 0.375rem;
+}
+
+/* Table container specific styling */
+.table-container {
+  background: #ffffff;
+  position: relative;
+  overflow: hidden;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .metric-card {
+  .metric-card,
+  .dashboard-card {
     animation: none;
+    transition: none;
   }
 }

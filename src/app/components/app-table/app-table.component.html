@@ -53,14 +53,18 @@
 <brn-table
   hlm
   stickyHeader
-  class="border-border block h-[calc(100vh-250px)] overflow-auto rounded-md border"
+  [class]="
+    showHeader && showFooter
+      ? 'border-border block h-[calc(100vh-250px)] overflow-auto rounded-md border'
+      : 'border-border block h-full overflow-auto rounded-md border'
+  "
   [dataSource]="_filteredSortedPaginatedItems()"
   [displayedColumns]="_allDisplayedColumns()"
   [trackBy]="_trackBy"
 >
   <brn-column-def name="dashboard_status" class="w-16">
     <ng-container *brnHeaderDef>
-      <hlm-th [style.visibility]="showHeader ? 'visible' : 'hidden'"></hlm-th>
+      <hlm-th [style.display]="showHeader ? 'block' : 'none'"></hlm-th>
     </ng-container>
     <hlm-td
       (click)="hasRowAction ? onRowClick(element) : null"
@@ -81,7 +85,7 @@
 
   <brn-column-def name="dashboard_info" class="flex-1">
     <ng-container *brnHeaderDef>
-      <hlm-th [style.visibility]="showHeader ? 'visible' : 'hidden'"></hlm-th>
+      <hlm-th [style.display]="showHeader ? 'block' : 'none'"></hlm-th>
     </ng-container>
     <hlm-td
       (click)="hasRowAction ? onRowClick(element) : null"
@@ -100,7 +104,7 @@
 
   <brn-column-def name="dashboard_date" class="w-32">
     <ng-container *brnHeaderDef>
-      <hlm-th [style.visibility]="showHeader ? 'visible' : 'hidden'"></hlm-th>
+      <hlm-th [style.display]="showHeader ? 'block' : 'none'"></hlm-th>
     </ng-container>
     <hlm-td
       (click)="hasRowAction ? onRowClick(element) : null"
@@ -121,7 +125,7 @@
 
   <brn-column-def name="id" class="w-64">
     <ng-container *brnHeaderDef>
-      <hlm-th truncate [style.visibility]="showHeader ? 'visible' : 'hidden'">{{
+      <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
         'column.id' | transloco
       }}</hlm-th>
     </ng-container>
@@ -137,7 +141,7 @@
 
   <brn-column-def name="created_pod_namespace" class="w-64">
     <ng-container *brnHeaderDef>
-      <hlm-th truncate [style.visibility]="showHeader ? 'visible' : 'hidden'">{{
+      <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
         'column.created_pod_namespace' | transloco
       }}</hlm-th>
     </ng-container>
@@ -153,7 +157,7 @@
 
   <brn-column-def name="node_name" class="w-64">
     <ng-container *brnHeaderDef>
-      <hlm-th truncate [style.visibility]="showHeader ? 'visible' : 'hidden'">{{
+      <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
         'column.node_name' | transloco
       }}</hlm-th>
     </ng-container>
@@ -169,7 +173,7 @@
 
   <brn-column-def name="request_id" class="w-64">
     <ng-container *brnHeaderDef>
-      <hlm-th truncate [style.visibility]="showHeader ? 'visible' : 'hidden'">{{
+      <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
         'column.request_id' | transloco
       }}</hlm-th>
     </ng-container>
@@ -184,7 +188,7 @@
   </brn-column-def>
   <brn-column-def name="pod_name" class="w-64">
     <ng-container *brnHeaderDef>
-      <hlm-th truncate [style.visibility]="showHeader ? 'visible' : 'hidden'">{{
+      <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
         'column.pod_name' | transloco
       }}</hlm-th>
     </ng-container>
@@ -199,7 +203,7 @@
   </brn-column-def>
   <brn-column-def name="namespace" class="w-64">
     <ng-container *brnHeaderDef>
-      <hlm-th truncate [style.visibility]="showHeader ? 'visible' : 'hidden'">{{
+      <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
         'column.namespace' | transloco
       }}</hlm-th>
     </ng-container>
@@ -214,7 +218,7 @@
   </brn-column-def>
   <brn-column-def name="queue_name" class="w-64">
     <ng-container *brnHeaderDef>
-      <hlm-th truncate [style.visibility]="showHeader ? 'visible' : 'hidden'">{{
+      <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
         'column.queue_name' | transloco
       }}</hlm-th>
     </ng-container>
@@ -229,7 +233,7 @@
   </brn-column-def>
   <brn-column-def name="alert_type" class="w-64">
     <ng-container *brnHeaderDef>
-      <hlm-th truncate [style.visibility]="showHeader ? 'visible' : 'hidden'">{{
+      <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
         'column.alert_type' | transloco
       }}</hlm-th>
     </ng-container>
@@ -244,7 +248,7 @@
   </brn-column-def>
   <brn-column-def name="alert_description" class="w-64">
     <ng-container *brnHeaderDef>
-      <hlm-th truncate [style.visibility]="showHeader ? 'visible' : 'hidden'">{{
+      <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
         'column.alert_description' | transloco
       }}</hlm-th>
     </ng-container>
@@ -259,7 +263,7 @@
   </brn-column-def>
   <brn-column-def name="pod_id" class="w-64">
     <ng-container *brnHeaderDef>
-      <hlm-th truncate [style.visibility]="showHeader ? 'visible' : 'hidden'">{{
+      <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
         'column.pod_id' | transloco
       }}</hlm-th>
     </ng-container>
@@ -275,7 +279,7 @@
 
   <brn-column-def name="demand_cpu" class="w-64">
     <ng-container *brnHeaderDef>
-      <hlm-th truncate [style.visibility]="showHeader ? 'visible' : 'hidden'">{{
+      <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
         'column.demand_cpu' | transloco
       }}</hlm-th>
     </ng-container>
@@ -290,7 +294,7 @@
   </brn-column-def>
   <brn-column-def name="action_type" class="w-64">
     <ng-container *brnHeaderDef>
-      <hlm-th truncate [style.visibility]="showHeader ? 'visible' : 'hidden'">{{
+      <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
         'column.action_type' | transloco
       }}</hlm-th>
     </ng-container>
@@ -309,7 +313,7 @@
   </brn-column-def>
   <brn-column-def name="bound_pod_name" class="w-64">
     <ng-container *brnHeaderDef>
-      <hlm-th truncate [style.visibility]="showHeader ? 'visible' : 'hidden'">{{
+      <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
         'column.bound_pod_name' | transloco
       }}</hlm-th>
     </ng-container>
@@ -324,7 +328,7 @@
   </brn-column-def>
   <brn-column-def name="pod_parent_name" class="w-64">
     <ng-container *brnHeaderDef>
-      <hlm-th truncate [style.visibility]="showHeader ? 'visible' : 'hidden'">{{
+      <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
         'column.pod_parent_name' | transloco
       }}</hlm-th>
     </ng-container>
@@ -339,7 +343,7 @@
   </brn-column-def>
   <brn-column-def name="action_reason" class="w-64">
     <ng-container *brnHeaderDef>
-      <hlm-th truncate [style.visibility]="showHeader ? 'visible' : 'hidden'">{{
+      <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
         'column.action_reason' | transloco
       }}</hlm-th>
     </ng-container>
@@ -354,7 +358,7 @@
   </brn-column-def>
   <brn-column-def name="demand_memory" class="w-64">
     <ng-container *brnHeaderDef>
-      <hlm-th truncate [style.visibility]="showHeader ? 'visible' : 'hidden'">{{
+      <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
         'column.demand_memory' | transloco
       }}</hlm-th>
     </ng-container>
@@ -369,7 +373,7 @@
   </brn-column-def>
   <brn-column-def name="pod_parent_kind" class="w-64">
     <ng-container *brnHeaderDef>
-      <hlm-th truncate [style.visibility]="showHeader ? 'visible' : 'hidden'">{{
+      <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
         'column.pod_parent_kind' | transloco
       }}</hlm-th>
     </ng-container>
@@ -384,7 +388,7 @@
   </brn-column-def>
   <brn-column-def name="node_id" class="w-64">
     <ng-container *brnHeaderDef>
-      <hlm-th truncate [style.visibility]="showHeader ? 'visible' : 'hidden'">{{
+      <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
         'column.node_id' | transloco
       }}</hlm-th>
     </ng-container>
@@ -399,7 +403,7 @@
   </brn-column-def>
   <brn-column-def name="decision_status" class="w-64">
     <ng-container *brnHeaderDef>
-      <hlm-th truncate [style.visibility]="showHeader ? 'visible' : 'hidden'">{{
+      <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
         'column.decision_status' | transloco
       }}</hlm-th>
     </ng-container>
@@ -414,7 +418,7 @@
   </brn-column-def>
   <brn-column-def name="created_at" class="w-64">
     <ng-container *brnHeaderDef>
-      <hlm-th truncate [style.visibility]="showHeader ? 'visible' : 'hidden'">{{
+      <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
         'column.created_at' | transloco
       }}</hlm-th>
     </ng-container>
@@ -436,7 +440,7 @@
   </brn-column-def>
   <brn-column-def name="action_start_time" class="w-64">
     <ng-container *brnHeaderDef>
-      <hlm-th truncate [style.visibility]="showHeader ? 'visible' : 'hidden'">{{
+      <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
         'column.action_start_time' | transloco
       }}</hlm-th>
     </ng-container>

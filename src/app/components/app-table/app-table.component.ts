@@ -55,27 +55,18 @@ import { debounceTime, Observable } from 'rxjs';
 import { HlmBadgeDirective } from '@spartan-ng/ui-badge-helm';
 import { AppCircleProgressComponent } from '../app-circle-progress/app-circle-progress.component';
 
-export type TableData = {
-  id: string;
-  cluster_name: string;
-  status: number; // 0-2: 0 - inactive, 1 - running, 2 - success, -1 - warning, -2 - failed
-  workloads: number;
-  nodes: number;
-  cpu_usage: number; // percent
-  memory_usage: number; // percent
-};
-
-export type TableAction = {
-  id: string;
-  label: string;
-  icon: NgIcon;
-};
-
-export type TableActionGroup = {
-  id: string;
-  label?: string | null;
-  actions: TableAction[];
-};
+// Import centralized types and utilities
+import {
+  BaseTableData,
+  ColumnVisibility,
+  getStatusColor,
+  getStatusIcon,
+  getProgressColor,
+  getMainText,
+  getSubText,
+  getStatusValue,
+  getStatusTextColor,
+} from '../../shared/models';
 
 /**
  * App Table Component
@@ -159,6 +150,7 @@ export class AppTableComponent implements OnChanges, OnInit {
   @Input('hasRowAction') hasRowAction = true;
   @Input('showHeader') showHeader = true;
   @Input('showFooter') showFooter = true;
+  @Input('pageSize') pageSize?: number;
 
   ACTION_ICONS: Record<string, string> = {
     view_details: lucideInfo,
@@ -184,7 +176,7 @@ export class AppTableComponent implements OnChanges, OnInit {
 
   protected readonly _actions = computed(() => [...this.actions]);
 
-  protected readonly _columnOptions = signal(
+  protected readonly _columnOptions = signal<ColumnVisibility[]>(
     this.columns.map((col) => ({ name: col, selected: true }))
   );
 
@@ -202,13 +194,13 @@ export class AppTableComponent implements OnChanges, OnInit {
     return items;
   });
 
-  private _items = signal<unknown[]>([]);
+  private _items = signal<BaseTableData[]>([]);
   private readonly _filteredItems = computed(() => {
     const colFilter = this._colFilter()?.trim()?.toLowerCase();
     if (colFilter && colFilter.length > 0) {
       return this._items().filter((item) => {
         // Search through all string properties of the item
-        return Object.values(item as Record<string, any>).some((value) => {
+        return Object.values(item as Record<string, unknown>).some((value) => {
           if (typeof value === 'string') {
             return value.toLowerCase().includes(colFilter);
           }
@@ -236,8 +228,23 @@ export class AppTableComponent implements OnChanges, OnInit {
     const end = this._displayedIndices().end + 1;
     const items = this._filteredItems();
 
+    console.log(
+      'Table pagination computed - start:',
+      start,
+      'end:',
+      end,
+      'total items:',
+      items.length
+    );
+
     if (!sort) {
-      return items.slice(start, end);
+      const result = items.slice(start, end);
+      console.log(
+        'Table pagination result (unsorted):',
+        result.length,
+        'items'
+      );
+      return result;
     }
 
     // Generic sorting for any object with string properties
@@ -247,20 +254,24 @@ export class AppTableComponent implements OnChanges, OnInit {
       return (sort === 'ASC' ? 1 : -1) * p1Str.localeCompare(p2Str);
     });
 
-    return sortedItems.slice(start, end);
+    const result = sortedItems.slice(start, end);
+    console.log('Table pagination result (sorted):', result.length, 'items');
+    return result;
   });
 
-  protected readonly _trackBy: TrackByFunction<unknown> = (
+  protected readonly _trackBy: TrackByFunction<BaseTableData> = (
     _: number,
-    p: unknown
-  ) => (p as { id: string }).id;
+    p: BaseTableData
+  ) => p.id;
   protected _totalElements = computed(() => this._filteredItems().length);
 
   protected readonly _onStateChange = ({
     startIndex,
     endIndex,
-  }: PaginatorState) =>
+  }: PaginatorState) => {
     this._displayedIndices.set({ start: startIndex, end: endIndex });
+    console.log('Paginator state changed:', { startIndex, endIndex });
+  };
 
   private router = inject(Router, { optional: true });
   private route = inject(ActivatedRoute, { optional: true });
@@ -272,15 +283,55 @@ export class AppTableComponent implements OnChanges, OnInit {
     });
   }
   ngOnInit(): void {
+    // Set page size based on input or mode
+    if (this.pageSize !== undefined) {
+      this._pageSize.set(this.pageSize);
+    } else if (!this.showHeader && !this.showFooter) {
+      // Dashboard mode - show more items
+      this._pageSize.set(10);
+    }
+
+    // Initialize pagination for dashboard mode (no footer)
+    if (!this.showFooter) {
+      this.initializeDashboardPagination();
+    }
+
     if (this.dataSource) {
       this.fetchData();
     }
   }
 
+  /**
+   * Initialize pagination for dashboard mode (when footer is hidden)
+   */
+  private initializeDashboardPagination(): void {
+    const currentPageSize = this._pageSize();
+    const totalItems = this._totalElements();
+    const endIndex = Math.min(currentPageSize - 1, Math.max(0, totalItems - 1));
+    this._displayedIndices.set({ start: 0, end: endIndex });
+
+    console.log('Dashboard pagination initialized:', {
+      pageSize: currentPageSize,
+      totalItems,
+      displayedIndices: this._displayedIndices(),
+    });
+  }
+
   fetchData(): void {
     if (this.dataSource) {
       this.dataSource.subscribe((res: unknown[]) => {
-        this._items.set(res);
+        console.log('Table fetchData - raw data:', res);
+        console.log('Table fetchData - data length:', res.length);
+        console.log('Table showHeader:', this.showHeader);
+        console.log('Table showFooter:', this.showFooter);
+        console.log('Table pageSize:', this._pageSize());
+        console.log('Table displayedIndices:', this._displayedIndices());
+        this._items.set(res as BaseTableData[]);
+
+        // Initialize display indices after data is loaded for dashboard mode
+        if (!this.showFooter) {
+          this.initializeDashboardPagination();
+        }
       });
     }
   }
@@ -309,12 +360,11 @@ export class AppTableComponent implements OnChanges, OnInit {
     return column ? column.selected : false;
   }
 
-  public onRowClick(element: unknown) {
+  public onRowClick(element: BaseTableData) {
     if (!this.router || !this.route) {
       return;
     }
-    const elementWithId = element as { id: string };
-    this.router.navigate([`./${elementWithId.id}`], {
+    this.router.navigate([`./${element.id}`], {
       relativeTo: this.route,
       state: element as Record<string, unknown>,
     });
@@ -325,49 +375,17 @@ export class AppTableComponent implements OnChanges, OnInit {
     console.log('tab', tab);
   }
 
-  getStatusColor(status: string): string {
-    const type = status && status.toLowerCase();
-    switch (type) {
-      case 'created':
-      case 'running':
-        return 'text-blue-700 bg-blue-100';
-      case 'bound':
-      case 'bind':
-        return 'text-green-700 bg-green-100';
-      case 'failed':
-        return 'text-red-700 bg-red-100';
-      case 'deleted':
-        return 'text-red-700 bg-red-100';
-      default:
-        return 'text-gray-700 bg-gray-100';
-    }
+  getStatusColor(status: string | number | boolean): string {
+    return getStatusColor(status);
   }
 
   getProgressColor(percent: number): string {
-    if (percent >= 80) {
-      return 'text-red-500';
-    } else if (percent >= 60) {
-      return 'text-yellow-700';
-    } else {
-      return 'text-green-700';
-    }
+    return getProgressColor(percent);
   }
 
   getStatus(status: number): string {
-    switch (status) {
-      case -2:
-        return 'failed';
-      case 1:
-        return 'running';
-      case 2:
-        return 'success';
-      case -1:
-        return 'warning';
-      case 0:
-        return 'inactive';
-      default:
-        return 'unknown';
-    }
+    const statusValue = getStatusValue({ id: '', status } as BaseTableData);
+    return String(statusValue);
   }
 
   protected handleColSortChange(): void {
@@ -382,91 +400,21 @@ export class AppTableComponent implements OnChanges, OnInit {
   }
 
   getDashboardStatusIcon(element: unknown): string {
-    const item = element as Record<string, any>;
-    const status =
-      item['status'] ||
-      item['alert_type'] ||
-      item['action_type'] ||
-      item['decision_status'];
-
-    if (typeof status === 'string') {
-      const type = status.toLowerCase();
-      switch (type) {
-        case 'created':
-        case 'running':
-        case 'pending':
-          return 'lucideCircle';
-        case 'bound':
-        case 'bind':
-        case 'success':
-        case 'successful':
-        case 'completed':
-        case 'approved':
-          return 'lucideCircleCheck';
-        case 'failed':
-        case 'error':
-        case 'deleted':
-        case 'network-attack':
-          return 'lucideCircleX';
-        case 'warning':
-        case 'abnormal':
-          return 'lucideTriangleAlert';
-        case 'info':
-        case 'other':
-          return 'lucideInfo';
-        default:
-          return 'lucideCircle';
-      }
-    }
-
-    if (typeof status === 'boolean') {
-      return status ? 'lucideCircleCheck' : 'lucideCircleX';
-    }
-
-    return 'lucideCircle';
+    const statusValue = getStatusValue(element as BaseTableData);
+    return getStatusIcon(statusValue);
   }
 
   getDashboardStatusColor(element: unknown): string {
-    const item = element as Record<string, any>;
-    const status =
-      item['status'] ||
-      item['alert_type'] ||
-      item['action_type'] ||
-      item['decision_status'];
-
-    if (status) {
-      return this.getStatusColor(String(status)).split(' ')[0];
-    }
-    return 'text-gray-700';
+    const statusValue = getStatusValue(element as BaseTableData);
+    return getStatusTextColor(statusValue);
   }
 
   getDashboardMainText(element: unknown): string {
-    const item = element as Record<string, any>;
-    return (
-      item['pod_name'] ||
-      item['alert_description'] ||
-      item['cluster_name'] ||
-      item['name'] ||
-      item['id'] ||
-      'Unknown'
-    );
+    return getMainText(element as BaseTableData);
   }
 
   getDashboardSubText(element: unknown): string {
-    const item = element as Record<string, any>;
-    if (item['pod_id']) {
-      return `ID: ${item['pod_id'].substring(0, 8)}...`;
-    }
-    if (item['namespace']) {
-      return `Namespace: ${item['namespace']}`;
-    }
-    if (item['alert_type']) {
-      return `Type: ${item['alert_type']}`;
-    }
-    if (item['pod_parent_kind']) {
-      return `${item['pod_parent_kind']}`;
-    }
-    return item['queue_name'] || item['model_version'] || '';
+    return getSubText(element as BaseTableData);
   }
 
   ngOnChanges(changes: SimpleChanges): void {

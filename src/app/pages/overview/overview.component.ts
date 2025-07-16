@@ -9,6 +9,7 @@ import { TranslocoService } from '@jsverse/transloco';
 // App components
 import { ApiService } from '../../core/services/api.service';
 import { AppDashboardCardComponent } from '../../components/app-dashboard-card/app-dashboard-card.component';
+import { ROUTES } from '../../shared/constants/app.constants';
 
 @Component({
   selector: 'app-overview',
@@ -37,12 +38,8 @@ export class OverviewComponent implements OnInit, OnDestroy {
         dataSource: this.apiService.getClusterInfo({ advanced: true }),
         actions: [
           {
-            label: this.translocoService.translate('action.healthy'),
-            link: '/healthy',
-          },
-          {
             label: this.translocoService.translate('action.view_details'),
-            link: '/cluster',
+            link: ROUTES.K8S,
           },
         ],
       },
@@ -54,7 +51,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
         actions: [
           {
             label: this.translocoService.translate('action.view_all'),
-            link: '/alerts',
+            link: ROUTES.EMDC.ALERTS,
           },
         ],
       },
@@ -68,7 +65,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
         actions: [
           {
             label: this.translocoService.translate('action.view_all'),
-            link: '/workload',
+            link: ROUTES.EMDC.WORKLOADS.REQUEST_DECISIONS,
           },
         ],
       },
@@ -80,7 +77,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
         actions: [
           {
             label: this.translocoService.translate('action.view_all'),
-            link: '/served-models',
+            link: ROUTES.EMDC.WORKLOADS.ACTIONS,
           },
         ],
       },

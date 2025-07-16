@@ -36,6 +36,20 @@ export interface ApiError {
 }
 
 /**
+ * Message response interface
+ */
+export interface MessageResponse {
+  message: string;
+}
+
+/**
+ * ID response interface
+ */
+export interface IdResponse {
+  id: string | number;
+}
+
+/**
  * HTTP validation error structure (from FastAPI)
  */
 export interface HTTPValidationError {

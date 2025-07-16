@@ -85,8 +85,10 @@ export interface K8sNodeInfo {
 }
 
 export interface K8sClusterInfoResponse {
+  cluster_id?: string;
   cluster_name?: string;
   server_version?: string;
+  kubernetes_version?: string;
   nodes_count?: number;
   namespaces_count?: number;
   pods_count?: number;
@@ -98,6 +100,15 @@ export interface K8sClusterInfoResponse {
   cluster_memory_availability?: number;
   cluster_cpu_utilization?: number;
   cluster_memory_utilization?: number;
+  nodes?: K8sNode[];
+  pods?: K8sPod[];
+  namespaces?: any[];
+  components?: any[];
+  deployments?: any[];
+  statefulsets?: any[];
+  daemonsets?: any[];
+  jobs?: any[];
+  kube_system_pods?: any[];
   advanced_info?: K8sAdvancedClusterInfo;
 }
 

@@ -6,16 +6,18 @@ import { lucideServer, lucideLayers } from '@ng-icons/lucide';
 import { DashboardCardModel } from '../../shared/models/dashboard-card.model';
 import { AppTableComponent } from '../app-table/app-table.component';
 import { AppSpeedometerComponent } from '../app-speedometer/app-speedometer.component';
-import { Observable, Subscription, forkJoin } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import {
   K8sClusterInfoResponse,
-  K8sNodeResponse,
-  K8sPodResponse,
   K8sNode,
   K8sPod,
 } from '../../shared/models/kubernetes.model';
 import { TranslocoModule } from '@jsverse/transloco';
 import { ApiService } from '../../core/services/api.service';
+import {
+  LoadingOverlayComponent,
+  ErrorOverlayComponent,
+} from '../../shared/components';
 
 @Component({
   selector: 'app-dashboard-card',
@@ -28,6 +30,8 @@ import { ApiService } from '../../core/services/api.service';
     AppSpeedometerComponent,
     TranslocoModule,
     NgIcon,
+    LoadingOverlayComponent,
+    ErrorOverlayComponent,
   ],
   providers: [provideIcons({ lucideServer, lucideLayers })],
   templateUrl: './app-dashboard-card.component.html',
@@ -37,38 +41,87 @@ export class AppDashboardCardComponent implements OnInit, OnDestroy {
   @Input() data!: DashboardCardModel;
 
   private subscription = new Subscription();
-  clusterInfo: any = null;
+  clusterInfo: K8sClusterInfoResponse | null = null;
   nodes: K8sNode[] = [];
   pods: K8sPod[] = [];
+  isLoading = false;
+  hasError = false;
+  errorMessage = '';
 
   constructor(private apiService: ApiService) {}
 
   ngOnInit(): void {
-    if (this.data.type === 'metrics' && this.data.key === 'cluster') {
-      this.loadClusterMetrics();
-    }
+    this.loadCardData();
   }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
 
+  private loadCardData(): void {
+    if (!this.data.dataSource) {
+      return;
+    }
+
+    this.isLoading = true;
+    this.hasError = false;
+
+    if (this.data.type === 'metrics' && this.data.key === 'cluster') {
+      this.loadClusterMetrics();
+    } else if (this.data.type === 'table') {
+      this.loadTableData();
+    }
+  }
+
   private loadClusterMetrics(): void {
     this.subscription.add(
-      forkJoin({
-        clusterInfo: this.apiService.getClusterInfo({ advanced: true }),
-        nodes: this.apiService.listNodes(),
-        pods: this.apiService.listPods(),
-      }).subscribe({
-        next: ({ clusterInfo, nodes, pods }) => {
+      (this.data.dataSource as Observable<K8sClusterInfoResponse>).subscribe({
+        next: (clusterInfo) => {
+          console.log('Dashboard metrics loaded:', clusterInfo);
           this.clusterInfo = clusterInfo;
-          this.nodes = Array.isArray(nodes) ? nodes : nodes.nodes || [];
-          this.pods = Array.isArray(pods) ? pods : pods.pods || [];
+          this.nodes = Array.isArray(clusterInfo.nodes)
+            ? clusterInfo.nodes
+            : [];
+          this.pods = Array.isArray(clusterInfo.pods) ? clusterInfo.pods : [];
+          this.isLoading = false;
+          this.hasError = false;
+
+          console.log('Parsed data:', {
+            nodes: this.nodes.length,
+            pods: this.pods.length,
+            cpuUtilization: clusterInfo.cluster_cpu_utilization,
+            memoryUtilization: clusterInfo.cluster_memory_utilization,
+          });
         },
-        error: () => {
+        error: (error) => {
           this.clusterInfo = null;
           this.nodes = [];
           this.pods = [];
+          this.isLoading = false;
+          this.hasError = true;
+          this.errorMessage = 'error.failed_to_load';
+          console.error('Dashboard metrics error:', error);
+        },
+      })
+    );
+  }
+
+  private loadTableData(): void {
+    this.subscription.add(
+      (this.data.dataSource as Observable<unknown[]>).subscribe({
+        next: (data) => {
+          console.log(
+            `Dashboard table data loaded for ${this.data.key}:`,
+            data
+          );
+          this.isLoading = false;
+          this.hasError = false;
+        },
+        error: (error) => {
+          this.isLoading = false;
+          this.hasError = true;
+          this.errorMessage = 'error.failed_to_load';
+          console.error(`Dashboard table error for ${this.data.key}:`, error);
         },
       })
     );
@@ -108,60 +161,27 @@ export class AppDashboardCardComponent implements OnInit, OnDestroy {
   }
 
   getNodesReady(): number {
-    if (this.nodes.length > 0) {
-      return this.nodes.filter((node) => node.status === 'Ready').length;
-    }
-    return (
-      this.clusterInfo?.nodes?.filter((node: any) => node.status === 'Ready')
-        .length || 0
-    );
+    return this.nodes.filter((node) => node.status === 'Ready').length;
   }
 
   getTotalNodes(): number {
-    if (this.nodes.length > 0) {
-      return this.nodes.length;
-    }
-    return this.clusterInfo?.nodes?.length || 0;
+    return this.nodes.length;
   }
 
   getPodsRunning(): number {
-    if (this.pods.length > 0) {
-      return this.pods.filter((pod) => pod.status === 'Running').length;
-    }
-    return (
-      this.clusterInfo?.pods?.filter((pod: any) => pod.phase === 'Running')
-        .length || 0
-    );
+    return this.pods.filter((pod) => pod.phase === 'Running').length;
   }
 
   getTotalPods(): number {
-    if (this.pods.length > 0) {
-      return this.pods.length;
-    }
-    return this.clusterInfo?.pods?.length || 0;
+    return this.pods.length;
   }
 
   getPodsFailed(): number {
-    if (this.pods.length > 0) {
-      return this.pods.filter(
-        (pod) =>
-          pod.status === 'Failed' ||
-          pod.status === 'Error' ||
-          pod.status === 'CrashLoopBackOff' ||
-          pod.status === 'Pending' ||
-          pod.status === 'Unknown' ||
-          pod.status === 'Terminating'
-      ).length;
-    }
-    const clusterPods = this.clusterInfo?.pods || [];
-    return clusterPods.filter(
-      (pod: any) =>
+    return this.pods.filter(
+      (pod) =>
         pod.phase === 'Failed' ||
-        pod.phase === 'Error' ||
-        pod.phase === 'CrashLoopBackOff' ||
         pod.phase === 'Pending' ||
-        pod.phase === 'Unknown' ||
-        pod.phase === 'Terminating'
+        pod.phase === 'Unknown'
     ).length;
   }
 
@@ -189,15 +209,20 @@ export class AppDashboardCardComponent implements OnInit, OnDestroy {
   }
 
   getMetricValue(type: 'cpu' | 'memory'): number {
-    if (!this.clusterInfo) {
+    if (!this.clusterInfo || this.isLoading || this.hasError) {
+      console.log('No cluster info available for metric:', type);
       return 0;
     }
 
-    if (type === 'cpu') {
-      return Math.round(this.clusterInfo.cluster_cpu_utilization || 0);
-    } else {
-      return Math.round(this.clusterInfo.cluster_memory_utilization || 0);
-    }
+    const value =
+      type === 'cpu'
+        ? this.clusterInfo.cluster_cpu_utilization || 0
+        : this.clusterInfo.cluster_memory_utilization || 0;
+
+    const rounded = Math.round(value);
+    console.log(`${type} utilization:`, value, '-> rounded:', rounded);
+
+    return rounded;
   }
 
   getCpuUsage(): number {
@@ -220,7 +245,28 @@ export class AppDashboardCardComponent implements OnInit, OnDestroy {
     return [];
   }
 
+  getTablePageSize(): number {
+    // Return larger page size for dashboard cards to show all available data
+    return 50;
+  }
+
   getDataSource(): Observable<unknown[]> | null {
     return this.data.dataSource as Observable<unknown[]> | null;
+  }
+
+  isMetricsLoading(): boolean {
+    return this.isLoading;
+  }
+
+  hasMetricsError(): boolean {
+    return this.hasError;
+  }
+
+  getErrorMessage(): string {
+    return this.errorMessage;
+  }
+
+  retryLoad(): void {
+    this.loadCardData();
   }
 }

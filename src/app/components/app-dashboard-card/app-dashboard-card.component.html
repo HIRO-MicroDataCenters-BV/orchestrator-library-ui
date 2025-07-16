@@ -1,4 +1,4 @@
-<div class="space-1 rounded-md bg-gray-100 p-1">
+<div class="dashboard-card space-1 rounded-md bg-gray-100 p-1 relative">
   <header class="p-4 flex">
     <h2 class="text-sm">{{ data.title }}</h2>
     <div *ngIf="data.actions" class="ml-auto">
@@ -17,8 +17,28 @@
       </ul>
     </div>
   </header>
-  <section>
+  <section class="relative overlay-container">
+    <!-- Universal Loading Overlay -->
+    <app-loading-overlay
+      [isVisible]="isMetricsLoading()"
+      [showBackdrop]="true"
+      size="md"
+      theme="primary"
+    ></app-loading-overlay>
+
+    <!-- Universal Error Overlay -->
+    <app-error-overlay
+      [isVisible]="hasMetricsError()"
+      [message]="getErrorMessage()"
+      [showBackdrop]="true"
+      [showRetry]="true"
+      size="md"
+      theme="danger"
+      (retry)="retryLoad()"
+    ></app-error-overlay>
+
     <div *ngIf="data.type === 'metrics' && data.key === 'cluster'" class="h-68">
+      <!-- Content State -->
       <div class="grid grid-cols-2 gap-1 mb-1 h-30">
         <div
           class="rounded-md p-4 text-center border-gray-200 border-1 metric-card"
@@ -112,7 +132,7 @@
     </div>
     <div
       *ngIf="data.type === 'table'"
-      class="bg-white rounded-md border-gray-200 border-1 overflow-hidden h-68"
+      class="table-container bg-white rounded-md border-gray-200 border-1 overflow-hidden h-68"
     >
       <app-table
         [columns]="getTableColumns()"
@@ -122,6 +142,7 @@
         [hasRowAction]="false"
         [showHeader]="false"
         [showFooter]="false"
+        [pageSize]="getTablePageSize()"
       ></app-table>
     </div>
     <div *ngIf="!data.type" class="p-4 h-64">
