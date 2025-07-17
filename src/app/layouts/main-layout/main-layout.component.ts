@@ -21,6 +21,7 @@ import {
   lucideChartColumnStacked,
   lucideChevronDown,
   lucideChevronRight,
+  lucideGrip,
 } from '@ng-icons/lucide';
 import { HlmIconDirective } from '@spartan-ng/ui-icon-helm';
 import { HlmSidebarComponent } from '../../../../libs/ui/ui-sidebar-helm/src/lib/hlm-sidebar.component';
@@ -31,7 +32,7 @@ import { HlmSidebarMenuDirective } from '../../../../libs/ui/ui-sidebar-helm/src
 import { HlmSidebarMenuItemDirective } from '../../../../libs/ui/ui-sidebar-helm/src/lib/hlm-sidebar-menu-item.directive';
 import { HlmSidebarFooterDirective } from '../../../../libs/ui/ui-sidebar-helm/src/lib/hlm-sidebar-footer.directive';
 import { HlmSidebarService } from '../../../../libs/ui/ui-sidebar-helm/src/lib/hlm-sidebar.service';
-import { HlmInputDirective } from '@spartan-ng/ui-input-helm';
+
 import { AppHeaderComponent } from '../../components/app-header/app-header.component';
 import { NgIf, NgFor } from '@angular/common';
 import { ApiService } from '../../core/services/api.service';
@@ -74,6 +75,7 @@ import { K8S_CONSTANTS } from '../../shared/constants';
       lucideChartColumnStacked,
       lucideChevronDown,
       lucideChevronRight,
+      lucideGrip,
     }),
   ],
   templateUrl: './main-layout.component.html',
@@ -88,6 +90,11 @@ export class MainLayoutComponent implements OnInit {
       icon: null,
       route: '',
       items: [
+        {
+          label: 'overview',
+          icon: 'lucideGrip',
+          route: '/overview',
+        },
         { label: 'cog', icon: 'lucideCog', route: '/cog' },
         { label: 'k8s', icon: 'lucideLayoutDashboard', route: '/k8s' },
       ],

@@ -10,8 +10,15 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: '/cog',
+        redirectTo: '/overview',
         pathMatch: 'full',
+      },
+      {
+        path: 'overview',
+        loadComponent: () =>
+          import('./pages/overview/overview.component').then(
+            (m) => m.OverviewComponent
+          ),
       },
       {
         path: 'cog',

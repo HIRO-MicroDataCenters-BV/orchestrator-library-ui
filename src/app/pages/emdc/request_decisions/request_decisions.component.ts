@@ -48,7 +48,7 @@ export class RequestDecisionsComponent implements OnInit, OnDestroy {
     private router: Router,
     private activatedRoute: ActivatedRoute
   ) {
-    this.dataSource = apiService.getPodRequestDecisions();
+    this.dataSource = apiService.getWorkloadDecisions();
   }
   ngOnInit(): void {
     this.checkCurrentRoute();

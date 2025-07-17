@@ -40,6 +40,16 @@ export interface DateRangeParams {
 }
 
 /**
+ * Paginated response interface
+ */
+export interface PaginatedResponse<T> {
+  items: T[];
+  total: number;
+  skip: number;
+  limit: number;
+}
+
+/**
  * Base entity with common fields
  * Note: Changed to use string | null to match API responses and fix compatibility
  */
@@ -63,6 +73,17 @@ export interface ValidationError {
   loc: (string | number)[];
   msg: string;
   type: string;
+}
+
+/**
+ * Common response types
+ */
+export interface MessageResponse {
+  message: string;
+}
+
+export interface IdResponse {
+  id: string | number;
 }
 
 /**

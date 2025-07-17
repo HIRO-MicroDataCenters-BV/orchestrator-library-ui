@@ -4,11 +4,9 @@
   "scripts": {
     "ng": "ng",
     "start": "nx serve",
-
     "start:dev": "nx serve --configuration=development",
     "start:prod": "nx serve --configuration=production",
     "build": "nx build",
-
     "build:dev": "nx build --configuration=development",
     "build:prod": "nx build --configuration=production",
     "watch": "nx build --watch --configuration development",
@@ -31,10 +29,12 @@
     "@ng-icons/lucide": "30.3.0",
     "@spartan-ng/brain": "0.0.1-alpha.471",
     "@tailwindcss/postcss": "^4.1.8",
+    "chart.js": "^4.5.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "embla-carousel-angular": "19.0.0",
     "express": "^5.1.0",
+    "ng2-charts": "^8.0.0",
     "ngx-scrollbar": ">=16.0.0",
     "ngx-sonner": "^3.0.0",
     "postcss": "^8.5.4",

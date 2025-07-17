@@ -16,11 +16,7 @@ export * from './models/kubernetes.model';
 export * from './utils';
 
 // Re-export legacy model aliases for backward compatibility
-export type {
-  AlertCreateRequest,
-  AlertResponse,
-  AlertUpdate,
-} from './models';
+export type { AlertCreateRequest, AlertResponse, AlertUpdate } from './models';
 
 // Re-export commonly used enums
 export {

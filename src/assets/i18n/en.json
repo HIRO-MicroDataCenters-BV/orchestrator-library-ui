@@ -21,19 +21,11 @@
     "cog": "Cognitive Framework",
     "monitoring": "Monitoring",
     "request_decisions": "Request Decisions",
-    "actions": "Actions"
+    "actions": "Actions",
+    "overview": "Overview",
+    "emdc": "EMDC"
   },
-  "action": {
-    "previous": "Previous",
-    "next": "Next",
-    "view_details": "View Details",
-    "view_logs": "View Logs",
-    "scale_cluster": "Scale Cluster",
-    "add_nodes": "Add Nodes",
-    "cordon_cluster": "Cordon Cluster",
-    "drain_cluster": "Drain Cluster",
-    "delete_cluster": "Delete Cluster"
-  },
+
   "placeholder": {
     "search": "Search...",
     "columns": "Columns"
@@ -80,7 +72,11 @@
     "action_end_time": "End Time",
     "bound_pod_name": "Target Pod",
     "pod_parent_name": "Parent Workload",
-    "action_reason": "Reason"
+    "action_reason": "Reason",
+    "alert_model": "Alert Model",
+    "model_name": "Model Name",
+    "model_version": "Model Version",
+    "model_organization": "Model Organization"
   },
   "common": {
     "title": "Orchestration Library",
@@ -100,6 +96,44 @@
   "hint": {
     "page": "page",
     "no_data": "No data"
+  },
+
+  "error": {
+    "title": "Error",
+    "generic": "Something went wrong",
+    "network": "Network error occurred",
+    "failed_to_load": "Failed to load data",
+    "try_again": "Please try again"
+  },
+  "action": {
+    "retry": "Retry",
+    "refresh": "Refresh",
+    "previous": "Previous",
+    "next": "Next",
+    "view_details": "View Details",
+    "view_logs": "View Logs",
+    "view_all": "View All",
+    "scale_cluster": "Scale Cluster",
+    "add_nodes": "Add Nodes",
+    "cordon_cluster": "Cordon Cluster",
+    "drain_cluster": "Drain Cluster",
+    "delete_cluster": "Delete Cluster"
+  },
+  "card": {
+    "cluster": "Cluster Overview",
+    "recent_alerts": "Recent Alerts",
+    "recent_workload_request_decisions": "Recent Workload Decisions",
+    "recent_served_models": "Recent Served Models",
+    "nodes": "Nodes",
+    "pods": "Pods",
+    "cpu_usage": "CPU Usage",
+    "memory_usage": "Memory Usage",
+    "ready": "Ready",
+    "out_of": "out of",
+    "healthy": "All systems operational"
+  },
+  "tips": {
+    "no_data": "No data available"
   },
   "auth": {
     "login": {
@@ -301,7 +335,7 @@
       "small_text": "This is smaller text that might be used for captions or secondary information.",
       "emphasized_text": "This is emphasized text with larger size and medium weight.",
       "blockquote_text": "This is a blockquote example with beautiful styling.",
-      "code_example": "console.log('Hello World');",
+      "code_example": "print('Hello World');",
       "html_elements": "<blockquote> and <code> elements"
     },
     "buttons": {

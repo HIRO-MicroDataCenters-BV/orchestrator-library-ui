@@ -31,8 +31,7 @@ export const getStorageItem = (key: string): string | null => {
 
   try {
     return localStorage.getItem(key);
-  } catch (e) {
-    console.warn(`Failed to get item from localStorage: ${key}`, e);
+  } catch {
     return null;
   }
 };
@@ -51,8 +50,7 @@ export const setStorageItem = (key: string, value: string): boolean => {
   try {
     localStorage.setItem(key, value);
     return true;
-  } catch (e) {
-    console.warn(`Failed to set item in localStorage: ${key}`, e);
+  } catch {
     return false;
   }
 };
@@ -70,8 +68,7 @@ export const removeStorageItem = (key: string): boolean => {
   try {
     localStorage.removeItem(key);
     return true;
-  } catch (e) {
-    console.warn(`Failed to remove item from localStorage: ${key}`, e);
+  } catch {
     return false;
   }
 };
@@ -88,8 +85,7 @@ export const clearStorage = (): boolean => {
   try {
     localStorage.clear();
     return true;
-  } catch (e) {
-    console.warn('Failed to clear localStorage', e);
+  } catch {
     return false;
   }
 };
@@ -107,8 +103,7 @@ export const getStorageObject = <T = unknown>(key: string): T | null => {
 
   try {
     return JSON.parse(item) as T;
-  } catch (e) {
-    console.warn(`Failed to parse JSON from localStorage: ${key}`, e);
+  } catch {
     return null;
   }
 };
@@ -123,8 +118,7 @@ export const setStorageObject = (key: string, value: unknown): boolean => {
   try {
     const jsonString = JSON.stringify(value);
     return setStorageItem(key, jsonString);
-  } catch (e) {
-    console.warn(`Failed to stringify object for localStorage: ${key}`, e);
+  } catch {
     return false;
   }
 };
@@ -156,8 +150,7 @@ export const getStorageKeys = (): string[] => {
       }
     }
     return keys;
-  } catch (e) {
-    console.warn('Failed to get localStorage keys', e);
+  } catch {
     return [];
   }
 };
@@ -275,8 +268,7 @@ export const SessionStorage = {
 
     try {
       return sessionStorage.getItem(key);
-    } catch (e) {
-      console.warn(`Failed to get item from sessionStorage: ${key}`, e);
+    } catch {
       return null;
     }
   },
@@ -295,8 +287,7 @@ export const SessionStorage = {
     try {
       sessionStorage.setItem(key, value);
       return true;
-    } catch (e) {
-      console.warn(`Failed to set item in sessionStorage: ${key}`, e);
+    } catch {
       return false;
     }
   },
@@ -314,8 +305,7 @@ export const SessionStorage = {
     try {
       sessionStorage.removeItem(key);
       return true;
-    } catch (e) {
-      console.warn(`Failed to remove item from sessionStorage: ${key}`, e);
+    } catch {
       return false;
     }
   },
@@ -332,8 +322,7 @@ export const SessionStorage = {
     try {
       sessionStorage.clear();
       return true;
-    } catch (e) {
-      console.warn('Failed to clear sessionStorage', e);
+    } catch {
       return false;
     }
   },
