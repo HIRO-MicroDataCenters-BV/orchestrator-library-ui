@@ -34,7 +34,7 @@
     "emdc": "EMDC",
     "k8s": "Kubernetes Dashboard",
     "alerts": "Alerts",
-    "cog": "Cognitive Framework",
+    "cog": "COG",
     "monitoring": "Monitoring",
     "request_decisions": "Request Decisions",
     "actions": "Actions",

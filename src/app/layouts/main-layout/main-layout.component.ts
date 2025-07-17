@@ -32,7 +32,7 @@ import { HlmSidebarMenuDirective } from '../../../../libs/ui/ui-sidebar-helm/src
 import { HlmSidebarMenuItemDirective } from '../../../../libs/ui/ui-sidebar-helm/src/lib/hlm-sidebar-menu-item.directive';
 import { HlmSidebarFooterDirective } from '../../../../libs/ui/ui-sidebar-helm/src/lib/hlm-sidebar-footer.directive';
 import { HlmSidebarService } from '../../../../libs/ui/ui-sidebar-helm/src/lib/hlm-sidebar.service';
-import { HlmInputDirective } from '@spartan-ng/ui-input-helm';
+
 import { AppHeaderComponent } from '../../components/app-header/app-header.component';
 import { NgIf, NgFor } from '@angular/common';
 import { ApiService } from '../../core/services/api.service';

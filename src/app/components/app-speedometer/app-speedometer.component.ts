@@ -67,12 +67,10 @@ export class AppSpeedometerComponent implements OnChanges, OnDestroy {
       if (this.isBrowser) {
         this.updateDisplayValue();
       } else {
-        // For SSR, set values directly without animation
         this.displayValue = Math.max(safeMin, Math.min(safeMax, safeValue));
         this.currentColor = this.getValueColorForValue(this.displayValue);
       }
-    } catch (error) {
-      // Fallback for any SSR issues
+    } catch {
       this.displayValue = this.value || 0;
       this.currentColor = this.lowColor || '#22c55e';
     }
@@ -88,8 +86,8 @@ export class AppSpeedometerComponent implements OnChanges, OnDestroy {
       ) {
         window.cancelAnimationFrame(this.animationId);
       }
-    } catch (error) {
-      // Ignore cleanup errors in SSR
+    } catch {
+      // Ignore cleanup errors
     }
   }
 
@@ -97,9 +95,7 @@ export class AppSpeedometerComponent implements OnChanges, OnDestroy {
     this.centerX = this.size / 2;
     this.centerY = this.size / 2;
     this.outerRadius = (this.size - this.strokeWidth) / 2;
-    // Calculate circumference for half circle
     this.circumference = Math.PI * this.outerRadius;
-    // Initialize with full offset (empty state)
     if (this.strokeDashoffset === 0) {
       this.strokeDashoffset = this.circumference;
     }
@@ -108,7 +104,6 @@ export class AppSpeedometerComponent implements OnChanges, OnDestroy {
   private updateDisplayValue(): void {
     const targetValue = Math.max(this.min, Math.min(this.max, this.value));
 
-    // Cancel any existing animation
     if (
       this.animationId !== null &&
       typeof window !== 'undefined' &&
@@ -132,7 +127,6 @@ export class AppSpeedometerComponent implements OnChanges, OnDestroy {
       const duration = 800;
       const startTime = performance.now();
 
-      // Initialize starting values - start from empty if this is the first animation
       const startOffset =
         this.displayValue === 0 ? this.circumference : this.strokeDashoffset;
       const targetPercentage = (targetValue - this.min) / (this.max - this.min);
@@ -149,7 +143,6 @@ export class AppSpeedometerComponent implements OnChanges, OnDestroy {
           startValue + (targetValue - startValue) * easeProgress
         );
 
-        // Animate stroke offset
         this.strokeDashoffset =
           startOffset + (targetOffset - startOffset) * easeProgress;
 
@@ -172,9 +165,7 @@ export class AppSpeedometerComponent implements OnChanges, OnDestroy {
           this.displayValue = targetValue;
           this.currentColor = this.getValueColorForValue(targetValue);
         }
-      } catch (error) {
-        // Fallback for any animation errors
-        console.warn('Speedometer animation failed:', error);
+      } catch {
         this.displayValue = targetValue;
         this.currentColor = this.getValueColorForValue(targetValue);
         this.updateStrokeDashoffset(targetValue);
@@ -237,7 +228,7 @@ export class AppSpeedometerComponent implements OnChanges, OnDestroy {
           exponentialRatio
         );
       }
-    } catch (error) {
+    } catch {
       return this.lowColor;
     }
   }
@@ -285,7 +276,7 @@ export class AppSpeedometerComponent implements OnChanges, OnDestroy {
       return `#${r.toString(16).padStart(2, '0')}${g
         .toString(16)
         .padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
-    } catch (error) {
+    } catch {
       return color1 || this.lowColor;
     }
   }
