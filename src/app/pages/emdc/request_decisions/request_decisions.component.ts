@@ -39,7 +39,7 @@ export class RequestDecisionsComponent implements OnInit, OnDestroy {
   ];
   actions = [];
 
-  tabs = ['all', 'successful', 'pending', 'failed'];
+  tabs = [];
 
   dataSource: Observable<unknown[]> | null = null;
 
