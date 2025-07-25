@@ -39,7 +39,7 @@ export class RequestDecisionsComponent implements OnInit, OnDestroy {
   ];
   actions = [];
 
-  tabs = ['all', 'successful', 'pending', 'failed'];
+  tabs = [];
 
   dataSource: Observable<unknown[]> | null = null;
 
@@ -48,7 +48,7 @@ export class RequestDecisionsComponent implements OnInit, OnDestroy {
     private router: Router,
     private activatedRoute: ActivatedRoute
   ) {
-    this.dataSource = apiService.getPodRequestDecisions();
+    this.dataSource = apiService.getWorkloadDecisions();
   }
   ngOnInit(): void {
     this.checkCurrentRoute();

@@ -1,4 +1,4 @@
-import { DatePipe, NgFor, NgIf } from '@angular/common';
+import { DatePipe, NgClass, NgFor, NgIf } from '@angular/common';
 import { TranslocoModule } from '@jsverse/transloco';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import {
@@ -27,6 +27,10 @@ import {
   lucidePlus,
   lucideTerminal,
   lucideTrash2,
+  lucideCircleCheck,
+  lucideTriangleAlert,
+  lucideCircleX,
+  lucideCircle,
 } from '@ng-icons/lucide';
 import { HlmButtonModule } from '@spartan-ng/ui-button-helm';
 import { HlmIconDirective } from '@spartan-ng/ui-icon-helm';
@@ -51,28 +55,41 @@ import { debounceTime, Observable } from 'rxjs';
 import { HlmBadgeDirective } from '@spartan-ng/ui-badge-helm';
 import { AppCircleProgressComponent } from '../app-circle-progress/app-circle-progress.component';
 
-export type TableData = {
-  id: string;
-  cluster_name: string;
-  status: number; // 0-2: 0 - inactive, 1 - running, 2 - success, -1 - warning, -2 - failed
-  workloads: number;
-  nodes: number;
-  cpu_usage: number; // percent
-  memory_usage: number; // percent
-};
+// Import centralized types and utilities
+import {
+  BaseTableData,
+  ColumnVisibility,
+  getStatusColor,
+  getStatusIcon,
+  getProgressColor,
+  getMainText,
+  getSubText,
+  getStatusValue,
+  getStatusTextColor,
+} from '../../shared/models';
 
-export type TableAction = {
-  id: string;
-  label: string;
-  icon: NgIcon;
-};
-
-export type TableActionGroup = {
-  id: string;
-  label?: string | null;
-  actions: TableAction[];
-};
-
+/**
+ * App Table Component
+ *
+ * A reusable table component with filtering, pagination, and conditional header display.
+ *
+ * @param showHeader - Controls visibility of both search panel and table headers
+ *                    When false, hides the entire header row including th elements
+ * @param showFooter - Controls visibility of pagination footer
+ * @param hasRowAction - Enables row click navigation
+ * @param columns - Array of column names to display
+ * @param actions - Array of action names for row menus
+ * @param tabs - Array of tab names for filtering
+ * @param dataSource - Observable data source for table content
+ *
+ * @example
+ * // Table with headers visible
+ * <app-table [columns]="['name', 'status']" [showHeader]="true"></app-table>
+ *
+ * @example
+ * // Clean table for dashboard embedding (no headers/footer)
+ * <app-table [columns]="['name', 'status']" [showHeader]="false" [showFooter]="false"></app-table>
+ */
 @Component({
   selector: 'app-table',
   standalone: true,
@@ -97,6 +114,7 @@ export type TableActionGroup = {
     HlmSelectModule,
     TranslocoModule,
     AppCircleProgressComponent,
+    NgClass,
     NgFor,
     NgIf,
     RouterLink,
@@ -113,6 +131,10 @@ export type TableActionGroup = {
       lucideCog,
       lucidePause,
       lucideTrash2,
+      lucideCircleCheck,
+      lucideTriangleAlert,
+      lucideCircleX,
+      lucideCircle,
     }),
   ],
   host: {
@@ -127,6 +149,9 @@ export class AppTableComponent implements OnChanges, OnInit {
   @Input('tabs') tabs: string[] = [];
   @Input('dataSource') dataSource: Observable<unknown[]> | null = null;
   @Input('hasRowAction') hasRowAction = true;
+  @Input('showHeader') showHeader = true;
+  @Input('showFooter') showFooter = true;
+  @Input('pageSize') pageSize?: number;
 
   ACTION_ICONS: Record<string, string> = {
     view_details: lucideInfo,
@@ -152,7 +177,7 @@ export class AppTableComponent implements OnChanges, OnInit {
 
   protected readonly _actions = computed(() => [...this.actions]);
 
-  protected readonly _columnOptions = signal(
+  protected readonly _columnOptions = signal<ColumnVisibility[]>(
     this.columns.map((col) => ({ name: col, selected: true }))
   );
 
@@ -170,13 +195,13 @@ export class AppTableComponent implements OnChanges, OnInit {
     return items;
   });
 
-  private _items = signal<unknown[]>([]);
+  private _items = signal<BaseTableData[]>([]);
   private readonly _filteredItems = computed(() => {
     const colFilter = this._colFilter()?.trim()?.toLowerCase();
     if (colFilter && colFilter.length > 0) {
       return this._items().filter((item) => {
         // Search through all string properties of the item
-        return Object.values(item as Record<string, any>).some((value) => {
+        return Object.values(item as Record<string, unknown>).some((value) => {
           if (typeof value === 'string') {
             return value.toLowerCase().includes(colFilter);
           }
@@ -203,32 +228,37 @@ export class AppTableComponent implements OnChanges, OnInit {
     const start = this._displayedIndices().start;
     const end = this._displayedIndices().end + 1;
     const items = this._filteredItems();
-    
+
     if (!sort) {
-      return items.slice(start, end);
+      const result = items.slice(start, end);
+
+      return result;
     }
-    
+
     // Generic sorting for any object with string properties
     const sortedItems = [...items].sort((p1, p2) => {
       const p1Str = JSON.stringify(p1).toLowerCase();
       const p2Str = JSON.stringify(p2).toLowerCase();
       return (sort === 'ASC' ? 1 : -1) * p1Str.localeCompare(p2Str);
     });
-    
-    return sortedItems.slice(start, end);
+
+    const result = sortedItems.slice(start, end);
+
+    return result;
   });
 
-  protected readonly _trackBy: TrackByFunction<unknown> = (
+  protected readonly _trackBy: TrackByFunction<BaseTableData> = (
     _: number,
-    p: unknown
-  ) => (p as { id: string }).id;
+    p: BaseTableData
+  ) => p.id;
   protected _totalElements = computed(() => this._filteredItems().length);
 
   protected readonly _onStateChange = ({
     startIndex,
     endIndex,
-  }: PaginatorState) =>
+  }: PaginatorState) => {
     this._displayedIndices.set({ start: startIndex, end: endIndex });
+  };
 
   private router = inject(Router, { optional: true });
   private route = inject(ActivatedRoute, { optional: true });
@@ -240,15 +270,38 @@ export class AppTableComponent implements OnChanges, OnInit {
     });
   }
   ngOnInit(): void {
+    // Set page size based on input or mode
+    if (this.pageSize !== undefined) {
+      this._pageSize.set(this.pageSize);
+    } else if (!this.showHeader && !this.showFooter) {
+      // Dashboard mode - show more items
+      this._pageSize.set(10);
+    }
+
+    // Initialize pagination for dashboard mode (no footer)
+    if (!this.showFooter) {
+      this.initializeDashboardPagination();
+    }
+
     if (this.dataSource) {
       this.fetchData();
     }
   }
 
+  private initializeDashboardPagination(): void {
+    const currentPageSize = this._pageSize();
+    const totalItems = this._totalElements();
+    const endIndex = Math.min(currentPageSize - 1, Math.max(0, totalItems - 1));
+    this._displayedIndices.set({ start: 0, end: endIndex });
+  }
+
   fetchData(): void {
     if (this.dataSource) {
       this.dataSource.subscribe((res: unknown[]) => {
-        this._items.set(res);
+        this._items.set(res as BaseTableData[]);
+        if (!this.showFooter) {
+          this.initializeDashboardPagination();
+        }
       });
     }
   }
@@ -277,68 +330,29 @@ export class AppTableComponent implements OnChanges, OnInit {
     return column ? column.selected : false;
   }
 
-  public onRowClick(element: unknown) {
+  public onRowClick(element: BaseTableData) {
     if (!this.router || !this.route) {
       return;
     }
-    const elementWithId = element as { id: string };
-    this.router.navigate([`./${elementWithId.id}`], {
+    this.router.navigate([`./${element.id}`], {
       relativeTo: this.route,
       state: element as Record<string, unknown>,
     });
   }
 
-  public setFilter(tab: string) {
-    //this._colFilter.set(tab);
-    console.log('tab', tab);
+  public setFilter() {
+    // TODO: Implement tab filtering
   }
 
-  getStatusColor(status: string): string {
-    const type = status && status.toLowerCase();
-    switch (type) {
-      case 'created':
-      case 'running':
-        return 'text-blue-700 bg-blue-100';
-      case 'bound':
-      case 'bind':
-        return 'text-green-700 bg-green-100';
-      case 'failed':
-        return 'text-red-700 bg-red-100';
-      case 'deleted':
-        return 'text-red-700 bg-red-100';
-      default:
-        return 'text-gray-700 bg-gray-100';
-    }
+  getStatusColor(status: string | number | boolean): string {
+    return getStatusColor(status);
   }
 
   getProgressColor(percent: number): string {
-    if (percent >= 80) {
-      return 'text-red-500';
-    } else if (percent >= 60) {
-      return 'text-yellow-700';
-    } else {
-      return 'text-green-700';
-    }
+    return getProgressColor(percent);
   }
 
-  getStatus(status: number): string {
-    switch (status) {
-      case -2:
-        return 'failed';
-      case 1:
-        return 'running';
-      case 2:
-        return 'success';
-      case -1:
-        return 'warning';
-      case 0:
-        return 'inactive';
-      default:
-        return 'unknown';
-    }
-  }
-
-  protected handleColSortChange() {
+  protected handleColSortChange(): void {
     const sort = this._colSort();
     if (sort === 'ASC') {
       this._colSort.set('DESC');
@@ -347,6 +361,24 @@ export class AppTableComponent implements OnChanges, OnInit {
     } else {
       this._colSort.set('ASC');
     }
+  }
+
+  getDashboardStatusIcon(element: unknown): string {
+    const statusValue = getStatusValue(element as BaseTableData);
+    return getStatusIcon(statusValue);
+  }
+
+  getDashboardStatusColor(element: unknown): string {
+    const statusValue = getStatusValue(element as BaseTableData);
+    return getStatusTextColor(statusValue);
+  }
+
+  getDashboardMainText(element: unknown): string {
+    return getMainText(element as BaseTableData);
+  }
+
+  getDashboardSubText(element: unknown): string {
+    return getSubText(element as BaseTableData);
   }
 
   ngOnChanges(changes: SimpleChanges): void {

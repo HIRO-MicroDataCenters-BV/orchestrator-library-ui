@@ -66,14 +66,15 @@ export const ROUTES = {
   HOME: '/',
   COG: '/cog',
   K8S: '/k8s',
-  EMDC: '/emdc',
-  WORKLOADS: '/workloads',
-  REQUEST_DECISIONS: '/request_decisions',
-  ACTIONS: '/actions',
-  ALERTS: '/alerts',
-  MONITORING: '/monitoring',
-  CLUSTERS: '/clusters',
-  DETAILS: '/details',
+  OVERVIEW: '/overview',
+  EMDC: {
+    BASE: '/emdc',
+    ALERTS: '/emdc/alerts',
+    WORKLOADS: {
+      REQUEST_DECISIONS: '/emdc/workloads/request_decisions',
+      ACTIONS: '/emdc/workloads/actions',
+    },
+  },
   ERROR: {
     NOT_FOUND: '/error/404',
     FORBIDDEN: '/error/403',

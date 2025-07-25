@@ -18,7 +18,6 @@ export class DetailsComponent implements OnInit {
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id');
     this.data = history.state;
-    console.log('State data:', this.data);
   }
 
   getValueType(value: unknown): string {

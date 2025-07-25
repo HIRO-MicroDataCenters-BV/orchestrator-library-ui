@@ -94,6 +94,21 @@ body {
   }
 }
 
+/* Sidebar layout fixes for proper main content width calculation */
+main {
+  /* Use flex-1 instead of w-full for better flexbox behavior */
+  flex: 1;
+  min-width: 0; /* Allow content to shrink below its natural width */
+  /* Ensure smooth transition when sidebar changes */
+  transition: all 200ms ease-linear;
+}
+
+/* Force layout recalculation when sidebar state changes */
+[data-sidebar-state] {
+  /* Trigger layout recalculation */
+  contain: layout style;
+}
+
 @layer theme {
   --color-sidebar: var(--sidebar-background);
   --color-sidebar-foreground: var(--sidebar-foreground);

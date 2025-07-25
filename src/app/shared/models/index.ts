@@ -30,25 +30,65 @@ export * from './workload-action.model';
 export * from './workload-request-decision.model';
 
 // ===================
+// Export new centralized types
+// ===================
+export * from '../types/table.types';
+export * from '../types/navigation.types';
+
+// ===================
 // Re-export shared types for convenience
 // ===================
 export type {
   // Base types
   BaseEntity,
-  PaginatedResponse,
   FilterParams,
-  PaginationParams,
-  DateRangeParams,
   LoadingState,
   OperationResult,
-  MenuItem,
-  TableColumn,
   // Common HTTP types
   HttpMethod,
   ApiResponse,
   ApiError,
   ApiRequestConfig,
+  // Additional API types
+  PaginatedResponse,
+  MessageResponse,
+  IdResponse,
+  ValidationError,
+  HTTPValidationError,
 } from '../types';
+
+// ===================
+// Re-export new centralized types
+// ===================
+export type {
+  // Table types
+  BaseTableData,
+  ClusterTableData,
+  PodTableData,
+  AlertTableData,
+  TableAction,
+  TableActionGroup,
+  TableColumn,
+  TableConfig,
+  TableDataSource,
+  TableFilter,
+  TableSort,
+  TableState,
+  ColumnVisibility,
+  TableRowClickEvent,
+  TableActionClickEvent,
+  StatusConfig,
+} from '../types/table.types';
+
+export type {
+  // Navigation types
+  BreadcrumbItem,
+  MenuItem,
+  NavigationConfig,
+  BreadcrumbConfig,
+  RouteMetadata,
+  NavigationState,
+} from '../types/navigation.types';
 
 // ===================
 // Export enums from types
@@ -71,6 +111,91 @@ export {
   isWorkloadActionStatus,
   isPodParentType,
 } from '../types';
+
+// ===================
+// Export new status utilities
+// ===================
+export {
+  StatusType,
+  getStatusConfig,
+  getStatusColor,
+  getStatusIcon,
+  getStatusLabel,
+  getStatusTextColor,
+  getProgressColor,
+  getProgressStatus,
+  isSuccessStatus,
+  isErrorStatus,
+  isWarningStatus,
+  isActiveStatus,
+  getAllStatusTypes,
+  getStatusTypesByCategory,
+} from '../utils/status.utils';
+
+// ===================
+// Export table data utilities
+// ===================
+export {
+  getMainText,
+  getSubText,
+  getStatusValue,
+  getProgressValue,
+  hasField,
+  getFormattedDate,
+  getTruncatedText,
+  getNestedValue,
+  formatBytes,
+  formatNumber,
+  isValidUrl,
+  getFieldWithFallback,
+} from '../utils/table-data.utils';
+
+// ===================
+// Export table action utilities
+// ===================
+export {
+  createTableAction,
+  createTableActionGroup,
+  filterVisibleActions,
+  filterEnabledActions,
+  getActionById,
+  isActionAvailable,
+  getAvailableActions,
+  groupActionsByCategory,
+  formatCategoryLabel,
+  sortActionsByPriority,
+  createCrudActions,
+  createClusterActions,
+  createWorkloadActions,
+  createAlertActions,
+  isValidTableAction,
+  isValidTableActionGroup,
+  getActionConfirmationMessage,
+  doesActionRequireConfirmation,
+} from '../utils/table-actions.utils';
+
+// ===================
+// Export navigation utilities
+// ===================
+export {
+  generateBreadcrumbs,
+  formatSegmentLabel,
+  isUUID,
+  isShortId,
+  getPageTitle,
+  getParentRoute,
+  isRouteActive,
+  getRouteDepth,
+  extractRouteParams,
+  buildRoute,
+  getRouteSegments,
+  isProtectedRoute,
+  getRouteIcon,
+  getRouteTitle,
+  isValidBreadcrumbItem,
+  filterValidBreadcrumbs,
+  truncateBreadcrumbs,
+} from '../utils/navigation.utils';
 
 // ===================
 // Legacy aliases for backward compatibility
@@ -110,87 +235,25 @@ export type {
 } from './workload-request-decision.model';
 
 // ===================
-// Common Query Parameters
+// Re-export from api-base.model to avoid duplicates
 // ===================
-export interface CommonQueryParams {
-  skip?: number;
-  limit?: number;
-}
-
-export interface DateRangeQueryParams extends CommonQueryParams {
-  start_date?: string;
-  end_date?: string;
-}
+export type {
+  PaginationParams as CommonQueryParams,
+  DateRangeParams as DateRangeQueryParams,
+  PaginatedResponse as ListResponse,
+} from './api-base.model';
 
 // ===================
-// Common Response Types
+// Utility type guards moved to separate files
 // ===================
-export interface ListResponse<T> {
-  items: T[];
-  total: number;
-  skip: number;
-  limit: number;
-}
-
-export interface MessageResponse {
-  message: string;
-}
-
-export interface IdResponse {
-  id: string | number;
-}
 
 // ===================
-// Error Response Types
+// Legacy exports for convenience
 // ===================
-export interface ValidationError {
-  loc: (string | number)[];
-  msg: string;
-  type: string;
-}
-
-export interface HTTPValidationError {
-  detail: ValidationError[];
-}
-
-// ===================
-// Utility type guards
-// ===================
-export const isListResponse = <T>(obj: unknown): obj is ListResponse<T> => {
-  return (
-    typeof obj === 'object' &&
-    obj !== null &&
-    Array.isArray((obj as ListResponse<T>).items) &&
-    typeof (obj as ListResponse<T>).total === 'number' &&
-    typeof (obj as ListResponse<T>).skip === 'number' &&
-    typeof (obj as ListResponse<T>).limit === 'number'
-  );
-};
-
-export const isMessageResponse = (obj: unknown): obj is MessageResponse => {
-  return (
-    typeof obj === 'object' &&
-    obj !== null &&
-    typeof (obj as MessageResponse).message === 'string'
-  );
-};
-
-export const isHTTPValidationError = (
-  obj: unknown
-): obj is HTTPValidationError => {
-  return (
-    typeof obj === 'object' &&
-    obj !== null &&
-    Array.isArray((obj as HTTPValidationError).detail)
-  );
-};
-
-// ===================
-// Default exports for convenience
-// ===================
-export { AlertType } from './alerts.model';
 export type {
   AlertCreateRequest,
   AlertResponse,
   AlertQueryParams,
 } from './alerts.model';
+
+export { AlertType } from './alerts.model';

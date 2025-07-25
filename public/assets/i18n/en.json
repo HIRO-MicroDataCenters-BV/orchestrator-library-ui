@@ -10,6 +10,22 @@
   "inputs": {
     "placeholder": "Placeholder"
   },
+  "card": {
+    "cluster": "Cluster",
+    "recent_workload_request_decisions": "Recent Workload Request Decisions",
+    "recent_alerts": "Recent Alerts",
+    "recent_saved_models": "Recent Saved Models",
+    "swarm_intelligence": "Swarm Intelligence",
+    "monitoring": "Monitoring",
+    "recent_served_models": "Recent Served Models",
+    "nodes": "Nodes",
+    "pods": "Pods",
+    "out_of": "out of",
+    "ready": "Ready",
+    "failed": "Failed",
+    "cpu_usage": "CPU Usage",
+    "memory_usage": "Memory Usage"
+  },
   "section": {
     "dashboard": "Dashboard",
     "workloads": "Workloads",
@@ -18,21 +34,24 @@
     "emdc": "EMDC",
     "k8s": "Kubernetes Dashboard",
     "alerts": "Alerts",
-    "cog": "Cognitive Framework",
+    "cog": "COG",
     "monitoring": "Monitoring",
     "request_decisions": "Request Decisions",
-    "actions": "Actions"
+    "actions": "Actions",
+    "overview": "Overview"
   },
   "action": {
     "previous": "Previous",
     "next": "Next",
     "view_details": "View Details",
     "view_logs": "View Logs",
+    "view_all": "View All",
     "scale_cluster": "Scale Cluster",
     "add_nodes": "Add Nodes",
     "cordon_cluster": "Cordon Cluster",
     "drain_cluster": "Drain Cluster",
-    "delete_cluster": "Delete Cluster"
+    "delete_cluster": "Delete Cluster",
+    "healthy": "Healthy"
   },
   "placeholder": {
     "search": "Search...",
@@ -302,7 +321,7 @@
       "small_text": "This is smaller text that might be used for captions or secondary information.",
       "emphasized_text": "This is emphasized text with larger size and medium weight.",
       "blockquote_text": "This is a blockquote example with beautiful styling.",
-      "code_example": "console.log('Hello World');",
+      "code_example": "print('Hello World');",
       "html_elements": "<blockquote> and <code> elements"
     },
     "buttons": {
