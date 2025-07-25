@@ -11,6 +11,7 @@ import {
   NavigationEnd,
   RouterOutlet,
 } from '@angular/router';
+import actionsData from '../../../mock/workload_action_response.json';
 
 @Component({
   selector: 'app-actions',
@@ -23,9 +24,9 @@ export class ActionsComponent implements OnInit, OnDestroy {
   private routerSubscription: Subscription | null = null;
   clusters = [];
   columns = [
-    'id',
-    'action_type',
+    'id_uid',
     'action_status',
+    'action_type',
     'bound_pod_name',
     'created_pod_namespace',
     'action_start_time',
@@ -36,12 +37,14 @@ export class ActionsComponent implements OnInit, OnDestroy {
   tabs = [];
 
   dataSource: Observable<unknown[]> | null = null;
+  staticData: unknown[] | null = null;
 
   constructor(
     apiService: ApiService,
     private router: Router,
     private activatedRoute: ActivatedRoute
   ) {
+    this.staticData = actionsData;
     this.dataSource = apiService.getWorkloadActions();
   }
   ngOnInit(): void {

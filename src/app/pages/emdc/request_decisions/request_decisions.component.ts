@@ -12,6 +12,7 @@ import {
 import { AppTableComponent } from '../../../components/app-table/app-table.component';
 import { TranslocoModule } from '@jsverse/transloco';
 import { ApiService } from '../../../core/services';
+import requestDecisionsData from '../../../mock/workload_request_decision_response.json';
 
 @Component({
   selector: 'app-request-decisions',
@@ -42,12 +43,14 @@ export class RequestDecisionsComponent implements OnInit, OnDestroy {
   tabs = [];
 
   dataSource: Observable<unknown[]> | null = null;
+  staticData: unknown[] | null = null;
 
   constructor(
     apiService: ApiService,
     private router: Router,
     private activatedRoute: ActivatedRoute
   ) {
+    this.staticData = requestDecisionsData;
     this.dataSource = apiService.getWorkloadDecisions();
   }
   ngOnInit(): void {

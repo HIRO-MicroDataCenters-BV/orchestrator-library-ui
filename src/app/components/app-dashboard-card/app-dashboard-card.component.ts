@@ -62,7 +62,6 @@ export class AppDashboardCardComponent implements OnInit, OnDestroy {
   pods: K8sPod[] = [];
   isLoading = false;
   hasError = false;
-  errorMessage = '';
   isBrowser = false;
 
   constructor(@Inject(PLATFORM_ID) private platformId: object) {
@@ -110,7 +109,6 @@ export class AppDashboardCardComponent implements OnInit, OnDestroy {
           this.pods = [];
           this.isLoading = false;
           this.hasError = true;
-          this.errorMessage = 'error.failed_to_load';
         },
       })
     );
@@ -126,7 +124,6 @@ export class AppDashboardCardComponent implements OnInit, OnDestroy {
         error: () => {
           this.isLoading = false;
           this.hasError = true;
-          this.errorMessage = 'error.failed_to_load';
         },
       })
     );

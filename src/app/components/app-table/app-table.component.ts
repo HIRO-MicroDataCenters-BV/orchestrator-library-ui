@@ -81,6 +81,7 @@ import {
  * @param actions - Array of action names for row menus
  * @param tabs - Array of tab names for filtering
  * @param dataSource - Observable data source for table content
+ * @param staticData - Static JSON data source for table content (takes priority over dataSource)
  *
  * @example
  * // Table with headers visible
@@ -89,6 +90,10 @@ import {
  * @example
  * // Clean table for dashboard embedding (no headers/footer)
  * <app-table [columns]="['name', 'status']" [showHeader]="false" [showFooter]="false"></app-table>
+ *
+ * @example
+ * // Table with static data
+ * <app-table [columns]="['name', 'status']" [staticData]="myJsonData"></app-table>
  */
 @Component({
   selector: 'app-table',
@@ -148,6 +153,7 @@ export class AppTableComponent implements OnChanges, OnInit {
   @Input('actions') actions: string[] = [];
   @Input('tabs') tabs: string[] = [];
   @Input('dataSource') dataSource: Observable<unknown[]> | null = null;
+  @Input('staticData') staticData: unknown[] | null = null;
   @Input('hasRowAction') hasRowAction = true;
   @Input('showHeader') showHeader = true;
   @Input('showFooter') showFooter = true;
@@ -283,7 +289,10 @@ export class AppTableComponent implements OnChanges, OnInit {
       this.initializeDashboardPagination();
     }
 
-    if (this.dataSource) {
+    // Load data - prioritize staticData over dataSource
+    if (this.staticData && this.staticData.length > 0) {
+      this.loadStaticData();
+    } else if (this.dataSource) {
       this.fetchData();
     }
   }
@@ -303,6 +312,15 @@ export class AppTableComponent implements OnChanges, OnInit {
           this.initializeDashboardPagination();
         }
       });
+    }
+  }
+
+  loadStaticData(): void {
+    if (this.staticData) {
+      this._items.set(this.staticData as BaseTableData[]);
+      if (!this.showFooter) {
+        this.initializeDashboardPagination();
+      }
     }
   }
 
@@ -392,6 +410,17 @@ export class AppTableComponent implements OnChanges, OnInit {
           };
         })
       );
+    }
+
+    // Handle data source changes - staticData has priority
+    if (changes['staticData'] || changes['dataSource']) {
+      if (this.staticData && this.staticData.length > 0) {
+        this.loadStaticData();
+      } else if (this.dataSource) {
+        this.fetchData();
+      } else {
+        this._items.set([]);
+      }
     }
   }
 }

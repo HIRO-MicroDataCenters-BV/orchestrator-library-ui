@@ -29,11 +29,12 @@
     <!-- Universal Error Overlay -->
     <app-error-overlay
       [isVisible]="hasError"
-      [message]="errorMessage"
       [showBackdrop]="true"
       [showRetry]="true"
       size="md"
       theme="danger"
+      title="error.filed_to_load.title"
+      message="error.filed_to_load.message"
       (retry)="retryLoad()"
     ></app-error-overlay>
 

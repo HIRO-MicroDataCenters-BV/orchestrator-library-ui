@@ -51,7 +51,8 @@
     "cordon_cluster": "Cordon Cluster",
     "drain_cluster": "Drain Cluster",
     "delete_cluster": "Delete Cluster",
-    "healthy": "Healthy"
+    "healthy": "Healthy",
+    "retry": "Retry"
   },
   "placeholder": {
     "search": "Search...",
@@ -80,7 +81,7 @@
     "actions": "Actions",
     "alert_type": "Alert",
     "alert_description": "Description",
-    "action_type": "Action Type",
+    "action_type": "Action",
     "request_id": "Request ID",
     "status": "Status",
     "updated_at": "Updated At",
@@ -100,7 +101,8 @@
     "action_end_time": "End Time",
     "bound_pod_name": "Target Pod",
     "pod_parent_name": "Parent Workload",
-    "action_reason": "Reason"
+    "action_reason": "Reason",
+    "pod": "Pod"
   },
   "common": {
     "title": "Orchestration Library",
@@ -175,6 +177,11 @@
     "logout": "Logout"
   },
   "error": {
+    "filed_to_load": {
+      "title": "Failed to Load",
+      "message": "An error occurred while loading the page. Please try again later.",
+      "retry": "Retry"
+    },
     "not_found": {
       "title": "Page Not Found",
       "message": "The page you are looking for doesn't exist or has been moved.",

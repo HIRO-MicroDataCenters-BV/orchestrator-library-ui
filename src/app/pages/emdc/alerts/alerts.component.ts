@@ -11,6 +11,7 @@ import {
   NavigationEnd,
   RouterOutlet,
 } from '@angular/router';
+import alertsData from '../../../mock/alerts_response.json';
 
 @Component({
   selector: 'app-alerts',
@@ -28,12 +29,14 @@ export class AlertsComponent implements OnInit, OnDestroy {
   tabs = [];
 
   dataSource: Observable<unknown[]> | null = null;
+  staticData: unknown[] | null = null;
 
   constructor(
     apiService: ApiService,
     private router: Router,
     private activatedRoute: ActivatedRoute
   ) {
+    this.staticData = alertsData;
     this.dataSource = apiService.getAlerts();
   }
   ngOnInit(): void {

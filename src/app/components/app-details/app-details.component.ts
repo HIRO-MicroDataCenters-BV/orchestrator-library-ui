@@ -7,9 +7,9 @@ import { TranslocoModule } from '@jsverse/transloco';
   selector: 'app-details',
   standalone: true,
   imports: [TranslocoModule, KeyValuePipe, NgFor, NgIf, DatePipe],
-  templateUrl: './details.component.html',
+  templateUrl: './app-details.component.html',
 })
-export class DetailsComponent implements OnInit {
+export class AppDetailsComponent implements OnInit {
   id: string | null = null;
   data = {};
 
