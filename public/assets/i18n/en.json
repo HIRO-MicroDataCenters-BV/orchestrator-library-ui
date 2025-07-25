@@ -33,6 +33,7 @@
     "nodes": "Nodes",
     "emdc": "EMDC",
     "k8s": "Kubernetes Dashboard",
+    "kubernetes": "Kubernetes Dashboard",
     "alerts": "Alerts",
     "cog": "COG",
     "monitoring": "Monitoring",

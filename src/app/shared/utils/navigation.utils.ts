@@ -10,52 +10,57 @@ import { BreadcrumbItem, RouteMetadata } from '../types/navigation.types';
  */
 const DEFAULT_ROUTE_METADATA: Record<string, RouteMetadata> = {
   overview: {
-    breadcrumb: 'Overview',
+    breadcrumb: 'overview',
     title: 'Overview',
     icon: 'lucideHome',
   },
   k8s: {
-    breadcrumb: 'Kubernetes',
+    breadcrumb: 'kubernetes',
     title: 'Kubernetes Dashboard',
     icon: 'lucideServer',
   },
   emdc: {
-    breadcrumb: 'EMDC',
+    breadcrumb: 'emdc',
     title: 'EMDC',
     icon: 'lucideSettings',
   },
   alerts: {
-    breadcrumb: 'Alerts',
+    breadcrumb: 'alerts',
     title: 'Alerts',
     icon: 'lucideAlertTriangle',
   },
   clusters: {
-    breadcrumb: 'Clusters',
+    breadcrumb: 'clusters',
     title: 'Clusters',
     icon: 'lucideServer',
   },
   actions: {
-    breadcrumb: 'Actions',
+    breadcrumb: 'actions',
     title: 'Actions',
     icon: 'lucideActivity',
   },
+  workloads: {
+    breadcrumb: 'workloads',
+    title: 'Workloads',
+    icon: 'lucideActivity',
+  },
   request_decisions: {
-    breadcrumb: 'Request Decisions',
+    breadcrumb: 'request_decisions',
     title: 'Request Decisions',
     icon: 'lucideCheckCircle',
   },
   cog: {
-    breadcrumb: 'COG',
+    breadcrumb: 'cog',
     title: 'COG',
     icon: 'lucideCog',
   },
   details: {
-    breadcrumb: 'Details',
+    breadcrumb: 'details',
     title: 'Details',
     icon: 'lucideInfo',
   },
   error: {
-    breadcrumb: 'Error',
+    breadcrumb: 'error',
     title: 'Error',
     icon: 'lucideAlertCircle',
   },
@@ -112,7 +117,6 @@ export const generateBreadcrumbs = (
 
     breadcrumbs.push(breadcrumb);
   }
-
   return breadcrumbs;
 };
 
@@ -121,7 +125,7 @@ export const generateBreadcrumbs = (
  */
 export const formatSegmentLabel = (segment: string): string => {
   // Handle UUIDs and IDs
-  if (isUUID(segment) || isShortId(segment)) {
+  if (isUUID(segment)) {
     return `ID: ${segment.substring(0, 8)}...`;
   }
 
@@ -207,8 +211,6 @@ export const extractRouteParams = (route: string): Record<string, string> => {
   // Simple parameter extraction for common patterns
   segments.forEach((segment) => {
     if (isUUID(segment)) {
-      params['id'] = segment;
-    } else if (isShortId(segment)) {
       params['id'] = segment;
     }
   });
