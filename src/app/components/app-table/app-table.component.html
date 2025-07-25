@@ -1,4 +1,5 @@
 <div>
+  <!-- Header Section -->
   <div
     class="flex flex-col justify-between gap-4 sm:flex-row pb-2"
     *ngIf="showHeader"
@@ -6,13 +7,14 @@
     <div>
       <input
         hlmInput
-        class="w-full md:w-64"
+        class="w-full md:w-80"
         [placeholder]="'placeholder.search' | transloco"
-        [ngModel]="_colFilter()"
-        (ngModelChange)="_rawFilterInput.set($event)"
+        [ngModel]="_rawFilterInput()"
+        (input)="_filterChanged($event)"
       />
     </div>
     <div class="flex gap-2">
+      <!-- Tabs -->
       <div *ngIf="tabs.length > 0">
         <hlm-tabs [tab]="tabs[0]" class="w-full">
           <hlm-tabs-list class="w-full flex">
@@ -27,22 +29,23 @@
           </hlm-tabs-list>
         </hlm-tabs>
       </div>
+      <!-- Column Visibility Toggle -->
       <div>
         <button hlmBtn variant="outline" align="end" [brnMenuTriggerFor]="menu">
           {{ 'placeholder.columns' | transloco }}
           <ng-icon hlm name="lucideChevronDown" class="ml-2" size="sm" />
         </button>
         <ng-template #menu>
-          <hlm-menu>
-            @for (columnOpt of _columnOptions(); track columnOpt.name) {
+          <hlm-menu class="w-32">
+            @for (column of _hidableColumns(); track column.id) {
             <button
               hlmMenuItemCheckbox
               class="capitalize"
-              [checked]="columnOpt.selected"
-              (click)="toggleColumnVisibility(columnOpt.name)"
+              [checked]="column.getIsVisible()"
+              (click)="column.toggleVisibility()"
             >
-              <hlm-menu-item-check></hlm-menu-item-check>
-              <span>{{ `column.${columnOpt.name}` | transloco }}</span>
+              <hlm-menu-item-check />
+              {{ column.columnDef.id }}
             </button>
             }
           </hlm-menu>
@@ -50,700 +53,271 @@
       </div>
     </div>
   </div>
-  <div class="container-table">
-    <brn-table
-      hlm
-      stickyHeader
-      [class]="
-        showHeader && showFooter
-          ? 'border-border block h-[calc(100vh-200px)] overflow-auto rounded-md border'
-          : 'border-border block h-full overflow-auto rounded-md border'
-      "
-      [dataSource]="_filteredSortedPaginatedItems()"
-      [displayedColumns]="_allDisplayedColumns()"
-      [trackBy]="_trackBy"
-    >
-      <brn-column-def name="dashboard_status" class="w-16 !text-left">
-        <ng-container *brnHeaderDef>
-          <hlm-th [style.display]="showHeader ? 'block' : 'none'"></hlm-th>
-        </ng-container>
-        <hlm-td
-          (click)="hasRowAction ? onRowClick(element) : null"
-          [class.cursor-pointer]="hasRowAction"
-          truncate
-          *brnCellDef="let element"
-        >
-          <div class="flex items-center justify-center">
-            <div [ngClass]="getDashboardStatusColor(element)">
-              <ng-icon hlm size="sm" [name]="getDashboardStatusIcon(element)" />
-            </div>
-          </div>
-        </hlm-td>
-      </brn-column-def>
 
-      <brn-column-def name="dashboard_info" class="flex-1 !text-left">
-        <ng-container *brnHeaderDef>
-          <hlm-th [style.display]="showHeader ? 'block' : 'none'"></hlm-th>
-        </ng-container>
-        <hlm-td
-          (click)="hasRowAction ? onRowClick(element) : null"
-          [class.cursor-pointer]="hasRowAction"
-          truncate
-          *brnCellDef="let element"
-        >
-          <div class="flex flex-col">
-            <p class="text-sm font-medium text-gray-900">
-              {{ getDashboardMainText(element) }}
-            </p>
-            <p class="text-xs text-gray-500">
-              {{ getDashboardSubText(element) }}
-            </p>
-          </div>
-        </hlm-td>
-      </brn-column-def>
-
-      <brn-column-def name="dashboard_date" class="w-32 !text-left">
-        <ng-container *brnHeaderDef>
-          <hlm-th [style.display]="showHeader ? 'block' : 'none'"></hlm-th>
-        </ng-container>
-        <hlm-td
-          (click)="hasRowAction ? onRowClick(element) : null"
-          [class.cursor-pointer]="hasRowAction"
-          truncate
-          *brnCellDef="let element"
-        >
-          <div class="flex flex-col text-right">
-            <p class="text-xs text-gray-500">
-              {{ element.created_at | date : 'dd/MM/yyyy' }}
-            </p>
-            <p class="text-xs text-gray-400">
-              {{ element.created_at | date : 'HH:mm' }}
-            </p>
-          </div>
-        </hlm-td>
-      </brn-column-def>
-
-      <brn-column-def name="id" class="w-16 !text-left">
-        <ng-container *brnHeaderDef>
-          <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
-            'column.id' | transloco
-          }}</hlm-th>
-        </ng-container>
-        <hlm-td
-          (click)="hasRowAction ? onRowClick(element) : null"
-          [class.cursor-pointer]="hasRowAction"
-          truncate
-          *brnCellDef="let element"
-        >
-          <p class="text-sm text-gray-500">{{ element.id }}</p>
-        </hlm-td>
-      </brn-column-def>
-
-      <brn-column-def name="id_uid" class="w-16 !text-left">
-        <ng-container *brnHeaderDef>
-          <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
-            'column.id' | transloco
-          }}</hlm-th>
-        </ng-container>
-        <hlm-td
-          (click)="hasRowAction ? onRowClick(element) : null"
-          [class.cursor-pointer]="hasRowAction"
-          truncate
-          *brnCellDef="let element"
-        >
-          <p class="text-sm text-gray-500 overflow-hidden text-ellipsis">
-            {{ element.id }}
-          </p>
-        </hlm-td>
-      </brn-column-def>
-
-      <brn-column-def name="created_pod_namespace" class="w-64 !text-left">
-        <ng-container *brnHeaderDef>
-          <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
-            'column.created_pod_namespace' | transloco
-          }}</hlm-th>
-        </ng-container>
-        <hlm-td
-          (click)="hasRowAction ? onRowClick(element) : null"
-          [class.cursor-pointer]="hasRowAction"
-          truncate
-          *brnCellDef="let element"
-        >
-          <p class="text-sm text-gray-500">
-            {{ element.created_pod_namespace }}
-          </p>
-        </hlm-td>
-      </brn-column-def>
-
-      <brn-column-def name="node_name" class="w-64 !text-left">
-        <ng-container *brnHeaderDef>
-          <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
-            'column.node_name' | transloco
-          }}</hlm-th>
-        </ng-container>
-        <hlm-td
-          (click)="hasRowAction ? onRowClick(element) : null"
-          [class.cursor-pointer]="hasRowAction"
-          truncate
-          *brnCellDef="let element"
-        >
-          <p class="text-sm text-gray-500">{{ element.node_name }}</p>
-        </hlm-td>
-      </brn-column-def>
-
-      <brn-column-def name="request_id" class="w-64 !text-left">
-        <ng-container *brnHeaderDef>
-          <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
-            'column.request_id' | transloco
-          }}</hlm-th>
-        </ng-container>
-        <hlm-td
-          (click)="hasRowAction ? onRowClick(element) : null"
-          [class.cursor-pointer]="hasRowAction"
-          truncate
-          *brnCellDef="let element"
-        >
-          <p class="text-sm text-gray-500">{{ element.id }}</p>
-        </hlm-td>
-      </brn-column-def>
-      <brn-column-def name="pod_name" class="w-64 !text-left">
-        <ng-container *brnHeaderDef>
-          <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
-            'column.pod_name' | transloco
-          }}</hlm-th>
-        </ng-container>
-        <hlm-td
-          (click)="hasRowAction ? onRowClick(element) : null"
-          [class.cursor-pointer]="hasRowAction"
-          truncate
-          *brnCellDef="let element"
-        >
-          <p class="text-sm text-gray-500">{{ element.pod_name }}</p>
-        </hlm-td>
-      </brn-column-def>
-      <brn-column-def name="namespace" class="w-64 !text-left">
-        <ng-container *brnHeaderDef>
-          <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
-            'column.namespace' | transloco
-          }}</hlm-th>
-        </ng-container>
-        <hlm-td
-          (click)="hasRowAction ? onRowClick(element) : null"
-          [class.cursor-pointer]="hasRowAction"
-          truncate
-          *brnCellDef="let element"
-        >
-          <p class="text-sm text-gray-500">{{ element.namespace }}</p>
-        </hlm-td>
-      </brn-column-def>
-      <brn-column-def name="queue_name" class="w-64 !text-left">
-        <ng-container *brnHeaderDef>
-          <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
-            'column.queue_name' | transloco
-          }}</hlm-th>
-        </ng-container>
-        <hlm-td
-          (click)="hasRowAction ? onRowClick(element) : null"
-          [class.cursor-pointer]="hasRowAction"
-          truncate
-          *brnCellDef="let element"
-        >
-          <p class="text-sm text-gray-500">{{ element.queue_name }}</p>
-        </hlm-td>
-      </brn-column-def>
-      <brn-column-def name="alert_type" class="w-64 !text-left">
-        <ng-container *brnHeaderDef>
-          <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
-            'column.alert_type' | transloco
-          }}</hlm-th>
-        </ng-container>
-        <hlm-td
-          (click)="hasRowAction ? onRowClick(element) : null"
-          [class.cursor-pointer]="hasRowAction"
-          truncate
-          *brnCellDef="let element"
-        >
-          <p class="text-sm text-gray-500">{{ element.alert_type }}</p>
-        </hlm-td>
-      </brn-column-def>
-      <brn-column-def name="alert_description" class="w-64 !text-left">
-        <ng-container *brnHeaderDef>
-          <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
-            'column.alert_description' | transloco
-          }}</hlm-th>
-        </ng-container>
-        <hlm-td
-          (click)="hasRowAction ? onRowClick(element) : null"
-          [class.cursor-pointer]="hasRowAction"
-          truncate
-          *brnCellDef="let element"
-        >
-          <p class="text-sm text-gray-500">{{ element.alert_description }}</p>
-        </hlm-td>
-      </brn-column-def>
-      <brn-column-def name="pod_id" class="w-64 !text-left">
-        <ng-container *brnHeaderDef>
-          <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
-            'column.pod_id' | transloco
-          }}</hlm-th>
-        </ng-container>
-        <hlm-td
-          (click)="hasRowAction ? onRowClick(element) : null"
-          [class.cursor-pointer]="hasRowAction"
-          truncate
-          *brnCellDef="let element"
-        >
-          <p class="text-sm text-gray-500">{{ element.pod_id }}</p>
-        </hlm-td>
-      </brn-column-def>
-
-      <brn-column-def name="demand_cpu" class="w-64 !text-left">
-        <ng-container *brnHeaderDef>
-          <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
-            'column.demand_cpu' | transloco
-          }}</hlm-th>
-        </ng-container>
-        <hlm-td
-          (click)="hasRowAction ? onRowClick(element) : null"
-          [class.cursor-pointer]="hasRowAction"
-          truncate
-          *brnCellDef="let element"
-        >
-          <p class="text-sm text-gray-500">{{ element.demand_cpu }}</p>
-        </hlm-td>
-      </brn-column-def>
-      <brn-column-def name="action_type" class="w-32 !text-left">
-        <ng-container *brnHeaderDef>
-          <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
-            'column.action_type' | transloco
-          }}</hlm-th>
-        </ng-container>
-        <hlm-td
-          (click)="hasRowAction ? onRowClick(element) : null"
-          [class.cursor-pointer]="hasRowAction"
-          truncate
-          *brnCellDef="let element"
-        >
-          {{ 'column.pod' | transloco }} {{ element.action_type }}
-        </hlm-td>
-      </brn-column-def>
-      <brn-column-def name="bound_pod_name" class="w-64 !text-left">
-        <ng-container *brnHeaderDef>
-          <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
-            'column.bound_pod_name' | transloco
-          }}</hlm-th>
-        </ng-container>
-        <hlm-td
-          (click)="hasRowAction ? onRowClick(element) : null"
-          [class.cursor-pointer]="hasRowAction"
-          truncate
-          *brnCellDef="let element"
-        >
-          <p class="text-sm text-gray-500">{{ element.bound_pod_name }}</p>
-        </hlm-td>
-      </brn-column-def>
-      <brn-column-def name="pod_parent_name" class="w-64 !text-left">
-        <ng-container *brnHeaderDef>
-          <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
-            'column.pod_parent_name' | transloco
-          }}</hlm-th>
-        </ng-container>
-        <hlm-td
-          (click)="hasRowAction ? onRowClick(element) : null"
-          [class.cursor-pointer]="hasRowAction"
-          truncate
-          *brnCellDef="let element"
-        >
-          <p class="text-sm text-gray-500">{{ element.pod_parent_name }}</p>
-        </hlm-td>
-      </brn-column-def>
-      <brn-column-def name="action_reason" class="w-64 !text-left">
-        <ng-container *brnHeaderDef>
-          <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
-            'column.action_reason' | transloco
-          }}</hlm-th>
-        </ng-container>
-        <hlm-td
-          (click)="hasRowAction ? onRowClick(element) : null"
-          [class.cursor-pointer]="hasRowAction"
-          truncate
-          *brnCellDef="let element"
-        >
-          <p class="text-sm text-gray-500">{{ element.action_reason }}</p>
-        </hlm-td>
-      </brn-column-def>
-      <brn-column-def name="demand_memory" class="w-64 !text-left">
-        <ng-container *brnHeaderDef>
-          <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
-            'column.demand_memory' | transloco
-          }}</hlm-th>
-        </ng-container>
-        <hlm-td
-          (click)="hasRowAction ? onRowClick(element) : null"
-          [class.cursor-pointer]="hasRowAction"
-          truncate
-          *brnCellDef="let element"
-        >
-          <p class="text-sm text-gray-500">{{ element.demand_memory }}</p>
-        </hlm-td>
-      </brn-column-def>
-      <brn-column-def name="pod_parent_kind" class="w-64 !text-left">
-        <ng-container *brnHeaderDef>
-          <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
-            'column.pod_parent_kind' | transloco
-          }}</hlm-th>
-        </ng-container>
-        <hlm-td
-          (click)="hasRowAction ? onRowClick(element) : null"
-          [class.cursor-pointer]="hasRowAction"
-          truncate
-          *brnCellDef="let element"
-        >
-          <p class="text-sm text-gray-500">{{ element.pod_parent_kind }}</p>
-        </hlm-td>
-      </brn-column-def>
-      <brn-column-def name="node_id" class="w-64 !text-left">
-        <ng-container *brnHeaderDef>
-          <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
-            'column.node_id' | transloco
-          }}</hlm-th>
-        </ng-container>
-        <hlm-td
-          (click)="hasRowAction ? onRowClick(element) : null"
-          [class.cursor-pointer]="hasRowAction"
-          truncate
-          *brnCellDef="let element"
-        >
-          <p class="text-sm text-gray-500">{{ element.node_id }}</p>
-        </hlm-td>
-      </brn-column-def>
-      <brn-column-def name="decision_status" class="w-64 !text-left">
-        <ng-container *brnHeaderDef>
-          <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
-            'column.decision_status' | transloco
-          }}</hlm-th>
-        </ng-container>
-        <hlm-td
-          (click)="hasRowAction ? onRowClick(element) : null"
-          [class.cursor-pointer]="hasRowAction"
-          truncate
-          *brnCellDef="let element"
-        >
-          <p class="text-sm text-gray-500">{{ element.is_decision_status }}</p>
-        </hlm-td>
-      </brn-column-def>
-      <brn-column-def name="created_at" class="w-64 !text-left">
-        <ng-container *brnHeaderDef>
-          <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
-            'column.created_at' | transloco
-          }}</hlm-th>
-        </ng-container>
-        <hlm-td
-          (click)="hasRowAction ? onRowClick(element) : null"
-          [class.cursor-pointer]="hasRowAction"
-          truncate
-          *brnCellDef="let element"
-        >
-          <div class="flex flex-col">
-            <p class="text-sm text-gray-500">
-              {{ element.created_at | date : 'dd/MM/yyyy' }}
-            </p>
-            <p class="text-xs text-gray-400">
-              {{ element.created_at | date : 'HH:mm:ss' }}
-            </p>
-          </div>
-        </hlm-td>
-      </brn-column-def>
-      <brn-column-def name="action_start_time" class="w-64 !text-left">
-        <ng-container *brnHeaderDef>
-          <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
-            'column.action_start_time' | transloco
-          }}</hlm-th>
-        </ng-container>
-        <hlm-td
-          (click)="hasRowAction ? onRowClick(element) : null"
-          [class.cursor-pointer]="hasRowAction"
-          truncate
-          *brnCellDef="let element"
-        >
-          <div class="flex flex-col">
-            <p class="text-sm text-gray-500">
-              {{ element.action_start_time | date : 'dd/MM/yyyy' }}
-            </p>
-            <p class="text-xs text-gray-400">
-              {{ element.action_start_time | date : 'HH:mm:ss' }}
-            </p>
-          </div>
-        </hlm-td>
-      </brn-column-def>
-      <brn-column-def name="action_end_time" class="w-64 !text-left">
-        <ng-container *brnHeaderDef>
-          <hlm-th
-            truncate
-            [style.visibility]="showHeader ? 'visible' : 'hidden'"
-            >{{ 'column.action_end_time' | transloco }}</hlm-th
+  <!-- Table Container -->
+  <div
+    [class]="
+      showHeader && showFooter
+        ? 'border-border mt-4 block h-[calc(100vh-220px)] w-full overflow-auto rounded-md border'
+        : 'border-border block h-full w-full overflow-auto rounded-md border'
+    "
+  >
+    <!-- We defer the loading of the table, because tanstack manipulates the DOM with flexRender which can cause errors during SSR -->
+    @defer {
+    <table hlmTable class="w-full">
+      <thead hlmTHead>
+        @for (headerGroup of _table.getHeaderGroups(); track headerGroup.id) {
+        <tr hlmTr class="border-gray-200 border-b">
+          @for (header of headerGroup.headers; track header.id) {
+          <th
+            hlmTh
+            [attr.colSpan]="header.colSpan"
+            class="text-sm font-medium text-gray-500 px-4 py-2.5 text-left"
           >
-        </ng-container>
-        <hlm-td
-          (click)="hasRowAction ? onRowClick(element) : null"
-          [class.cursor-pointer]="hasRowAction"
-          truncate
-          *brnCellDef="let element"
-        >
-          <div class="flex flex-col">
-            <p class="text-sm text-gray-500">
-              {{ element.action_end_time | date : 'dd/MM/yyyy' }}
-            </p>
-            <p class="text-xs text-gray-400">
-              {{ element.action_end_time | date : 'HH:mm:ss' }}
-            </p>
-          </div>
-        </hlm-td>
-      </brn-column-def>
-      <brn-column-def name="cluster_name" class="w-64 !text-left">
-        <ng-container *brnHeaderDef>
-          <hlm-th
-            truncate
-            [style.visibility]="showHeader ? 'visible' : 'hidden'"
-            >Cluster Name</hlm-th
-          >
-        </ng-container>
-        <hlm-td
-          (click)="hasRowAction ? onRowClick(element) : null"
-          [class.cursor-pointer]="hasRowAction"
-          truncate
-          *brnCellDef="let element"
-        >
-          <p class="text-sm mb-1">{{ element.cluster_name }}</p>
-          <p class="text-sm text-gray-500">{{ element.id }}</p>
-        </hlm-td>
-      </brn-column-def>
-      <brn-column-def name="action_status" class="w-32 !text-left">
-        <ng-container *brnHeaderDef>
-          <hlm-th
-            truncate
-            [style.visibility]="showHeader ? 'visible' : 'hidden'"
-            >{{ 'column.status' | transloco }}</hlm-th
-          >
-        </ng-container>
-        <hlm-td
-          (click)="hasRowAction ? onRowClick(element) : null"
-          [class.cursor-pointer]="hasRowAction"
-          truncate
-          *brnCellDef="let element"
-        >
-          <span
-            [class]="`${getStatusColor(element.action_status)} capitalize`"
-            hlmBadge
-            >{{ element.action_status }}</span
-          >
-        </hlm-td>
-      </brn-column-def>
-      <brn-column-def name="status" class="w-32 !text-left">
-        <ng-container *brnHeaderDef>
-          <hlm-th
-            truncate
-            [style.visibility]="showHeader ? 'visible' : 'hidden'"
-            >{{ 'column.status' | transloco }}</hlm-th
-          >
-        </ng-container>
-        <hlm-td
-          (click)="hasRowAction ? onRowClick(element) : null"
-          [class.cursor-pointer]="hasRowAction"
-          truncate
-          *brnCellDef="let element"
-        >
-          <span [class]="getStatusColor(element.status)" hlmBadge>{{
-            element.status
-          }}</span>
-        </hlm-td>
-      </brn-column-def>
-      <brn-column-def name="workloads" class="w-32 !text-left">
-        <ng-container *brnHeaderDef>
-          <hlm-th
-            truncate
-            [style.visibility]="showHeader ? 'visible' : 'hidden'"
-            >Workloads</hlm-th
-          >
-        </ng-container>
-        <hlm-td
-          (click)="hasRowAction ? onRowClick(element) : null"
-          [class.cursor-pointer]="hasRowAction"
-          truncate
-          *brnCellDef="let element"
-        >
-          {{ element.workloads }}
-        </hlm-td>
-      </brn-column-def>
-      <brn-column-def name="nodes" class="w-32 !text-left">
-        <ng-container *brnHeaderDef>
-          <hlm-th
-            truncate
-            [style.visibility]="showHeader ? 'visible' : 'hidden'"
-            >Nodes</hlm-th
-          >
-        </ng-container>
-        <hlm-td
-          (click)="hasRowAction ? onRowClick(element) : null"
-          [class.cursor-pointer]="hasRowAction"
-          truncate
-          *brnCellDef="let element"
-        >
-          {{ element.nodes }}
-        </hlm-td>
-      </brn-column-def>
-      <brn-column-def name="cpu_usage" class="w-32 !text-left">
-        <ng-container *brnHeaderDef>
-          <hlm-th
-            truncate
-            [style.visibility]="showHeader ? 'visible' : 'hidden'"
-            >CPU Usage</hlm-th
-          >
-        </ng-container>
-        <hlm-td
-          (click)="hasRowAction ? onRowClick(element) : null"
-          [class.cursor-pointer]="hasRowAction"
-          truncate
-          *brnCellDef="let element"
-        >
-          <span [class]="getProgressColor(element.cpu_usage)">
-            <app-circle-progress
-              [progress]="element.cpu_usage"
-              [size]="20"
-              [strokeWidth]="2"
-              [backgroundColor]="'#e6e6e6'"
+            @if (!header.isPlaceholder) {
+            <ng-container
+              *flexRender="
+                header.column.columnDef.header;
+                props: header.getContext();
+                let headerText
+              "
             >
-              <div class="ml-14">
-                <span class="text-sm">{{ element.cpu_usage }}%</span>
-              </div>
-            </app-circle-progress>
-          </span>
-        </hlm-td>
-      </brn-column-def>
-      <brn-column-def name="memory_usage" class="w-32 !text-left">
-        <ng-container *brnHeaderDef>
-          <hlm-th
-            truncate
-            [style.visibility]="showHeader ? 'visible' : 'hidden'"
-            >Memory Usage</hlm-th
-          >
-        </ng-container>
-        <hlm-td
-          (click)="hasRowAction ? onRowClick(element) : null"
-          [class.cursor-pointer]="hasRowAction"
-          truncate
-          *brnCellDef="let element"
-        >
-          <span [class]="getProgressColor(element.memory_usage)">
-            <app-circle-progress
-              [progress]="element.memory_usage"
-              [size]="20"
-              [strokeWidth]="2"
-              [backgroundColor]="'#e6e6e6'"
-            >
-              <div class="ml-14">
-                <span class="text-sm">{{ element.memory_usage }}%</span>
-              </div>
-            </app-circle-progress>
-          </span>
-        </hlm-td>
-      </brn-column-def>
-      <brn-column-def name="actions" class="w-16 !text-left">
-        <ng-container *brnHeaderDef>
-          <hlm-th [style.visibility]="showHeader ? 'visible' : 'hidden'">{{
-            'column.actions' | transloco
-          }}</hlm-th>
-        </ng-container>
-        <hlm-td *brnCellDef="let element">
-          <button
-            hlmBtn
-            variant="outline"
-            class="h-8 w-8 p-0.5"
-            align="end"
-            [brnMenuTriggerFor]="menu"
-          >
-            <ng-icon hlm size="sm" name="lucideEllipsisVertical" />
-          </button>
-
-          <ng-template #menu>
-            <hlm-menu class="w-52">
-              <hlm-menu-label>{{
-                'column.actions' | transloco
-              }}</hlm-menu-label>
-              <hlm-menu-separator />
-              <hlm-menu-group>
-                <a
-                  *ngFor="let action of _actions()"
-                  hlmMenuItem
-                  class="flex gap-2"
-                  [routerLink]="`./${element.id}`"
-                  [state]="element"
-                >
-                  <ng-icon hlm size="sm" [svg]="ACTION_ICONS[action]" />
-                  <span>{{ `action.${action}` | transloco }}</span>
-                </a>
-              </hlm-menu-group>
-            </hlm-menu>
-          </ng-template>
-        </hlm-td>
-      </brn-column-def>
-
-      <div
-        class="flex items-center justify-center p-20 text-muted-foreground"
-        brnNoDataRow
-      >
-        {{ 'hint.no_data' | transloco }}
-      </div>
-    </brn-table>
-  </div>
-  <div *ngIf="showFooter">
-    <div
-      class="flex flex-col justify-between mt-4 sm:flex-row sm:items-center"
-      *brnPaginator="
-        let ctx;
-        totalElements: _totalElements();
-        pageSize: _pageSize();
-        onStateChange: _onStateChange
-      "
-    >
-      <div class="flex items-center justify-between w-full">
-        <brn-select
-          placeholder="{{ _availablePageSizes[0] }}"
-          [(ngModel)]="_pageSize"
-        >
-          <hlm-select-trigger class="inline-flex mr-1 w-20 h-9">
-            <hlm-select-value />
-          </hlm-select-trigger>
-          <hlm-select-content>
-            @for (size of _availablePageSizes; track size) {
-            <hlm-option [value]="size">
-              {{ size === 10000 ? 'All' : size }}
-            </hlm-option>
+              <div class="capitalize font-medium">{{ headerText }}</div>
+            </ng-container>
             }
-          </hlm-select-content>
-        </brn-select>
+          </th>
+          }
+        </tr>
+        }
+      </thead>
+      <tbody hlmTBody class="w-full">
+        @for (row of _table.getRowModel().rows; track row.id) {
+        <tr
+          hlmTr
+          [attr.data-state]="row.getIsSelected() && 'selected'"
+          [class.cursor-pointer]="hasRowAction"
+          (click)="hasRowAction ? onRowClick(row.original) : null"
+          class="border-gray-200 border-b"
+        >
+          @for (cell of row.getVisibleCells(); track cell.id) {
+          <td hlmTd class="px-4 py-6">
+            <!-- Dashboard Status Column -->
+            @if (cell.column.id === 'dashboard_status') {
+            <div class="flex items-center justify-center">
+              <div class="text-green-600">
+                <ng-icon hlm size="sm" name="lucideCircleCheck" />
+              </div>
+            </div>
+            }
 
-        <div class="flex gap-2">
-          <button
-            size="sm"
-            variant="outline"
-            hlmBtn
-            [disabled]="!ctx.decrementable()"
-            (click)="ctx.decrement()"
+            <!-- Dashboard Info Column -->
+            @else if (cell.column.id === 'dashboard_info') {
+            <div class="flex flex-col">
+              <p class="text-sm font-medium text-gray-900 dark:text-gray-100">
+                {{ getDashboardMainText(cell.row.original) }}
+              </p>
+              <p class="text-xs text-gray-500 dark:text-gray-400">
+                {{ getDashboardSubText(cell.row.original) }}
+              </p>
+            </div>
+            }
+
+            <!-- Dashboard Date Column -->
+            @else if (cell.column.id === 'dashboard_date') {
+            <div class="flex flex-col text-right">
+              <p class="text-xs text-gray-500 dark:text-gray-400">
+                {{ getCreatedAtDate(cell.row.original) }}
+              </p>
+              <p class="text-xs text-gray-400 dark:text-gray-500">
+                {{ getCreatedAtTime(cell.row.original) }}
+              </p>
+            </div>
+            }
+
+            <!-- Actions Column -->
+            @else if (cell.column.id === 'actions') {
+            <div class="flex justify-end">
+              <button
+                hlmBtn
+                variant="ghost"
+                size="sm"
+                align="end"
+                [brnMenuTriggerFor]="actionMenu"
+                (click)="$event.stopPropagation()"
+              >
+                <ng-icon hlm name="lucideEllipsisVertical" size="sm" />
+              </button>
+              <ng-template #actionMenu>
+                <hlm-menu>
+                  @for (action of actions; track action) {
+                  <button hlmMenuItem>
+                    <ng-icon
+                      hlm
+                      size="sm"
+                      [name]="ACTION_ICONS[action] || 'lucideInfo'"
+                      class="mr-2"
+                    />
+                    <span class="capitalize">{{
+                      action.replace('_', ' ')
+                    }}</span>
+                  </button>
+                  }
+                </hlm-menu>
+              </ng-template>
+            </div>
+            }
+
+            <!-- Status Column with Badge -->
+            @else if (cell.column.id.includes('status')) {
+            <span hlmBadge variant="secondary">
+              {{ getCellValueAsString(cell.getValue()) }}
+            </span>
+            }
+
+            <!-- Progress Column -->
+            @else if (cell.column.id.includes('progress') ||
+            cell.column.id.includes('percent')) {
+            <div class="flex items-center gap-2">
+              <div class="w-6 h-6 rounded-full bg-gray-200 dark:bg-gray-700">
+                <div
+                  class="h-full rounded-full bg-blue-500"
+                  [style.width.%]="getCellValueAsNumber(cell.getValue())"
+                ></div>
+              </div>
+              <span class="text-sm"
+                >{{ getCellValueAsNumber(cell.getValue()) }}%</span
+              >
+            </div>
+            }
+
+            <!-- Date/Time Columns -->
+            @else if (cell.column.id.includes('date') ||
+            cell.column.id.includes('time') || cell.column.id === 'created_at'
+            || cell.column.id === 'updated_at') {
+            <span class="text-sm text-gray-500 dark:text-gray-400">
+              {{ formatDateValue(cell.getValue()) }}
+            </span>
+            }
+
+            <!-- Default Cell -->
+            @else {
+            <ng-container
+              *flexRender="
+                cell.column.columnDef.cell;
+                props: cell.getContext();
+                let cellContent
+              "
+            >
+              <span class="text-sm">{{ cellContent }}</span>
+            </ng-container>
+            }
+          </td>
+          }
+        </tr>
+        } @empty {
+        <tr hlmTr>
+          <td
+            hlmTd
+            class="h-24 text-center"
+            [attr.colspan]="_table.getAllColumns().length"
           >
-            {{ 'action.previous' | transloco }}
-          </button>
-          <button
-            size="sm"
-            variant="outline"
-            hlmBtn
-            [disabled]="!ctx.incrementable()"
-            (click)="ctx.increment()"
-          >
-            {{ 'action.next' | transloco }}
-          </button>
-        </div>
+            <div class="flex flex-col items-center justify-center gap-2">
+              <ng-icon
+                hlm
+                name="lucideCircle"
+                size="lg"
+                class="text-gray-400"
+              />
+              <p class="text-sm text-gray-500">
+                {{ 'placeholder.no_data' | transloco }}
+              </p>
+            </div>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+    }
+  </div>
+
+  <!-- Footer Section -->
+  <div
+    class="mt-4 flex flex-col justify-between sm:flex-row sm:items-center"
+    *ngIf="showFooter"
+  >
+    @if (_table.getRowCount() > 0) {
+    <!-- Selected rows info -->
+    <span class="text-sm text-muted-foreground">
+      {{ _table.getSelectedRowModel().rows.length }} of
+      {{ _table.getRowCount() }} row(s) selected
+    </span>
+
+    <!-- Pagination controls -->
+    <div class="mt-2 flex sm:mt-0">
+      <!-- Page size selector -->
+      <brn-select
+        class="inline-block"
+        [ngModel]="_table.getState().pagination.pageSize"
+        (ngModelChange)="_table.setPageSize($event); _table.resetPageIndex()"
+      >
+        <hlm-select-trigger class="w-15 mr-1 inline-flex h-9">
+          <hlm-select-value />
+        </hlm-select-trigger>
+        <hlm-select-content>
+          @for (size of _availablePageSizes; track size) {
+          <hlm-option [value]="size">
+            {{ size === 10000 ? 'All' : size }}
+          </hlm-option>
+          }
+        </hlm-select-content>
+      </brn-select>
+
+      <!-- Navigation buttons -->
+      <div class="flex space-x-1">
+        <button
+          size="sm"
+          variant="outline"
+          hlmBtn
+          [disabled]="!_table.getCanPreviousPage()"
+          (click)="_table.setPageIndex(0)"
+        >
+          {{ 'pagination.first' | transloco }}
+        </button>
+        <button
+          size="sm"
+          variant="outline"
+          hlmBtn
+          [disabled]="!_table.getCanPreviousPage()"
+          (click)="_table.previousPage()"
+        >
+          {{ 'pagination.previous' | transloco }}
+        </button>
+        <button
+          size="sm"
+          variant="outline"
+          hlmBtn
+          [disabled]="!_table.getCanNextPage()"
+          (click)="_table.nextPage()"
+        >
+          {{ 'pagination.next' | transloco }}
+        </button>
+        <button
+          size="sm"
+          variant="outline"
+          hlmBtn
+          [disabled]="!_table.getCanNextPage()"
+          (click)="_table.setPageIndex(_table.getPageCount() - 1)"
+        >
+          {{ 'pagination.last' | transloco }}
+        </button>
       </div>
     </div>
+    } @else {
+    <div class="flex h-full w-full items-center justify-center">
+      <div class="text-muted-foreground text-sm">
+        {{ 'placeholder.no_data' | transloco }}
+      </div>
+    </div>
+    }
   </div>
 </div>

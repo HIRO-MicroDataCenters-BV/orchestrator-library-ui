@@ -127,6 +127,9 @@
       ],
       "@spartan-ng/helm/sheet": [
         "libs/ui/ui-sheet-helm/src/index.ts"
+      ],
+      "@spartan-ng/helm/table": [
+        "libs/ui/ui-table-helm/src/index.ts"
       ]
     }
   }

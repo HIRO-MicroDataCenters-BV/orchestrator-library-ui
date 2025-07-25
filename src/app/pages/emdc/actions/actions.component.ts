@@ -24,9 +24,9 @@ export class ActionsComponent implements OnInit, OnDestroy {
   private routerSubscription: Subscription | null = null;
   clusters = [];
   columns = [
-    'id_uid',
-    'action_status',
+    'id',
     'action_type',
+    'action_status',
     'bound_pod_name',
     'created_pod_namespace',
     'action_start_time',
@@ -37,7 +37,7 @@ export class ActionsComponent implements OnInit, OnDestroy {
   tabs = [];
 
   dataSource: Observable<unknown[]> | null = null;
-  staticData: unknown[] | null = null;
+  staticData: unknown[] = actionsData;
 
   constructor(
     apiService: ApiService,
