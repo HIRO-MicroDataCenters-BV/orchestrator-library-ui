@@ -69,3 +69,9 @@ hlm-th[style*='display: none'] {
 .brn-table th[style*='display: none'] {
   display: none !important;
 }
+.container-table button {
+  text-align: left;
+  cursor: pointer;
+  padding-left: 0;
+  padding-right: 0;
+}

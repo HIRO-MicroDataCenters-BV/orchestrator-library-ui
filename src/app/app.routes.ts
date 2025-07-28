@@ -43,15 +43,6 @@ export const routes: Routes = [
                     './pages/emdc/request_decisions/request_decisions.component'
                   ).then((m) => m.RequestDecisionsComponent),
                 data: { title: 'Request Decisions' },
-                children: [
-                  {
-                    path: ':id',
-                    loadComponent: () =>
-                      import('./pages/details/details.component').then(
-                        (m) => m.DetailsComponent
-                      ),
-                  },
-                ],
               },
               {
                 path: 'actions',
@@ -60,15 +51,6 @@ export const routes: Routes = [
                     (m) => m.ActionsComponent
                   ),
                 data: { title: 'Actions' },
-                children: [
-                  {
-                    path: ':id',
-                    loadComponent: () =>
-                      import('./pages/details/details.component').then(
-                        (m) => m.DetailsComponent
-                      ),
-                  },
-                ],
               },
             ],
           },
@@ -79,15 +61,6 @@ export const routes: Routes = [
                 (m) => m.AlertsComponent
               ),
             data: { title: 'Actions' },
-            children: [
-              {
-                path: ':id',
-                loadComponent: () =>
-                  import('./pages/details/details.component').then(
-                    (m) => m.DetailsComponent
-                  ),
-              },
-            ],
           },
         ],
       },

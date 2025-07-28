@@ -62,7 +62,6 @@ export class AppDashboardCardComponent implements OnInit, OnDestroy {
   pods: K8sPod[] = [];
   isLoading = false;
   hasError = false;
-  errorMessage = '';
   isBrowser = false;
 
   constructor(@Inject(PLATFORM_ID) private platformId: object) {
@@ -110,7 +109,6 @@ export class AppDashboardCardComponent implements OnInit, OnDestroy {
           this.pods = [];
           this.isLoading = false;
           this.hasError = true;
-          this.errorMessage = 'error.failed_to_load';
         },
       })
     );
@@ -126,7 +124,6 @@ export class AppDashboardCardComponent implements OnInit, OnDestroy {
         error: () => {
           this.isLoading = false;
           this.hasError = true;
-          this.errorMessage = 'error.failed_to_load';
         },
       })
     );
@@ -230,13 +227,12 @@ export class AppDashboardCardComponent implements OnInit, OnDestroy {
     if (!this.clusterInfo || this.isLoading || this.hasError) {
       return 0;
     }
-
     const value =
       type === 'cpu'
         ? this.clusterInfo.cluster_cpu_utilization || 0
         : this.clusterInfo.cluster_memory_utilization || 0;
 
-    return Math.round(value);
+    return value;
   }
 
   getTableColumns(): string[] {

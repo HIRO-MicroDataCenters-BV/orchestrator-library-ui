@@ -38,6 +38,10 @@ import { NgIf, NgFor } from '@angular/common';
 import { ApiService } from '../../core/services/api.service';
 import { K8S_CONSTANTS } from '../../shared/constants';
 
+interface Cluster {
+  cluster_name: string;
+}
+
 @Component({
   selector: 'app-main-layout',
   standalone: true,
@@ -84,6 +88,8 @@ export class MainLayoutComponent implements OnInit {
   private readonly platformId = inject(PLATFORM_ID);
   currentRoute: string | null = null;
   showSubmenuOnHover: MenuItem | null = null;
+  cluster: Cluster | null = null;
+
   menuItems: MenuItem[] = [
     {
       label: null,
@@ -142,6 +148,11 @@ export class MainLayoutComponent implements OnInit {
             K8S_CONSTANTS.DEFAULT_VALUES.SERVICE_ACCOUNT_NAME,
         })
         .subscribe();
+      this.apiService.getClusterInfo().subscribe((res) => {
+        if (res) {
+          this.cluster = res;
+        }
+      });
     }
   }
 

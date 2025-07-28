@@ -11,6 +11,7 @@ import {
   NavigationEnd,
   RouterOutlet,
 } from '@angular/router';
+import actionsData from '../../../mock/workload_action_response.json';
 
 @Component({
   selector: 'app-actions',
@@ -23,25 +24,29 @@ export class ActionsComponent implements OnInit, OnDestroy {
   private routerSubscription: Subscription | null = null;
   clusters = [];
   columns = [
-    'id',
-    'action_type',
+    'id_uid',
     'action_status',
+    'action_type',
     'bound_pod_name',
-    'created_pod_namespace',
-    'action_start_time',
-    'action_end_time',
+    'pod_parent_name',
+    'action_reason',
+    'duration',
   ];
   actions = [];
 
   tabs = [];
 
   dataSource: Observable<unknown[]> | null = null;
+  staticData: unknown[] | null = null;
+
+  detailsStruct: any[] = [];
 
   constructor(
     apiService: ApiService,
     private router: Router,
     private activatedRoute: ActivatedRoute
   ) {
+    this.staticData = actionsData;
     this.dataSource = apiService.getWorkloadActions();
   }
   ngOnInit(): void {
@@ -51,6 +56,51 @@ export class ActionsComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.checkCurrentRoute();
       });
+
+    this.detailsStruct = [
+      {
+        title: 'action_details',
+        items: [
+          {
+            icon: 'circle_dot',
+            prop: 'action_type',
+          },
+          {
+            icon: 'circle_check',
+            prop: 'action_status',
+          },
+          {
+            icon: 'calendar_clock',
+            prop: 'created_at',
+          },
+          {
+            icon: 'calendar_clock',
+            prop: 'updated_at',
+          },
+          {
+            icon: 'timer',
+            prop: 'duration',
+          },
+        ],
+      },
+      {
+        title: null,
+        items: [
+          {
+            icon: 'package',
+            prop: 'bound_pod_name',
+          },
+          {
+            icon: 'layers',
+            prop: 'pod_parent_name',
+          },
+          {
+            icon: 'text',
+            prop: 'action_reason',
+          },
+        ],
+      },
+    ];
   }
 
   ngOnDestroy(): void {

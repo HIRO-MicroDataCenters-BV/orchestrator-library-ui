@@ -12,6 +12,7 @@ import {
 import { AppTableComponent } from '../../../components/app-table/app-table.component';
 import { TranslocoModule } from '@jsverse/transloco';
 import { ApiService } from '../../../core/services';
+import requestDecisionsData from '../../../mock/workload_request_decision_response.json';
 
 @Component({
   selector: 'app-request-decisions',
@@ -24,17 +25,12 @@ export class RequestDecisionsComponent implements OnInit, OnDestroy {
   private routerSubscription: Subscription | null = null;
   clusters = [];
   columns = [
-    'request_id',
+    'id_uid',
     'pod_name',
-    //'namespace',
-    //'queue_name',
-    //'demand_cpu',
-    //'demand_memory',
-    // 'node_id',
-    'node_name',
-    'pod_parent_kind',
     'decision_status',
-    'namespace',
+    'cpu_memory',
+    'node_name',
+    'queue_name',
     'created_at',
   ];
   actions = [];
@@ -42,12 +38,16 @@ export class RequestDecisionsComponent implements OnInit, OnDestroy {
   tabs = [];
 
   dataSource: Observable<unknown[]> | null = null;
+  staticData: unknown[] | null = null;
+
+  detailsStruct: any[] = [];
 
   constructor(
     apiService: ApiService,
     private router: Router,
     private activatedRoute: ActivatedRoute
   ) {
+    this.staticData = requestDecisionsData;
     this.dataSource = apiService.getWorkloadDecisions();
   }
   ngOnInit(): void {
@@ -57,6 +57,62 @@ export class RequestDecisionsComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.checkCurrentRoute();
       });
+    this.detailsStruct = [
+      {
+        title: 'decision_details',
+        items: [
+          {
+            icon: 'time',
+            prop: 'is_decision_status',
+          },
+          {
+            icon: 'calendar',
+            prop: 'date',
+          },
+          {
+            icon: 'time',
+            prop: 'time',
+          },
+        ],
+      },
+      {
+        title: null,
+        items: [
+          {
+            icon: 'text',
+            prop: 'pod_name',
+          },
+          {
+            icon: 'text',
+            prop: 'pod_id',
+          },
+          {
+            icon: 'text',
+            prop: 'namespace',
+          },
+          {
+            icon: 'list_tree',
+            prop: 'queue_name',
+          },
+          {
+            icon: 'layers',
+            prop: 'pod_parent_name',
+          },
+          {
+            icon: 'hard_drive',
+            prop: 'node_name',
+          },
+          {
+            icon: 'cpu',
+            prop: 'cpu',
+          },
+          {
+            icon: 'memory_stick',
+            prop: 'memory',
+          },
+        ],
+      },
+    ];
   }
 
   ngOnDestroy(): void {

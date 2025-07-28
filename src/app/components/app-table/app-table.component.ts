@@ -1,4 +1,5 @@
 import { DatePipe, NgClass, NgFor, NgIf } from '@angular/common';
+
 import { TranslocoModule } from '@jsverse/transloco';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import {
@@ -13,6 +14,7 @@ import {
   SimpleChanges,
   TrackByFunction,
   untracked,
+  ViewChild,
 } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
@@ -31,11 +33,17 @@ import {
   lucideTriangleAlert,
   lucideCircleX,
   lucideCircle,
+  lucideCalendarClock,
+  lucideTimer,
+  lucidePackage,
+  lucideText,
+  lucideLayers,
 } from '@ng-icons/lucide';
 import { HlmButtonModule } from '@spartan-ng/ui-button-helm';
 import { HlmIconDirective } from '@spartan-ng/ui-icon-helm';
 import { HlmInputDirective } from '@spartan-ng/ui-input-helm';
 import { BrnMenuTriggerDirective } from '@spartan-ng/brain/menu';
+import { getDuration } from '../../shared';
 import {
   HlmMenuItemCheckboxDirective,
   HlmMenuItemCheckComponent,
@@ -53,7 +61,24 @@ import { HlmSelectModule } from '@spartan-ng/ui-select-helm';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { debounceTime, Observable } from 'rxjs';
 import { HlmBadgeDirective } from '@spartan-ng/ui-badge-helm';
+import { BrnSeparatorComponent } from '@spartan-ng/brain/separator';
+import { HlmSeparatorDirective } from '@spartan-ng/ui-separator-helm';
+
 import { AppCircleProgressComponent } from '../app-circle-progress/app-circle-progress.component';
+import { AppDetailsComponent } from '../app-details/app-details.component';
+import {
+  BrnSheetTriggerDirective,
+  BrnSheetContentDirective,
+} from '@spartan-ng/brain/sheet';
+import {
+  HlmSheetComponent,
+  HlmSheetContentComponent,
+  HlmSheetDescriptionDirective,
+  HlmSheetFooterComponent,
+  HlmSheetHeaderComponent,
+  HlmSheetTitleDirective,
+  HlmSheetOverlayDirective,
+} from '@spartan-ng/helm/sheet';
 
 // Import centralized types and utilities
 import {
@@ -81,6 +106,7 @@ import {
  * @param actions - Array of action names for row menus
  * @param tabs - Array of tab names for filtering
  * @param dataSource - Observable data source for table content
+ * @param staticData - Static JSON data source for table content (takes priority over dataSource)
  *
  * @example
  * // Table with headers visible
@@ -89,11 +115,17 @@ import {
  * @example
  * // Clean table for dashboard embedding (no headers/footer)
  * <app-table [columns]="['name', 'status']" [showHeader]="false" [showFooter]="false"></app-table>
+ *
+ * @example
+ * // Table with static data
+ * <app-table [columns]="['name', 'status']" [staticData]="myJsonData"></app-table>
  */
 @Component({
   selector: 'app-table',
   standalone: true,
   imports: [
+    BrnSeparatorComponent,
+    HlmSeparatorDirective,
     FormsModule,
     NgIcon,
     BrnMenuTriggerDirective,
@@ -118,6 +150,16 @@ import {
     NgFor,
     NgIf,
     RouterLink,
+    BrnSheetTriggerDirective,
+    HlmSheetComponent,
+    HlmSheetContentComponent,
+    HlmSheetDescriptionDirective,
+    HlmSheetFooterComponent,
+    HlmSheetHeaderComponent,
+    HlmSheetTitleDirective,
+    BrnSheetContentDirective,
+    HlmSheetOverlayDirective,
+    AppDetailsComponent,
   ],
   providers: [
     provideIcons({
@@ -135,6 +177,11 @@ import {
       lucideTriangleAlert,
       lucideCircleX,
       lucideCircle,
+      lucideCalendarClock,
+      lucideTimer,
+      lucidePackage,
+      lucideText,
+      lucideLayers,
     }),
   ],
   host: {
@@ -148,10 +195,15 @@ export class AppTableComponent implements OnChanges, OnInit {
   @Input('actions') actions: string[] = [];
   @Input('tabs') tabs: string[] = [];
   @Input('dataSource') dataSource: Observable<unknown[]> | null = null;
+  @Input('staticData') staticData: unknown[] | null = null;
   @Input('hasRowAction') hasRowAction = true;
   @Input('showHeader') showHeader = true;
   @Input('showFooter') showFooter = true;
   @Input('pageSize') pageSize?: number;
+  @Input('detailsStruct') detailsStruct: any = [];
+
+  details: any = {};
+  detailsTitle = '';
 
   ACTION_ICONS: Record<string, string> = {
     view_details: lucideInfo,
@@ -221,6 +273,10 @@ export class AppTableComponent implements OnChanges, OnInit {
     }
     return this._items();
   });
+
+  getDuration(start: string, end: string) {
+    return getDuration(start, end);
+  }
   // TODO: Implement sorting logic for all columns
   private readonly _colSort = signal<'ASC' | 'DESC' | null>(null);
   protected readonly _filteredSortedPaginatedItems = computed(() => {
@@ -283,7 +339,10 @@ export class AppTableComponent implements OnChanges, OnInit {
       this.initializeDashboardPagination();
     }
 
-    if (this.dataSource) {
+    // Load data - prioritize staticData over dataSource
+    if (this.staticData && this.staticData.length > 0) {
+      this.loadStaticData();
+    } else if (this.dataSource) {
       this.fetchData();
     }
   }
@@ -303,6 +362,15 @@ export class AppTableComponent implements OnChanges, OnInit {
           this.initializeDashboardPagination();
         }
       });
+    }
+  }
+
+  loadStaticData(): void {
+    if (this.staticData) {
+      this._items.set(this.staticData as BaseTableData[]);
+      if (!this.showFooter) {
+        this.initializeDashboardPagination();
+      }
     }
   }
 
@@ -331,6 +399,10 @@ export class AppTableComponent implements OnChanges, OnInit {
   }
 
   public onRowClick(element: BaseTableData) {
+    console.log('rowclicks', element, this.detailsStruct);
+    this.detailsTitle = element.id;
+    this.details = element;
+    /*
     if (!this.router || !this.route) {
       return;
     }
@@ -338,6 +410,7 @@ export class AppTableComponent implements OnChanges, OnInit {
       relativeTo: this.route,
       state: element as Record<string, unknown>,
     });
+    */
   }
 
   public setFilter() {
@@ -392,6 +465,17 @@ export class AppTableComponent implements OnChanges, OnInit {
           };
         })
       );
+    }
+
+    // Handle data source changes - staticData has priority
+    if (changes['staticData'] || changes['dataSource']) {
+      if (this.staticData && this.staticData.length > 0) {
+        this.loadStaticData();
+      } else if (this.dataSource) {
+        this.fetchData();
+      } else {
+        this._items.set([]);
+      }
     }
   }
 }

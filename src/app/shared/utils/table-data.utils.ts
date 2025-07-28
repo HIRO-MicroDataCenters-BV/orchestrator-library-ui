@@ -312,3 +312,12 @@ export const getFieldWithFallback = (
   }
   return fallback;
 };
+
+export const getDuration = (start: string, end: string): number => {
+  const dateStart = new Date(start);
+  const dateEnd = new Date(end);
+  const diffMilliseconds = Math.abs(dateStart.getTime() - dateEnd.getTime());
+  const diffSeconds = diffMilliseconds / 1000;
+
+  return diffSeconds;
+};

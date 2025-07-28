@@ -33,6 +33,7 @@
     "nodes": "Nodes",
     "emdc": "EMDC",
     "k8s": "Kubernetes Dashboard",
+    "kubernetes": "Kubernetes Dashboard",
     "alerts": "Alerts",
     "cog": "COG",
     "monitoring": "Monitoring",
@@ -51,11 +52,40 @@
     "cordon_cluster": "Cordon Cluster",
     "drain_cluster": "Drain Cluster",
     "delete_cluster": "Delete Cluster",
-    "healthy": "Healthy"
+    "healthy": "Healthy",
+    "retry": "Retry"
   },
   "placeholder": {
     "search": "Search...",
     "columns": "Columns"
+  },
+  "details": {
+    "action_details": "Action Details",
+    "action_type": "Action",
+    "action_status": "Status",
+    "created_at": "Start Date & Time",
+    "updated_at": "End Date & Time",
+    "duration": "Duration",
+    "bound_pod_name": "Target Pod",
+    "pod_parent_name": "Parent Workload",
+    "action_reason": "Reason",
+    "alert_type": "Type",
+    "date": "Date",
+    "time": "Time",
+    "node_id": "Node",
+    "pod_id": "Pod",
+    "pod_name": "Pod Name",
+    "ai_summary": "AI Summary",
+    "alert_model": "Model Used",
+    "alert_description": "Description",
+    "alert_details": "Alert Details",
+    "decision_details": "Decision Details",
+    "queue_name": "Queue",
+    "is_decision_status": "Status",
+    "memory": "Demand Memory",
+    "cpu": "Demand CPU",
+    "node_name": "Node",
+    "namespace": "Namespace"
   },
   "column": {
     "id": "ID",
@@ -78,9 +108,10 @@
     "pod_parent_type": "Parent Type",
     "pod_parent_uid": "Parent UID",
     "actions": "Actions",
-    "alert_type": "Alert",
+    "alert_type": "Type",
     "alert_description": "Description",
-    "action_type": "Action Type",
+    "alert_model": "Model",
+    "action_type": "Action",
     "request_id": "Request ID",
     "status": "Status",
     "updated_at": "Updated At",
@@ -92,7 +123,7 @@
     "pod_name": "Pod Name",
     "pod_parent_kind": "Parent",
     "node_id": "Node ID",
-    "node_name": "Node Name",
+    "node_name": "Node",
     "pod_id": "Pod ID",
     "decision_status": "Decision Status",
     "created_at": "Created At",
@@ -100,7 +131,11 @@
     "action_end_time": "End Time",
     "bound_pod_name": "Target Pod",
     "pod_parent_name": "Parent Workload",
-    "action_reason": "Reason"
+    "action_reason": "Reason",
+    "pod": "Pod",
+    "duration": "Duration",
+    "cpu_memory": "CPU / Memory",
+    "time": "Time"
   },
   "common": {
     "title": "Orchestration Library",
@@ -119,7 +154,11 @@
   },
   "hint": {
     "page": "page",
-    "no_data": "No data"
+    "no_data": "No data",
+    "m": "m",
+    "mi": "Mi",
+    "s": "s",
+    "slack": "Slack"
   },
   "auth": {
     "login": {
@@ -175,6 +214,11 @@
     "logout": "Logout"
   },
   "error": {
+    "filed_to_load": {
+      "title": "Failed to Load",
+      "message": "An error occurred while loading the page. Please try again later.",
+      "retry": "Retry"
+    },
     "not_found": {
       "title": "Page Not Found",
       "message": "The page you are looking for doesn't exist or has been moved.",

@@ -12,6 +12,8 @@ import {
   RouterOutlet,
 } from '@angular/router';
 
+import alertsData from '../../../mock/alerts_response.json';
+
 @Component({
   selector: 'app-alerts',
   standalone: true,
@@ -22,19 +24,63 @@ export class AlertsComponent implements OnInit, OnDestroy {
   showParentContent = true;
   private routerSubscription: Subscription | null = null;
   clusters = [];
-  columns = ['alert_type', 'pod_id', 'created_at'];
+  columns = ['id', 'alert_description', 'alert_type', 'alert_model', 'time'];
   actions = [];
 
   tabs = [];
 
   dataSource: Observable<unknown[]> | null = null;
+  staticData: unknown[] | null = null;
+
+  detailsStruct: any[] = [];
 
   constructor(
     apiService: ApiService,
     private router: Router,
     private activatedRoute: ActivatedRoute
   ) {
+    this.staticData = alertsData;
     this.dataSource = apiService.getAlerts();
+    this.detailsStruct = [
+      {
+        title: 'alert_details',
+        items: [
+          {
+            icon: 'circle_dot',
+            prop: 'alert_type',
+          },
+          {
+            icon: 'calendar',
+            prop: 'date',
+          },
+          {
+            icon: 'time',
+            prop: 'time',
+          },
+          {
+            icon: 'hard_drive',
+            prop: 'node_id',
+          },
+          {
+            icon: 'package',
+            prop: 'pod_id',
+          },
+        ],
+      },
+      {
+        title: 'ai_summary',
+        items: [
+          {
+            icon: 'bot',
+            prop: 'alert_model',
+          },
+          {
+            icon: 'text',
+            prop: 'alert_description',
+          },
+        ],
+      },
+    ];
   }
   ngOnInit(): void {
     this.checkCurrentRoute();
