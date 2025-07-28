@@ -1,6 +1,6 @@
 <div class="dashboard-card space-1 rounded-md bg-gray-100 p-1 relative">
   <header class="p-4 flex">
-    <h2 class="text-sm">{{ data.title }}</h2>
+    <h2 class="text-sm">{{ data.title | transloco }}</h2>
     <div *ngIf="data.actions" class="ml-auto">
       <ul class="flex gap-2 text-sm">
         <li
@@ -11,7 +11,7 @@
             [routerLink]="action.link"
             routerLinkActive="active"
             class="text-gray-500 hover:text-primary"
-            >{{ action.label }}</a
+            >{{ action.label | transloco }}</a
           >
         </li>
       </ul>
