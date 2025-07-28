@@ -19,8 +19,8 @@
           <h1 class="text-sm font-semibold leading-none">
             {{ 'app.title' | transloco }}
           </h1>
-          <p class="text-xs text-gray-700">
-            {{ 'app.description' | transloco }}
+          <p *ngIf="cluster" class="text-xs text-gray-700">
+            {{ cluster?.cluster_name }}
           </p>
         </div>
       </div>

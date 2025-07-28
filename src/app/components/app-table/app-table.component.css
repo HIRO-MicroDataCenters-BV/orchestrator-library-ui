@@ -69,19 +69,9 @@ hlm-th[style*='display: none'] {
 .brn-table th[style*='display: none'] {
   display: none !important;
 }
-
-.container-table {
-}
-.container-table cdk-table {
-  width: 100%;
-  display: table !important;
-}
-cdk-header-row,
-cdk-row,
-.cdk-row {
-  display: table-row !important;
-}
-hlm-th,
-hlm-td {
-  display: table-cell !important;
+.container-table button {
+  text-align: left;
+  cursor: pointer;
+  padding-left: 0;
+  padding-right: 0;
 }

@@ -1,4 +1,5 @@
 import { DatePipe, NgClass, NgFor, NgIf } from '@angular/common';
+
 import { TranslocoModule } from '@jsverse/transloco';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import {
@@ -13,6 +14,7 @@ import {
   SimpleChanges,
   TrackByFunction,
   untracked,
+  ViewChild,
 } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
@@ -31,11 +33,17 @@ import {
   lucideTriangleAlert,
   lucideCircleX,
   lucideCircle,
+  lucideCalendarClock,
+  lucideTimer,
+  lucidePackage,
+  lucideText,
+  lucideLayers,
 } from '@ng-icons/lucide';
 import { HlmButtonModule } from '@spartan-ng/ui-button-helm';
 import { HlmIconDirective } from '@spartan-ng/ui-icon-helm';
 import { HlmInputDirective } from '@spartan-ng/ui-input-helm';
 import { BrnMenuTriggerDirective } from '@spartan-ng/brain/menu';
+import { getDuration } from '../../shared';
 import {
   HlmMenuItemCheckboxDirective,
   HlmMenuItemCheckComponent,
@@ -53,7 +61,24 @@ import { HlmSelectModule } from '@spartan-ng/ui-select-helm';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { debounceTime, Observable } from 'rxjs';
 import { HlmBadgeDirective } from '@spartan-ng/ui-badge-helm';
+import { BrnSeparatorComponent } from '@spartan-ng/brain/separator';
+import { HlmSeparatorDirective } from '@spartan-ng/ui-separator-helm';
+
 import { AppCircleProgressComponent } from '../app-circle-progress/app-circle-progress.component';
+import { AppDetailsComponent } from '../app-details/app-details.component';
+import {
+  BrnSheetTriggerDirective,
+  BrnSheetContentDirective,
+} from '@spartan-ng/brain/sheet';
+import {
+  HlmSheetComponent,
+  HlmSheetContentComponent,
+  HlmSheetDescriptionDirective,
+  HlmSheetFooterComponent,
+  HlmSheetHeaderComponent,
+  HlmSheetTitleDirective,
+  HlmSheetOverlayDirective,
+} from '@spartan-ng/helm/sheet';
 
 // Import centralized types and utilities
 import {
@@ -99,6 +124,8 @@ import {
   selector: 'app-table',
   standalone: true,
   imports: [
+    BrnSeparatorComponent,
+    HlmSeparatorDirective,
     FormsModule,
     NgIcon,
     BrnMenuTriggerDirective,
@@ -123,6 +150,16 @@ import {
     NgFor,
     NgIf,
     RouterLink,
+    BrnSheetTriggerDirective,
+    HlmSheetComponent,
+    HlmSheetContentComponent,
+    HlmSheetDescriptionDirective,
+    HlmSheetFooterComponent,
+    HlmSheetHeaderComponent,
+    HlmSheetTitleDirective,
+    BrnSheetContentDirective,
+    HlmSheetOverlayDirective,
+    AppDetailsComponent,
   ],
   providers: [
     provideIcons({
@@ -140,6 +177,11 @@ import {
       lucideTriangleAlert,
       lucideCircleX,
       lucideCircle,
+      lucideCalendarClock,
+      lucideTimer,
+      lucidePackage,
+      lucideText,
+      lucideLayers,
     }),
   ],
   host: {
@@ -158,6 +200,10 @@ export class AppTableComponent implements OnChanges, OnInit {
   @Input('showHeader') showHeader = true;
   @Input('showFooter') showFooter = true;
   @Input('pageSize') pageSize?: number;
+  @Input('detailsStruct') detailsStruct: any = [];
+
+  details: any = {};
+  detailsTitle = '';
 
   ACTION_ICONS: Record<string, string> = {
     view_details: lucideInfo,
@@ -227,6 +273,10 @@ export class AppTableComponent implements OnChanges, OnInit {
     }
     return this._items();
   });
+
+  getDuration(start: string, end: string) {
+    return getDuration(start, end);
+  }
   // TODO: Implement sorting logic for all columns
   private readonly _colSort = signal<'ASC' | 'DESC' | null>(null);
   protected readonly _filteredSortedPaginatedItems = computed(() => {
@@ -349,6 +399,10 @@ export class AppTableComponent implements OnChanges, OnInit {
   }
 
   public onRowClick(element: BaseTableData) {
+    console.log('rowclicks', element, this.detailsStruct);
+    this.detailsTitle = element.id;
+    this.details = element;
+    /*
     if (!this.router || !this.route) {
       return;
     }
@@ -356,6 +410,7 @@ export class AppTableComponent implements OnChanges, OnInit {
       relativeTo: this.route,
       state: element as Record<string, unknown>,
     });
+    */
   }
 
   public setFilter() {
@@ -379,15 +434,6 @@ export class AppTableComponent implements OnChanges, OnInit {
     } else {
       this._colSort.set('ASC');
     }
-  }
-
-  getDuration(start: string, end: string): number {
-    const dateStart = new Date(start);
-    const dateEnd = new Date(end);
-    const diffMilliseconds = Math.abs(dateStart.getTime() - dateEnd.getTime());
-    const diffSeconds = diffMilliseconds / 1000;
-
-    return diffSeconds;
   }
 
   getDashboardStatusIcon(element: unknown): string {

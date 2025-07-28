@@ -1,33 +1,79 @@
-<div class="p-4">
-  <div *ngIf="data && (data | keyvalue).length > 0; else noData">
-    <div *ngFor="let item of data | keyvalue" class="mb-2 p-2 border-b">
-      <div class="flex justify-between">
-        <span class="font-medium">{{ `column.${item.key}` | transloco }}:</span>
-        <span
-          [class.text-green-600]="
-            getValueType(item.value) === 'boolean' && item.value
-          "
-          [class.text-red-600]="
-            getValueType(item.value) === 'boolean' && !item.value
-          "
-          [class.text-blue-600]="getValueType(item.value) === 'number'"
-          [class.text-gray-700]="getValueType(item.value) === 'string'"
-        >
-          <span *ngIf="getValueType(item.value) === 'date'" class="text-right">
-            <div class="text-sm">{{ item.value | date : 'dd/MM/yyyy' }}</div>
-            <div class="text-xs text-gray-400">
-              {{ item.value | date : 'HH:mm:ss' }}
+<div>
+  <div hlm class="container-details">
+    <div *ngIf="data && struct; else noData">
+      <div
+        *ngFor="let group of struct"
+        class="border-b border-b-gray-300 mb-6 group"
+      >
+        <header *ngIf="group && group?.title" class="px-4">
+          <p class="text-sm mb-6">{{ `details.${group.title}` | transloco }}</p>
+        </header>
+        <section class="list">
+          <div
+            *ngFor="let item of group.items"
+            class="grid grid-cols-2 mb-6 px-4"
+          >
+            <div class="flex text-gray-500">
+              <div>
+                <div class="flex gap-2">
+                  <span class="flex items-center"
+                    ><ng-icon hlm [svg]="getIcon(item.icon)" /></span
+                  ><span>{{`details.${item.prop}` | transloco}}</span>
+                </div>
+              </div>
             </div>
-          </span>
-          <span *ngIf="getValueType(item.value) !== 'date'">
-            {{ item.value }}
-          </span>
-        </span>
+            <div *ngIf="data" class="text-ellipsis w-full">
+              <span>
+                <span *ngIf="getValueType(data[item.prop]) === 'date'">
+                  <span class="text-sm">{{
+                    data[item.prop] | date : 'dd/MM/yyyy'
+                  }}</span>
+                  <span class="text-sm text-gray-400">
+                    {{ data[item.prop] | date : 'HH:mm:ss' }}
+                  </span>
+                </span>
+
+                <span *ngIf="getValueType(data[item.prop]) !== 'date'">
+                  {{ data[item.prop] }}
+                </span>
+                <span *ngIf="item.prop == 'duration'"
+                  >{{ getDuration(data['created_at'], data['updated_at'])
+                  }}{{ 'hint.s' | transloco }}</span
+                >
+                <span *ngIf="item.prop == 'date'">{{
+                  data['created_at'] | date : 'dd MMM yyyy'
+                }}</span>
+                <span *ngIf="item.prop == 'time'">{{
+                  data['created_at'] | date : 'HH:mm:ss'
+                }}</span>
+
+                <span *ngIf="item.prop === 'cpu'">
+                  <div class="text-sm">
+                    {{ data['demand_cpu'] }}{{ 'hint.m' | transloco }}
+                  </div>
+                  <div class="text-sm text-gray-400">
+                    {{ 'hint.slack' | transloco }} {{ data['demand_slack_cpu']
+                    }}{{ 'hint.m' | transloco }}
+                  </div>
+                </span>
+                <span *ngIf="item.prop === 'memory'">
+                  <div class="text-sm">
+                    {{ data['demand_memory'] }}{{ 'hint.m' | transloco }}
+                  </div>
+                  <div class="text-sm text-gray-400">
+                    {{ 'hint.slack' | transloco }}
+                    {{ data['demand_slack_memory'] }}{{ 'hint.mi' | transloco }}
+                  </div>
+                </span>
+              </span>
+            </div>
+          </div>
+        </section>
       </div>
     </div>
-  </div>
 
-  <ng-template #noData>
-    <p>No data available</p>
-  </ng-template>
+    <ng-template #noData>
+      <p>{{ 'hint.no_data' | transloco }}</p>
+    </ng-template>
+  </div>
 </div>

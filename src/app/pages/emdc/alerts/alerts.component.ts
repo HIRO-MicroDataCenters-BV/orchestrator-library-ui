@@ -11,6 +11,7 @@ import {
   NavigationEnd,
   RouterOutlet,
 } from '@angular/router';
+
 import alertsData from '../../../mock/alerts_response.json';
 
 @Component({
@@ -31,6 +32,8 @@ export class AlertsComponent implements OnInit, OnDestroy {
   dataSource: Observable<unknown[]> | null = null;
   staticData: unknown[] | null = null;
 
+  detailsStruct: any[] = [];
+
   constructor(
     apiService: ApiService,
     private router: Router,
@@ -38,6 +41,46 @@ export class AlertsComponent implements OnInit, OnDestroy {
   ) {
     this.staticData = alertsData;
     this.dataSource = apiService.getAlerts();
+    this.detailsStruct = [
+      {
+        title: 'alert_details',
+        items: [
+          {
+            icon: 'circle_dot',
+            prop: 'alert_type',
+          },
+          {
+            icon: 'calendar',
+            prop: 'date',
+          },
+          {
+            icon: 'time',
+            prop: 'time',
+          },
+          {
+            icon: 'hard_drive',
+            prop: 'node_id',
+          },
+          {
+            icon: 'package',
+            prop: 'pod_id',
+          },
+        ],
+      },
+      {
+        title: 'ai_summary',
+        items: [
+          {
+            icon: 'bot',
+            prop: 'alert_model',
+          },
+          {
+            icon: 'text',
+            prop: 'alert_description',
+          },
+        ],
+      },
+    ];
   }
   ngOnInit(): void {
     this.checkCurrentRoute();

@@ -227,13 +227,12 @@ export class AppDashboardCardComponent implements OnInit, OnDestroy {
     if (!this.clusterInfo || this.isLoading || this.hasError) {
       return 0;
     }
-
     const value =
       type === 'cpu'
         ? this.clusterInfo.cluster_cpu_utilization || 0
         : this.clusterInfo.cluster_memory_utilization || 0;
 
-    return Math.round(value);
+    return value;
   }
 
   getTableColumns(): string[] {

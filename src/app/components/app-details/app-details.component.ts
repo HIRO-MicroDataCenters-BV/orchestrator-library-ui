@@ -1,23 +1,123 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit, Input } from '@angular/core';
 import { KeyValuePipe, NgFor, NgIf, DatePipe } from '@angular/common';
 import { TranslocoModule } from '@jsverse/transloco';
+import { getDuration } from '../../shared';
+import { HlmScrollAreaDirective } from '@spartan-ng/ui-scrollarea-helm';
+
+import {
+  lucideArrowUpDown,
+  lucideChevronDown,
+  lucideCog,
+  lucideDownload,
+  lucideEllipsisVertical,
+  lucideInfo,
+  lucidePause,
+  lucidePlus,
+  lucideTerminal,
+  lucideTrash2,
+  lucideCircleCheck,
+  lucideTriangleAlert,
+  lucideCircleX,
+  lucideCircle,
+  lucideCalendarClock,
+  lucideTimer,
+  lucidePackage,
+  lucideText,
+  lucideLayers,
+  lucideCalendar,
+  lucideClock,
+  lucideHardDrive,
+  lucideBot,
+  lucideMemoryStick,
+  lucideCpu,
+  lucideListTree,
+} from '@ng-icons/lucide';
+import { NgIcon, provideIcons } from '@ng-icons/core';
+
+interface StructItem {
+  icon: string;
+  prop: string;
+}
+
+interface Struct {
+  title: string | null;
+  items: StructItem[];
+}
+
+interface Data {
+  [keys: string]: any;
+}
 
 @Component({
   selector: 'app-details',
   standalone: true,
-  imports: [TranslocoModule, KeyValuePipe, NgFor, NgIf, DatePipe],
+  imports: [
+    TranslocoModule,
+    KeyValuePipe,
+    NgFor,
+    NgIf,
+    DatePipe,
+    NgIcon,
+    HlmScrollAreaDirective,
+  ],
+  providers: [
+    provideIcons({
+      lucideChevronDown,
+      lucideEllipsisVertical,
+      lucideArrowUpDown,
+      lucideInfo,
+      lucideDownload,
+      lucideTerminal,
+      lucidePlus,
+      lucideCog,
+      lucidePause,
+      lucideTrash2,
+      lucideCircleCheck,
+      lucideTriangleAlert,
+      lucideCircleX,
+      lucideCircle,
+      lucideCalendarClock,
+      lucideTimer,
+      lucidePackage,
+      lucideText,
+      lucideLayers,
+      lucideCalendar,
+      lucideClock,
+      lucideHardDrive,
+      lucideBot,
+      lucideMemoryStick,
+      lucideCpu,
+      lucideListTree,
+    }),
+  ],
+  styleUrls: ['./app-details.component.css'],
   templateUrl: './app-details.component.html',
 })
-export class AppDetailsComponent implements OnInit {
-  id: string | null = null;
-  data = {};
+export class AppDetailsComponent {
+  @Input('struct') struct: Struct[] = [];
+  @Input('data') data: Data | null = null;
 
-  constructor(private route: ActivatedRoute, private router: Router) {}
+  getIcon(name: string) {
+    return {
+      circle_dot: lucideCircle,
+      circle_check: lucideCircleCheck,
+      calendar_clock: lucideCalendarClock,
+      timer: lucideTimer,
+      layers: lucideLayers,
+      text: lucideText,
+      package: lucidePackage,
+      hard_drive: lucideHardDrive,
+      bot: lucideBot,
+      time: lucideClock,
+      calendar: lucideCalendar,
+      memory_stick: lucideMemoryStick,
+      cpu: lucideCpu,
+      list_tree: lucideListTree,
+    }[name];
+  }
 
-  ngOnInit(): void {
-    this.id = this.route.snapshot.paramMap.get('id');
-    this.data = history.state;
+  getDuration(start: string, end: string) {
+    return getDuration(start, end);
   }
 
   getValueType(value: unknown): string {

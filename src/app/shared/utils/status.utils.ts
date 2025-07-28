@@ -68,8 +68,8 @@ const STATUS_CONFIG_MAP: Record<string, StatusConfig> = {
   [StatusType.PENDING]: {
     value: StatusType.PENDING,
     label: 'Pending',
-    color: 'text-blue-700',
-    bgColor: 'bg-blue-100',
+    color: 'text-yellow-700',
+    bgColor: 'bg-yellow-100',
     icon: 'lucideCircle',
   },
 
@@ -199,8 +199,8 @@ const STATUS_CONFIG_MAP: Record<string, StatusConfig> = {
   [StatusType.PARTIAL]: {
     value: StatusType.PARTIAL,
     label: 'Partial',
-    color: 'text-yellow-700',
-    bgColor: 'bg-yellow-100',
+    color: 'text-black',
+    bgColor: 'bg-gray-300',
     icon: 'lucideCircle',
   },
 

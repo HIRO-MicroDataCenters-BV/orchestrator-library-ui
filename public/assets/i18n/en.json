@@ -59,6 +59,34 @@
     "search": "Search...",
     "columns": "Columns"
   },
+  "details": {
+    "action_details": "Action Details",
+    "action_type": "Action",
+    "action_status": "Status",
+    "created_at": "Start Date & Time",
+    "updated_at": "End Date & Time",
+    "duration": "Duration",
+    "bound_pod_name": "Target Pod",
+    "pod_parent_name": "Parent Workload",
+    "action_reason": "Reason",
+    "alert_type": "Type",
+    "date": "Date",
+    "time": "Time",
+    "node_id": "Node",
+    "pod_id": "Pod",
+    "pod_name": "Pod Name",
+    "ai_summary": "AI Summary",
+    "alert_model": "Model Used",
+    "alert_description": "Description",
+    "alert_details": "Alert Details",
+    "decision_details": "Decision Details",
+    "queue_name": "Queue",
+    "is_decision_status": "Status",
+    "memory": "Demand Memory",
+    "cpu": "Demand CPU",
+    "node_name": "Node",
+    "namespace": "Namespace"
+  },
   "column": {
     "id": "ID",
     "name": "Name",
@@ -129,7 +157,8 @@
     "no_data": "No data",
     "m": "m",
     "mi": "Mi",
-    "s": "s"
+    "s": "s",
+    "slack": "Slack"
   },
   "auth": {
     "login": {

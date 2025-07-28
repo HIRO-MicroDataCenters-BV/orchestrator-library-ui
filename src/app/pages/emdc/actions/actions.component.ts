@@ -39,6 +39,8 @@ export class ActionsComponent implements OnInit, OnDestroy {
   dataSource: Observable<unknown[]> | null = null;
   staticData: unknown[] | null = null;
 
+  detailsStruct: any[] = [];
+
   constructor(
     apiService: ApiService,
     private router: Router,
@@ -54,6 +56,51 @@ export class ActionsComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.checkCurrentRoute();
       });
+
+    this.detailsStruct = [
+      {
+        title: 'action_details',
+        items: [
+          {
+            icon: 'circle_dot',
+            prop: 'action_type',
+          },
+          {
+            icon: 'circle_check',
+            prop: 'action_status',
+          },
+          {
+            icon: 'calendar_clock',
+            prop: 'created_at',
+          },
+          {
+            icon: 'calendar_clock',
+            prop: 'updated_at',
+          },
+          {
+            icon: 'timer',
+            prop: 'duration',
+          },
+        ],
+      },
+      {
+        title: null,
+        items: [
+          {
+            icon: 'package',
+            prop: 'bound_pod_name',
+          },
+          {
+            icon: 'layers',
+            prop: 'pod_parent_name',
+          },
+          {
+            icon: 'text',
+            prop: 'action_reason',
+          },
+        ],
+      },
+    ];
   }
 
   ngOnDestroy(): void {
