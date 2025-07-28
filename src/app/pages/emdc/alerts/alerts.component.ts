@@ -23,7 +23,7 @@ export class AlertsComponent implements OnInit, OnDestroy {
   showParentContent = true;
   private routerSubscription: Subscription | null = null;
   clusters = [];
-  columns = ['alert_type', 'pod_id', 'created_at'];
+  columns = ['id', 'alert_description', 'alert_type', 'alert_model', 'time'];
   actions = [];
 
   tabs = [];

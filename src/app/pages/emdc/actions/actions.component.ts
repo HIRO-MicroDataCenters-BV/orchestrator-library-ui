@@ -28,9 +28,9 @@ export class ActionsComponent implements OnInit, OnDestroy {
     'action_status',
     'action_type',
     'bound_pod_name',
-    'created_pod_namespace',
-    'action_start_time',
-    'action_end_time',
+    'pod_parent_name',
+    'action_reason',
+    'duration',
   ];
   actions = [];
 

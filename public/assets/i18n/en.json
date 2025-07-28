@@ -80,8 +80,9 @@
     "pod_parent_type": "Parent Type",
     "pod_parent_uid": "Parent UID",
     "actions": "Actions",
-    "alert_type": "Alert",
+    "alert_type": "Type",
     "alert_description": "Description",
+    "alert_model": "Model",
     "action_type": "Action",
     "request_id": "Request ID",
     "status": "Status",
@@ -94,7 +95,7 @@
     "pod_name": "Pod Name",
     "pod_parent_kind": "Parent",
     "node_id": "Node ID",
-    "node_name": "Node Name",
+    "node_name": "Node",
     "pod_id": "Pod ID",
     "decision_status": "Decision Status",
     "created_at": "Created At",
@@ -103,7 +104,10 @@
     "bound_pod_name": "Target Pod",
     "pod_parent_name": "Parent Workload",
     "action_reason": "Reason",
-    "pod": "Pod"
+    "pod": "Pod",
+    "duration": "Duration",
+    "cpu_memory": "CPU / Memory",
+    "time": "Time"
   },
   "common": {
     "title": "Orchestration Library",
@@ -122,7 +126,10 @@
   },
   "hint": {
     "page": "page",
-    "no_data": "No data"
+    "no_data": "No data",
+    "m": "m",
+    "mi": "Mi",
+    "s": "s"
   },
   "auth": {
     "login": {

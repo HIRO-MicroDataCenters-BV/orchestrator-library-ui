@@ -381,6 +381,15 @@ export class AppTableComponent implements OnChanges, OnInit {
     }
   }
 
+  getDuration(start: string, end: string): number {
+    const dateStart = new Date(start);
+    const dateEnd = new Date(end);
+    const diffMilliseconds = Math.abs(dateStart.getTime() - dateEnd.getTime());
+    const diffSeconds = diffMilliseconds / 1000;
+
+    return diffSeconds;
+  }
+
   getDashboardStatusIcon(element: unknown): string {
     const statusValue = getStatusValue(element as BaseTableData);
     return getStatusIcon(statusValue);

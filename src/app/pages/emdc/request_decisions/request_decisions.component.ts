@@ -25,17 +25,12 @@ export class RequestDecisionsComponent implements OnInit, OnDestroy {
   private routerSubscription: Subscription | null = null;
   clusters = [];
   columns = [
-    'request_id',
+    'id_uid',
     'pod_name',
-    //'namespace',
-    //'queue_name',
-    //'demand_cpu',
-    //'demand_memory',
-    // 'node_id',
-    'node_name',
-    'pod_parent_kind',
     'decision_status',
-    'namespace',
+    'cpu_memory',
+    'node_name',
+    'queue_name',
     'created_at',
   ];
   actions = [];
