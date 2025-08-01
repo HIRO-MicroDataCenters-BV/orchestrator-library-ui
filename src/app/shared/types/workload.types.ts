@@ -314,8 +314,8 @@ export const getActionTypeDisplayName = (actionType: WorkloadActionType): string
     [WorkloadActionType.CREATE]: 'Create Pod',
     [WorkloadActionType.DELETE]: 'Delete Pod',
     [WorkloadActionType.MOVE]: 'Move Pod',
-    [WorkloadActionType.SWAP_X]: 'Swap_X Pods',
-    [WorkloadActionType.SWAP_Y]: 'Swap_Y Pods'
+    [WorkloadActionType.SWAP_X]: 'Swap_X Pod',
+    [WorkloadActionType.SWAP_Y]: 'Swap_Y Pod'
   };
   return displayNames[actionType] || actionType;
 };
