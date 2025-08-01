@@ -60,10 +60,56 @@ export class AlertsComponent implements OnInit, OnDestroy {
           {
             icon: 'hard_drive',
             prop: 'node_id',
+            condition: {
+              prop: 'alert_type',
+              if: 'neq',
+              value: 'network-attack',
+            },
           },
           {
             icon: 'package',
             prop: 'pod_id',
+            condition: {
+              prop: 'alert_type',
+              if: 'neq',
+              value: 'network-attack',
+            },
+          },
+          {
+            icon: 'text',
+            prop: 'source_ip',
+            condition: {
+              prop: 'alert_type',
+              if: 'eq',
+              value: 'network-attack',
+            },
+          },
+          {
+            icon: 'text',
+            prop: 'source_port',
+            condition: {
+              prop: 'alert_type',
+              if: 'eq',
+              value: 'network-attack',
+            },
+          },
+          {
+            icon: 'text',
+            prop: 'destination_ip',
+            condition: {
+              prop: 'alert_type',
+              if: 'eq',
+              value: 'network-attack',
+            },
+          },
+          {
+            icon: 'text',
+            prop: 'destination_port',
+            condition: {
+              prop: 'alert_type',
+              if: 'eq',
+              value: 'network-attack',
+            },
           },
         ],
       },

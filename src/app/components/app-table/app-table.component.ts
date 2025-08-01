@@ -395,7 +395,6 @@ export class AppTableComponent implements OnChanges, OnInit {
   }
 
   public onRowClick(element: BaseTableData) {
-    console.log('rowclicks', element, this.detailsStruct);
     this.detailsTitle = element.id;
     this.details = element;
     /*
