@@ -52,7 +52,7 @@ export const createWorkloadRequestDecisionFromResponse = (
     demand_memory: data['demand_memory'] as number,
     demand_slack_cpu: (data['demand_slack_cpu'] as number) || null,
     demand_slack_memory: (data['demand_slack_memory'] as number) || null,
-    is_decision_status: data['is_decision_status'] as boolean,
+    decision_status: data['decision_status'] as string,
     pod_parent_id: data['pod_parent_id'] as string,
     pod_parent_kind: data['pod_parent_kind'] as string,
     created_at: (data['created_at'] as string) || null,
@@ -134,7 +134,7 @@ export const getWorkloadRequestDecisionDescription = (
   decision: WorkloadRequestDecisionSchema
 ): string => {
   const elasticText = decision.is_elastic ? 'Elastic' : 'Non-elastic';
-  const statusText = decision.is_decision_status ? 'Approved' : 'Pending';
+  const statusText = decision.decision_status;
 
   return `${elasticText} pod ${decision.pod_name} in ${decision.namespace} - ${statusText}`;
 };

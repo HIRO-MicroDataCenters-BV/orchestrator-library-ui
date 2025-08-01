@@ -33,7 +33,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
         key: 'cluster',
         title: 'card.cluster',
         type: 'metrics',
-        dataSource: this.apiService.getClusterInfo({ advanced: true }),
+        dataSource: this.apiService.getClusterInfo({ advanced: false }),
         actions: [
           {
             label: 'action.view_details',
