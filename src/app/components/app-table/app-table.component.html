@@ -531,9 +531,11 @@
               variant="ghost"
               (click)="onRowClick(element)"
             >
-              <p class="text-sm text-gray-500">
-                {{ element.is_decision_status }}
-              </p>
+              <span
+                [class]="`${getStatusColor(element.decision_status)} capitalize`"
+                hlmBadge
+                >{{ element.decision_status }}</span
+              >
             </button>
           </hlm-td>
         </brn-column-def>
