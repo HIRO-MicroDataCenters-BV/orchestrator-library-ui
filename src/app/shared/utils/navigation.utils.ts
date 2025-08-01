@@ -23,6 +23,7 @@ const DEFAULT_ROUTE_METADATA: Record<string, RouteMetadata> = {
     breadcrumb: 'emdc',
     title: 'EMDC',
     icon: 'lucideSettings',
+    url: null,
   },
   alerts: {
     breadcrumb: 'alerts',
@@ -43,6 +44,7 @@ const DEFAULT_ROUTE_METADATA: Record<string, RouteMetadata> = {
     breadcrumb: 'workloads',
     title: 'Workloads',
     icon: 'lucideActivity',
+    url: null,
   },
   request_decisions: {
     breadcrumb: 'request_decisions',
@@ -107,11 +109,14 @@ export const generateBreadcrumbs = (
 
     // Get metadata for this segment
     const routeMetadata = metadata[segment];
-
     // Create breadcrumb item
     const breadcrumb: BreadcrumbItem = {
       label: routeMetadata?.breadcrumb || formatSegmentLabel(segment),
-      url: isLastSegment ? null : currentPath,
+      url: isLastSegment
+        ? null
+        : metadata[segment].url !== undefined
+        ? metadata[segment].url
+        : currentPath,
       icon: routeMetadata?.icon,
     };
 

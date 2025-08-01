@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { KeyValuePipe, NgFor, NgIf, DatePipe } from '@angular/common';
+import { NgFor, NgIf, DatePipe } from '@angular/common';
 import { TranslocoModule } from '@jsverse/transloco';
 import { getDuration } from '../../shared';
 import { HlmScrollAreaDirective } from '@spartan-ng/ui-scrollarea-helm';
@@ -53,12 +53,10 @@ interface Data {
   standalone: true,
   imports: [
     TranslocoModule,
-    KeyValuePipe,
     NgFor,
     NgIf,
     DatePipe,
     NgIcon,
-    HlmScrollAreaDirective,
   ],
   providers: [
     provideIcons({

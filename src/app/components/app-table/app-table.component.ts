@@ -74,10 +74,8 @@ import {
   HlmSheetComponent,
   HlmSheetContentComponent,
   HlmSheetDescriptionDirective,
-  HlmSheetFooterComponent,
   HlmSheetHeaderComponent,
   HlmSheetTitleDirective,
-  HlmSheetOverlayDirective,
 } from '@spartan-ng/helm/sheet';
 
 // Import centralized types and utilities
@@ -154,11 +152,9 @@ import {
     HlmSheetComponent,
     HlmSheetContentComponent,
     HlmSheetDescriptionDirective,
-    HlmSheetFooterComponent,
     HlmSheetHeaderComponent,
     HlmSheetTitleDirective,
     BrnSheetContentDirective,
-    HlmSheetOverlayDirective,
     AppDetailsComponent,
   ],
   providers: [
