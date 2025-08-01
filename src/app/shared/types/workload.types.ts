@@ -26,7 +26,7 @@ export enum WorkloadActionType {
  */
 export enum WorkloadActionStatus {
   PENDING = 'pending',
-  SUCCESSFUL = 'successful',
+  SUCCESSFUL = 'succeeded',
   FAILED = 'failed',
 }
 
@@ -141,6 +141,15 @@ export interface WorkloadActionListResponse extends PaginatedResponse<WorkloadAc
 // Workload Request Decision Types
 // ===================
 
+/** 
+ * Decision status enum 
+ */
+export enum WorkloadDecisionStatus {
+  PENDING = 'pending',
+  SUCCESSFUL = 'successful',
+  FAILED = 'failed',
+}
+
 /**
  * Workload Request Decision create request
  */
@@ -155,7 +164,7 @@ export interface WorkloadRequestDecisionCreate {
   demand_memory: number;
   demand_slack_cpu?: number | null;
   demand_slack_memory?: number | null;
-  decision_status: string;
+  decision_status: WorkloadDecisionStatus;
   pod_parent_id: string;
   pod_parent_kind: string;
 }
@@ -174,7 +183,7 @@ export interface WorkloadRequestDecisionSchema extends BaseEntity {
   demand_memory: number;
   demand_slack_cpu?: number | null;
   demand_slack_memory?: number | null;
-  decision_status: string;
+  decision_status: WorkloadDecisionStatus;
   pod_parent_id: string;
   pod_parent_kind: string;
 }
@@ -192,7 +201,7 @@ export interface WorkloadRequestDecisionUpdate {
   demand_memory?: number | null;
   demand_slack_cpu?: number | null;
   demand_slack_memory?: number | null;
-  decision_status?: string | null;
+  decision_status?: WorkloadDecisionStatus | null;
   pod_parent_id?: string | null;
   pod_parent_kind?: string | null;
 }
