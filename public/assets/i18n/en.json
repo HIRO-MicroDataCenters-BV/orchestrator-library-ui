@@ -60,6 +60,10 @@
     "columns": "Columns"
   },
   "details": {
+    "source_ip": "Source IP",
+    "source_port": "Source Port",
+    "destination_ip": "Destination IP",
+    "destination_port": "Destination Port",
     "action_details": "Action Details",
     "action_type": "Action",
     "action_status": "Status",

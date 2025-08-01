@@ -174,8 +174,8 @@ const STATUS_CONFIG_MAP: Record<string, StatusConfig> = {
   [StatusType.OTHER]: {
     value: StatusType.OTHER,
     label: 'Other',
-    color: 'text-blue-700',
-    bgColor: 'bg-blue-100',
+    color: 'text-gray-700',
+    bgColor: 'bg-gray-100',
     icon: 'lucideInfo',
   },
 

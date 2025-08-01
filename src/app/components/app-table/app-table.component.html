@@ -279,7 +279,11 @@
               variant="ghost"
               (click)="onRowClick(element)"
             >
-              <p class="text-sm text-gray-500">{{ element.alert_type }}</p>
+              <span
+                [class]="`${getStatusColor(element.alert_type)} capitalize`"
+                hlmBadge
+                >{{ element.alert_type }}</span
+              >
             </button>
           </hlm-td>
         </brn-column-def>

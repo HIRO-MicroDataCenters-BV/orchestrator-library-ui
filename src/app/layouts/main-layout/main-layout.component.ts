@@ -37,6 +37,8 @@ import { AppHeaderComponent } from '../../components/app-header/app-header.compo
 import { NgIf, NgFor } from '@angular/common';
 import { ApiService } from '../../core/services/api.service';
 import { K8S_CONSTANTS } from '../../shared/constants';
+import { setStorageItem } from '../../shared';
+import { STORAGE_KEYS } from '../../shared/constants/api.constants';
 
 interface Cluster {
   cluster_name: string;
@@ -141,13 +143,6 @@ export class MainLayoutComponent implements OnInit {
   ngOnInit(): void {
     // Only fetch token in browser environment
     if (isPlatformBrowser(this.platformId)) {
-      this.apiService
-        .getK8sToken({
-          namespace: K8S_CONSTANTS.DEFAULT_VALUES.NAMESPACE,
-          service_account_name:
-            K8S_CONSTANTS.DEFAULT_VALUES.SERVICE_ACCOUNT_NAME,
-        })
-        .subscribe();
       this.apiService.getClusterInfo().subscribe((res) => {
         if (res) {
           this.cluster = res;

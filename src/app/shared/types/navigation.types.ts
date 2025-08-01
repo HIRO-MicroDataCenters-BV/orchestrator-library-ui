@@ -56,6 +56,7 @@ export interface RouteMetadata {
   title?: string;
   icon?: string;
   hideInBreadcrumbs?: boolean;
+  url?: string | null;
 }
 
 /**

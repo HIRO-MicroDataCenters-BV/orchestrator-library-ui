@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { KeyValuePipe, NgFor, NgIf, DatePipe } from '@angular/common';
+import { NgFor, NgIf, DatePipe } from '@angular/common';
 import { TranslocoModule } from '@jsverse/transloco';
 import { getDuration } from '../../shared';
 import { HlmScrollAreaDirective } from '@spartan-ng/ui-scrollarea-helm';
@@ -34,9 +34,16 @@ import {
 } from '@ng-icons/lucide';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 
+interface Condition {
+  prop: string;
+  if: 'eq' | 'neq';
+  value: string;
+}
+
 interface StructItem {
   icon: string;
   prop: string;
+  condition?: Condition;
 }
 
 interface Struct {
@@ -51,15 +58,7 @@ interface Data {
 @Component({
   selector: 'app-details',
   standalone: true,
-  imports: [
-    TranslocoModule,
-    KeyValuePipe,
-    NgFor,
-    NgIf,
-    DatePipe,
-    NgIcon,
-    HlmScrollAreaDirective,
-  ],
+  imports: [TranslocoModule, NgFor, NgIf, DatePipe, NgIcon],
   providers: [
     provideIcons({
       lucideChevronDown,
@@ -96,6 +95,36 @@ interface Data {
 export class AppDetailsComponent {
   @Input('struct') struct: Struct[] = [];
   @Input('data') data: Data | null = null;
+
+  testCondition(prop: string, data: any, condition: Condition | undefined) {
+    if (condition === undefined) {
+      return true;
+    }
+    const value =
+      typeof data[condition.prop] == 'string'
+        ? data[condition.prop].toLowerCase()
+        : data[prop];
+
+    const condValue = condition.value;
+
+    const condIf = condition.if;
+
+    switch (condIf) {
+      case 'eq':
+        if (condValue == value) {
+          return true;
+        }
+        break;
+      case 'neq':
+        if (condValue != value) {
+          return true;
+        }
+        break;
+      default:
+        return false;
+    }
+    return false;
+  }
 
   getIcon(name: string) {
     return {
