@@ -11,6 +11,8 @@ import {
   withInterceptors,
 } from '@angular/common/http';
 import { provideTransloco } from '@jsverse/transloco';
+import { provideHighcharts } from 'highcharts-angular';
+import * as Highcharts from 'highcharts';
 import { getTranslocoConfig } from './transloco-config';
 import { routes } from './app.routes';
 export const appConfig: ApplicationConfig = {
@@ -19,5 +21,6 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(),
     provideHttpClient(withFetch(), withInterceptors([])),
     provideTransloco(getTranslocoConfig()),
+    provideHighcharts({ instance: async () => Highcharts }),
   ],
 };

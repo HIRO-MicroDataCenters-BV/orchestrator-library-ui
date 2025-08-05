@@ -27,8 +27,21 @@ export const routes: Routes = [
       },
       {
         path: 'k8s',
-        loadComponent: () =>
-          import('./pages/k8s/k8s.component').then((m) => m.K8sComponent),
+        children: [
+          {
+            path: '',
+            loadComponent: () =>
+              import('./pages/k8s/k8s.component').then((m) => m.K8sComponent),
+          },
+          {
+            path: 'energy-prediction',
+            loadComponent: () =>
+              import('./pages/k8s/energy-prediction/energy-prediction.component').then(
+                (m) => m.EnergyPredictionComponent
+              ),
+            data: { title: 'Energy Prediction' },
+          },
+        ],
       },
       {
         path: 'emdc',
