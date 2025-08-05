@@ -1,14 +1,14 @@
-<div class="fixed inset-0 top-16 overflow-auto bg-background" 
+<div class="fixed inset-0 top-16 overflow-auto bg-background"
      [style.left.px]="sidebarService.state() === 'collapsed' ? 48 : 256">
-  <div class="p-6 space-y-6">
+  <div class="p-6 space-y-6 w-full">
     <div class="mb-6 text-center">
-      <h2 class="text-2xl font-bold">Kubernetes Node Energy Prediction</h2>
+      <h2 class="text-2xl font-bold">Kubernetes Node Energy Prediction2</h2>
       <p class="text-muted-foreground mt-2">
         Real-time and predicted energy consumption for K8s cluster nodes
       </p>
     </div>
 
-    <div class="space-y-6">
+    <div class="space-y-6 w-full">
       <div class="w-full">
         <div class="mb-4">
           <h3 class="text-lg font-semibold">Actual vs Forecasted Energy</h3>
@@ -17,6 +17,7 @@
         <div class="w-full border rounded-lg p-4 bg-white">
           <highcharts-chart
             [options]="comparisonChartOptions"
+            style="width: 100%; height: 400px;"
           ></highcharts-chart>
         </div>
         <div class="text-xs text-muted-foreground mt-2">

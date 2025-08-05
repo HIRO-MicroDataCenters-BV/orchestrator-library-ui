@@ -41,6 +41,14 @@ export const routes: Routes = [
               ),
             data: { title: 'Energy Prediction' },
           },
+          {
+            path: 'full-chart',
+            loadComponent: () =>
+              import('./pages/k8s/full-chart/full-chart.component').then(
+                (m) => m.FullChartComponent
+              ),
+            data: { title: 'Full Chart' },
+          },
         ],
       },
       {
