@@ -4,6 +4,7 @@ import { HighchartsChartComponent } from 'highcharts-angular';
 import * as Highcharts from 'highcharts';
 import { Subject } from 'rxjs';
 import { HlmCardImports } from '@spartan-ng/ui-card-helm';
+import { HlmSidebarService } from '@spartan-ng/ui-sidebar-helm';
 
 interface EnergyDataPoint {
   timestamp: number;
@@ -27,72 +28,73 @@ interface NodeEnergyData {
     ...HlmCardImports
   ],
   template: `
-    <div class="p-6 space-y-6">
-      <div hlmCard class="mb-6">
-        <div hlmCardHeader>
-          <h2 hlmCardTitle>Kubernetes Node Energy Prediction</h2>
-          <p hlmCardDescription>
+    <div class="fixed inset-0 top-16 overflow-auto bg-background" 
+         [style.left.px]="sidebarService.state() === 'collapsed' ? 48 : 256">
+      <div class="p-6 space-y-6">
+        <div class="mb-6 text-center">
+          <h2 class="text-2xl font-bold">Kubernetes Node Energy Prediction</h2>
+          <p class="text-muted-foreground mt-2">
             Real-time and predicted energy consumption for K8s cluster nodes
           </p>
         </div>
-      </div>
 
-      <div class="space-y-6">
-        <div hlmCard>
-          <div hlmCardHeader>
-            <h3 hlmCardTitle>Energy Consumption Overview</h3>
-            <p hlmCardDescription>Historical and predicted energy usage across all nodes</p>
+        <div class="space-y-6">
+          <div class="w-full">
+            <div class="mb-4">
+              <h3 class="text-lg font-semibold">Energy Consumption Overview</h3>
+              <p class="text-sm text-muted-foreground">Historical and predicted energy usage across all nodes</p>
+            </div>
+            <div class="w-full border rounded-lg p-4 bg-white">
+              <highcharts-chart
+                [options]="overviewChartOptions"
+                style="width: 100%; height: 400px;"
+              ></highcharts-chart>
+            </div>
           </div>
-          <div hlmCardContent>
-            <highcharts-chart
-              [options]="overviewChartOptions"
-              style="width: 100%; height: 400px;"
-            ></highcharts-chart>
-          </div>
-        </div>
 
-        <div hlmCard>
-          <div hlmCardHeader>
-            <h3 hlmCardTitle>Energy Efficiency Trends</h3>
-            <p hlmCardDescription>Power efficiency metrics and optimization opportunities</p>
+          <div class="w-full">
+            <div class="mb-4">
+              <h3 class="text-lg font-semibold">Energy Efficiency Trends</h3>
+              <p class="text-sm text-muted-foreground">Power efficiency metrics and optimization opportunities</p>
+            </div>
+            <div class="w-full border rounded-lg p-4 bg-white">
+              <highcharts-chart
+                [options]="efficiencyChartOptions"
+                style="width: 100%; height: 400px;"
+              ></highcharts-chart>
+            </div>
           </div>
-          <div hlmCardContent>
-            <highcharts-chart
-              [options]="efficiencyChartOptions"
-              style="width: 100%; height: 400px;"
-            ></highcharts-chart>
-          </div>
-        </div>
 
-        <div hlmCard>
-          <div hlmCardHeader>
-            <h3 hlmCardTitle>Node-Specific Energy Predictions</h3>
-            <p hlmCardDescription>Detailed energy consumption forecast per node for the next 24 hours</p>
+          <div class="w-full">
+            <div class="mb-4">
+              <h3 class="text-lg font-semibold">Node-Specific Energy Predictions</h3>
+              <p class="text-sm text-muted-foreground">Detailed energy consumption forecast per node for the next 24 hours</p>
+            </div>
+            <div class="w-full border rounded-lg p-4 bg-white">
+              <highcharts-chart
+                [options]="detailedChartOptions"
+                style="width: 100%; height: 400px;"
+              ></highcharts-chart>
+            </div>
+            <div class="text-xs text-muted-foreground mt-2">
+              Predictions are based on historical usage patterns, workload scheduling, and resource utilization trends
+            </div>
           </div>
-          <div hlmCardContent>
-            <highcharts-chart
-              [options]="detailedChartOptions"
-              style="width: 100%; height: 400px;"
-            ></highcharts-chart>
-          </div>
-          <div hlmCardFooter class="text-sm text-muted-foreground">
-            Predictions are based on historical usage patterns, workload scheduling, and resource utilization trends
-          </div>
-        </div>
 
-        <div hlmCard>
-          <div hlmCardHeader>
-            <h3 hlmCardTitle>Actual vs Forecasted Energy</h3>
-            <p hlmCardDescription>Comparison between actual energy consumption and forecasted values over time</p>
-          </div>
-          <div hlmCardContent>
-            <highcharts-chart
-              [options]="comparisonChartOptions"
-              style="width: 100%; height: 400px;"
-            ></highcharts-chart>
-          </div>
-          <div hlmCardFooter class="text-sm text-muted-foreground">
-            Shows accuracy of predictions and helps identify patterns in forecasting performance
+          <div class="w-full">
+            <div class="mb-4">
+              <h3 class="text-lg font-semibold">Actual vs Forecasted Energy</h3>
+              <p class="text-sm text-muted-foreground">Comparison between actual energy consumption and forecasted values over time</p>
+            </div>
+            <div class="w-full border rounded-lg p-4 bg-white">
+              <highcharts-chart
+                [options]="comparisonChartOptions"
+                style="width: 100%; height: 400px;"
+              ></highcharts-chart>
+            </div>
+            <div class="text-xs text-muted-foreground mt-2">
+              Shows accuracy of predictions and helps identify patterns in forecasting performance
+            </div>
           </div>
         </div>
       </div>
@@ -110,7 +112,7 @@ export class EnergyPredictionComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   private mockData: NodeEnergyData[] = [];
 
-  constructor() {}
+  constructor(public sidebarService: HlmSidebarService) {}
 
   ngOnInit(): void {
     this.generateMockData();
