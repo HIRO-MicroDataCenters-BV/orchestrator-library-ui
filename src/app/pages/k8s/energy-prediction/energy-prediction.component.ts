@@ -280,49 +280,46 @@ export class EnergyPredictionComponent implements OnInit, OnDestroy {
   private setupComparisonChart(): void {
     const now = new Date().getTime();
     
-    // Generate comparison data (simulating past forecasts vs actual values)
-    const comparisonData: { timestamp: number; actual: number; forecasted: number; }[] = [];
-    
-    // Create comparison data for the last 7 days
-    for (let dayOffset = 7; dayOffset >= 1; dayOffset--) {
-      for (let hour = 0; hour < 24; hour++) {
-        const timestamp = now - (dayOffset * 24 * 60 * 60 * 1000) + (hour * 60 * 60 * 1000);
-        
-        // Generate base consumption pattern
-        const baseConsumption = 400; // Total cluster consumption
-        const dailyPattern = Math.sin((hour / 24) * Math.PI * 2) * 80; // Daily variation
-        const weeklyTrend = Math.sin((dayOffset / 7) * Math.PI) * 30; // Weekly trend
-        
-        // Actual consumption (with some randomness)
-        const actualConsumption = baseConsumption + dailyPattern + weeklyTrend + (Math.random() - 0.5) * 40;
-        
-        // Forecasted consumption (with prediction error that varies over time)
-        const predictionError = Math.sin((hour + dayOffset) / 5) * 25 + (Math.random() - 0.5) * 20;
-        const forecastedConsumption = actualConsumption + predictionError;
-        
-        comparisonData.push({
-          timestamp,
-          actual: Math.max(0, actualConsumption),
-          forecasted: Math.max(0, forecastedConsumption)
-        });
-      }
+    // Generate actual data (last 24 hours up to now)
+    const actualData: [number, number][] = [];
+    for (let i = 24; i >= 0; i--) {
+      const timestamp = now - (i * 60 * 60 * 1000);
+      const baseConsumption = 400; // Total cluster consumption
+      const dailyPattern = Math.sin((timestamp / (60 * 60 * 1000)) * Math.PI / 12) * 80;
+      const randomFactor = (Math.random() - 0.5) * 40;
+      const actualConsumption = baseConsumption + dailyPattern + randomFactor;
+      
+      actualData.push([timestamp, Math.max(0, actualConsumption)]);
     }
 
-    // Calculate accuracy metrics
-    const accuracyData: [number, number][] = [];
-    const errorData: [number, number][] = [];
-    
-    comparisonData.forEach(point => {
-      const accuracy = Math.max(0, 100 - Math.abs(point.actual - point.forecasted) / point.actual * 100);
-      const error = Math.abs(point.actual - point.forecasted);
+    // Generate previous forecast data (what was predicted for the last 24 hours)
+    const previousForecastData: [number, number][] = [];
+    for (let i = 24; i >= 0; i--) {
+      const timestamp = now - (i * 60 * 60 * 1000);
+      const baseConsumption = 400;
+      const dailyPattern = Math.sin((timestamp / (60 * 60 * 1000)) * Math.PI / 12) * 70;
+      const predictionError = Math.sin((timestamp / (60 * 60 * 1000)) / 3) * 25; // Some prediction variance
+      const randomError = (Math.random() - 0.5) * 30; // Prediction uncertainty
+      const forecastConsumption = baseConsumption + dailyPattern + predictionError + randomError;
       
-      accuracyData.push([point.timestamp, accuracy]);
-      errorData.push([point.timestamp, error]);
-    });
+      previousForecastData.push([timestamp, Math.max(0, forecastConsumption)]);
+    }
+
+    // Generate future forecast data (next 24 hours from now)
+    const futureForecastData: [number, number][] = [];
+    for (let i = 1; i <= 24; i++) {
+      const timestamp = now + (i * 60 * 60 * 1000);
+      const baseConsumption = 400;
+      const dailyPattern = Math.sin((timestamp / (60 * 60 * 1000)) * Math.PI / 12) * 70;
+      const trendFactor = Math.sin((i / 24) * Math.PI) * 20; // Slight trend
+      const forecastConsumption = baseConsumption + dailyPattern + trendFactor;
+      
+      futureForecastData.push([timestamp, Math.max(0, forecastConsumption)]);
+    }
 
     this.comparisonChartOptions = {
       chart: {
-        type: 'spline',
+        type: 'line',
         backgroundColor: 'transparent'
       },
       title: {
@@ -335,43 +332,31 @@ export class EnergyPredictionComponent implements OnInit, OnDestroy {
         type: 'datetime',
         title: {
           text: 'Time'
+        },
+        plotLines: [{
+          color: '#ff6b6b',
+          dashStyle: 'ShortDash',
+          value: now,
+          width: 2,
+          label: {
+            text: 'Now',
+            style: {
+              color: '#ff6b6b'
+            }
+          }
+        }]
+      },
+      yAxis: {
+        title: {
+          text: 'Energy Consumption (W)'
         }
       },
-      yAxis: [{
-        title: {
-          text: 'Energy Consumption (W)',
-          style: {
-            color: '#666'
-          }
-        },
-        labels: {
-          style: {
-            color: '#666'
-          }
-        }
-      }, {
-        title: {
-          text: 'Forecast Accuracy (%)',
-          style: {
-            color: '#10b981'
-          }
-        },
-        labels: {
-          style: {
-            color: '#10b981'
-          }
-        },
-        opposite: true,
-        min: 0,
-        max: 100
-      }],
       tooltip: {
         shared: true,
         formatter: function() {
           let tooltip = `<b>${new Date(this.x!).toLocaleString()}</b><br/>`;
           this.points!.forEach(point => {
-            const suffix = point.series.name.includes('Accuracy') ? '%' : 'W';
-            tooltip += `<span style="color:${point.color}">${point.series.name}</span>: <b>${point.y?.toFixed(1)}${suffix}</b><br/>`;
+            tooltip += `<span style="color:${point.color}">${point.series.name}</span>: <b>${point.y?.toFixed(1)}W</b><br/>`;
           });
           return tooltip;
         }
@@ -379,40 +364,65 @@ export class EnergyPredictionComponent implements OnInit, OnDestroy {
       legend: {
         enabled: true
       },
+      plotOptions: {
+        area: {
+          fillOpacity: 0.3,
+          lineWidth: 1,
+          marker: {
+            enabled: false
+          }
+        },
+        line: {
+          lineWidth: 2,
+          marker: {
+            enabled: false
+          }
+        }
+      },
       series: [
         {
-          name: 'Actual Consumption',
-          type: 'spline',
-          data: comparisonData.map(d => [d.timestamp, d.actual]),
+          name: 'Actual Energy Consumption',
+          type: 'line',
+          data: actualData,
           color: '#3b82f6',
-          lineWidth: 1,
+          lineWidth: 2,
           marker: {
             enabled: false
-          },
-          yAxis: 0
+          }
         },
         {
-          name: 'Forecasted Consumption',
-          type: 'spline',
-          data: comparisonData.map(d => [d.timestamp, d.forecasted]),
+          name: 'Previous Forecast (Historical)',
+          type: 'area',
+          data: previousForecastData,
           color: '#f59e0b',
-          dashStyle: 'ShortDot',
+          fillColor: {
+            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+            stops: [
+              [0, 'rgba(245, 158, 11, 0.4)'],
+              [1, 'rgba(245, 158, 11, 0.1)']
+            ]
+          },
           lineWidth: 1,
           marker: {
             enabled: false
-          },
-          yAxis: 0
+          }
         },
         {
-          name: 'Forecast Accuracy',
-          type: 'spline',
-          data: accuracyData,
-          color: '#10b981',
+          name: 'Future Forecast',
+          type: 'area',
+          data: futureForecastData,
+          color: '#f59e0b',
+          fillColor: {
+            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+            stops: [
+              [0, 'rgba(245, 158, 11, 0.4)'],
+              [1, 'rgba(245, 158, 11, 0.1)']
+            ]
+          },
           lineWidth: 1,
           marker: {
             enabled: false
-          },
-          yAxis: 1
+          }
         }
       ]
     };
