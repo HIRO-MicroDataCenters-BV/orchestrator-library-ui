@@ -27,7 +27,8 @@ interface NodeEnergyData {
     HighchartsChartComponent,
     ...HlmCardImports
   ],
-  templateUrl: './energy-prediction.component.html'
+  templateUrl: './energy-prediction.component.html',
+  styleUrl: './energy-prediction.component.css'
 })
 export class EnergyPredictionComponent implements OnInit, OnDestroy {
   Highcharts: typeof Highcharts = Highcharts;
