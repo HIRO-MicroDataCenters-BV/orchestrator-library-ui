@@ -18,7 +18,7 @@ export class MetricsApiService {
    * @param hours - Optional hours filter
    * @returns Observable<MetricsApiResponse>
    */
-  getMetrics(limit: number = 100, nodeName?: string, hours?: number): Observable<MetricsApiResponse> {
+  getMetrics(limit = 10000, nodeName?: string, hours?: number): Observable<MetricsApiResponse> {
     let params = new HttpParams().set('limit', limit.toString());
     
     if (nodeName) {
@@ -76,7 +76,7 @@ export class MetricsApiService {
    * @param limit - Number of records to fetch
    * @returns Observable with chart-formatted data
    */
-  getCpuWattsChartData(limit: number = 100): Observable<{ [nodeName: string]: [number, number][] }> {
+  getCpuWattsChartData(limit = 100): Observable<{ [nodeName: string]: [number, number][] }> {
     return this.getMetrics(limit).pipe(
       map(response => {
         const chartData = this.transformCpuWattsData(response.metrics);
@@ -90,7 +90,7 @@ export class MetricsApiService {
    * @param limit - Number of records to fetch
    * @returns Observable with chart-formatted data
    */
-  getCpuUtilizationChartData(limit: number = 100): Observable<{ [nodeName: string]: [number, number][] }> {
+  getCpuUtilizationChartData(limit = 100): Observable<{ [nodeName: string]: [number, number][] }> {
     return this.getMetrics(limit).pipe(
       map(response => {
         const chartData = this.transformCpuUtilizationData(response.metrics);
@@ -104,7 +104,7 @@ export class MetricsApiService {
    * @param limit - Number of records to fetch
    * @returns Observable with chart-formatted data
    */
-  getMemoryUsageChartData(limit: number = 100): Observable<{ [nodeName: string]: [number, number][] }> {
+  getMemoryUsageChartData(limit = 100): Observable<{ [nodeName: string]: [number, number][] }> {
     return this.getMetrics(limit).pipe(
       map(response => {
         const chartData = this.transformMemoryUsageData(response.metrics);

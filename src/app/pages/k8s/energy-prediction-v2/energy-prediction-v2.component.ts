@@ -48,10 +48,10 @@ export class EnergyPredictionV2Component implements OnInit, OnDestroy {
     
     // Start with mock data for real metrics testing, then try real API
     console.log('Loading data - starting with mock data for testing');
-    this.loadMockDataForTesting();
+    // this.loadMockDataForTesting();
     
     // Also try to load real data (this will override mock data if successful)
-    // this.loadRealMetricsData();
+    this.loadRealMetricsData();
   }
 
   private loadRealMetricsData(): void {
@@ -145,12 +145,20 @@ export class EnergyPredictionV2Component implements OnInit, OnDestroy {
     let colorIndex = 0;
 
     Object.keys(data).forEach(nodeName => {
+      const color = colors[colorIndex % colors.length];
       series.push({
         name: `${nodeName} - CPU Watts`,
-        type: 'line',
+        type: 'area',
         data: data[nodeName],
-        color: colors[colorIndex % colors.length],
-        lineWidth: 2,
+        color: color,
+        fillColor: {
+          linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+          stops: [
+            [0, `${color}40`], // 25% opacity
+            [1, `${color}10`]  // 6% opacity
+          ]
+        },
+        lineWidth: 1,
         marker: {
           enabled: false
         }
@@ -160,7 +168,7 @@ export class EnergyPredictionV2Component implements OnInit, OnDestroy {
 
     this.cpuWattsChartOptions = {
       chart: {
-        type: 'line',
+        type: 'area',
         backgroundColor: 'transparent'
       },
       title: {
@@ -208,12 +216,20 @@ export class EnergyPredictionV2Component implements OnInit, OnDestroy {
     let colorIndex = 0;
 
     Object.keys(data).forEach(nodeName => {
+      const color = colors[colorIndex % colors.length];
       series.push({
         name: `${nodeName} - CPU Utilization`,
-        type: 'line',
+        type: 'area',
         data: data[nodeName],
-        color: colors[colorIndex % colors.length],
-        lineWidth: 2,
+        color: color,
+        fillColor: {
+          linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+          stops: [
+            [0, `${color}40`], // 25% opacity
+            [1, `${color}10`]  // 6% opacity
+          ]
+        },
+        lineWidth: 1,
         marker: {
           enabled: false
         }
@@ -223,7 +239,7 @@ export class EnergyPredictionV2Component implements OnInit, OnDestroy {
 
     this.cpuUtilizationChartOptions = {
       chart: {
-        type: 'line',
+        type: 'area',
         backgroundColor: 'transparent'
       },
       title: {
@@ -271,12 +287,20 @@ export class EnergyPredictionV2Component implements OnInit, OnDestroy {
     let colorIndex = 0;
 
     Object.keys(data).forEach(nodeName => {
+      const color = colors[colorIndex % colors.length];
       series.push({
         name: `${nodeName} - Memory Usage`,
-        type: 'line',
+        type: 'area',
         data: data[nodeName],
-        color: colors[colorIndex % colors.length],
-        lineWidth: 2,
+        color: color,
+        fillColor: {
+          linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+          stops: [
+            [0, `${color}40`], // 25% opacity
+            [1, `${color}10`]  // 6% opacity
+          ]
+        },
+        lineWidth: 1,
         marker: {
           enabled: false
         }
@@ -286,7 +310,7 @@ export class EnergyPredictionV2Component implements OnInit, OnDestroy {
 
     this.memoryUsageChartOptions = {
       chart: {
-        type: 'line',
+        type: 'area',
         backgroundColor: 'transparent'
       },
       title: {
