@@ -3,9 +3,8 @@ import { CommonModule } from '@angular/common';
 import { HighchartsChartComponent } from 'highcharts-angular';
 import * as Highcharts from 'highcharts';
 import { Subject, takeUntil } from 'rxjs';
-import { HlmCardImports } from '@spartan-ng/ui-card-helm';
 import { EnergyDataService } from '../../../shared/services/energy-data.service';
-import { EnergyDataPoint, NodeEnergyData } from '../../../shared/interfaces/energy-data.interface';
+import { HlmSidebarService } from '../../../../../libs/ui/ui-sidebar-helm/src/lib/hlm-sidebar.service';
 
 @Component({
   selector: 'app-energy-prediction-v2',
@@ -13,22 +12,20 @@ import { EnergyDataPoint, NodeEnergyData } from '../../../shared/interfaces/ener
   imports: [
     CommonModule,
     HighchartsChartComponent,
-    ...HlmCardImports
   ],
   templateUrl: './energy-prediction-v2.component.html',
   styleUrl: './energy-prediction-v2.component.css'
 })
 export class EnergyPredictionV2Component implements OnInit, OnDestroy {
-  Highcharts: typeof Highcharts = Highcharts;
-  
-  overviewChartOptions: Partial<Highcharts.Options> = {};
-  detailedChartOptions: Partial<Highcharts.Options> = {};
+
   comparisonChartOptions: Partial<Highcharts.Options> = {};
   
   private destroy$ = new Subject<void>();
-  private mockData: NodeEnergyData[] = [];
 
-  constructor(private energyDataService: EnergyDataService) {}
+  constructor(
+    private energyDataService: EnergyDataService,
+    public sidebarService: HlmSidebarService
+  ) {}
 
   ngOnInit(): void {
     this.loadData();
@@ -40,205 +37,9 @@ export class EnergyPredictionV2Component implements OnInit, OnDestroy {
   }
 
   private loadData(): void {
-    this.energyDataService.generateMockData()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(data => {
-        this.mockData = data;
-        this.initializeCharts();
-      });
-  }
-
-  private initializeCharts(): void {
-    this.setupOverviewChart();
-    this.setupDetailedChart();
     this.setupComparisonChart();
   }
 
-  private setupOverviewChart(): void {
-    const now = new Date().getTime();
-    
-    // Aggregate data for overview
-    const aggregatedHistorical: [number, number][] = [];
-    const aggregatedPredicted: [number, number][] = [];
-
-    // Group by timestamp and sum energy consumption
-    const timestampMap = new Map<number, number>();
-    const predictionMap = new Map<number, number>();
-
-    this.mockData.forEach(nodeData => {
-      nodeData.historical.forEach(point => {
-        const existing = timestampMap.get(point.timestamp) || 0;
-        timestampMap.set(point.timestamp, existing + (point.actual || 0));
-      });
-
-      nodeData.predictions.forEach(point => {
-        const existing = predictionMap.get(point.timestamp) || 0;
-        predictionMap.set(point.timestamp, existing + (point.predicted || 0));
-      });
-    });
-
-    // Convert to arrays
-    Array.from(timestampMap.entries())
-      .sort(([a], [b]) => a - b)
-      .forEach(([timestamp, value]) => {
-        aggregatedHistorical.push([timestamp, value]);
-      });
-
-    Array.from(predictionMap.entries())
-      .sort(([a], [b]) => a - b)
-      .forEach(([timestamp, value]) => {
-        aggregatedPredicted.push([timestamp, value]);
-      });
-
-    this.overviewChartOptions = {
-      chart: {
-        type: 'spline',
-        backgroundColor: 'transparent'
-      },
-      title: {
-        text: undefined
-      },
-      credits: {
-        enabled: false
-      },
-      xAxis: {
-        type: 'datetime',
-        plotLines: [{
-          color: '#ff6b6b',
-          dashStyle: 'ShortDash',
-          value: now,
-          width: 2,
-          label: {
-            text: 'Now',
-            style: {
-              color: '#ff6b6b'
-            }
-          }
-        }]
-      },
-      yAxis: {
-        title: {
-          text: 'Energy Consumption (W)'
-        }
-      },
-      tooltip: {
-        shared: true,
-        valueSuffix: 'W'
-      },
-      legend: {
-        enabled: true
-      },
-      plotOptions: {
-        spline: {
-          states: {
-            inactive: {
-              opacity: 1
-            }
-          }
-        }
-      },
-      series: [
-        {
-          name: 'Historical Usage',
-          type: 'spline',
-          data: aggregatedHistorical,
-          color: '#4ade80',
-          lineWidth: 1,
-          marker: {
-            enabled: false
-          }
-        },
-        {
-          name: 'Predicted Usage',
-          type: 'spline',
-          data: aggregatedPredicted,
-          color: '#fbbf24',
-          dashStyle: 'ShortDot',
-          lineWidth: 1,
-          marker: {
-            enabled: false
-          }
-        }
-      ]
-    };
-  }
-
-
-  private setupDetailedChart(): void {
-    const series: Highcharts.SeriesOptionsType[] = [];
-    const now = new Date().getTime();
-
-    this.mockData.forEach((nodeData, index) => {
-      const colors = ['#3b82f6', '#ef4444', '#10b981', '#f59e0b'];
-      const color = colors[index % colors.length];
-
-      // Historical data series
-      series.push({
-        name: `${nodeData.nodeName} (Historical)`,
-        type: 'spline',
-        data: nodeData.historical.map(point => [point.timestamp, point.actual || 0]),
-        color: color,
-        lineWidth: 1,
-        marker: {
-          enabled: false
-        }
-      });
-
-      // Prediction data series
-      series.push({
-        name: `${nodeData.nodeName} (Predicted)`,
-        type: 'spline',
-        data: nodeData.predictions.map(point => [point.timestamp, point.predicted || 0]),
-        color: color,
-        dashStyle: 'ShortDot',
-        lineWidth: 1,
-        marker: {
-          enabled: false
-        }
-      });
-    });
-
-    this.detailedChartOptions = {
-      chart: {
-        type: 'spline',
-        backgroundColor: 'transparent'
-      },
-      title: {
-        text: undefined
-      },
-      credits: {
-        enabled: false
-      },
-      xAxis: {
-        type: 'datetime',
-        plotLines: [{
-          color: '#ff6b6b',
-          dashStyle: 'ShortDash',
-          value: now,
-          width: 2,
-          label: {
-            text: 'Current Time',
-            style: {
-              color: '#ff6b6b'
-            }
-          }
-        }]
-      },
-      yAxis: {
-        title: {
-          text: 'Energy Consumption (W)'
-        }
-      },
-      tooltip: {
-        shared: false,
-        valueSuffix: 'W'
-      },
-      legend: {
-        enabled: true
-      },
-      series: series
-    };
-  }
 
   private setupComparisonChart(): void {
     this.energyDataService.generateComparisonData()
