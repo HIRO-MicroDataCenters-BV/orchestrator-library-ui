@@ -114,8 +114,8 @@ export const generateBreadcrumbs = (
       label: routeMetadata?.breadcrumb || formatSegmentLabel(segment),
       url: isLastSegment
         ? null
-        : metadata[segment].url !== undefined
-        ? metadata[segment].url
+        : routeMetadata?.url !== undefined
+        ? routeMetadata.url
         : currentPath,
       icon: routeMetadata?.icon,
     };

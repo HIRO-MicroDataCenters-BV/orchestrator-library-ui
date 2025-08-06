@@ -154,7 +154,8 @@
   "app": {
     "title": "ACES",
     "description": "Orchestration Panel",
-    "footer": "All rights reserved"
+    "footer": "All rights reserved",
+    "welcome": "Welcome to"
   },
   "hint": {
     "page": "page",
@@ -168,14 +169,23 @@
     "login": {
       "title": "Login",
       "description": "Enter your credentials to access your account",
+      "logo_alt": "Application Logo",
+      "welcome_title": "Welcome Back",
+      "welcome_subtitle": "Sign in to your account",
       "email": "Email",
+      "email_label": "Email Address",
       "email_placeholder": "Enter your email",
+      "email_error": "Please enter a valid email address",
       "password": "Password",
+      "password_label": "Password",
       "password_placeholder": "Enter your password",
+      "password_error": "Password is required",
       "remember_me": "Remember me",
       "forgot_password": "Forgot password?",
-      "login_button": "Login",
-      "logging_in": "Logging in...",
+      "login_button": "Sign In",
+      "logging_in": "Signing in...",
+      "sso_button": "Continue with SSO",
+      "connecting": "Connecting...",
       "no_account": "Don't have an account?",
       "register_link": "Register",
       "email_required": "Email is required",
@@ -207,6 +217,21 @@
       "confirm_password_required": "Please confirm your password",
       "passwords_not_match": "Passwords do not match",
       "error_message": "An error occurred during registration"
+    },
+    "callback": {
+      "processing": "Processing Authentication",
+      "processing_description": "Please wait while we complete your sign-in...",
+      "success": "Authentication Successful",
+      "success_description": "You have been successfully signed in. Redirecting...",
+      "error": "Authentication Failed",
+      "error_description": "There was an error processing your authentication.",
+      "retry": "Try Again",
+      "back_to_login": "Back to Login"
+    },
+    "logout": {
+      "title": "Logout",
+      "description": "You have been successfully logged out",
+      "login_again": "Login Again"
     }
   },
   "profile": {
@@ -233,6 +258,11 @@
       "message": "You don't have permission to access this page.",
       "back_home": "Back to Home"
     },
+    "unauthorized": {
+      "title": "Unauthorized",
+      "message": "You need to log in to access this page.",
+      "back_home": "Back to Home"
+    },
     "server_error": {
       "title": "Server Error",
       "message": "Something went wrong on our servers. Please try again later.",
@@ -250,7 +280,7 @@
       "accordion": "Accordion",
       "alert": "Alert",
       "avatar": "Avatar",
-      "badge": "Badge",
+      "badge_section": "Badge",
       "card": "Card",
       "checkbox": "Checkbox",
       "dialog": "Dialog",
@@ -281,7 +311,7 @@
       "fallback": "Fallback",
       "variants": "Size Variants"
     },
-    "badge": {
+    "badge_section": {
       "default": "Default Badge",
       "variants": "Badge Variants",
       "with_icon": "With Icon",
@@ -399,6 +429,81 @@
       "placeholder_disabled": "This input is disabled",
       "placeholder_error": "This input has an error",
       "code_example_title": "Usage Example"
+    }
+  },
+  "proxy_test": {
+    "title": "Proxy Authentication Test",
+    "subtitle": "Testing DEX authentication flow through proxy",
+    "status": {
+      "checking_server": "Checking Angular dev server...",
+      "server_running": "Angular dev server is running",
+      "server_not_running": "Angular dev server is not accessible",
+      "please_start": "Please start: pnpm run start:dev",
+      "testing_flows": "Testing authentication flows...",
+      "all_passed": "All authentication flow tests passed!",
+      "needs_attention": "Some authentication tests need attention."
+    },
+    "steps": {
+      "initial_request": "Initial request to protected resource",
+      "auth_redirect": "Authentication redirect detected",
+      "follow_redirect": "Following redirect to DEX auth",
+      "auth_required": "Authentication required (no redirect)",
+      "resource_accessible": "Resource accessible without authentication",
+      "server_error": "Server error",
+      "unexpected_response": "Unexpected response"
+    },
+    "flow_types": {
+      "auth_required": "Correct auth flow",
+      "auth_error": "Correct auth required",
+      "public_access": "Public access",
+      "redirect_chain": "Redirect chain working",
+      "non_dex_redirect": "Non-DEX redirect",
+      "unexpected_dex_response": "Unexpected DEX response",
+      "unexpected_status": "Unexpected status",
+      "server_error": "Server error",
+      "test_error": "Test error"
+    },
+    "messages": {
+      "valid_dex_redirect": "Valid DEX auth redirect",
+      "login_form_detected": "DEX login form detected",
+      "form_action": "Form action",
+      "form_method": "Form method",
+      "auth_flow_working": "Authentication flow working - login form presented",
+      "redirect_chain_working": "Authentication redirect chain working",
+      "further_redirect": "Further redirect",
+      "unexpected_dex": "Unexpected DEX response",
+      "dex_unreachable": "DEX unreachable",
+      "redirects_not_dex": "Redirects but not to DEX auth",
+      "correctly_returns": "Correctly returns",
+      "auth_required_text": "authentication required",
+      "accessible_without_auth": "Endpoint accessible without auth - may be public or pre-authenticated",
+      "backend_issue": "Server error - backend issue",
+      "unexpected_status": "Unexpected status"
+    },
+    "endpoints": {
+      "cog_iframe_prod": "COG iframe (Production)",
+      "cog_dashboard_dev": "COG Dashboard (Development)",
+      "kubernetes_dashboard": "Kubernetes Dashboard",
+      "pipeline_dashboard": "Pipeline Dashboard",
+      "api_health": "API Health Check",
+      "dex_auth": "DEX Auth Endpoint"
+    },
+    "assessment": {
+      "title": "Assessment",
+      "endpoints_tested": "endpoints tested successfully",
+      "proper_auth_flow": "endpoints have proper auth flow",
+      "proxy_working": "Authentication proxy appears to be working correctly",
+      "needs_review": "Authentication proxy may need configuration review"
+    },
+    "next_steps": {
+      "title": "Next Steps",
+      "check_dex_auth": "Check if DEX and AuthService are properly configured",
+      "verify_backend": "Verify backend services are running",
+      "test_credentials": "Test with actual user credentials if available"
+    },
+    "errors": {
+      "request_timeout": "Request timeout",
+      "fatal_error": "Fatal error"
     }
   }
 }

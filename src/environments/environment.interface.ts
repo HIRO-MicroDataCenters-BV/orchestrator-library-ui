@@ -1,0 +1,27 @@
+/**
+ * Environment Interface
+ * Defines the structure for all environment configuration files
+ */
+
+export interface Environment {
+  production: boolean;
+  apiUrl: string;
+  tokenKey: string;
+  refreshTokenKey: string;
+  userKey: string;
+  dashboardUrl: string;
+  cogUrl: string;
+  oidc: {
+    authority: string;
+    clientId: string;
+    scope: string;
+    responseType: string;
+    silentRenew: boolean;
+    useRefreshToken: boolean;
+    renewTimeBeforeTokenExpiresInSeconds: number;
+    historyCleanupOff: boolean;
+    autoUserInfo: boolean;
+    triggerRefreshWhenIdTokenExpired: boolean;
+    logLevel: number;
+  };
+}

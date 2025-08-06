@@ -196,12 +196,87 @@ export class MyComponent {
 }
 ```
 
+## Environment Configuration
+
+### OIDC Settings
+
+The application supports OpenID Connect authentication through environment configuration. OIDC parameters are defined in the environment files:
+
+- `src/environments/environment.ts` - Default environment
+- `src/environments/environment.development.ts` - Development environment
+- `src/environments/environment.prod.ts` - Production environment
+
+#### Default OIDC Configuration
+
+```typescript
+oidc: {
+  authority: 'https://dex.hiro-develop.nl',
+  clientId: 'orchestrator-ui',
+  scope: 'openid profile email groups',
+  responseType: 'code',
+  silentRenew: true,
+  useRefreshToken: true,
+  renewTimeBeforeTokenExpiresInSeconds: 60,
+  historyCleanupOff: true,
+  autoUserInfo: true,
+  triggerRefreshWhenIdTokenExpired: true,
+  logLevel: 1, // LogLevel.Warn
+}
+```
+
+#### Customizing Environment Variables
+
+To customize for your environment:
+
+1. **Development**: Edit `src/environments/environment.development.ts`
+2. **Production**: Edit `src/environments/environment.prod.ts`
+
+Example customization:
+
+```typescript
+export const environment: Environment = {
+  production: true,
+  apiUrl: 'https://your-api-server.com',
+  dashboardUrl: 'https://your-dashboard.com',
+  cogUrl: 'https://your-cog-instance.com',
+  
+  // Customize OIDC for your provider
+  oidc: {
+    authority: 'https://your-oidc-provider.com',
+    clientId: 'your-client-id',
+    scope: 'openid profile email',
+    responseType: 'code',
+    silentRenew: true,
+    useRefreshToken: true,
+    renewTimeBeforeTokenExpiresInSeconds: 300,
+    historyCleanupOff: false,
+    autoUserInfo: true,
+    triggerRefreshWhenIdTokenExpired: true,
+    logLevel: 3, // LogLevel.Error for production
+  },
+};
+```
+
+#### Environment-Specific Build Commands
+
+```bash
+# Development build (uses environment.development.ts)
+pnpm run build:dev
+
+# Production build (uses environment.prod.ts)  
+pnpm run build:prod
+
+# Default build (uses environment.ts)
+pnpm run build
+```
+
 ## Getting Started
 
 ### Prerequisites
 
 - Node.js (LTS version)
 - pnpm package manager
+- OpenID Connect provider (DEX, Auth0, Keycloak, etc.)
 
 ### Installation
 
@@ -210,11 +285,31 @@ export class MyComponent {
 pnpm install
 ```
 
+### Configuration
+
+1. **Configure your OIDC provider** with the redirect URLs:
+   - Redirect URI: `http://localhost:4200/auth/callback` (development)
+   - Post-logout URI: `http://localhost:4200/login`
+
+2. **Update environment files** with your OIDC provider settings:
+   ```bash
+   # Edit development environment
+   nano src/environments/environment.development.ts
+   
+   # Edit production environment  
+   nano src/environments/environment.prod.ts
+   ```
+
+3. **Set API endpoints** in environment files to match your backend services
+
 ## Development
 
 ```bash
-# Start development server
-pnpm start
+# Start development server with development environment
+pnpm run start:dev
+
+# Start with default environment
+pnpm run start
 ```
 
 The application will be available at `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
@@ -473,6 +568,67 @@ To contribute to this project:
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
+## Environment Configuration Details
+
+### Available Environment Variables
+
+| Variable | Type | Description | Default |
+|----------|------|-------------|---------|
+| `production` | boolean | Production mode flag | `false` |
+| `apiUrl` | string | Backend API base URL | `http://51.44.28.47:30015` |
+| `dashboardUrl` | string | Kubernetes dashboard URL | `http://51.44.28.47:30016` |
+| `cogUrl` | string | COG system URL | `https://dashboard.cog.hiro-develop.nl/cogui/` |
+| `oidc.authority` | string | OIDC provider authority URL | `https://dex.hiro-develop.nl` |
+| `oidc.clientId` | string | OIDC client identifier | `orchestrator-ui` |
+| `oidc.scope` | string | OIDC scopes | `openid profile email groups` |
+| `oidc.responseType` | string | OIDC response type | `code` |
+| `oidc.silentRenew` | boolean | Enable silent token renewal | `true` |
+| `oidc.useRefreshToken` | boolean | Use refresh tokens | `true` |
+| `oidc.logLevel` | number | OIDC logging level (0=Debug, 1=Warn, 3=Error) | `1` |
+
+### OIDC Provider Setup
+
+#### DEX Configuration Example
+
+```yaml
+# dex-config.yaml
+issuer: https://dex.hiro-develop.nl
+
+staticClients:
+- id: orchestrator-ui
+  redirectURIs:
+  - 'http://localhost:4200/auth/callback'
+  - 'https://your-domain.com/auth/callback'
+  name: 'Orchestrator UI'
+  public: true
+```
+
+#### Auth0 Configuration Example
+
+```typescript
+// environment.prod.ts
+oidc: {
+  authority: 'https://your-tenant.auth0.com',
+  clientId: 'your-auth0-client-id',
+  scope: 'openid profile email',
+  responseType: 'code',
+  // ... other settings
+}
+```
+
+#### Keycloak Configuration Example
+
+```typescript
+// environment.prod.ts
+oidc: {
+  authority: 'https://your-keycloak.com/auth/realms/your-realm',
+  clientId: 'orchestrator-ui',
+  scope: 'openid profile email',
+  responseType: 'code',
+  // ... other settings
+}
+```
+
 ## Learn More
 
 - [Angular Documentation](https://angular.dev/)
@@ -482,6 +638,56 @@ To contribute to this project:
 - [Kubernetes Documentation](https://kubernetes.io/docs/home/)
 - [RxJS Documentation](https://rxjs.dev/)
 - [Transloco Documentation](https://ngneat.github.io/transloco/)
+- [OpenID Connect Specification](https://openid.net/connect/)
+- [DEX OIDC Provider](https://dexidp.io/)
+
+## COG Integration
+
+### Proxy Configuration
+
+The COG dashboard is integrated through Angular proxy configuration that automatically forwards authentication tokens.
+
+#### Development Setup
+
+1. **Proxy Configuration**: `proxy.conf.js` handles COG requests
+   ```javascript
+   '/cog/**': {
+     target: 'https://dashboard.cog.hiro-develop.nl',
+     secure: true,
+     changeOrigin: true,
+     pathRewrite: { '^/cog': '/cogui' }
+   }
+   ```
+
+2. **Environment Configuration**:
+   - Development: `cogUrl: '/cog'` (uses dev COG instance)
+   - Production: `cogUrl: '/cog-prod'` (uses production COG instance)
+
+3. **Authentication**: Auth interceptor automatically adds `Authorization: Bearer <token>` header to all COG requests
+
+#### COG Component Usage
+
+```typescript
+@Component({
+  template: `
+    <iframe 
+      [src]="url | safe : 'resourceUrl'" 
+      frameborder="0" 
+      allowfullscreen>
+    </iframe>
+  `
+})
+export class CogComponent {
+  url = environment.cogUrl; // Resolves to /cog or /cog-prod
+}
+```
+
+#### Benefits
+
+- ✅ **Automatic Authentication**: Tokens passed transparently
+- ✅ **CORS Handling**: Proxy resolves cross-origin issues  
+- ✅ **Environment Specific**: Different COG instances per environment
+- ✅ **No Code Changes**: Simple iframe with proxy URL
 
 ## Future Development
 

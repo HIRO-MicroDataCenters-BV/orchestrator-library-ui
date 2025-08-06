@@ -1,9 +1,24 @@
 export const environment = {
   production: false,
-  apiUrl: 'http://51.44.28.47:30015',
+  apiUrl: '/api',
   tokenKey: 'auth_token',
   refreshTokenKey: 'refresh_token',
   userKey: 'user',
   dashboardUrl: 'http://51.44.28.47:30016',
-  cogUrl: 'https://dashboard.cog.hiro-develop.nl/cogui/',
+  cogUrl: '/cog',
+
+  // OIDC Configuration
+  oidc: {
+    authority: 'http://localhost:4200/dex',
+    clientId: 'authservice-oidc',
+    scope: 'openid profile email groups',
+    responseType: 'code',
+    silentRenew: true,
+    useRefreshToken: true,
+    renewTimeBeforeTokenExpiresInSeconds: 60,
+    historyCleanupOff: true,
+    autoUserInfo: true,
+    triggerRefreshWhenIdTokenExpired: true,
+    logLevel: 1, // LogLevel.Warn
+  },
 };
