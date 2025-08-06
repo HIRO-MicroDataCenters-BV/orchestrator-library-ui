@@ -174,6 +174,15 @@ export class EnergyPredictionComponent implements OnInit, OnDestroy {
       legend: {
         enabled: true
       },
+      plotOptions: {
+        spline: {
+          states: {
+            inactive: {
+              opacity: 1
+            }
+          }
+        }
+      },
       series: [
         {
           name: 'Historical Usage',
@@ -427,12 +436,22 @@ export class EnergyPredictionComponent implements OnInit, OnDestroy {
           lineWidth: 1,
           marker: {
             enabled: false
+          },
+          states: {
+            inactive: {
+              opacity: 1
+            }
           }
         },
         line: {
           lineWidth: 2,
           marker: {
             enabled: false
+          },
+          states: {
+            inactive: {
+              opacity: 1
+            }
           }
         }
       },
