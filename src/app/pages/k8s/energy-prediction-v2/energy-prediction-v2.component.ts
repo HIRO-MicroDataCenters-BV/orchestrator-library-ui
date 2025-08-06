@@ -54,6 +54,9 @@ export class EnergyPredictionV2Component implements OnInit, OnDestroy {
     previousForecastData: [number, number][],
     futureForecastData: [number, number][]
   ): void {
+    console.debug(actualData);
+    console.debug(previousForecastData);
+    console.debug(futureForecastData);
     const now = new Date().getTime();
 
     this.comparisonChartOptions = {
@@ -95,7 +98,8 @@ export class EnergyPredictionV2Component implements OnInit, OnDestroy {
           label: {
             text: 'Now',
             style: {
-              color: '#ff6b6b'
+              color: '#ff6b6b',
+              fontSize: '10px'
             }
           }
         }],
