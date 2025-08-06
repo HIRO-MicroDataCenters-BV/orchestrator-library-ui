@@ -90,6 +90,51 @@
         </div>
       </div>
 
+      <div class="w-full">
+        <div class="mb-4">
+          <h3 class="text-lg font-semibold">CPU Watts Usage</h3>
+          <p class="text-sm text-muted-foreground">Real-time CPU power consumption across nodes</p>
+        </div>
+        <div class="w-full border rounded-lg p-4 bg-white">
+          <div class="chart-container w-full h-[400px]">
+            <highcharts-chart
+              [options]="cpuWattsChartOptions"
+              class="w-full h-full"
+            ></highcharts-chart>
+          </div>
+        </div>
+      </div>
+
+      <div class="w-full">
+        <div class="mb-4">
+          <h3 class="text-lg font-semibold">CPU Utilization</h3>
+          <p class="text-sm text-muted-foreground">CPU utilization percentage across nodes</p>
+        </div>
+        <div class="w-full border rounded-lg p-4 bg-white">
+          <div class="chart-container w-full h-[400px]">
+            <highcharts-chart
+              [options]="cpuUtilizationChartOptions"
+              class="w-full h-full"
+            ></highcharts-chart>
+          </div>
+        </div>
+      </div>
+
+      <div class="w-full">
+        <div class="mb-4">
+          <h3 class="text-lg font-semibold">Memory Usage</h3>
+          <p class="text-sm text-muted-foreground">Memory consumption in MB across nodes</p>
+        </div>
+        <div class="w-full border rounded-lg p-4 bg-white">
+          <div class="chart-container w-full h-[400px]">
+            <highcharts-chart
+              [options]="memoryUsageChartOptions"
+              class="w-full h-full"
+            ></highcharts-chart>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>

@@ -2,8 +2,9 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HighchartsChartComponent } from 'highcharts-angular';
 import * as Highcharts from 'highcharts';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil, forkJoin } from 'rxjs';
 import { EnergyDataService } from '../../../shared/services/energy-data.service';
+import { MetricsApiService } from '../../../shared/services/metrics-api.service';
 import { HlmSidebarService } from '../../../../../libs/ui/ui-sidebar-helm/src/lib/hlm-sidebar.service';
 
 @Component({
@@ -17,13 +18,18 @@ import { HlmSidebarService } from '../../../../../libs/ui/ui-sidebar-helm/src/li
   styleUrl: './energy-prediction-v2.component.css'
 })
 export class EnergyPredictionV2Component implements OnInit, OnDestroy {
+  Highcharts: typeof Highcharts = Highcharts;
 
   comparisonChartOptions: Partial<Highcharts.Options> = {};
+  cpuWattsChartOptions: Partial<Highcharts.Options> = {};
+  cpuUtilizationChartOptions: Partial<Highcharts.Options> = {};
+  memoryUsageChartOptions: Partial<Highcharts.Options> = {};
   
   private destroy$ = new Subject<void>();
 
   constructor(
     private energyDataService: EnergyDataService,
+    private metricsApiService: MetricsApiService,
     public sidebarService: HlmSidebarService
   ) {}
 
@@ -37,9 +43,288 @@ export class EnergyPredictionV2Component implements OnInit, OnDestroy {
   }
 
   private loadData(): void {
+    // Load energy forecast chart (original functionality)
     this.setupComparisonChart();
+    
+    // Start with mock data for real metrics testing, then try real API
+    console.log('Loading data - starting with mock data for testing');
+    this.loadMockDataForTesting();
+    
+    // Also try to load real data (this will override mock data if successful)
+    // this.loadRealMetricsData();
   }
 
+  private loadRealMetricsData(): void {
+    console.log('Starting to load metrics data...');
+    
+    forkJoin({
+      cpuWatts: this.metricsApiService.getCpuWattsChartData(),
+      cpuUtilization: this.metricsApiService.getCpuUtilizationChartData(),
+      memoryUsage: this.metricsApiService.getMemoryUsageChartData()
+    }).pipe(takeUntil(this.destroy$))
+    .subscribe({
+      next: ({ cpuWatts, cpuUtilization, memoryUsage }) => {
+        console.log('Received metrics data:', { cpuWatts, cpuUtilization, memoryUsage });
+        
+        if (Object.keys(cpuWatts).length > 0) {
+          this.setupCpuWattsChart(cpuWatts);
+          console.log('CPU Watts chart setup complete');
+        } else {
+          console.warn('No CPU watts data received');
+        }
+        
+        if (Object.keys(cpuUtilization).length > 0) {
+          this.setupCpuUtilizationChart(cpuUtilization);
+          console.log('CPU Utilization chart setup complete');
+        } else {
+          console.warn('No CPU utilization data received');
+        }
+        
+        if (Object.keys(memoryUsage).length > 0) {
+          this.setupMemoryUsageChart(memoryUsage);
+          console.log('Memory Usage chart setup complete');
+        } else {
+          console.warn('No memory usage data received');
+        }
+      },
+      error: (error) => {
+        console.error('Error loading metrics data:', error);
+        console.log('Attempting to use mock data for testing...');
+        this.loadMockDataForTesting();
+      }
+    });
+  }
+
+  private loadMockDataForTesting(): void {
+    console.log('Loading mock data for testing...');
+    const mockData: { [nodeName: string]: [number, number][] } = {
+      'minikube': [
+        [Date.now() - 300000, 150.5] as [number, number], // 5 min ago
+        [Date.now() - 240000, 145.2] as [number, number], // 4 min ago
+        [Date.now() - 180000, 148.9] as [number, number], // 3 min ago
+        [Date.now() - 120000, 152.1] as [number, number], // 2 min ago
+        [Date.now() - 60000, 149.8] as [number, number],  // 1 min ago
+        [Date.now(), 151.2] as [number, number]           // now
+      ]
+    };
+
+    this.setupCpuWattsChart(mockData);
+    
+    const mockCpuUtil: { [nodeName: string]: [number, number][] } = {
+      'minikube': [
+        [Date.now() - 300000, 65.2] as [number, number],
+        [Date.now() - 240000, 70.1] as [number, number],
+        [Date.now() - 180000, 68.5] as [number, number],
+        [Date.now() - 120000, 72.8] as [number, number],
+        [Date.now() - 60000, 69.3] as [number, number],
+        [Date.now(), 71.5] as [number, number]
+      ]
+    };
+
+    this.setupCpuUtilizationChart(mockCpuUtil);
+
+    const mockMemory: { [nodeName: string]: [number, number][] } = {
+      'minikube': [
+        [Date.now() - 300000, 2400] as [number, number],
+        [Date.now() - 240000, 2450] as [number, number],
+        [Date.now() - 180000, 2380] as [number, number],
+        [Date.now() - 120000, 2520] as [number, number],
+        [Date.now() - 60000, 2480] as [number, number],
+        [Date.now(), 2510] as [number, number]
+      ]
+    };
+
+    this.setupMemoryUsageChart(mockMemory);
+    console.log('Mock data setup complete');
+  }
+
+  private setupCpuWattsChart(data: { [nodeName: string]: [number, number][] }): void {
+    console.log('Setting up CPU Watts chart with data:', data);
+    const series: Highcharts.SeriesOptionsType[] = [];
+    const colors = ['#3b82f6', '#ef4444', '#10b981', '#f59e0b'];
+    let colorIndex = 0;
+
+    Object.keys(data).forEach(nodeName => {
+      series.push({
+        name: `${nodeName} - CPU Watts`,
+        type: 'line',
+        data: data[nodeName],
+        color: colors[colorIndex % colors.length],
+        lineWidth: 2,
+        marker: {
+          enabled: false
+        }
+      });
+      colorIndex++;
+    });
+
+    this.cpuWattsChartOptions = {
+      chart: {
+        type: 'line',
+        backgroundColor: 'transparent'
+      },
+      title: {
+        text: undefined
+      },
+      credits: {
+        enabled: false
+      },
+      xAxis: {
+        type: 'datetime',
+        title: {
+          text: 'Time'
+        }
+      },
+      yAxis: {
+        title: {
+          text: 'CPU Watts'
+        }
+      },
+      tooltip: {
+        shared: true,
+        valueSuffix: 'W'
+      },
+      legend: {
+        enabled: true
+      },
+      plotOptions: {
+        line: {
+          states: {
+            inactive: {
+              opacity: 1
+            }
+          }
+        }
+      },
+      series: series
+    };
+    console.log('CPU Watts chart options set:', this.cpuWattsChartOptions);
+  }
+
+  private setupCpuUtilizationChart(data: { [nodeName: string]: [number, number][] }): void {
+    console.log('Setting up CPU Utilization chart with data:', data);
+    const series: Highcharts.SeriesOptionsType[] = [];
+    const colors = ['#3b82f6', '#ef4444', '#10b981', '#f59e0b'];
+    let colorIndex = 0;
+
+    Object.keys(data).forEach(nodeName => {
+      series.push({
+        name: `${nodeName} - CPU Utilization`,
+        type: 'line',
+        data: data[nodeName],
+        color: colors[colorIndex % colors.length],
+        lineWidth: 2,
+        marker: {
+          enabled: false
+        }
+      });
+      colorIndex++;
+    });
+
+    this.cpuUtilizationChartOptions = {
+      chart: {
+        type: 'line',
+        backgroundColor: 'transparent'
+      },
+      title: {
+        text: undefined
+      },
+      credits: {
+        enabled: false
+      },
+      xAxis: {
+        type: 'datetime',
+        title: {
+          text: 'Time'
+        }
+      },
+      yAxis: {
+        title: {
+          text: 'CPU Utilization (%)'
+        },
+        max: 100
+      },
+      tooltip: {
+        shared: true,
+        valueSuffix: '%'
+      },
+      legend: {
+        enabled: true
+      },
+      plotOptions: {
+        line: {
+          states: {
+            inactive: {
+              opacity: 1
+            }
+          }
+        }
+      },
+      series: series
+    };
+  }
+
+  private setupMemoryUsageChart(data: { [nodeName: string]: [number, number][] }): void {
+    console.log('Setting up Memory Usage chart with data:', data);
+    const series: Highcharts.SeriesOptionsType[] = [];
+    const colors = ['#3b82f6', '#ef4444', '#10b981', '#f59e0b'];
+    let colorIndex = 0;
+
+    Object.keys(data).forEach(nodeName => {
+      series.push({
+        name: `${nodeName} - Memory Usage`,
+        type: 'line',
+        data: data[nodeName],
+        color: colors[colorIndex % colors.length],
+        lineWidth: 2,
+        marker: {
+          enabled: false
+        }
+      });
+      colorIndex++;
+    });
+
+    this.memoryUsageChartOptions = {
+      chart: {
+        type: 'line',
+        backgroundColor: 'transparent'
+      },
+      title: {
+        text: undefined
+      },
+      credits: {
+        enabled: false
+      },
+      xAxis: {
+        type: 'datetime',
+        title: {
+          text: 'Time'
+        }
+      },
+      yAxis: {
+        title: {
+          text: 'Memory Usage (MB)'
+        }
+      },
+      tooltip: {
+        shared: true,
+        valueSuffix: ' MB'
+      },
+      legend: {
+        enabled: true
+      },
+      plotOptions: {
+        line: {
+          states: {
+            inactive: {
+              opacity: 1
+            }
+          }
+        }
+      },
+      series: series
+    };
+  }
 
   private setupComparisonChart(): void {
     this.energyDataService.generateComparisonData()
@@ -54,9 +339,6 @@ export class EnergyPredictionV2Component implements OnInit, OnDestroy {
     previousForecastData: [number, number][],
     futureForecastData: [number, number][]
   ): void {
-    console.debug(actualData);
-    console.debug(previousForecastData);
-    console.debug(futureForecastData);
     const now = new Date().getTime();
 
     this.comparisonChartOptions = {
@@ -98,8 +380,7 @@ export class EnergyPredictionV2Component implements OnInit, OnDestroy {
           label: {
             text: 'Now',
             style: {
-              color: '#ff6b6b',
-              fontSize: '10px'
+              color: '#ff6b6b'
             }
           }
         }],
