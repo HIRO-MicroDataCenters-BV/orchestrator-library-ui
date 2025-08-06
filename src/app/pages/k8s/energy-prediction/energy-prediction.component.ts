@@ -279,51 +279,89 @@ export class EnergyPredictionComponent implements OnInit, OnDestroy {
 
   private setupComparisonChart(): void {
     const now = new Date().getTime();
+    const hoursInWeek = 7 * 24; // One week = 168 hours
     
-    // Generate actual data (last 24 hours up to now)
+    // Generate actual data (last week up to now)
     const actualData: [number, number][] = [];
-    for (let i = 24; i >= 0; i--) {
+    for (let i = hoursInWeek; i >= 0; i--) {
       const timestamp = now - (i * 60 * 60 * 1000);
       const baseConsumption = 400; // Total cluster consumption
-      const dailyPattern = Math.sin((timestamp / (60 * 60 * 1000)) * Math.PI / 12) * 80;
-      const randomFactor = (Math.random() - 0.5) * 40;
-      const actualConsumption = baseConsumption + dailyPattern + randomFactor;
       
+      // Daily pattern (24-hour cycle)
+      const dailyPattern = Math.sin((timestamp / (60 * 60 * 1000)) * Math.PI / 12) * 80;
+      
+      // Weekly pattern (7-day cycle) - higher consumption on weekdays
+      const dayOfWeek = new Date(timestamp).getDay();
+      const weeklyPattern = (dayOfWeek >= 1 && dayOfWeek <= 5) ? 50 : -30; // Weekday vs weekend
+      
+      // Random variations
+      const randomFactor = (Math.random() - 0.5) * 40;
+      
+      const actualConsumption = baseConsumption + dailyPattern + weeklyPattern + randomFactor;
       actualData.push([timestamp, Math.max(0, actualConsumption)]);
     }
 
-    // Generate previous forecast data (what was predicted for the last 24 hours)
+    // Generate previous forecast data (what was predicted for the last week)
     const previousForecastData: [number, number][] = [];
-    for (let i = 24; i >= 0; i--) {
+    for (let i = hoursInWeek; i >= 0; i--) {
       const timestamp = now - (i * 60 * 60 * 1000);
       const baseConsumption = 400;
-      const dailyPattern = Math.sin((timestamp / (60 * 60 * 1000)) * Math.PI / 12) * 70;
-      const predictionError = Math.sin((timestamp / (60 * 60 * 1000)) / 3) * 25; // Some prediction variance
-      const randomError = (Math.random() - 0.5) * 30; // Prediction uncertainty
-      const forecastConsumption = baseConsumption + dailyPattern + predictionError + randomError;
       
+      // Similar patterns but with prediction errors
+      const dailyPattern = Math.sin((timestamp / (60 * 60 * 1000)) * Math.PI / 12) * 70;
+      const dayOfWeek = new Date(timestamp).getDay();
+      const weeklyPattern = (dayOfWeek >= 1 && dayOfWeek <= 5) ? 45 : -25; // Slightly different prediction
+      
+      // Prediction errors - more error for older predictions
+      const ageHours = hoursInWeek - i;
+      const predictionError = Math.sin((timestamp / (60 * 60 * 1000)) / 3) * (15 + ageHours * 0.2);
+      const randomError = (Math.random() - 0.5) * (20 + ageHours * 0.3);
+      
+      const forecastConsumption = baseConsumption + dailyPattern + weeklyPattern + predictionError + randomError;
       previousForecastData.push([timestamp, Math.max(0, forecastConsumption)]);
     }
 
-    // Generate future forecast data (next 24 hours from now)
+    // Generate future forecast data (next week from now)
     const futureForecastData: [number, number][] = [];
-    for (let i = 1; i <= 24; i++) {
+    for (let i = 1; i <= hoursInWeek; i++) {
       const timestamp = now + (i * 60 * 60 * 1000);
       const baseConsumption = 400;
-      const dailyPattern = Math.sin((timestamp / (60 * 60 * 1000)) * Math.PI / 12) * 70;
-      const trendFactor = Math.sin((i / 24) * Math.PI) * 20; // Slight trend
-      const forecastConsumption = baseConsumption + dailyPattern + trendFactor;
       
+      // Predicted patterns
+      const dailyPattern = Math.sin((timestamp / (60 * 60 * 1000)) * Math.PI / 12) * 70;
+      const dayOfWeek = new Date(timestamp).getDay();
+      const weeklyPattern = (dayOfWeek >= 1 && dayOfWeek <= 5) ? 45 : -25;
+      
+      // Future trend and uncertainty
+      const trendFactor = Math.sin((i / hoursInWeek) * Math.PI) * 15;
+      const uncertainty = (Math.random() - 0.5) * (10 + i * 0.1); // Increasing uncertainty over time
+      
+      const forecastConsumption = baseConsumption + dailyPattern + weeklyPattern + trendFactor + uncertainty;
       futureForecastData.push([timestamp, Math.max(0, forecastConsumption)]);
     }
 
     this.comparisonChartOptions = {
       chart: {
         type: 'line',
-        backgroundColor: 'transparent'
+        backgroundColor: 'transparent',
+        panKey: 'shift',
+        panning: {
+          enabled: true,
+          type: 'x'
+        },
+        zooming: {
+          type: 'x'
+        }
       },
       title: {
         text: undefined
+      },
+      subtitle: {
+        text: 'Click and drag to zoom in. Hold shift key to pan.',
+        style: {
+          fontSize: '11px',
+          color: '#666'
+        }
       },
       credits: {
         enabled: false
@@ -344,7 +382,12 @@ export class EnergyPredictionComponent implements OnInit, OnDestroy {
               color: '#ff6b6b'
             }
           }
-        }]
+        }],
+        events: {
+          afterSetExtremes: function() {
+            // Optional: Add custom behavior after zoom/pan
+          }
+        }
       },
       yAxis: {
         title: {
@@ -363,6 +406,20 @@ export class EnergyPredictionComponent implements OnInit, OnDestroy {
       },
       legend: {
         enabled: true
+      },
+      navigation: {
+        buttonOptions: {
+          enabled: true
+        }
+      },
+      rangeSelector: {
+        enabled: false
+      },
+      scrollbar: {
+        enabled: false
+      },
+      navigator: {
+        enabled: false
       },
       plotOptions: {
         area: {
@@ -384,8 +441,8 @@ export class EnergyPredictionComponent implements OnInit, OnDestroy {
           name: 'Actual Energy Consumption',
           type: 'line',
           data: actualData,
-          color: '#3b82f6',
-          lineWidth: 2,
+          color: '#10b981',
+          lineWidth: 1,
           marker: {
             enabled: false
           }
@@ -394,15 +451,15 @@ export class EnergyPredictionComponent implements OnInit, OnDestroy {
           name: 'Previous Forecast (Historical)',
           type: 'area',
           data: previousForecastData,
-          color: '#f59e0b',
+          color: 'rgba(59, 130, 246, 0.4)',
           fillColor: {
             linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
             stops: [
-              [0, 'rgba(245, 158, 11, 0.4)'],
-              [1, 'rgba(245, 158, 11, 0.1)']
+              [0, 'rgba(59, 130, 246, 0.15)'],
+              [1, 'rgba(59, 130, 246, 0.05)']
             ]
           },
-          lineWidth: 1,
+          lineWidth: 0.5,
           marker: {
             enabled: false
           }
@@ -411,15 +468,15 @@ export class EnergyPredictionComponent implements OnInit, OnDestroy {
           name: 'Future Forecast',
           type: 'area',
           data: futureForecastData,
-          color: '#f59e0b',
+          color: 'rgba(59, 130, 246, 0.6)',
           fillColor: {
             linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
             stops: [
-              [0, 'rgba(245, 158, 11, 0.4)'],
-              [1, 'rgba(245, 158, 11, 0.1)']
+              [0, 'rgba(59, 130, 246, 0.25)'],
+              [1, 'rgba(59, 130, 246, 0.08)']
             ]
           },
-          lineWidth: 1,
+          lineWidth: 0.5,
           marker: {
             enabled: false
           }
