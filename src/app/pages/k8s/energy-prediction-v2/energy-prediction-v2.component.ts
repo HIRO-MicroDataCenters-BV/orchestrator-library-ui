@@ -4,22 +4,21 @@ import { HighchartsChartComponent } from 'highcharts-angular';
 import * as Highcharts from 'highcharts';
 import { Subject, takeUntil } from 'rxjs';
 import { HlmCardImports } from '@spartan-ng/ui-card-helm';
-import { HlmSidebarService } from '../../../../../libs/ui/ui-sidebar-helm/src/lib/hlm-sidebar.service';
 import { EnergyDataService } from '../../../shared/services/energy-data.service';
 import { EnergyDataPoint, NodeEnergyData } from '../../../shared/interfaces/energy-data.interface';
 
 @Component({
-  selector: 'app-energy-prediction',
+  selector: 'app-energy-prediction-v2',
   standalone: true,
   imports: [
     CommonModule,
     HighchartsChartComponent,
     ...HlmCardImports
   ],
-  templateUrl: './energy-prediction.component.html',
-  styleUrl: './energy-prediction.component.css'
+  templateUrl: './energy-prediction-v2.component.html',
+  styleUrl: './energy-prediction-v2.component.css'
 })
-export class EnergyPredictionComponent implements OnInit, OnDestroy {
+export class EnergyPredictionV2Component implements OnInit, OnDestroy {
   Highcharts: typeof Highcharts = Highcharts;
   
   overviewChartOptions: Partial<Highcharts.Options> = {};
@@ -29,10 +28,7 @@ export class EnergyPredictionComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   private mockData: NodeEnergyData[] = [];
 
-  constructor(
-    public sidebarService: HlmSidebarService,
-    private energyDataService: EnergyDataService
-  ) {}
+  constructor(private energyDataService: EnergyDataService) {}
 
   ngOnInit(): void {
     this.loadData();
