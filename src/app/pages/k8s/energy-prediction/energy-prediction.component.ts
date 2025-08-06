@@ -375,7 +375,7 @@ export class EnergyPredictionComponent implements OnInit, OnDestroy {
           color: '#ff6b6b',
           dashStyle: 'ShortDash',
           value: now,
-          width: 2,
+          width: 0.3,
           label: {
             text: 'Now',
             style: {
