@@ -265,23 +265,25 @@ export class AuthService {
 
     try {
       // Use OIDC Resource Owner Password Credentials Grant
-      const tokenUrl = '/dex/token';
+      const tokenUrl = AUTH_CONSTANTS.ROUTES.DEX_TOKEN;
       console.log('Token URL:', tokenUrl);
 
       const body = new URLSearchParams({
         grant_type: 'password',
         username: credentials.email,
         password: credentials.password,
-        client_id: 'authservice-oidc',
-        scope: 'openid profile email groups',
+        client_id: AUTH_CONSTANTS.OIDC.CLIENT_ID,
+        client_secret: AUTH_CONSTANTS.OIDC.CLIENT_SECRET,
+        scope: AUTH_CONSTANTS.OIDC.SCOPE,
       });
 
       console.log('Request body params:', {
         grant_type: 'password',
         username: credentials.email,
         password: '[HIDDEN]',
-        client_id: 'authservice-oidc',
-        scope: 'openid profile email groups',
+        client_id: AUTH_CONSTANTS.OIDC.CLIENT_ID,
+        client_secret: '[HIDDEN]',
+        scope: AUTH_CONSTANTS.OIDC.SCOPE,
       });
 
       console.log('Making HTTP POST request to:', tokenUrl);
@@ -719,8 +721,9 @@ export class AuthService {
       localStorage.removeItem(AUTH_CONSTANTS.TOKENS.EXPIRES_AT_KEY);
       localStorage.removeItem(AUTH_CONSTANTS.TOKENS.USER_KEY);
       localStorage.removeItem(AUTH_CONSTANTS.TOKENS.STATE_KEY);
+      localStorage.removeItem(AUTH_CONSTANTS.TOKENS.RETURN_URL_KEY);
+      localStorage.removeItem('oidc_state');
     }
-    this.clearReturnUrl();
   }
 
   private createAuthError(
@@ -734,5 +737,153 @@ export class AuthService {
       message,
       timestamp: new Date(),
     };
+  }
+
+  /**
+   * Initiate OIDC Authorization Code Flow
+   * Redirects user to OIDC provider for authentication
+   */
+  initiateOidcLogin(): void {
+    if (!this.isBrowser) {
+      console.warn('OIDC login not available in server environment');
+      return;
+    }
+
+    console.log('=== Initiating OIDC Authorization Code Flow ===');
+
+    // Store current URL as return URL
+    const currentUrl = window.location.pathname + window.location.search;
+    this.setReturnUrl(currentUrl);
+
+    // Generate state parameter for security
+    const state = this.generateRandomState();
+    if (this.isBrowser && typeof localStorage !== 'undefined') {
+      localStorage.setItem('oidc_state', state);
+    }
+
+    // Build authorization URL
+    const authUrl = new URL(
+      AUTH_CONSTANTS.OIDC.AUTHORIZATION_ENDPOINT,
+      AUTH_CONSTANTS.OIDC.AUTHORITY
+    );
+    authUrl.searchParams.set('client_id', AUTH_CONSTANTS.OIDC.CLIENT_ID);
+    authUrl.searchParams.set(
+      'response_type',
+      AUTH_CONSTANTS.OIDC.RESPONSE_TYPE
+    );
+    authUrl.searchParams.set('scope', AUTH_CONSTANTS.OIDC.SCOPE);
+    authUrl.searchParams.set('redirect_uri', AUTH_CONSTANTS.OIDC.REDIRECT_URI);
+    authUrl.searchParams.set('state', state);
+
+    console.log('Redirecting to authorization URL:', authUrl.toString());
+
+    // Redirect to OIDC provider
+    window.location.href = authUrl.toString();
+  }
+
+  /**
+   * Generate random state parameter for OIDC security
+   */
+  private generateRandomState(): string {
+    if (!this.isBrowser || typeof crypto === 'undefined') {
+      // Fallback for SSR
+      return Math.random().toString(36).substring(2) + Date.now().toString(36);
+    }
+    const array = new Uint8Array(32);
+    crypto.getRandomValues(array);
+    return Array.from(array, (byte) => byte.toString(16).padStart(2, '0')).join(
+      ''
+    );
+  }
+
+  /**
+   * Exchange authorization code for tokens
+   */
+  exchangeCodeForTokens(code: string, state: string): Observable<any> {
+    console.log('=== Exchanging authorization code for tokens ===');
+
+    // Verify state parameter
+    if (!this.isBrowser || typeof localStorage === 'undefined') {
+      // Skip state verification in SSR
+      console.warn('State verification skipped in SSR environment');
+    } else {
+      const storedState = localStorage.getItem('oidc_state');
+      if (!storedState || storedState !== state) {
+        const error = this.createAuthError(
+          AuthErrorType.OIDC_ERROR,
+          'INVALID_STATE',
+          'Invalid state parameter'
+        );
+        return throwError(() => error);
+      }
+
+      // Clear stored state
+      localStorage.removeItem('oidc_state');
+    }
+
+    const body = new URLSearchParams({
+      grant_type: 'authorization_code',
+      code: code,
+      redirect_uri: AUTH_CONSTANTS.OIDC.REDIRECT_URI,
+      client_id: AUTH_CONSTANTS.OIDC.CLIENT_ID,
+      client_secret: AUTH_CONSTANTS.OIDC.CLIENT_SECRET,
+    });
+
+    return this.http
+      .post<any>(AUTH_CONSTANTS.ROUTES.DEX_TOKEN, body.toString(), {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      })
+      .pipe(
+        map((tokenResponse) => {
+          console.log('=== Token Exchange Successful ===');
+          console.log('Token received successfully');
+
+          const tokens: AuthTokens = {
+            accessToken: tokenResponse.access_token,
+            refreshToken: tokenResponse.refresh_token,
+            idToken: tokenResponse.id_token,
+            expiresAt: Date.now() + tokenResponse.expires_in * 1000,
+          };
+
+          // Set authenticated state
+          this.setAuthState({
+            isAuthenticated: true,
+            isLoading: false,
+            user: null,
+            tokens: tokens,
+            error: null,
+          });
+
+          this.storeTokens(tokens);
+
+          return {
+            success: true,
+            user: null,
+            tokens: tokens,
+          };
+        }),
+        catchError((error) => {
+          console.error('=== Token Exchange Error ===');
+          console.error('Error:', error);
+
+          const errorMessage =
+            error.error?.error_description || 'Token exchange failed';
+          const authError = this.createAuthError(
+            AuthErrorType.OIDC_ERROR,
+            'TOKEN_EXCHANGE_ERROR',
+            errorMessage
+          );
+
+          this.setAuthState({
+            ...this.authState(),
+            isLoading: false,
+            error: authError.message,
+          });
+
+          return throwError(() => authError);
+        })
+      );
   }
 }

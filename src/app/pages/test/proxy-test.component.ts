@@ -1,4 +1,5 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, signal, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -213,8 +214,10 @@ interface ProxyTestResult {
   ],
 })
 export class ProxyTestComponent implements OnInit {
-  private readonly http = inject(HttpClient);
+  protected readonly http = inject(HttpClient);
   private readonly authService = inject(AuthService);
+  private readonly platformId = inject(PLATFORM_ID);
+  private readonly isBrowser = isPlatformBrowser(this.platformId);
 
   testResults: ProxyTestResult[] = [];
   isRunning = false;
@@ -282,9 +285,12 @@ export class ProxyTestComponent implements OnInit {
     this.hasToken = !!token;
 
     // Check for authservice_session cookie as well
-    const sessionCookie = document.cookie
-      .split('; ')
-      .find((row) => row.startsWith('authservice_session='));
+    let sessionCookie = null;
+    if (this.isBrowser && typeof document !== 'undefined') {
+      sessionCookie = document.cookie
+        .split('; ')
+        .find((row) => row.startsWith('authservice_session='));
+    }
 
     if (token && token !== 'managed-by-authservice') {
       // Show first and last 10 characters of token
@@ -424,6 +430,10 @@ export class ProxyTestComponent implements OnInit {
   }
 
   getSessionCookie(): string {
+    if (!this.isBrowser || typeof document === 'undefined') {
+      return 'SSR Environment';
+    }
+
     const sessionCookie = document.cookie
       .split('; ')
       .find((row) => row.startsWith('authservice_session='));

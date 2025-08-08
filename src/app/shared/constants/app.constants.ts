@@ -361,6 +361,7 @@ export const AUTH_CONSTANTS = {
   OIDC: {
     AUTHORITY: environment.oidc.authority,
     CLIENT_ID: environment.oidc.clientId,
+    CLIENT_SECRET: environment.oidc.clientSecret,
     SCOPE: environment.oidc.scope,
     RESPONSE_TYPE: environment.oidc.responseType,
     SILENT_RENEW: environment.oidc.silentRenew,
@@ -372,6 +373,12 @@ export const AUTH_CONSTANTS = {
     TRIGGER_REFRESH_WHEN_ID_TOKEN_EXPIRED:
       environment.oidc.triggerRefreshWhenIdTokenExpired,
     LOG_LEVEL: environment.oidc.logLevel,
+    REDIRECT_URI: environment.oidc.redirectUri,
+    POST_LOGOUT_REDIRECT_URI: environment.oidc.postLogoutRedirectUri,
+    TOKEN_ENDPOINT: environment.oidc.tokenEndpoint,
+    AUTHORIZATION_ENDPOINT: environment.oidc.authorizationEndpoint,
+    USER_INFO_ENDPOINT: environment.oidc.userInfoEndpoint,
+    END_SESSION_ENDPOINT: environment.oidc.endSessionEndpoint,
   },
   SESSION: {
     TIMEOUT_WARNING_MINUTES: 5,
@@ -383,6 +390,10 @@ export const AUTH_CONSTANTS = {
     LOGIN: '/auth/login',
     LOGOUT: '/auth/logout',
     CALLBACK: '/authservice/oidc/callback',
+    DEX_TOKEN: '/api/dex/token',
+    DEX_AUTH: '/api/dex/auth',
+    DEX_USERINFO: '/api/dex/userinfo',
+    DEX_LOGOUT: '/api/dex/auth/logout',
     UNAUTHORIZED: '/auth/unauthorized',
     FORBIDDEN: '/auth/forbidden',
     AFTER_LOGIN: '/overview',

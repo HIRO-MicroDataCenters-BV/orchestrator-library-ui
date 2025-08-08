@@ -14,6 +14,7 @@ export interface Environment {
   oidc: {
     authority: string;
     clientId: string;
+    clientSecret: string;
     scope: string;
     responseType: string;
     silentRenew: boolean;
@@ -23,5 +24,11 @@ export interface Environment {
     autoUserInfo: boolean;
     triggerRefreshWhenIdTokenExpired: boolean;
     logLevel: number;
+    redirectUri: string;
+    postLogoutRedirectUri: string;
+    tokenEndpoint: string;
+    authorizationEndpoint: string;
+    userInfoEndpoint: string;
+    endSessionEndpoint: string;
   };
 }

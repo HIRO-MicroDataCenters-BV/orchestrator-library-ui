@@ -167,31 +167,14 @@
   },
   "auth": {
     "login": {
-      "title": "Login",
-      "description": "Enter your credentials to access your account",
-      "logo_alt": "Application Logo",
-      "welcome_title": "Welcome Back",
-      "welcome_subtitle": "Sign in to your account",
-      "email": "Email",
-      "email_label": "Email Address",
+      "email_label": "Email",
       "email_placeholder": "Enter your email",
       "email_error": "Please enter a valid email address",
-      "password": "Password",
       "password_label": "Password",
       "password_placeholder": "Enter your password",
       "password_error": "Password is required",
-      "remember_me": "Remember me",
-      "forgot_password": "Forgot password?",
       "login_button": "Sign In",
-      "logging_in": "Signing in...",
-      "sso_button": "Continue with SSO",
-      "connecting": "Connecting...",
-      "no_account": "Don't have an account?",
-      "register_link": "Register",
-      "email_required": "Email is required",
-      "email_invalid": "Please enter a valid email",
-      "password_required": "Password is required",
-      "error_message": "Invalid email or password"
+      "logging_in": "Signing in..."
     },
     "register": {
       "title": "Register",

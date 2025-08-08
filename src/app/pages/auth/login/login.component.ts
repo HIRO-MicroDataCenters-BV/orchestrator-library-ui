@@ -1,4 +1,4 @@
-import { Component, inject, signal, computed } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormBuilder,
@@ -8,9 +8,22 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { finalize } from 'rxjs/operators';
-import { HttpClient } from '@angular/common/http';
 
 import { TranslocoModule } from '@jsverse/transloco';
+import { NgIcon, provideIcons } from '@ng-icons/core';
+import {
+  lucideEye,
+  lucideEyeOff,
+  lucideLoader,
+  lucideLock,
+  lucideMail,
+} from '@ng-icons/lucide';
+
+// Spartan UI Components
+import { HlmCardImports } from '@spartan-ng/ui-card-helm';
+import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
+import { HlmInputDirective } from '@spartan-ng/ui-input-helm';
+import { HlmLabelDirective } from '@spartan-ng/ui-label-helm';
 
 import { AuthService } from '../../../core/services/auth/auth.service';
 import { MockAuthService } from '../../../mock/auth.mock';
@@ -18,13 +31,30 @@ import { AUTH_CONSTANTS } from '../../../shared/constants/app.constants';
 import {
   LoginCredentials,
   AuthError,
-  AuthErrorType,
 } from '../../../shared/models/auth.models';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, TranslocoModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    TranslocoModule,
+    NgIcon,
+    ...HlmCardImports,
+    HlmButtonDirective,
+    HlmInputDirective,
+    HlmLabelDirective,
+  ],
+  providers: [
+    provideIcons({
+      lucideEye,
+      lucideEyeOff,
+      lucideLoader,
+      lucideLock,
+      lucideMail,
+    }),
+  ],
   templateUrl: './login.component.html',
   styleUrls: [],
 })
@@ -33,15 +63,14 @@ export class LoginComponent {
   private readonly router = inject(Router);
   private readonly authService = inject(AuthService);
   private readonly mockAuthService = inject(MockAuthService);
-  private readonly http = inject(HttpClient);
 
   private readonly _isLoading = signal(false);
-  private readonly _error = signal<AuthError | null>(null);
+  private readonly _showPassword = signal(false);
 
   loginForm: FormGroup;
 
   isLoading = this._isLoading.asReadonly();
-  error = this._error.asReadonly();
+  showPassword = this._showPassword.asReadonly();
 
   constructor() {
     this.loginForm = this.fb.group({
@@ -57,6 +86,18 @@ export class LoginComponent {
     }
   }
 
+  togglePasswordVisibility(): void {
+    this._showPassword.update((show) => !show);
+  }
+
+  /**
+   * Initiate OIDC login flow
+   */
+  onOidcLogin(): void {
+    console.log('Initiating OIDC Authorization Code Flow');
+    this.authService.initiateOidcLogin();
+  }
+
   onLogin(): void {
     if (this.loginForm.invalid) {
       this.markAllFieldsAsTouched();
@@ -64,7 +105,6 @@ export class LoginComponent {
     }
 
     this._isLoading.set(true);
-    this._error.set(null);
 
     const credentials: LoginCredentials = {
       email: this.loginForm.value.email,
@@ -102,7 +142,6 @@ export class LoginComponent {
           },
           error: (error: AuthError) => {
             console.error('Mock login error:', error);
-            this._error.set(error);
           },
         });
     } else {
@@ -124,7 +163,6 @@ export class LoginComponent {
           },
           error: (error: AuthError) => {
             console.error('OIDC login error:', error);
-            this._error.set(error);
           },
         });
     }
