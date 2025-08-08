@@ -36,9 +36,6 @@ import { HlmSidebarService } from '../../../../libs/ui/ui-sidebar-helm/src/lib/h
 import { AppHeaderComponent } from '../../components/app-header/app-header.component';
 import { NgIf, NgFor } from '@angular/common';
 import { ApiService } from '../../core/services/api.service';
-import { K8S_CONSTANTS } from '../../shared/constants';
-import { setStorageItem } from '../../shared';
-import { STORAGE_KEYS } from '../../shared/constants/api.constants';
 
 interface Cluster {
   cluster_name: string;

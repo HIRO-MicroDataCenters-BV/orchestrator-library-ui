@@ -4,14 +4,18 @@
   "scripts": {
     "ng": "ng",
     "start": "nx serve",
-    "start:dev": "nx serve --configuration=development",
-    "start:prod": "nx serve --configuration=production",
+    "start:dev": "NODE_ENV=development nx serve --configuration=development",
+    "start:prod": "NODE_ENV=production nx serve --configuration=production",
     "build": "nx build",
-    "build:dev": "nx build --configuration=development",
-    "build:prod": "nx build --configuration=production",
+    "build:dev": "NODE_ENV=development nx build --configuration=development",
+    "build:prod": "NODE_ENV=production nx build --configuration=production",
     "watch": "nx build --watch --configuration development",
     "test": "nx test",
-    "serve:ssr": "node dist/server/server.mjs"
+    "test:proxy": "node scripts/test-proxy-passing.js",
+    "test:proxy:enhanced": "node scripts/enhanced-proxy-test.js",
+    "serve:ssr": "node dist/server/server.mjs",
+    "env:check": "node -e \"console.log('Environment:', process.env.NODE_ENV || 'development')\"",
+    "env:copy": "cp .env.example .env"
   },
   "private": true,
   "dependencies": {
@@ -29,6 +33,7 @@
     "@ng-icons/lucide": "30.3.0",
     "@spartan-ng/brain": "0.0.1-alpha.471",
     "@tailwindcss/postcss": "^4.1.8",
+    "angular-auth-oidc-client": "19.0.1",
     "chart.js": "^4.5.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",

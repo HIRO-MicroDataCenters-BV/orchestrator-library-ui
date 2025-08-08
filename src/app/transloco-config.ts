@@ -2,7 +2,7 @@ import { inject, Injectable, isDevMode } from '@angular/core';
 import {
   Translation,
   TranslocoLoader,
-  TranslocoConfig
+  TranslocoConfig,
 } from '@jsverse/transloco';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -27,6 +27,6 @@ export function getTranslocoConfig(): {
       reRenderOnLangChange: true,
       prodMode: !isDevMode(),
     },
-    loader: TranslocoHttpLoader
+    loader: TranslocoHttpLoader,
   };
 }
