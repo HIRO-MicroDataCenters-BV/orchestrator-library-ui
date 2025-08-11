@@ -37,7 +37,6 @@
         </li>
 
         <ng-container *ngFor="let item of group.items">
-          <!-- Menu item with submenu -->
           <li
             *ngIf="item.items && item.items.length > 0"
             hlmSidebarMenuItem
@@ -71,7 +70,6 @@
               ></ng-icon>
             </div>
 
-            <!-- Submenu items -->
             <ul
               *ngIf="
                 (item.expanded && sidebarService.state() !== 'collapsed') ||
@@ -113,7 +111,6 @@
             </ul>
           </li>
 
-          <!-- Regular menu item without submenu -->
           <li
             *ngIf="!item.items || item.items.length === 0"
             hlmSidebarMenuItem
