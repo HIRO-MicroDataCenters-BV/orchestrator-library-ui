@@ -48,7 +48,7 @@ export class EnergyPredictionV2Component implements OnInit, OnDestroy {
     
     // Start with mock data for real metrics testing, then try real API
     console.log('Loading data - starting with mock data for testing');
-    // this.loadMockDataForTesting();
+    //this.loadMockDataForTesting();
     
     // Also try to load real data (this will override mock data if successful)
     this.loadRealMetricsData();

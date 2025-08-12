@@ -39,7 +39,8 @@
     "monitoring": "Monitoring",
     "request_decisions": "Request Decisions",
     "actions": "Actions",
-    "overview": "Overview"
+    "overview": "Overview",
+    "energy_metrics": "Energy Metrics"
   },
   "action": {
     "previous": "Previous",
