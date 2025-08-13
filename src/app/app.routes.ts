@@ -109,6 +109,14 @@ export const routes: Routes = [
               ),
             data: { title: 'Alerts' },
           },
+          {
+            path: 'monitoring',
+            loadComponent: () =>
+              import('./pages/monitoring/monitoring.component').then(
+                (m) => m.MonitoringComponent
+              ),
+            data: { title: 'Monitoring' },
+          },
         ],
       },
     ],
