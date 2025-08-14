@@ -36,8 +36,8 @@ const TEST_ENDPOINTS = [
     },
   },
   {
-    name: 'COG iframe Proxy (Production)',
-    path: '/cog-iframe',
+    name: 'COG iframe Proxy (iframe-cog)',
+    path: '/iframe-cog',
     method: 'GET',
     expectedStatus: [200, 302, 401, 403, 500], // Auth redirect or auth required
     headers: {
@@ -45,8 +45,8 @@ const TEST_ENDPOINTS = [
     },
   },
   {
-    name: 'Kubernetes Dashboard Proxy',
-    path: '/iframe/api/v1/namespace',
+    name: 'Kubernetes Dashboard Proxy (iframe-dashboard)',
+    path: '/iframe-dashboard/',
     method: 'GET',
     expectedStatus: [200, 302, 401, 403], // Auth redirect or auth required
   },

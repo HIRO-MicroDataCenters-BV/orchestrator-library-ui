@@ -32,7 +32,7 @@ export class K8sComponent {
         setStorageItem(STORAGE_KEYS.ACCESS_TOKEN, res.token);
         const token = TokenStorage.getAccessToken(STORAGE_KEYS.ACCESS_TOKEN);
         if (token) {
-          this.url += '?token=' + token;
+          this.url += '/?token=' + token;
         }
       });
   }

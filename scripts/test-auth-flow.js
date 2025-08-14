@@ -41,26 +41,27 @@ const AUTH_FLOW_TESTS = [
     description: 'Test initial access to pipeline dashboard',
     expectedBehavior: 'Should redirect to DEX authentication',
     expectedStatus: [302],
-    expectedRedirectPattern: /\/dex\/auth\?/
+    expectedRedirectPattern: /\/dex\/auth\?/,
   },
   {
     name: 'COG Dashboard Access',
     path: '/cog',
     description: 'Test initial access to COG dashboard',
-    expectedBehavior: 'Should redirect to DEX authentication or return auth error',
+    expectedBehavior:
+      'Should redirect to DEX authentication or return auth error',
     expectedStatus: [302, 401, 403, 500],
   },
   {
     name: 'COG iframe Access',
-    path: '/cog-iframe',
+    path: '/iframe-cog',
     description: 'Test initial access to COG iframe',
     expectedBehavior: 'Should redirect to DEX authentication',
     expectedStatus: [302],
-    expectedRedirectPattern: /\/dex\/auth\?/
+    expectedRedirectPattern: /\/dex\/auth\?/,
   },
   {
     name: 'Kubernetes Dashboard Access',
-    path: '/iframe/api/v1/namespace',
+    path: '/iframe-dashboard/',
     description: 'Test initial access to Kubernetes dashboard',
     expectedBehavior: 'Should return authentication required error',
     expectedStatus: [401, 403],
@@ -71,7 +72,7 @@ const AUTH_FLOW_TESTS = [
     description: 'Test DEX authentication endpoint availability',
     expectedBehavior: 'Should show login form or handle auth request',
     expectedStatus: [200, 302, 400],
-  }
+  },
 ];
 
 async function makeRequest(url, options = {}) {
@@ -86,16 +87,17 @@ async function makeRequest(url, options = {}) {
       method: options.method || 'GET',
       headers: {
         'User-Agent': USER_AGENT,
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        Accept:
+          'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
         'Accept-Language': 'en-US,en;q=0.5',
         'Accept-Encoding': 'gzip, deflate',
-        'Connection': 'keep-alive',
+        Connection: 'keep-alive',
         'Upgrade-Insecure-Requests': '1',
         ...options.headers,
       },
       timeout: TIMEOUT,
       // Don't follow redirects automatically
-      ...options.requestOptions
+      ...options.requestOptions,
     };
 
     const startTime = Date.now();
@@ -116,7 +118,7 @@ async function makeRequest(url, options = {}) {
           headers: res.headers,
           data: data,
           duration: duration,
-          url: url
+          url: url,
         });
       });
     });
@@ -127,7 +129,7 @@ async function makeRequest(url, options = {}) {
         success: false,
         error: 'Request timeout',
         duration: Date.now() - startTime,
-        url: url
+        url: url,
       });
     });
 
@@ -136,7 +138,7 @@ async function makeRequest(url, options = {}) {
         success: false,
         error: err.message,
         duration: Date.now() - startTime,
-        url: url
+        url: url,
       });
     });
 
@@ -151,7 +153,7 @@ function analyzeAuthResponse(response, test) {
     isAuthError: false,
     redirectLocation: null,
     authParams: null,
-    sessionInfo: null
+    sessionInfo: null,
   };
 
   // Check for authentication redirect
@@ -169,7 +171,7 @@ function analyzeAuthResponse(response, test) {
           redirect_uri: url.searchParams.get('redirect_uri'),
           response_type: url.searchParams.get('response_type'),
           scope: url.searchParams.get('scope'),
-          state: url.searchParams.get('state')
+          state: url.searchParams.get('state'),
         };
       } catch (e) {
         // Ignore parsing errors
@@ -180,7 +182,11 @@ function analyzeAuthResponse(response, test) {
   // Check for login page
   if (response.status === 200 && response.data) {
     const lowerData = response.data.toLowerCase();
-    if (lowerData.includes('login') || lowerData.includes('password') || lowerData.includes('username')) {
+    if (
+      lowerData.includes('login') ||
+      lowerData.includes('password') ||
+      lowerData.includes('username')
+    ) {
       analysis.isLoginPage = true;
     }
   }
@@ -197,8 +203,12 @@ function analyzeAuthResponse(response, test) {
       : [response.headers['set-cookie']];
 
     analysis.sessionInfo = cookies
-      .filter(cookie => cookie.includes('oidc_state_csrf') || cookie.includes('authservice_session'))
-      .map(cookie => cookie.split(';')[0]);
+      .filter(
+        (cookie) =>
+          cookie.includes('oidc_state_csrf') ||
+          cookie.includes('authservice_session')
+      )
+      .map((cookie) => cookie.split(';')[0]);
   }
 
   return analysis;
@@ -208,14 +218,16 @@ function validateTestResult(response, test, analysis) {
   const result = {
     passed: false,
     message: '',
-    details: {}
+    details: {},
   };
 
   // Check if status is expected
   const statusMatches = test.expectedStatus.includes(response.status);
 
   if (!statusMatches) {
-    result.message = `Unexpected status: ${response.status} (expected: ${test.expectedStatus.join(' or ')})`;
+    result.message = `Unexpected status: ${
+      response.status
+    } (expected: ${test.expectedStatus.join(' or ')})`;
     return result;
   }
 
@@ -241,11 +253,16 @@ function validateTestResult(response, test, analysis) {
       break;
 
     case 'COG Dashboard Access':
-      if (analysis.isAuthRedirect || analysis.isAuthError || response.status === 500) {
+      if (
+        analysis.isAuthRedirect ||
+        analysis.isAuthError ||
+        response.status === 500
+      ) {
         result.passed = true;
-        result.message = response.status === 500
-          ? 'Server error (may indicate backend issue)'
-          : 'Authentication handling working';
+        result.message =
+          response.status === 500
+            ? 'Server error (may indicate backend issue)'
+            : 'Authentication handling working';
       }
       break;
 
@@ -262,13 +279,16 @@ function validateTestResult(response, test, analysis) {
         result.message = 'DEX auth endpoint is accessible';
       } else if (response.status === 400) {
         result.passed = true;
-        result.message = 'DEX returns bad request (expected for invalid auth params)';
+        result.message =
+          'DEX returns bad request (expected for invalid auth params)';
       }
       break;
 
     default:
       result.passed = statusMatches;
-      result.message = statusMatches ? 'Status as expected' : 'Unexpected status';
+      result.message = statusMatches
+        ? 'Status as expected'
+        : 'Unexpected status';
   }
 
   return result;
@@ -283,12 +303,16 @@ async function testAuthFlow(test) {
   const response = await makeRequest(BASE_URL + test.path);
 
   if (!response.success) {
-    console.log(`${colorize('Result:', 'red')} ❌ ${response.error} (${response.duration}ms)`);
+    console.log(
+      `${colorize('Result:', 'red')} ❌ ${response.error} (${
+        response.duration
+      }ms)`
+    );
     return {
       name: test.name,
       passed: false,
       error: response.error,
-      duration: response.duration
+      duration: response.duration,
     };
   }
 
@@ -299,23 +323,37 @@ async function testAuthFlow(test) {
   const statusColor = validation.passed ? 'green' : 'red';
   const statusIcon = validation.passed ? '✅' : '❌';
 
-  console.log(`${colorize('Result:', 'white')} ${statusIcon} ${colorize(response.status, statusColor)} ${response.statusText} (${response.duration}ms)`);
+  console.log(
+    `${colorize('Result:', 'white')} ${statusIcon} ${colorize(
+      response.status,
+      statusColor
+    )} ${response.statusText} (${response.duration}ms)`
+  );
   console.log(`${colorize('Analysis:', 'white')} ${validation.message}`);
 
   // Show important details
   if (analysis.redirectLocation) {
-    const location = analysis.redirectLocation.length > 80
-      ? analysis.redirectLocation.substring(0, 77) + '...'
-      : analysis.redirectLocation;
+    const location =
+      analysis.redirectLocation.length > 80
+        ? analysis.redirectLocation.substring(0, 77) + '...'
+        : analysis.redirectLocation;
     console.log(`${colorize('Redirect:', 'gray')} ${location}`);
   }
 
   if (analysis.authParams && Object.keys(analysis.authParams).length > 0) {
-    console.log(`${colorize('Auth Params:', 'gray')} client_id=${analysis.authParams.client_id || 'none'}`);
+    console.log(
+      `${colorize('Auth Params:', 'gray')} client_id=${
+        analysis.authParams.client_id || 'none'
+      }`
+    );
   }
 
   if (analysis.sessionInfo && analysis.sessionInfo.length > 0) {
-    console.log(`${colorize('Session Cookie:', 'gray')} ${analysis.sessionInfo[0].split('=')[0]}`);
+    console.log(
+      `${colorize('Session Cookie:', 'gray')} ${
+        analysis.sessionInfo[0].split('=')[0]
+      }`
+    );
   }
 
   return {
@@ -324,29 +362,35 @@ async function testAuthFlow(test) {
     status: response.status,
     duration: response.duration,
     analysis: analysis,
-    validation: validation
+    validation: validation,
   };
 }
 
 function printFlowDiagram() {
   console.log(colorize('\n🔄 Expected Authentication Flow:', 'magenta'));
-  console.log('┌─────────────────────────────────────────────────────────────┐');
+  console.log(
+    '┌─────────────────────────────────────────────────────────────┐'
+  );
   console.log('│ 1. User visits protected resource (e.g., /pipeline/)       │');
   console.log('│ 2. AuthService intercepts → 302 redirect to /dex/auth      │');
-  console.log('│ 3. DEX shows login form                                     │');
+  console.log(
+    '│ 3. DEX shows login form                                     │'
+  );
   console.log('│ 4. User submits credentials → POST /dex/auth               │');
   console.log('│ 5. DEX validates → 302 to /authservice/callback?code=...   │');
   console.log('│ 6. AuthService exchanges code → creates session cookie     │');
   console.log('│ 7. Final redirect to original resource with auth cookie    │');
-  console.log('└─────────────────────────────────────────────────────────────┘');
+  console.log(
+    '└─────────────────────────────────────────────────────────────┘'
+  );
 }
 
 function printSummary(results) {
   console.log(colorize('\n📊 Authentication Flow Test Summary', 'magenta'));
   console.log('='.repeat(60));
 
-  const passed = results.filter(r => r.passed).length;
-  const failed = results.filter(r => !r.passed).length;
+  const passed = results.filter((r) => r.passed).length;
+  const failed = results.filter((r) => !r.passed).length;
   const totalDuration = results.reduce((sum, r) => sum + r.duration, 0);
 
   console.log(`${colorize('Total Tests:', 'white')} ${results.length}`);
@@ -358,10 +402,12 @@ function printSummary(results) {
   console.log(`\n${colorize('Detailed Results:', 'bold')}`);
   console.log('-'.repeat(60));
 
-  results.forEach(result => {
+  results.forEach((result) => {
     const status = result.passed ? '✅ PASS' : '❌ FAIL';
     const statusColor = result.passed ? 'green' : 'red';
-    console.log(`${colorize(status, statusColor)} ${result.name} (${result.duration}ms)`);
+    console.log(
+      `${colorize(status, statusColor)} ${result.name} (${result.duration}ms)`
+    );
 
     if (!result.passed && result.error) {
       console.log(`     ${colorize('Error:', 'red')} ${result.error}`);
@@ -372,7 +418,9 @@ function printSummary(results) {
   console.log(colorize('\n🏥 Authentication Flow Health:', 'cyan'));
 
   const criticalTests = ['COG iframe Access', 'DEX Auth Endpoint'];
-  const criticalPassed = results.filter(r => criticalTests.includes(r.name) && r.passed).length;
+  const criticalPassed = results.filter(
+    (r) => criticalTests.includes(r.name) && r.passed
+  ).length;
 
   if (criticalPassed === criticalTests.length) {
     console.log('✅ Authentication flow appears to be working correctly');
@@ -426,17 +474,21 @@ async function main() {
 
     // Wait between tests to avoid overwhelming the server
     if (test !== AUTH_FLOW_TESTS[AUTH_FLOW_TESTS.length - 1]) {
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
     }
   }
 
   const allPassed = printSummary(results);
 
   if (allPassed) {
-    console.log(colorize('\n🎉 All authentication flow tests passed!', 'green'));
+    console.log(
+      colorize('\n🎉 All authentication flow tests passed!', 'green')
+    );
     process.exit(0);
   } else {
-    console.log(colorize('\n⚠️  Some authentication tests need attention.', 'yellow'));
+    console.log(
+      colorize('\n⚠️  Some authentication tests need attention.', 'yellow')
+    );
     console.log(colorize('\nNext Steps:', 'cyan'));
     console.log('1. Check if DEX and AuthService are properly configured');
     console.log('2. Verify backend services are running');
@@ -455,13 +507,21 @@ if (args.includes('--help') || args.includes('-h')) {
   console.log('  --help, -h     Show this help message');
   console.log('  --diagram      Show only the authentication flow diagram');
   console.log('\nDescription:');
-  console.log('  Tests the complete DEX authentication flow for Kubeflow/Orchestrator UI.');
-  console.log('  Validates that protected resources correctly redirect to authentication');
+  console.log(
+    '  Tests the complete DEX authentication flow for Kubeflow/Orchestrator UI.'
+  );
+  console.log(
+    '  Validates that protected resources correctly redirect to authentication'
+  );
   console.log('  and that the DEX authentication endpoints are accessible.');
   console.log('\nAuthentication Flow:');
-  console.log('  User → AuthService → DEX → Login → Validation → Token → Session → Resource');
+  console.log(
+    '  User → AuthService → DEX → Login → Validation → Token → Session → Resource'
+  );
   console.log('\nExamples:');
-  console.log('  node test-auth-flow.js          # Run full authentication tests');
+  console.log(
+    '  node test-auth-flow.js          # Run full authentication tests'
+  );
   console.log('  node test-auth-flow.js --diagram   # Show flow diagram only');
   process.exit(0);
 }
@@ -471,7 +531,7 @@ if (args.includes('--diagram')) {
   process.exit(0);
 }
 
-main().catch(error => {
+main().catch((error) => {
   console.error(colorize('\n❌ Fatal error:', 'red'), error.message);
   process.exit(1);
 });

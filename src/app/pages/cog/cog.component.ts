@@ -27,7 +27,7 @@ export class CogComponent implements OnInit {
 
     if (token) {
       const separator = baseUrl.includes('?') ? '&' : '?';
-      this.cogUrl = `${baseUrl}${separator}access_token=${encodeURIComponent(
+      this.cogUrl = `${baseUrl}/${separator}access_token=${encodeURIComponent(
         token
       )}`;
     } else {

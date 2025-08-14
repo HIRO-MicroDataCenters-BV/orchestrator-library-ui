@@ -76,6 +76,14 @@ export const routes: Routes = [
           import('./pages/k8s/k8s.component').then((m) => m.K8sComponent),
         data: { title: 'Kubernetes Dashboard' },
       },
+      {
+        path: 'grafana',
+        loadComponent: () =>
+          import('./pages/grafana/grafana.component').then(
+            (m) => m.GrafanaComponent
+          ),
+        data: { title: 'Grafana' },
+      },
 
       {
         path: 'emdc',
@@ -108,14 +116,6 @@ export const routes: Routes = [
                 (m) => m.AlertsComponent
               ),
             data: { title: 'Alerts' },
-          },
-          {
-            path: 'monitoring',
-            loadComponent: () =>
-              import('./pages/monitoring/monitoring.component').then(
-                (m) => m.MonitoringComponent
-              ),
-            data: { title: 'Monitoring' },
           },
         ],
       },
@@ -181,6 +181,34 @@ export const routes: Routes = [
     data: { title: 'Proxy Test' },
   },
 
-  // Fallback routes
-  { path: '**', redirectTo: '/error/404' },
+  // Fallback routes - but exclude proxy paths
+  {
+    path: '**',
+    redirectTo: '/error/404',
+    matcher: (url) => {
+      // Don't match proxy routes - let them pass through to the dev server
+      const proxyPaths = [
+        'api',
+        'iframe-dashboard',
+        'iframe-grafana',
+        'iframe-cog',
+        'dex',
+        'authservice',
+      ];
+
+      const path = url[0]?.path || '';
+      const isProxyPath = proxyPaths.some((proxy) => path.startsWith(proxy));
+
+      // Debug logging
+      console.log('[ROUTER MATCHER]', {
+        path: path,
+        url: url.map((segment) => segment.path).join('/'),
+        isProxyPath: isProxyPath,
+        willMatch: !isProxyPath,
+      });
+
+      // Only match if it's NOT a proxy path
+      return isProxyPath ? null : { consumed: url };
+    },
+  },
 ];

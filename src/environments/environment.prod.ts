@@ -6,9 +6,9 @@ export const environment: Environment = {
   tokenKey: 'auth_token',
   refreshTokenKey: 'refresh_token',
   userKey: 'user',
-  dashboardUrl: '/iframe',
-  cogUrl: '/cog-service',
-  grafanaUrl: '/grafana',
+  dashboardUrl: '/iframe-dashboard',
+  cogUrl: '/iframe-cog',
+  grafanaUrl: '/iframe-grafana',
 
   // OIDC Configuration
   oidc: {

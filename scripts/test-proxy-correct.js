@@ -43,7 +43,8 @@ const TEST_ENDPOINTS = [
     name: 'DEX OIDC Discovery',
     path: '/dex/.well-known/openid_configuration',
     method: 'GET',
-    expectedBehavior: 'Should redirect to DEX auth or return discovery document',
+    expectedBehavior:
+      'Should redirect to DEX auth or return discovery document',
     correctStatuses: [200, 302],
     isAuthFlow: true,
     authRedirectExpected: true,
@@ -61,8 +62,8 @@ const TEST_ENDPOINTS = [
     },
   },
   {
-    name: 'COG iframe Proxy (Production)',
-    path: '/cog-iframe',
+    name: 'COG iframe Proxy (iframe-cog)',
+    path: '/iframe-cog',
     method: 'GET',
     expectedBehavior: 'Should redirect to DEX auth (this is CORRECT behavior)',
     correctStatuses: [200, 302, 401, 403],
@@ -73,10 +74,11 @@ const TEST_ENDPOINTS = [
     },
   },
   {
-    name: 'Kubernetes Dashboard Proxy',
-    path: '/iframe/api/v1/namespace',
+    name: 'Kubernetes Dashboard Proxy (iframe-dashboard)',
+    path: '/iframe-dashboard/',
     method: 'GET',
-    expectedBehavior: 'Should require authentication (403 Forbidden is correct)',
+    expectedBehavior:
+      'Should require authentication (403 Forbidden is correct)',
     correctStatuses: [200, 302, 401, 403],
     isAuthFlow: true,
     authRedirectExpected: false,
@@ -95,7 +97,8 @@ async function makeRequest(url, options = {}) {
       method: options.method || 'GET',
       headers: {
         'User-Agent': 'DEX-Aware-Test/1.0',
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        Accept:
+          'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
         ...options.headers,
       },
       timeout: TIMEOUT,
@@ -159,7 +162,8 @@ function analyzeAuthResponse(response, endpoint) {
   if (status === 302 && location && location.includes('/dex/auth')) {
     analysis.isCorrectBehavior = true;
     analysis.behaviorType = 'dex_auth_redirect';
-    analysis.explanation = 'DEX authentication redirect - this means auth flow is working correctly';
+    analysis.explanation =
+      'DEX authentication redirect - this means auth flow is working correctly';
     analysis.authFlowWorking = true;
 
     // Extract auth parameters
@@ -179,14 +183,16 @@ function analyzeAuthResponse(response, endpoint) {
   else if (status === 401 || status === 403) {
     analysis.isCorrectBehavior = true;
     analysis.behaviorType = 'auth_required';
-    analysis.explanation = 'Authentication required - proxy is correctly protecting the resource';
+    analysis.explanation =
+      'Authentication required - proxy is correctly protecting the resource';
     analysis.authFlowWorking = true;
   }
   // Check if resource is accessible (may be public or already authenticated)
   else if (status === 200) {
     analysis.isCorrectBehavior = true;
     analysis.behaviorType = 'accessible';
-    analysis.explanation = 'Resource accessible - may be public or already authenticated';
+    analysis.explanation =
+      'Resource accessible - may be public or already authenticated';
     analysis.authFlowWorking = !endpoint.isAuthFlow;
   }
   // Server errors
@@ -207,7 +213,9 @@ function analyzeAuthResponse(response, endpoint) {
   else {
     analysis.isCorrectBehavior = endpoint.correctStatuses.includes(status);
     analysis.behaviorType = 'unexpected';
-    analysis.explanation = `Status ${status} - ${analysis.isCorrectBehavior ? 'within expected range' : 'unexpected'}`;
+    analysis.explanation = `Status ${status} - ${
+      analysis.isCorrectBehavior ? 'within expected range' : 'unexpected'
+    }`;
     analysis.authFlowWorking = analysis.isCorrectBehavior;
   }
 
@@ -253,10 +261,18 @@ async function testEndpoint(endpoint) {
 
     // Show redirect details for auth flows
     if (analysis.behaviorType === 'dex_auth_redirect') {
-      console.log(`${colorize('Redirect:', 'blue')} ${response.headers.location}`);
+      console.log(
+        `${colorize('Redirect:', 'blue')} ${response.headers.location}`
+      );
       if (analysis.authParams) {
-        console.log(`${colorize('Client ID:', 'gray')} ${analysis.authParams.client_id || 'none'}`);
-        console.log(`${colorize('Scope:', 'gray')} ${analysis.authParams.scope || 'none'}`);
+        console.log(
+          `${colorize('Client ID:', 'gray')} ${
+            analysis.authParams.client_id || 'none'
+          }`
+        );
+        console.log(
+          `${colorize('Scope:', 'gray')} ${analysis.authParams.scope || 'none'}`
+        );
       }
     }
 
@@ -266,8 +282,11 @@ async function testEndpoint(endpoint) {
         ? response.headers['set-cookie']
         : [response.headers['set-cookie']];
 
-      cookies.forEach(cookie => {
-        if (cookie.includes('oidc_state_csrf') || cookie.includes('authservice_session')) {
+      cookies.forEach((cookie) => {
+        if (
+          cookie.includes('oidc_state_csrf') ||
+          cookie.includes('authservice_session')
+        ) {
           const cookieName = cookie.split('=')[0];
           console.log(`${colorize('Cookie Set:', 'gray')} ${cookieName}`);
         }
@@ -283,7 +302,6 @@ async function testEndpoint(endpoint) {
       authFlowWorking: analysis.authFlowWorking,
       explanation: analysis.explanation,
     };
-
   } catch (error) {
     console.log(`${colorize('Result:', 'red')} ❌ ERROR: ${error.message}`);
     return {
@@ -300,8 +318,8 @@ function printSummary(results) {
   console.log('='.repeat(60));
 
   const totalTests = results.length;
-  const passedTests = results.filter(r => r.passed).length;
-  const authFlowTests = results.filter(r => r.authFlowWorking).length;
+  const passedTests = results.filter((r) => r.passed).length;
+  const authFlowTests = results.filter((r) => r.authFlowWorking).length;
   const totalDuration = results.reduce((sum, r) => sum + r.duration, 0);
 
   console.log(`${colorize('Total Tests:', 'white')} ${totalTests}`);
@@ -314,7 +332,7 @@ function printSummary(results) {
   console.log(`\n${colorize('Detailed Results:', 'bold')}`);
   console.log('-'.repeat(60));
 
-  results.forEach(result => {
+  results.forEach((result) => {
     const icon = result.passed ? '✅' : '❌';
     const statusText = result.status ? `${result.status}` : 'ERROR';
 
@@ -332,28 +350,39 @@ function printSummary(results) {
   // Authentication flow assessment
   console.log(colorize('🔐 Authentication Flow Assessment:', 'bold'));
 
-  const cogIframeResult = results.find(r => r.name.includes('COG iframe'));
-  const dexResult = results.find(r => r.name.includes('DEX OIDC'));
-  const k8sResult = results.find(r => r.name.includes('Kubernetes'));
+  const cogIframeResult = results.find((r) => r.name.includes('COG iframe'));
+  const dexResult = results.find((r) => r.name.includes('DEX OIDC'));
+  const k8sResult = results.find((r) => r.name.includes('Kubernetes'));
 
   if (cogIframeResult && cogIframeResult.behaviorType === 'dex_auth_redirect') {
     console.log('✅ COG iframe correctly redirects to DEX authentication');
   }
 
-  if (dexResult && (dexResult.behaviorType === 'dex_auth_redirect' || dexResult.status === 200)) {
+  if (
+    dexResult &&
+    (dexResult.behaviorType === 'dex_auth_redirect' || dexResult.status === 200)
+  ) {
     console.log('✅ DEX endpoints are accessible and working');
   }
 
-  if (k8sResult && (k8sResult.behaviorType === 'auth_required' || k8sResult.behaviorType === 'dex_auth_redirect')) {
+  if (
+    k8sResult &&
+    (k8sResult.behaviorType === 'auth_required' ||
+      k8sResult.behaviorType === 'dex_auth_redirect')
+  ) {
     console.log('✅ Kubernetes Dashboard properly requires authentication');
   }
 
   const workingAuthFlows = authFlowTests;
   if (workingAuthFlows >= totalTests * 0.7) {
-    console.log(colorize('\n🎉 Authentication proxy is working correctly!', 'green'));
+    console.log(
+      colorize('\n🎉 Authentication proxy is working correctly!', 'green')
+    );
     console.log('The 302 redirects to DEX are the expected behavior.');
   } else {
-    console.log(colorize('\n⚠️ Some authentication flows may need attention.', 'yellow'));
+    console.log(
+      colorize('\n⚠️ Some authentication flows may need attention.', 'yellow')
+    );
   }
 
   return passedTests === totalTests;
@@ -380,7 +409,9 @@ async function checkDevServer() {
 
 async function main() {
   console.log(colorize('\n🔐 DEX Authentication Flow Aware Test', 'bold'));
-  console.log(colorize('Understanding 302 redirects as SUCCESS indicators', 'cyan'));
+  console.log(
+    colorize('Understanding 302 redirects as SUCCESS indicators', 'cyan')
+  );
   console.log('='.repeat(60));
 
   const serverRunning = await checkDevServer();
@@ -396,16 +427,26 @@ async function main() {
     results.push(result);
 
     // Wait between tests
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
   }
 
   const allPassed = printSummary(results);
 
   if (allPassed) {
-    console.log(colorize('\n🎉 All tests passed! Your proxy is working correctly.', 'green'));
+    console.log(
+      colorize(
+        '\n🎉 All tests passed! Your proxy is working correctly.',
+        'green'
+      )
+    );
     process.exit(0);
   } else {
-    console.log(colorize('\n⚠️ Some tests need attention (but 302 redirects are OK!).', 'yellow'));
+    console.log(
+      colorize(
+        '\n⚠️ Some tests need attention (but 302 redirects are OK!).',
+        'yellow'
+      )
+    );
     process.exit(1);
   }
 }
@@ -416,14 +457,16 @@ const args = process.argv.slice(2);
 if (args.includes('--help') || args.includes('-h')) {
   console.log(colorize('\nDEX Authentication Flow Aware Test', 'cyan'));
   console.log('\nThis test understands that:');
-  console.log('✅ 302 redirect to /dex/auth = Authentication working correctly');
+  console.log(
+    '✅ 302 redirect to /dex/auth = Authentication working correctly'
+  );
   console.log('✅ 403 Forbidden = Authorization working correctly');
   console.log('✅ 401 Unauthorized = Authentication required (correct)');
   console.log('\nUsage: node test-proxy-correct.js');
   process.exit(0);
 }
 
-main().catch(error => {
+main().catch((error) => {
   console.error(colorize('\n❌ Fatal error:', 'red'), error.message);
   process.exit(1);
 });

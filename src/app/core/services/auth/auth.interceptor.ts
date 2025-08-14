@@ -123,6 +123,12 @@ export class AuthInterceptor implements HttpInterceptor {
       'oauth2',
       'oidc',
       '.well-known',
+      '/api/',
+      '/iframe-dashboard/',
+      '/iframe-grafana/',
+      '/iframe-cog/',
+      '/dex/',
+      '/authservice/',
     ];
 
     return skipPatterns.some((pattern) => url.includes(pattern));
@@ -138,7 +144,7 @@ export const authInterceptor: HttpInterceptorFn = (
 ): Observable<HttpEvent<unknown>> => {
   const authService = inject(AuthService);
 
-  // Skip authentication for certain URLs
+  // Skip authentication for certain URLs including proxy routes
   const skipPatterns = [
     '/auth/',
     '/assets/',
@@ -147,6 +153,12 @@ export const authInterceptor: HttpInterceptorFn = (
     'oauth2',
     'oidc',
     '.well-known',
+    '/api/',
+    '/iframe-dashboard/',
+    '/iframe-grafana/',
+    '/iframe-cog/',
+    '/dex/',
+    '/authservice/',
   ];
 
   if (skipPatterns.some((pattern) => req.url.includes(pattern))) {
