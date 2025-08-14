@@ -68,6 +68,9 @@ importers:
       express:
         specifier: ^5.1.0
         version: 5.1.0
+      http-proxy-middleware:
+        specifier: ^3.0.3
+        version: 3.0.5
       ng2-charts:
         specifier: ^8.0.0
         version: 8.0.0(@angular/cdk@20.0.2(@angular/common@20.0.1(@angular/core@20.0.1(@angular/compiler@20.0.1)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@20.0.1(@angular/compiler@20.0.1)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/common@20.0.1(@angular/core@20.0.1(@angular/compiler@20.0.1)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@20.0.1(@angular/compiler@20.0.1)(rxjs@7.8.2)(zone.js@0.15.1))(@angular/platform-browser@20.0.1(@angular/common@20.0.1(@angular/core@20.0.1(@angular/compiler@20.0.1)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@20.0.1(@angular/compiler@20.0.1)(rxjs@7.8.2)(zone.js@0.15.1)))(chart.js@4.5.0)(rxjs@7.8.2)
