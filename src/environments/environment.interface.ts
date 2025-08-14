@@ -11,6 +11,7 @@ export interface Environment {
   userKey: string;
   dashboardUrl: string;
   cogUrl: string;
+  grafanaUrl: string;
   oidc: {
     authority: string;
     clientId: string;

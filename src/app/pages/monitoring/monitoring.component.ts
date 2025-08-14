@@ -4,34 +4,34 @@ import { AuthService } from '../../core/services/auth/auth.service';
 import { environment } from '../../../environments/environment';
 
 @Component({
-  selector: 'app-cog',
+  selector: 'app-monitoring',
   standalone: true,
   imports: [SafePipe],
   template: `<div class="container">
     <iframe
-      [src]="cogUrl | safe : 'resourceUrl'"
+      [src]="grafanaUrl | safe : 'resourceUrl'"
       frameborder="0"
       allowfullscreen
     ></iframe>
   </div>`,
-  styleUrls: ['./cog.component.scss'],
+  styleUrls: ['./monitoring.component.scss'],
 })
-export class CogComponent implements OnInit {
+export class MonitoringComponent implements OnInit {
   private readonly authService = inject(AuthService);
 
-  cogUrl = '';
+  grafanaUrl = '';
 
   ngOnInit(): void {
     const token = this.authService.getAccessToken();
-    const baseUrl = environment.cogUrl;
+    const baseUrl = environment.grafanaUrl;
 
     if (token) {
       const separator = baseUrl.includes('?') ? '&' : '?';
-      this.cogUrl = `${baseUrl}${separator}access_token=${encodeURIComponent(
+      this.grafanaUrl = `${baseUrl}${separator}access_token=${encodeURIComponent(
         token
       )}`;
     } else {
-      this.cogUrl = baseUrl;
+      this.grafanaUrl = baseUrl;
     }
   }
 }

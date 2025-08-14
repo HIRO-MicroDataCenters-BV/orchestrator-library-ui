@@ -16,14 +16,49 @@ module.exports = {
     pathRewrite: {
       '^/iframe': '',
     },
+    onProxyRes: function (proxyRes, req, res) {
+      // Handle CORS headers for K8s dashboard
+      proxyRes.headers['access-control-allow-origin'] = '*';
+      proxyRes.headers['access-control-allow-credentials'] = 'true';
+    },
+    onProxyReq: function (proxyReq, req, res) {
+      // K8s dashboard might need specific headers
+      console.log(
+        '[K8S DASHBOARD PROXY]',
+        req.method,
+        req.url,
+        '->',
+        proxyReq.host + proxyReq.path
+      );
+    },
   },
-  '/cog/**': {
-    target: 'https://dashboard.cog.hiro-develop.nl',
-    secure: true,
+  '/grafana/**': {
+    target: 'http://51.44.28.47:30000',
+    secure: false,
     changeOrigin: true,
     logLevel: 'debug',
     pathRewrite: {
-      '^/cog': '/cogui',
+      '^/grafana': '',
+    },
+    onProxyReq: function (proxyReq, req, res) {
+      console.log(
+        '[GRAFANA PROXY]',
+        req.method,
+        req.url,
+        '->',
+        proxyReq.host + proxyReq.path
+      );
+    },
+  },
+  '/cog-service/**': {
+    target: 'https://dashboard.cog.hiro-develop.nl',
+    secure: false,
+    changeOrigin: true,
+    logLevel: 'debug',
+    followRedirects: false,
+    cookieDomainRewrite: 'localhost',
+    pathRewrite: {
+      '^/cog-service': '',
     },
     onProxyReq: function (proxyReq, req, res) {
       // Extract token from query parameter and add to Authorization header
@@ -53,8 +88,9 @@ module.exports = {
     secure: false,
     changeOrigin: true,
     logLevel: 'debug',
+    cookieDomainRewrite: 'localhost',
     pathRewrite: {
-      '^/cog-iframe': '/cogui',
+      '^/cog-iframe': '',
     },
     onProxyReq: function (proxyReq, req, res) {
       // Extract token from query parameter and add to Authorization header
@@ -79,11 +115,15 @@ module.exports = {
       );
     },
   },
-  '/.well-known/openid_configuration': {
+  '/.well-known/openid-configuration': {
     target: 'http://51.44.28.47:30080',
     secure: false,
     changeOrigin: true,
     logLevel: 'debug',
+    pathRewrite: {
+      '^/.well-known/openid-configuration':
+        '/dex/.well-known/openid-configuration',
+    },
     onProxyReq: function (proxyReq, req, res) {
       console.log(
         '[ROOT OIDC DISCOVERY PROXY]',
@@ -100,7 +140,7 @@ module.exports = {
     changeOrigin: true,
     logLevel: 'debug',
     pathRewrite: {
-      '^/dex/.well-known': '/.well-known',
+      '^/dex/.well-known': '/dex/.well-known',
     },
     onProxyReq: function (proxyReq, req, res) {
       console.log(

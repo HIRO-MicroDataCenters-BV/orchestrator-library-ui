@@ -23,6 +23,51 @@ interface ProxyTestResult {
       <div class="proxy-test-container">
         <h1 class="text-2xl font-bold mb-6">Proxy Test Dashboard</h1>
 
+        <!-- Proxy Configuration Overview -->
+        <div class="mb-6 p-4 bg-gray-50 rounded">
+          <h2 class="font-semibold mb-3">Proxy Configuration</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+            <div class="bg-white p-3 rounded border">
+              <h3 class="font-medium text-sm text-gray-600">API Backend</h3>
+              <p class="text-xs mt-1">
+                <code>/api/**</code> → <code>http://51.44.28.47:30015</code>
+              </p>
+            </div>
+            <div class="bg-white p-3 rounded border">
+              <h3 class="font-medium text-sm text-gray-600">K8s Dashboard</h3>
+              <p class="text-xs mt-1">
+                <code>/iframe/**</code> → <code>http://51.44.28.47:30016</code>
+              </p>
+            </div>
+            <div class="bg-white p-3 rounded border">
+              <h3 class="font-medium text-sm text-gray-600">Grafana</h3>
+              <p class="text-xs mt-1">
+                <code>/grafana/**</code> → <code>http://51.44.28.47:30000</code>
+              </p>
+            </div>
+            <div class="bg-white p-3 rounded border">
+              <h3 class="font-medium text-sm text-gray-600">COG Service</h3>
+              <p class="text-xs mt-1">
+                <code>/cog-service/**</code> →
+                <code>dashboard.cog.hiro-develop.nl</code>
+              </p>
+            </div>
+            <div class="bg-white p-3 rounded border">
+              <h3 class="font-medium text-sm text-gray-600">DEX Auth</h3>
+              <p class="text-xs mt-1">
+                <code>/dex/**</code> → <code>http://51.44.28.47:30080</code>
+              </p>
+            </div>
+            <div class="bg-white p-3 rounded border">
+              <h3 class="font-medium text-sm text-gray-600">AuthService</h3>
+              <p class="text-xs mt-1">
+                <code>/authservice/**</code> →
+                <code>http://51.44.28.47:30080</code>
+              </p>
+            </div>
+          </div>
+        </div>
+
         <div class="mb-6">
           <button
             (click)="runAllTests()"
@@ -92,6 +137,7 @@ interface ProxyTestResult {
         </div>
 
         <div class="test-results-container">
+          <h2 class="font-semibold mb-3">Test Results</h2>
           <div class="grid gap-4">
             <div *ngFor="let test of testResults" class="border rounded-lg p-4">
               <div class="flex items-center justify-between mb-2">
@@ -253,24 +299,36 @@ export class ProxyTestComponent implements OnInit {
       description: 'AuthService OIDC Callback',
     },
     {
-      name: '/cog (with token)',
-      url: '/cog',
+      name: '/cog-service',
+      url: '/cog-service',
       method: 'GET',
-      description: 'COG Dashboard Proxy',
-      requiresAuth: true,
+      description: 'COG Service Proxy (New)',
+      requiresAuth: false,
     },
     {
-      name: '/cog-iframe (with token)',
+      name: '/cog-iframe',
       url: '/cog-iframe',
       method: 'GET',
-      description: 'COG iframe Proxy (Production)',
-      requiresAuth: true,
+      description: 'COG iframe Proxy (Alternative)',
+      requiresAuth: false,
     },
     {
       name: '/iframe/api/v1/namespace',
       url: '/iframe/api/v1/namespace',
       method: 'GET',
       description: 'Kubernetes Dashboard Proxy',
+    },
+    {
+      name: '/grafana',
+      url: '/grafana',
+      method: 'GET',
+      description: 'Grafana Dashboard Proxy',
+    },
+    {
+      name: '/grafana/api/health',
+      url: '/grafana/api/health',
+      method: 'GET',
+      description: 'Grafana Health Check',
     },
   ];
 
