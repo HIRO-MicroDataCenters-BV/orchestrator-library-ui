@@ -21,11 +21,16 @@ FROM node:20-alpine3.20
 
 WORKDIR /usr/app
 
+# Install pnpm
+RUN npm install -g pnpm
+
 # Copy the dist folder from the builder stage
 COPY --from=builder /app/dist ./dist
 
-# Copy package.json for potential dependencies
+# Copy package.json and pnpm-lock.yaml and install production dependencies
 COPY --from=builder /app/package.json ./
+COPY --from=builder /app/pnpm-lock.yaml ./
+RUN pnpm install --prod --frozen-lockfile
 
 # Copy nginx configuration
 COPY nginx.conf /etc/nginx/conf.d/default.conf
