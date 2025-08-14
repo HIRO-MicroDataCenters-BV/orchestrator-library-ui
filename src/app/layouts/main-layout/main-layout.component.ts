@@ -138,7 +138,7 @@ export class MainLayoutComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Only fetch token in browser environment
+    console.log('version date:', '14.08.25');
     if (isPlatformBrowser(this.platformId)) {
       this.apiService.getClusterInfo().subscribe((res) => {
         if (res) {
