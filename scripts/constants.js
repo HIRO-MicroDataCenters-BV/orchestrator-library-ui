@@ -78,10 +78,11 @@ const BASE_URLS = {
 // Proxy paths configuration
 const PROXY_PATHS = {
   API: '/api',
-  IFRAME: '/iframe',
-  COG: '/cog',
-  COG_IFRAME: '/cog-iframe',
+  IFRAME_DASHBOARD: '/iframe-dashboard',
+  IFRAME_GRAFANA: '/iframe-grafana',
+  IFRAME_COG: '/iframe-cog',
   DEX: '/dex',
+  AUTHSERVICE: '/authservice',
 };
 
 // Target paths on backend servers
@@ -208,9 +209,9 @@ const TEST_CONFIG = {
   // Test paths for different scenarios
   SCENARIOS: {
     PROTECTED_RESOURCES: [
-      '/cog-iframe',
-      '/cog',
-      '/iframe/api/v1/namespace',
+      '/iframe-cog',
+      '/iframe-dashboard',
+      '/iframe-grafana',
       '/pipeline',
     ],
     PUBLIC_RESOURCES: ['/', '/assets/config.json'],

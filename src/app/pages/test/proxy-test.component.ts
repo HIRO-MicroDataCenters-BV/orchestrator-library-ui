@@ -36,19 +36,21 @@ interface ProxyTestResult {
             <div class="bg-white p-3 rounded border">
               <h3 class="font-medium text-sm text-gray-600">K8s Dashboard</h3>
               <p class="text-xs mt-1">
-                <code>/iframe/**</code> → <code>http://51.44.28.47:30016</code>
+                <code>/iframe-dashboard/**</code> →
+                <code>http://51.44.28.47:30016</code>
               </p>
             </div>
             <div class="bg-white p-3 rounded border">
               <h3 class="font-medium text-sm text-gray-600">Grafana</h3>
               <p class="text-xs mt-1">
-                <code>/grafana/**</code> → <code>http://51.44.28.47:30000</code>
+                <code>/iframe-grafana/**</code> →
+                <code>http://51.44.28.47:30000</code>
               </p>
             </div>
             <div class="bg-white p-3 rounded border">
               <h3 class="font-medium text-sm text-gray-600">COG Service</h3>
               <p class="text-xs mt-1">
-                <code>/cog-service/**</code> →
+                <code>/iframe-cog/**</code> →
                 <code>dashboard.cog.hiro-develop.nl</code>
               </p>
             </div>
@@ -299,36 +301,26 @@ export class ProxyTestComponent implements OnInit {
       description: 'AuthService OIDC Callback',
     },
     {
-      name: '/cog-service',
-      url: '/cog-service',
+      name: 'Kubernetes Dashboard',
+      url: '/iframe-dashboard/',
       method: 'GET',
-      description: 'COG Service Proxy (New)',
+      description: 'Kubernetes Dashboard via Proxy',
+      iframeUrl: '/iframe-dashboard',
+    },
+    {
+      name: 'Grafana Dashboard',
+      url: '/iframe-grafana/',
+      method: 'GET',
+      description: 'Grafana Monitoring Dashboard',
+      iframeUrl: '/iframe-grafana',
+    },
+    {
+      name: 'COG Service Dashboard',
+      url: '/iframe-cog/',
+      method: 'GET',
+      description: 'COG Service Dashboard',
+      iframeUrl: '/iframe-cog',
       requiresAuth: false,
-    },
-    {
-      name: '/cog-iframe',
-      url: '/cog-iframe',
-      method: 'GET',
-      description: 'COG iframe Proxy (Alternative)',
-      requiresAuth: false,
-    },
-    {
-      name: '/iframe/api/v1/namespace',
-      url: '/iframe/api/v1/namespace',
-      method: 'GET',
-      description: 'Kubernetes Dashboard Proxy',
-    },
-    {
-      name: '/grafana',
-      url: '/grafana',
-      method: 'GET',
-      description: 'Grafana Dashboard Proxy',
-    },
-    {
-      name: '/grafana/api/health',
-      url: '/grafana/api/health',
-      method: 'GET',
-      description: 'Grafana Health Check',
     },
   ];
 

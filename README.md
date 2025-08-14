@@ -136,6 +136,12 @@ Handles all COG-related functionality:
 
 - **COG Component**: Integrates with the COG system
 
+#### Grafana Module
+
+Handles all Grafana-related functionality:
+
+- **Grafana Component**: Integrates with the Grafana monitoring system
+
 ## API Architecture
 
 The project features a refactored API layer with specialized services for better maintainability and type safety:
@@ -481,6 +487,7 @@ The application uses Angular's router with lazy loading for optimal performance:
 | Route | Component | Description |
 |-------|-----------|-------------|
 | `/cog` | `CogComponent` | Integration with COG system |
+| `/grafana` | `GrafanaComponent` | Integration with Grafana monitoring |
 | `/k8s` | `K8sComponent` | Kubernetes dashboard |
 | `/emdc/workloads/request_decisions` | `RequestDecisionsComponent` | Workload request decisions |
 | `/emdc/workloads/actions` | `ActionsComponent` | Workload actions |
@@ -578,6 +585,7 @@ To contribute to this project:
 | `apiUrl` | string | Backend API base URL | `http://51.44.28.47:30015` |
 | `dashboardUrl` | string | Kubernetes dashboard URL | `http://51.44.28.47:30016` |
 | `cogUrl` | string | COG system URL | `https://dashboard.cog.hiro-develop.nl/cogui/` |
+| `grafanaUrl` | string | Grafana monitoring URL | `http://51.44.28.47:30000` |
 | `oidc.authority` | string | OIDC provider authority URL | `https://dex.hiro-develop.nl` |
 | `oidc.clientId` | string | OIDC client identifier | `orchestrator-ui` |
 | `oidc.scope` | string | OIDC scopes | `openid profile email groups` |
@@ -643,31 +651,50 @@ oidc: {
 
 ## COG Integration
 
-### Proxy Configuration
-
 The COG dashboard is integrated through Angular proxy configuration that automatically forwards authentication tokens.
+
+## Grafana Integration
+
+The Grafana monitoring system is integrated through Angular proxy configuration that automatically forwards authentication tokens.
 
 #### Development Setup
 
 1. **Proxy Configuration**: `proxy.conf.js` handles COG requests
    ```javascript
-   '/cog/**': {
+   '/iframe-cog/**': {
      target: 'https://dashboard.cog.hiro-develop.nl',
-     secure: true,
+     secure: false,
      changeOrigin: true,
-     pathRewrite: { '^/cog': '/cogui' }
+     pathRewrite: { '^/iframe-cog': '' }
    }
    ```
 
 2. **Environment Configuration**:
-   - Development: `cogUrl: '/cog'` (uses dev COG instance)
-   - Production: `cogUrl: '/cog-prod'` (uses production COG instance)
+   - Development: `cogUrl: '/iframe-cog'` (uses proxy to COG instance)
+   - Production: `cogUrl: '/iframe-cog'` (uses proxy to COG instance)
 
 3. **Authentication**: Auth interceptor automatically adds `Authorization: Bearer <token>` header to all COG requests
 
-#### COG Component Usage
+#### Grafana Proxy Configuration
 
-```typescript
+1. **Proxy Configuration**: `proxy.conf.js` handles Grafana requests
+   ```javascript
+   '/iframe-grafana/**': {
+     target: 'http://51.44.28.47:30000',
+     secure: false,
+     changeOrigin: true,
+     pathRewrite: { '^/iframe-grafana': '' }
+   }
+   ```
+
+2. **Environment Configuration**:
+   - Development: `grafanaUrl: '/iframe-grafana'` (uses proxy to Grafana instance)
+   - Production: `grafanaUrl: '/iframe-grafana'` (uses proxy to Grafana instance)
+
+3. **Authentication**: Auth interceptor automatically adds `Authorization: Bearer <token>` header to all Grafana requests
+
+#### Component Usage
+
 @Component({
   template: `
     <iframe 
@@ -678,7 +705,11 @@ The COG dashboard is integrated through Angular proxy configuration that automat
   `
 })
 export class CogComponent {
-  url = environment.cogUrl; // Resolves to /cog or /cog-prod
+  url = environment.cogUrl; // Resolves to /iframe-cog
+}
+
+export class GrafanaComponent {
+  url = environment.grafanaUrl; // Resolves to /iframe-grafana
 }
 ```
 
@@ -686,8 +717,9 @@ export class CogComponent {
 
 - ✅ **Automatic Authentication**: Tokens passed transparently
 - ✅ **CORS Handling**: Proxy resolves cross-origin issues  
-- ✅ **Environment Specific**: Different COG instances per environment
+- ✅ **Environment Specific**: Different COG and Grafana instances per environment
 - ✅ **No Code Changes**: Simple iframe with proxy URL
+- ✅ **Unified Architecture**: Both COG and Grafana follow the same integration pattern
 
 ## Future Development
 

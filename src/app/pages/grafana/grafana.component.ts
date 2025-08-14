@@ -4,7 +4,7 @@ import { AuthService } from '../../core/services/auth/auth.service';
 import { environment } from '../../../environments/environment';
 
 @Component({
-  selector: 'app-monitoring',
+  selector: 'app-grafana',
   standalone: true,
   imports: [SafePipe],
   template: `<div class="container">
@@ -14,9 +14,9 @@ import { environment } from '../../../environments/environment';
       allowfullscreen
     ></iframe>
   </div>`,
-  styleUrls: ['./monitoring.component.scss'],
+  styleUrls: ['./grafana.component.scss'],
 })
-export class MonitoringComponent implements OnInit {
+export class GrafanaComponent implements OnInit {
   private readonly authService = inject(AuthService);
 
   grafanaUrl = '';
@@ -27,7 +27,7 @@ export class MonitoringComponent implements OnInit {
 
     if (token) {
       const separator = baseUrl.includes('?') ? '&' : '?';
-      this.grafanaUrl = `${baseUrl}${separator}access_token=${encodeURIComponent(
+      this.grafanaUrl = `${baseUrl}/${separator}access_token=${encodeURIComponent(
         token
       )}`;
     } else {

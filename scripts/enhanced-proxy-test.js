@@ -36,57 +36,58 @@ function colorize(text, color) {
 // Enhanced test configuration with target server details
 const TEST_ENDPOINTS = [
   {
-    name: 'API Health Check',
-    path: '/api/health',
+    name: 'API Backend',
+    path: '/api/k8s_cluster_info/',
     target: 'http://51.44.28.47:30015',
-    targetPath: '/health',
-    method: 'GET',
-    expectedStatus: [200, 404],
-    description: 'Backend API health endpoint',
-  },
-  {
-    name: 'DEX OIDC Discovery',
-    path: '/dex/.well-known/openid_configuration',
-    target: 'http://51.44.28.47:30080',
-    targetPath: '/dex/.well-known/openid_configuration',
+    targetPath: '/k8s_cluster_info/',
     method: 'GET',
     expectedStatus: [200],
-    description: 'OIDC discovery document',
-    knownIssue: 'Target server returns 404 - endpoint may not exist',
+    description: 'Main API backend service - cluster info',
   },
   {
-    name: 'COG Dashboard Proxy (Dev)',
-    path: '/cog',
-    target: 'https://dashboard.cog.hiro-develop.nl',
-    targetPath: '/cogui',
-    method: 'GET',
-    expectedStatus: [200, 401, 403, 302],
-    description: 'COG dashboard development environment',
-    headers: {
-      Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-    },
-    knownIssue: 'SSL/TLS connection issues with target server',
-  },
-  {
-    name: 'COG iframe Proxy (Production)',
-    path: '/cog-iframe',
-    target: 'http://51.44.28.47:30080',
-    targetPath: '/cogui',
-    method: 'GET',
-    expectedStatus: [200, 401, 403, 302],
-    description: 'COG dashboard production environment',
-    headers: {
-      Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-    },
-  },
-  {
-    name: 'Kubernetes Dashboard Proxy',
-    path: '/iframe/api/v1/namespace',
+    name: 'Kubernetes Dashboard (iframe-dashboard)',
+    path: '/iframe-dashboard/',
     target: 'http://51.44.28.47:30016',
-    targetPath: '/api/v1/namespace',
+    targetPath: '/',
     method: 'GET',
-    expectedStatus: [200, 401, 403],
-    description: 'Kubernetes API server namespaces',
+    expectedStatus: [200, 401, 403, 302],
+    description: 'K8s Dashboard iframe service',
+    headers: {
+      Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+    },
+  },
+  {
+    name: 'Grafana Monitoring (iframe-grafana)',
+    path: '/iframe-grafana/',
+    target: 'http://51.44.28.47:30000',
+    targetPath: '/',
+    method: 'GET',
+    expectedStatus: [200, 302],
+    description: 'Grafana main page',
+  },
+  {
+    name: 'COG Dashboard (iframe-cog)',
+    path: '/iframe-cog/',
+    target: 'https://dashboard.cog.hiro-develop.nl',
+    targetPath: '/',
+    method: 'GET',
+    expectedStatus: [200, 401, 403, 302],
+    description: 'COG Dashboard iframe service',
+    headers: {
+      Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+    },
+  },
+  {
+    name: 'DEX OIDC Service',
+    path: '/dex/auth',
+    target: 'http://51.44.28.47:30080',
+    targetPath: '/dex/auth',
+    method: 'GET',
+    expectedStatus: [200, 302],
+    description: 'DEX authentication service',
+    headers: {
+      Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+    },
   },
 ];
 
@@ -95,7 +96,7 @@ async function checkDNSResolution(hostname) {
     const addresses = await dns.lookup(hostname, { all: true });
     return {
       success: true,
-      addresses: addresses.map(addr => addr.address),
+      addresses: addresses.map((addr) => addr.address),
     };
   } catch (error) {
     return {
@@ -231,7 +232,7 @@ function printHeader(text) {
 async function performConnectivityDiagnostics() {
   printHeader('🔍 CONNECTIVITY DIAGNOSTICS');
 
-  const targets = [...new Set(TEST_ENDPOINTS.map(e => e.target))];
+  const targets = [...new Set(TEST_ENDPOINTS.map((e) => e.target))];
 
   for (const target of targets) {
     const url = new URL(target);
@@ -250,7 +251,9 @@ async function performConnectivityDiagnostics() {
     console.log(`${colorize('Port Test:', 'white')} `, '');
     const connectTest = await testDirectConnectivity(target, '/');
     if (connectTest.success) {
-      console.log(`✅ Connected (${connectTest.status} ${connectTest.statusText})`);
+      console.log(
+        `✅ Connected (${connectTest.status} ${connectTest.statusText})`
+      );
     } else {
       console.log(`❌ ${connectTest.error}`);
     }
@@ -265,18 +268,29 @@ async function performEndpointTests() {
   for (const endpoint of TEST_ENDPOINTS) {
     console.log(`\n${colorize('Testing:', 'cyan')} ${endpoint.name}`);
     console.log(`${colorize('Description:', 'gray')} ${endpoint.description}`);
-    console.log(`${colorize('Proxy URL:', 'white')} ${BASE_URL}${endpoint.path}`);
-    console.log(`${colorize('Target:', 'white')} ${endpoint.target}${endpoint.targetPath}`);
+    console.log(
+      `${colorize('Proxy URL:', 'white')} ${BASE_URL}${endpoint.path}`
+    );
+    console.log(
+      `${colorize('Target:', 'white')} ${endpoint.target}${endpoint.targetPath}`
+    );
 
     if (endpoint.knownIssue) {
-      console.log(`${colorize('Known Issue:', 'yellow')} ${endpoint.knownIssue}`);
+      console.log(
+        `${colorize('Known Issue:', 'yellow')} ${endpoint.knownIssue}`
+      );
     }
 
     // Test direct connectivity to target
     console.log(`\n${colorize('Direct Target Test:', 'white')}`);
-    const directTest = await testDirectConnectivity(endpoint.target, endpoint.targetPath);
+    const directTest = await testDirectConnectivity(
+      endpoint.target,
+      endpoint.targetPath
+    );
     if (directTest.success) {
-      console.log(`  ✅ ${directTest.status} ${directTest.statusText} (${directTest.duration}ms)`);
+      console.log(
+        `  ✅ ${directTest.status} ${directTest.statusText} (${directTest.duration}ms)`
+      );
     } else {
       console.log(`  ❌ ${directTest.error} (${directTest.duration}ms)`);
     }
@@ -286,18 +300,30 @@ async function performEndpointTests() {
     const proxyTest = await testProxyEndpoint(endpoint);
 
     if (proxyTest.success) {
-      const isExpectedStatus = endpoint.expectedStatus.includes(proxyTest.status);
+      const isExpectedStatus = endpoint.expectedStatus.includes(
+        proxyTest.status
+      );
       const statusColor = isExpectedStatus ? 'green' : 'red';
       const statusIcon = isExpectedStatus ? '✅' : '❌';
 
-      console.log(`  ${statusIcon} ${colorize(proxyTest.status, statusColor)} ${proxyTest.statusText} (${proxyTest.duration}ms)`);
+      console.log(
+        `  ${statusIcon} ${colorize(proxyTest.status, statusColor)} ${
+          proxyTest.statusText
+        } (${proxyTest.duration}ms)`
+      );
 
       // Show important headers
-      const importantHeaders = ['content-type', 'location', 'www-authenticate', 'set-cookie'];
+      const importantHeaders = [
+        'content-type',
+        'location',
+        'www-authenticate',
+        'set-cookie',
+      ];
       importantHeaders.forEach((header) => {
         if (proxyTest.headers[header]) {
           const value = proxyTest.headers[header];
-          const displayValue = value.length > 80 ? value.substring(0, 77) + '...' : value;
+          const displayValue =
+            value.length > 80 ? value.substring(0, 77) + '...' : value;
           console.log(`  ${colorize(header + ':', 'gray')} ${displayValue}`);
         }
       });
@@ -311,7 +337,11 @@ async function performEndpointTests() {
         error: null,
       });
     } else {
-      console.log(`  ❌ ${colorize('ERROR', 'red')}: ${proxyTest.error} (${proxyTest.duration}ms)`);
+      console.log(
+        `  ❌ ${colorize('ERROR', 'red')}: ${proxyTest.error} (${
+          proxyTest.duration
+        }ms)`
+      );
 
       results.push({
         name: endpoint.name,
@@ -325,7 +355,7 @@ async function performEndpointTests() {
 
     // Wait between tests
     if (endpoint !== TEST_ENDPOINTS[TEST_ENDPOINTS.length - 1]) {
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
     }
   }
 
@@ -335,8 +365,8 @@ async function performEndpointTests() {
 function printTestSummary(results) {
   printHeader('📊 TEST SUMMARY');
 
-  const successful = results.filter(r => r.success).length;
-  const failed = results.filter(r => !r.success).length;
+  const successful = results.filter((r) => r.success).length;
+  const failed = results.filter((r) => !r.success).length;
   const totalDuration = results.reduce((sum, r) => sum + r.duration, 0);
   const avgDuration = Math.round(totalDuration / results.length);
 
@@ -358,18 +388,19 @@ function printTestSummary(results) {
   // Header
   console.log(
     colorize('Endpoint'.padEnd(nameWidth), 'bold') +
-    colorize('Status'.padEnd(statusWidth), 'bold') +
-    colorize('Duration'.padEnd(durationWidth), 'bold') +
-    colorize('Direct'.padEnd(connectWidth), 'bold') +
-    colorize('Notes', 'bold')
+      colorize('Status'.padEnd(statusWidth), 'bold') +
+      colorize('Duration'.padEnd(durationWidth), 'bold') +
+      colorize('Direct'.padEnd(connectWidth), 'bold') +
+      colorize('Notes', 'bold')
   );
   printSeparator('-');
 
   // Results
-  results.forEach(result => {
-    const name = result.name.length > nameWidth - 2
-      ? result.name.substring(0, nameWidth - 5) + '...'
-      : result.name.padEnd(nameWidth);
+  results.forEach((result) => {
+    const name =
+      result.name.length > nameWidth - 2
+        ? result.name.substring(0, nameWidth - 5) + '...'
+        : result.name.padEnd(nameWidth);
 
     const statusText = result.status ? `${result.status}` : 'ERROR';
     const statusColor = result.success ? 'green' : 'red';
@@ -378,7 +409,10 @@ function printTestSummary(results) {
     const duration = `${result.duration}ms`.padEnd(durationWidth);
 
     const directColor = result.directConnectivity ? 'green' : 'red';
-    const direct = colorize((result.directConnectivity ? '✅' : '❌').padEnd(connectWidth), directColor);
+    const direct = colorize(
+      (result.directConnectivity ? '✅' : '❌').padEnd(connectWidth),
+      directColor
+    );
 
     const notes = result.error || (result.success ? 'OK' : 'Unexpected status');
 
@@ -391,11 +425,13 @@ function printTestSummary(results) {
 function printRecommendations(results) {
   printHeader('💡 RECOMMENDATIONS');
 
-  const failedTests = results.filter(r => !r.success);
-  const connectivityIssues = results.filter(r => !r.directConnectivity);
+  const failedTests = results.filter((r) => !r.success);
+  const connectivityIssues = results.filter((r) => !r.directConnectivity);
 
   if (failedTests.length === 0) {
-    console.log(colorize('🎉 All proxy tests are working as expected!', 'green'));
+    console.log(
+      colorize('🎉 All proxy tests are working as expected!', 'green')
+    );
     return;
   }
 
@@ -403,7 +439,7 @@ function printRecommendations(results) {
 
   if (connectivityIssues.length > 0) {
     console.log(`\n${colorize('Connectivity Issues:', 'red')}`);
-    connectivityIssues.forEach(test => {
+    connectivityIssues.forEach((test) => {
       console.log(`  • ${test.name}: Target server unreachable`);
     });
     console.log(`\n${colorize('Solutions:', 'cyan')}`);
@@ -412,10 +448,12 @@ function printRecommendations(results) {
     console.log('  - Check if URLs/ports in proxy.conf.js are correct');
   }
 
-  const proxyOnlyIssues = results.filter(r => !r.success && r.directConnectivity);
+  const proxyOnlyIssues = results.filter(
+    (r) => !r.success && r.directConnectivity
+  );
   if (proxyOnlyIssues.length > 0) {
     console.log(`\n${colorize('Proxy Configuration Issues:', 'red')}`);
-    proxyOnlyIssues.forEach(test => {
+    proxyOnlyIssues.forEach((test) => {
       console.log(`  • ${test.name}: Direct connection works, but proxy fails`);
     });
     console.log(`\n${colorize('Solutions:', 'cyan')}`);
@@ -426,7 +464,7 @@ function printRecommendations(results) {
   }
 
   // Specific recommendations
-  const dexTest = results.find(r => r.name.includes('DEX'));
+  const dexTest = results.find((r) => r.name.includes('DEX'));
   if (dexTest && !dexTest.success) {
     console.log(`\n${colorize('DEX OIDC Discovery Issue:', 'yellow')}`);
     console.log('  - The OIDC discovery endpoint returns 404');
@@ -434,12 +472,18 @@ function printRecommendations(results) {
     console.log('  - Verify the correct path for OIDC discovery');
   }
 
-  const cogTest = results.find(r => r.name.includes('COG Dashboard Proxy (Dev)'));
+  const cogTest = results.find((r) =>
+    r.name.includes('COG Dashboard Proxy (Dev)')
+  );
   if (cogTest && !cogTest.success) {
     console.log(`\n${colorize('COG HTTPS Issue:', 'yellow')}`);
-    console.log('  - SSL/TLS connection problems with dashboard.cog.hiro-develop.nl');
+    console.log(
+      '  - SSL/TLS connection problems with dashboard.cog.hiro-develop.nl'
+    );
     console.log('  - Certificate validation or network issues');
-    console.log('  - Consider using the HTTP endpoint or fixing SSL configuration');
+    console.log(
+      '  - Consider using the HTTP endpoint or fixing SSL configuration'
+    );
   }
 }
 
@@ -476,7 +520,7 @@ async function main() {
   printTestSummary(results);
   printRecommendations(results);
 
-  const failed = results.filter(r => !r.success).length;
+  const failed = results.filter((r) => !r.success).length;
   if (failed === 0) {
     console.log(colorize('\n🎉 All tests completed successfully!', 'green'));
     process.exit(0);
@@ -512,7 +556,7 @@ if (args.includes('--connectivity')) {
     console.log(colorize('\n✅ Connectivity diagnostics completed.', 'green'));
   });
 } else {
-  main().catch(error => {
+  main().catch((error) => {
     console.error(colorize('\n❌ Fatal error:', 'red'), error.message);
     process.exit(1);
   });

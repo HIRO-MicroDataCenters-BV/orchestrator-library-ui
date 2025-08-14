@@ -29,35 +29,39 @@ function colorize(text, color) {
 
 const TEST_ENDPOINTS = [
   {
-    name: 'API Health Check',
-    path: '/api/docs',
+    name: 'API Backend',
+    path: '/api/k8s_cluster_info/',
+    target: 'http://51.44.28.47:30015',
     passConditions: [200],
-    description: 'API docs endpoint - should return 200 OK',
+    description: 'Main API backend service - should return cluster info JSON',
   },
   {
-    name: 'DEX OIDC Discovery',
-    path: '/dex/.well-known/openid_configuration',
+    name: 'Kubernetes Dashboard (iframe-dashboard)',
+    path: '/iframe-dashboard/',
+    target: 'http://51.44.28.47:30016',
+    passConditions: [200, 302, 401, 403],
+    description: 'K8s Dashboard iframe - auth required responses are correct',
+  },
+  {
+    name: 'Grafana Monitoring (iframe-grafana)',
+    path: '/iframe-grafana/',
+    target: 'http://51.44.28.47:30000',
     passConditions: [200, 302],
-    description:
-      'DEX discovery - error redirect is normal (not public endpoint)',
+    description: 'Grafana main page - should return 200 OK or redirect',
   },
   {
-    name: 'COG Dashboard Proxy',
-    path: '/cog',
-    passConditions: [200, 302, 401, 403, 500],
-    description: 'COG Dev - HTTPS SSL issues cause 500 (known issue)',
-  },
-  {
-    name: 'COG iframe Proxy (Production)',
-    path: '/cog-iframe',
+    name: 'COG Dashboard (iframe-cog)',
+    path: '/iframe-cog/',
+    target: 'https://dashboard.cog.hiro-develop.nl',
     passConditions: [200, 302, 401, 403],
-    description: 'COG Prod - 302 redirect to DEX is SUCCESS',
+    description: 'COG Dashboard iframe - 302 redirect to DEX is SUCCESS',
   },
   {
-    name: 'Kubernetes Dashboard Proxy',
-    path: '/iframe/api/v1/namespace',
-    passConditions: [200, 302, 401, 403],
-    description: 'K8s API - auth required responses are correct',
+    name: 'DEX OIDC Service',
+    path: '/dex/auth',
+    target: 'http://51.44.28.47:30080',
+    passConditions: [200, 302],
+    description: 'DEX authentication service - redirect to auth is normal',
   },
 ];
 
@@ -196,7 +200,8 @@ function analyzeResponse(response, endpoint) {
 
 async function testEndpoint(endpoint) {
   console.log(`\n${colorize('Testing:', 'cyan')} ${endpoint.name}`);
-  console.log(`${colorize('URL:', 'white')} ${BASE_URL}${endpoint.path}`);
+  console.log(`${colorize('Proxy URL:', 'white')} ${BASE_URL}${endpoint.path}`);
+  console.log(`${colorize('Target URL:', 'yellow')} ${endpoint.target}`);
   console.log(`${colorize('Expected:', 'white')} ${endpoint.description}`);
 
   try {
@@ -289,7 +294,11 @@ function printSummary(results) {
     results
       .filter((r) => r.passed)
       .forEach((test) => {
-        console.log(`  • ${test.name}: ${test.status} - ${test.reason}`);
+        const endpoint = TEST_ENDPOINTS.find((e) => e.name === test.name);
+        const target = endpoint ? ` → ${endpoint.target}` : '';
+        console.log(
+          `  • ${test.name}: ${test.status} - ${test.reason}${target}`
+        );
       });
   }
 
@@ -298,8 +307,10 @@ function printSummary(results) {
     results
       .filter((r) => !r.passed)
       .forEach((test) => {
+        const endpoint = TEST_ENDPOINTS.find((e) => e.name === test.name);
+        const target = endpoint ? ` → ${endpoint.target}` : '';
         const errorMsg = test.error || test.reason;
-        console.log(`  • ${test.name}: ${errorMsg}`);
+        console.log(`  • ${test.name}: ${errorMsg}${target}`);
       });
   }
 

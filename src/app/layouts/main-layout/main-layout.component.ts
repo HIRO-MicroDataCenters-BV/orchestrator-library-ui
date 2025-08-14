@@ -123,10 +123,17 @@ export class MainLayoutComponent implements OnInit {
           ],
         },
         { label: 'alerts', icon: 'lucideSiren', route: '/alerts' },
+      ],
+    },
+    {
+      label: null,
+      icon: null,
+      route: '',
+      items: [
         {
           label: 'monitoring',
           icon: 'lucideChartColumnStacked',
-          route: '/monitoring',
+          route: '/grafana',
         },
       ],
     },
