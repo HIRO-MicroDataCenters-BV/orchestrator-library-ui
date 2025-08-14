@@ -7,25 +7,12 @@ import {
 import express from 'express';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 import { join } from 'node:path';
-import { IncomingMessage, ClientRequest } from 'http';
 import type { Request, Response } from 'express';
 
 const browserDistFolder = join(import.meta.dirname, '../browser');
 
 const app = express();
 const angularApp = new AngularNodeAppEngine();
-
-/**
- * Helper function to handle CSP header modification
- */
-function updateCSPHeader(cspHeader: string | string[] | undefined): string {
-  if (!cspHeader) return 'frame-ancestors *';
-
-  const cspString = Array.isArray(cspHeader) ? cspHeader.join('; ') : cspHeader;
-  return (
-    cspString.replace(/frame-ancestors[^;]*;?/g, '') + '; frame-ancestors *'
-  );
-}
 
 /**
  * Middleware to handle iframe headers and CORS

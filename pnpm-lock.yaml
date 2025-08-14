@@ -69,7 +69,7 @@ importers:
         specifier: ^5.1.0
         version: 5.1.0
       http-proxy-middleware:
-        specifier: ^3.0.3
+        specifier: ^3.0.5
         version: 3.0.5
       ng2-charts:
         specifier: ^8.0.0
@@ -156,6 +156,9 @@ importers:
       '@types/express':
         specifier: ^5.0.1
         version: 5.0.2
+      '@types/http-proxy-middleware':
+        specifier: ^1.0.0
+        version: 1.0.0
       '@types/jasmine':
         specifier: ~5.1.0
         version: 5.1.8
@@ -3439,6 +3442,10 @@ packages:
 
   '@types/http-errors@2.0.4':
     resolution: {integrity: sha512-D0CFMMtydbJAegzOyHjtiKPLlvnm3iTZyZRSZoLq2mRhDdmLfIWOCYPfQJ4cu2erKghU++QvjcUjp/5h7hESpA==}
+
+  '@types/http-proxy-middleware@1.0.0':
+    resolution: {integrity: sha512-/s8lFX6rT43hSPqjjD8KNuu0SkPKY7uIdR6u9DCxVqCRhAvfKxGbVOixJsAT2mdpSnCyrGFAGoB39KFh6tmRxw==}
+    deprecated: This is a stub types definition. http-proxy-middleware provides its own type definitions, so you do not need this installed.
 
   '@types/http-proxy@1.17.16':
     resolution: {integrity: sha512-sdWoUajOB1cd0A8cRRQ1cfyWNbmFKLAqBB89Y8x5iYyG/mkJHc0YUH8pdWBy2omi9qtCpiIgGjuwO0dQST2l5w==}
@@ -12702,6 +12709,12 @@ snapshots:
       '@types/node': 20.19.0
 
   '@types/http-errors@2.0.4': {}
+
+  '@types/http-proxy-middleware@1.0.0':
+    dependencies:
+      http-proxy-middleware: 3.0.5
+    transitivePeerDependencies:
+      - supports-color
 
   '@types/http-proxy@1.17.16':
     dependencies:
