@@ -71,6 +71,7 @@
     "@swc/core": "~1.5.7",
     "@swc/helpers": "~0.5.11",
     "@types/express": "^5.0.1",
+    "@types/http-proxy-middleware": "^1.0.8",
     "@types/jasmine": "~5.1.0",
     "@types/jest": "^29.5.12",
     "@types/node": "^20.17.19",
