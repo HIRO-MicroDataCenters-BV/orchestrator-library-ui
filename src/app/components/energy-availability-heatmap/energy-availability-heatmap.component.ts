@@ -21,7 +21,18 @@ export class EnergyAvailabilityHeatmapComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
       import('highcharts/modules/heatmap')
-        .then((m) => (m as any).default(Highcharts))
+        .then((m) => {
+          const factory: any = (m as any).default || (m as any);
+          if (typeof factory === 'function') {
+            factory(Highcharts);
+          } else if ((m as any).heatmap && typeof (m as any).heatmap === 'function') {
+            (m as any).heatmap(Highcharts);
+          } else if ((m as any).default && typeof (m as any).default.default === 'function') {
+            (m as any).default.default(Highcharts);
+          } else {
+            throw new Error('Unknown heatmap module format');
+          }
+        })
         .then(() => this.buildChart())
         .catch((err) => console.error('Failed to load Highcharts heatmap module:', err));
     }
