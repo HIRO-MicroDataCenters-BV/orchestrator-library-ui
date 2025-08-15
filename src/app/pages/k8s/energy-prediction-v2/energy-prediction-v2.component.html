@@ -9,30 +9,30 @@
       <div class="w-full">
         <div class="border rounded-lg p-4 bg-white">
           <div class="mb-3">
-            <h3 class="text-base font-semibold text-blue-600">Tomorrow's Forecast</h3>
-            <p class="text-xs text-muted-foreground">Energy consumption prediction for the next 24 hours</p>
+            <h3 class="text-base font-semibold text-blue-600">Energy Availability Summary</h3>
+            <p class="text-xs text-muted-foreground">Current 1-week energy forecast from providers</p>
           </div>
           <div class="space-y-2">
             <div class="flex justify-between items-center">
-              <span class="text-xs font-medium">Peak Usage:</span>
-              <span class="text-xs font-bold text-red-600">2,450W</span>
+              <span class="text-xs font-medium">Total Available Slots:</span>
+              <span class="text-xs font-bold text-blue-600">{{energyForecastSummary.totalSlots}}</span>
             </div>
             <div class="flex justify-between items-center">
-              <span class="text-xs font-medium">Average Usage:</span>
-              <span class="text-xs font-bold text-blue-600">1,680W</span>
+              <span class="text-xs font-medium">Total Capacity:</span>
+              <span class="text-xs font-bold text-green-600">{{(energyForecastSummary.totalCapacity / 1000) | number:'1.1-1'}}kW</span>
             </div>
             <div class="flex justify-between items-center">
-              <span class="text-xs font-medium">Minimum Usage:</span>
-              <span class="text-xs font-bold text-green-600">950W</span>
+              <span class="text-xs font-medium">Average Confidence:</span>
+              <span class="text-xs font-bold text-purple-600">{{energyForecastSummary.averageConfidence}}%</span>
             </div>
             <div class="flex justify-between items-center">
-              <span class="text-xs font-medium">Total Energy:</span>
-              <span class="text-xs font-bold">40.3 kWh</span>
+              <span class="text-xs font-medium">Active Providers:</span>
+              <span class="text-xs font-bold">{{energyForecastSummary.providers.length}}</span>
             </div>
           </div>
           <div class="mt-3 p-2 bg-blue-50 rounded-md">
             <p class="text-xs text-blue-700">
-              Expected peak demand around 2:00 PM due to increased workload processing
+              Energy sources: {{energyForecastSummary.sourcesTypes.join(', ')}}
             </p>
           </div>
         </div>
@@ -134,6 +134,23 @@
           </div>
         </div>
       </div>
+
+      <div class="w-full">
+        <div class="mb-4">
+          <h3 class="text-lg font-semibold">Energy Availability Heatmap</h3>
+          <p class="text-sm text-muted-foreground">Weekly energy availability pattern by day and 4-hour time slots</p>
+        </div>
+        <div class="w-full border rounded-lg p-4 bg-white">
+          <app-energy-availability-heatmap [slots]="energyAvailabilitySlots"></app-energy-availability-heatmap>
+        </div>
+        <div class="text-xs text-muted-foreground mt-2">
+          Darker colors indicate higher energy availability. Each cell represents a 4-hour time slot for each day of the week.
+        </div>
+      </div>
+
+      
+
+      
 
     </div>
   </div>

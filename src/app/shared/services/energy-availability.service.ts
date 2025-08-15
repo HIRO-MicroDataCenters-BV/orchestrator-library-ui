@@ -81,25 +81,6 @@ export class EnergyAvailabilityService {
     return this.http.get<EnergyAvailabilityResponse>(this.baseUrl, { params });
   }
 
-  /**
-   * Get energy availability for a specific provider
-   * @param providerName - Provider name to filter by
-   * @param limit - Number of records to fetch
-   * @returns Observable<EnergyAvailabilityResponse>
-   */
-  getProviderEnergyAvailability(providerName: string, limit = 100): Observable<EnergyAvailabilityResponse> {
-    return this.getEnergyAvailability(limit, true, providerName);
-  }
-
-  /**
-   * Get energy availability by energy source type
-   * @param energySourceType - Energy source type (e.g., 'Solar', 'Wind')
-   * @param limit - Number of records to fetch
-   * @returns Observable<EnergyAvailabilityResponse>
-   */
-  getEnergyBySourceType(energySourceType: string, limit = 100): Observable<EnergyAvailabilityResponse> {
-    return this.getEnergyAvailability(limit, true, undefined, undefined, energySourceType);
-  }
 
   /**
    * Get all active energy availability slots
@@ -108,33 +89,6 @@ export class EnergyAvailabilityService {
    */
   getActiveEnergySlots(limit = 100): Observable<EnergyAvailabilityResponse> {
     return this.getEnergyAvailability(limit, true);
-  }
-
-  /**
-   * Transform energy slots for time series chart display
-   * @param slots - Array of EnergyAvailabilitySlot
-   * @returns Array of chart data points
-   */
-  transformSlotsForChart(slots: EnergyAvailabilitySlot[]): Array<{
-    startTime: number;
-    endTime: number;
-    availableWatts: number;
-    guaranteedWatts: number;
-    maxWatts: number;
-    confidence: number;
-    provider: string;
-    sourceType: string;
-  }> {
-    return slots.map(slot => ({
-      startTime: new Date(slot.slot_start_time).getTime(),
-      endTime: new Date(slot.slot_end_time).getTime(),
-      availableWatts: slot.available_watts,
-      guaranteedWatts: slot.guaranteed_minimum_watts,
-      maxWatts: slot.potential_maximum_watts,
-      confidence: slot.confidence_percentage,
-      provider: slot.provider_name,
-      sourceType: slot.energy_source_type
-    })).sort((a, b) => a.startTime - b.startTime);
   }
 
   /**
@@ -154,24 +108,6 @@ export class EnergyAvailabilityService {
     })).sort((a, b) => a.timestamp - b.timestamp);
   }
 
-  /**
-   * Get confidence percentage data for chart display
-   * @param slots - Array of EnergyAvailabilitySlot
-   * @returns Array of chart data points with confidence percentages
-   */
-  transformConfidenceData(slots: EnergyAvailabilitySlot[]): Array<{
-    timestamp: number;
-    confidence: number;
-    provider: string;
-    sourceType: string;
-  }> {
-    return slots.map(slot => ({
-      timestamp: new Date(slot.slot_start_time).getTime(),
-      confidence: slot.confidence_percentage,
-      provider: slot.provider_name,
-      sourceType: slot.energy_source_type
-    })).sort((a, b) => a.timestamp - b.timestamp);
-  }
 
   /**
    * Group energy slots by provider
