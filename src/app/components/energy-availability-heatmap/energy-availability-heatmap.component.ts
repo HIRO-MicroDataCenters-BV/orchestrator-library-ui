@@ -81,7 +81,8 @@ export class EnergyAvailabilityHeatmapComponent implements OnInit, OnChanges {
         backgroundColor: 'transparent',
         marginTop: 40,
         marginBottom: 80,
-        plotBorderWidth: 1
+        plotBorderWidth: 0,
+        borderWidth: 0
       },
       title: { text: undefined },
       credits: { enabled: false },
