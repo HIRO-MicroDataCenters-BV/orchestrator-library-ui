@@ -145,14 +145,7 @@ export class MainLayoutComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log('version date:', '14.08.25');
-    if (isPlatformBrowser(this.platformId)) {
-      this.apiService.getClusterInfo().subscribe((res) => {
-        if (res) {
-          this.cluster = res;
-        }
-      });
-    }
+    console.log('version date:', '15.08.25');
   }
 
   toggleSubmenu(item: MenuItem): void {
