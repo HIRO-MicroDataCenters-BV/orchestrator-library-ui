@@ -19,30 +19,24 @@ import { HlmSidebarService } from '../../../../../libs/ui/ui-sidebar-helm/src/li
     EnergyAvailabilityHeatmapComponent,
   ],
   templateUrl: './energy-prediction-v2.component.html',
-  styleUrl: './energy-prediction-v2.component.css'
+  styleUrl: './energy-prediction-v2.component.css',
 })
 export class EnergyPredictionV2Component implements OnInit, OnDestroy {
-  Highcharts: typeof Highcharts = Highcharts;
-
   comparisonChartOptions: Partial<Highcharts.Options> = {};
   cpuWattsChartOptions: Partial<Highcharts.Options> = {};
   cpuUtilizationChartOptions: Partial<Highcharts.Options> = {};
   memoryUsageChartOptions: Partial<Highcharts.Options> = {};
-  // Deprecated/legacy charts (kept for compatibility)
-  energyAvailabilityChartOptions: Partial<Highcharts.Options> = {};
-  energyHeatmapChartOptions: Partial<Highcharts.Options> = {};
-  nodeUtilizationHeatmapChartOptions: Partial<Highcharts.Options> = {};
   // Data used by the child heatmap component
   energyAvailabilitySlots: any[] = [];
-  
+
   energyForecastSummary = {
     totalSlots: 0,
     totalCapacity: 0,
     averageConfidence: 0,
     providers: [] as string[],
-    sourcesTypes: [] as string[]
+    sourcesTypes: [] as string[],
   };
-  
+
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -78,109 +72,111 @@ export class EnergyPredictionV2Component implements OnInit, OnDestroy {
   private loadData(): void {
     // Load energy forecast chart (original functionality)
     this.setupComparisonChart();
-    
+
     // Load energy availability data
     this.loadEnergyAvailabilityData();
-    
-    // Start with mock data for real metrics testing, then try real API
-    console.log('Loading data - starting with mock data for testing');
-    //this.loadMockDataForTesting();
-    
+
     // Also try to load real data (this will override mock data if successful)
     this.loadRealMetricsData();
   }
 
   private loadRealMetricsData(): void {
-    console.log('Starting to load metrics data...');
-    
+
     forkJoin({
       cpuWatts: this.metricsApiService.getCpuWattsChartData(),
       cpuUtilization: this.metricsApiService.getCpuUtilizationChartData(),
-      memoryUsage: this.metricsApiService.getMemoryUsageChartData()
-    }).pipe(takeUntil(this.destroy$))
-    .subscribe({
-      next: ({ cpuWatts, cpuUtilization, memoryUsage }) => {
-        console.log('Received metrics data:', { cpuWatts, cpuUtilization, memoryUsage });
-        
-        if (Object.keys(cpuWatts).length > 0) {
-          this.setupCpuWattsChart(cpuWatts);
-          console.log('CPU Watts chart setup complete');
-        } else {
-          console.warn('No CPU watts data received');
-        }
-        
-        if (Object.keys(cpuUtilization).length > 0) {
-          this.setupCpuUtilizationChart(cpuUtilization);
-          console.log('CPU Utilization chart setup complete');
-        } else {
-          console.warn('No CPU utilization data received');
-        }
-        
-        if (Object.keys(memoryUsage).length > 0) {
-          this.setupMemoryUsageChart(memoryUsage);
-          console.log('Memory Usage chart setup complete');
-        } else {
-          console.warn('No memory usage data received');
-        }
-      },
-      error: (error) => {
-        console.error('Error loading metrics data:', error);
-        console.log('Attempting to use mock data for testing...');
-        this.loadMockDataForTesting();
-      }
-    });
+      memoryUsage: this.metricsApiService.getMemoryUsageChartData(),
+    })
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: ({ cpuWatts, cpuUtilization, memoryUsage }) => {
+          console.log('Received metrics data:', {
+            cpuWatts,
+            cpuUtilization,
+            memoryUsage,
+          });
+
+          if (Object.keys(cpuWatts).length > 0) {
+            this.setupCpuWattsChart(cpuWatts);
+            console.log('CPU Watts chart setup complete');
+          } else {
+            console.warn('No CPU watts data received');
+          }
+
+          if (Object.keys(cpuUtilization).length > 0) {
+            this.setupCpuUtilizationChart(cpuUtilization);
+            console.log('CPU Utilization chart setup complete');
+          } else {
+            console.warn('No CPU utilization data received');
+          }
+
+          if (Object.keys(memoryUsage).length > 0) {
+            this.setupMemoryUsageChart(memoryUsage);
+            console.log('Memory Usage chart setup complete');
+          } else {
+            console.warn('No memory usage data received');
+          }
+        },
+        error: (error) => {
+          console.error('Error loading metrics data:', error);
+          console.log('Attempting to use mock data for testing...');
+          this.loadMockDataForTesting();
+        },
+      });
   }
 
   private loadMockDataForTesting(): void {
     console.log('Loading mock data for testing...');
     const mockData: { [nodeName: string]: [number, number][] } = {
-      'minikube': [
+      minikube: [
         [Date.now() - 300000, 150.5] as [number, number], // 5 min ago
         [Date.now() - 240000, 145.2] as [number, number], // 4 min ago
         [Date.now() - 180000, 148.9] as [number, number], // 3 min ago
         [Date.now() - 120000, 152.1] as [number, number], // 2 min ago
-        [Date.now() - 60000, 149.8] as [number, number],  // 1 min ago
-        [Date.now(), 151.2] as [number, number]           // now
-      ]
+        [Date.now() - 60000, 149.8] as [number, number], // 1 min ago
+        [Date.now(), 151.2] as [number, number], // now
+      ],
     };
 
     this.setupCpuWattsChart(mockData);
-    
+
     const mockCpuUtil: { [nodeName: string]: [number, number][] } = {
-      'minikube': [
+      minikube: [
         [Date.now() - 300000, 65.2] as [number, number],
         [Date.now() - 240000, 70.1] as [number, number],
         [Date.now() - 180000, 68.5] as [number, number],
         [Date.now() - 120000, 72.8] as [number, number],
         [Date.now() - 60000, 69.3] as [number, number],
-        [Date.now(), 71.5] as [number, number]
-      ]
+        [Date.now(), 71.5] as [number, number],
+      ],
     };
 
     this.setupCpuUtilizationChart(mockCpuUtil);
 
     const mockMemory: { [nodeName: string]: [number, number][] } = {
-      'minikube': [
+      minikube: [
         [Date.now() - 300000, 2400] as [number, number],
         [Date.now() - 240000, 2450] as [number, number],
         [Date.now() - 180000, 2380] as [number, number],
         [Date.now() - 120000, 2520] as [number, number],
         [Date.now() - 60000, 2480] as [number, number],
-        [Date.now(), 2510] as [number, number]
-      ]
+        [Date.now(), 2510] as [number, number],
+      ],
     };
 
     this.setupMemoryUsageChart(mockMemory);
     console.log('Mock data setup complete');
   }
 
-  private setupCpuWattsChart(data: { [nodeName: string]: [number, number][] }): void {
+  private setupCpuWattsChart(data: {
+    [nodeName: string]: [number, number][];
+  }): void {
     console.log('Setting up CPU Watts chart with data:', data);
     const series: Highcharts.SeriesOptionsType[] = [];
     const colors = ['#3b82f6', '#ef4444', '#10b981', '#f59e0b'];
     let colorIndex = 0;
 
-    Object.keys(data).forEach(nodeName => {
+    Object.keys(data).forEach((nodeName) => {
       const color = colors[colorIndex % colors.length];
       series.push({
         name: `${nodeName} - CPU Watts`,
@@ -191,13 +187,13 @@ export class EnergyPredictionV2Component implements OnInit, OnDestroy {
           linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
           stops: [
             [0, `${color}40`], // 25% opacity
-            [1, `${color}10`]  // 6% opacity
-          ]
+            [1, `${color}10`], // 6% opacity
+          ],
         },
         lineWidth: 1,
         marker: {
-          enabled: false
-        }
+          enabled: false,
+        },
       });
       colorIndex++;
     });
@@ -205,53 +201,55 @@ export class EnergyPredictionV2Component implements OnInit, OnDestroy {
     this.cpuWattsChartOptions = {
       chart: {
         type: 'area',
-        backgroundColor: 'transparent'
+        backgroundColor: 'transparent',
       },
       title: {
-        text: undefined
+        text: undefined,
       },
       credits: {
-        enabled: false
+        enabled: false,
       },
       xAxis: {
         type: 'datetime',
         title: {
-          text: 'Time'
-        }
+          text: 'Time',
+        },
       },
       yAxis: {
         title: {
-          text: 'CPU Watts'
-        }
+          text: 'CPU Watts',
+        },
       },
       tooltip: {
         shared: true,
-        valueSuffix: 'W'
+        valueSuffix: 'W',
       },
       legend: {
-        enabled: true
+        enabled: true,
       },
       plotOptions: {
         line: {
           states: {
             inactive: {
-              opacity: 1
-            }
-          }
-        }
+              opacity: 1,
+            },
+          },
+        },
       },
-      series: series
+      series: series,
     };
     console.log('CPU Watts chart options set:', this.cpuWattsChartOptions);
   }
 
-  private setupCpuUtilizationChart(data: { [nodeName: string]: [number, number][] }): void {
+  private setupCpuUtilizationChart(data: {
+    [nodeName: string]: [number, number][];
+  }): void {
     console.log('Setting up CPU Utilization chart with data:', data);
     const series: Highcharts.SeriesOptionsType[] = [];
     const colors = ['#3b82f6', '#ef4444', '#10b981', '#f59e0b'];
     let colorIndex = 0;
 
-    Object.keys(data).forEach(nodeName => {
+    Object.keys(data).forEach((nodeName) => {
       const color = colors[colorIndex % colors.length];
       series.push({
         name: `${nodeName} - CPU Utilization`,
@@ -262,13 +260,13 @@ export class EnergyPredictionV2Component implements OnInit, OnDestroy {
           linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
           stops: [
             [0, `${color}40`], // 25% opacity
-            [1, `${color}10`]  // 6% opacity
-          ]
+            [1, `${color}10`], // 6% opacity
+          ],
         },
         lineWidth: 1,
         marker: {
-          enabled: false
-        }
+          enabled: false,
+        },
       });
       colorIndex++;
     });
@@ -276,53 +274,55 @@ export class EnergyPredictionV2Component implements OnInit, OnDestroy {
     this.cpuUtilizationChartOptions = {
       chart: {
         type: 'area',
-        backgroundColor: 'transparent'
+        backgroundColor: 'transparent',
       },
       title: {
-        text: undefined
+        text: undefined,
       },
       credits: {
-        enabled: false
+        enabled: false,
       },
       xAxis: {
         type: 'datetime',
         title: {
-          text: 'Time'
-        }
+          text: 'Time',
+        },
       },
       yAxis: {
         title: {
-          text: 'CPU Utilization (%)'
+          text: 'CPU Utilization (%)',
         },
-        max: 100
+        max: 100,
       },
       tooltip: {
         shared: true,
-        valueSuffix: '%'
+        valueSuffix: '%',
       },
       legend: {
-        enabled: true
+        enabled: true,
       },
       plotOptions: {
         line: {
           states: {
             inactive: {
-              opacity: 1
-            }
-          }
-        }
+              opacity: 1,
+            },
+          },
+        },
       },
-      series: series
+      series: series,
     };
   }
 
-  private setupMemoryUsageChart(data: { [nodeName: string]: [number, number][] }): void {
+  private setupMemoryUsageChart(data: {
+    [nodeName: string]: [number, number][];
+  }): void {
     console.log('Setting up Memory Usage chart with data:', data);
     const series: Highcharts.SeriesOptionsType[] = [];
     const colors = ['#3b82f6', '#ef4444', '#10b981', '#f59e0b'];
     let colorIndex = 0;
 
-    Object.keys(data).forEach(nodeName => {
+    Object.keys(data).forEach((nodeName) => {
       const color = colors[colorIndex % colors.length];
       series.push({
         name: `${nodeName} - Memory Usage`,
@@ -333,13 +333,13 @@ export class EnergyPredictionV2Component implements OnInit, OnDestroy {
           linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
           stops: [
             [0, `${color}40`], // 25% opacity
-            [1, `${color}10`]  // 6% opacity
-          ]
+            [1, `${color}10`], // 6% opacity
+          ],
         },
         lineWidth: 1,
         marker: {
-          enabled: false
-        }
+          enabled: false,
+        },
       });
       colorIndex++;
     });
@@ -347,50 +347,55 @@ export class EnergyPredictionV2Component implements OnInit, OnDestroy {
     this.memoryUsageChartOptions = {
       chart: {
         type: 'area',
-        backgroundColor: 'transparent'
+        backgroundColor: 'transparent',
       },
       title: {
-        text: undefined
+        text: undefined,
       },
       credits: {
-        enabled: false
+        enabled: false,
       },
       xAxis: {
         type: 'datetime',
         title: {
-          text: 'Time'
-        }
+          text: 'Time',
+        },
       },
       yAxis: {
         title: {
-          text: 'Memory Usage (MB)'
-        }
+          text: 'Memory Usage (MB)',
+        },
       },
       tooltip: {
         shared: true,
-        valueSuffix: ' MB'
+        valueSuffix: ' MB',
       },
       legend: {
-        enabled: true
+        enabled: true,
       },
       plotOptions: {
         line: {
           states: {
             inactive: {
-              opacity: 1
-            }
-          }
-        }
+              opacity: 1,
+            },
+          },
+        },
       },
-      series: series
+      series: series,
     };
   }
 
   private setupComparisonChart(): void {
-    this.energyDataService.generateComparisonData()
+    this.energyDataService
+      .generateComparisonData()
       .pipe(takeUntil(this.destroy$))
       .subscribe(({ actualData, previousForecastData, futureForecastData }) => {
-        this.buildComparisonChart(actualData, previousForecastData, futureForecastData);
+        this.buildComparisonChart(
+          actualData,
+          previousForecastData,
+          futureForecastData
+        );
       });
   }
 
@@ -408,104 +413,108 @@ export class EnergyPredictionV2Component implements OnInit, OnDestroy {
         panKey: 'shift',
         panning: {
           enabled: true,
-          type: 'x'
+          type: 'x',
         },
         zooming: {
-          type: 'x'
-        }
+          type: 'x',
+        },
       },
       title: {
-        text: undefined
+        text: undefined,
       },
       subtitle: {
         text: 'Click and drag to zoom in. Hold shift key to pan.',
         style: {
           fontSize: '11px',
-          color: '#666'
-        }
+          color: '#666',
+        },
       },
       credits: {
-        enabled: false
+        enabled: false,
       },
       xAxis: {
         type: 'datetime',
         title: {
-          text: 'Time'
+          text: 'Time',
         },
-        plotLines: [{
-          color: '#ff6b6b',
-          dashStyle: 'ShortDash',
-          value: now,
-          width: 0.3,
-          label: {
-            text: 'Now',
-            style: {
-              color: '#ff6b6b'
-            }
-          }
-        }],
+        plotLines: [
+          {
+            color: '#ff6b6b',
+            dashStyle: 'ShortDash',
+            value: now,
+            width: 0.3,
+            label: {
+              text: 'Now',
+              style: {
+                color: '#ff6b6b',
+              },
+            },
+          },
+        ],
         events: {
-          afterSetExtremes: function() {
+          afterSetExtremes: function () {
             // Optional: Add custom behavior after zoom/pan
-          }
-        }
+          },
+        },
       },
       yAxis: {
         title: {
-          text: 'Energy Consumption (W)'
-        }
+          text: 'Energy Consumption (W)',
+        },
       },
       tooltip: {
         shared: true,
-        formatter: function() {
+        formatter: function () {
           let tooltip = `<b>${new Date(this.x!).toLocaleString()}</b><br/>`;
-          this.points!.forEach(point => {
-            tooltip += `<span style="color:${point.color}">${point.series.name}</span>: <b>${point.y?.toFixed(1)}W</b><br/>`;
+          this.points!.forEach((point) => {
+            tooltip += `<span style="color:${point.color}">${
+              point.series.name
+            }</span>: <b>${point.y?.toFixed(1)}W</b><br/>`;
           });
           return tooltip;
-        }
+        },
       },
       legend: {
-        enabled: true
+        enabled: true,
       },
       navigation: {
         buttonOptions: {
-          enabled: true
-        }
+          enabled: true,
+        },
       },
       rangeSelector: {
-        enabled: false
+        enabled: false,
       },
       scrollbar: {
-        enabled: false
+        enabled: false,
       },
       navigator: {
-        enabled: false
+        enabled: false,
       },
       plotOptions: {
         area: {
           fillOpacity: 0.3,
           lineWidth: 1,
           marker: {
-            enabled: false
+            enabled: false,
           },
           states: {
             inactive: {
-              opacity: 1
-            }
-          }
+              opacity: 1,
+            },
+          },
         },
         line: {
           lineWidth: 2,
           marker: {
-            enabled: false
+            enabled: false,
           },
           states: {
             inactive: {
-              opacity: 1
-            }
-          }
-        }
+              opacity: 1,
+            },
+          },
+        },
       },
       series: [
         {
@@ -515,8 +524,8 @@ export class EnergyPredictionV2Component implements OnInit, OnDestroy {
           color: '#10b981',
           lineWidth: 1,
           marker: {
-            enabled: false
-          }
+            enabled: false,
+          },
         },
         {
           name: 'Previous Forecast (Historical)',
@@ -527,13 +536,13 @@ export class EnergyPredictionV2Component implements OnInit, OnDestroy {
             linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
             stops: [
               [0, 'rgba(59, 130, 246, 0.15)'],
-              [1, 'rgba(59, 130, 246, 0.05)']
-            ]
+              [1, 'rgba(59, 130, 246, 0.05)'],
+            ],
           },
           lineWidth: 0.5,
           marker: {
-            enabled: false
-          }
+            enabled: false,
+          },
         },
         {
           name: 'Future Forecast',
@@ -544,45 +553,58 @@ export class EnergyPredictionV2Component implements OnInit, OnDestroy {
             linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
             stops: [
               [0, 'rgba(59, 130, 246, 0.25)'],
-              [1, 'rgba(59, 130, 246, 0.08)']
-            ]
+              [1, 'rgba(59, 130, 246, 0.08)'],
+            ],
           },
           lineWidth: 0.5,
           marker: {
-            enabled: false
-          }
-        }
-      ]
+            enabled: false,
+          },
+        },
+      ],
     };
   }
 
   private updateEnergyForecastSummary(slots: any[]): void {
-    const totalCapacity = slots.reduce((sum, slot) => sum + slot.available_watts, 0);
-    const averageConfidence = slots.reduce((sum, slot) => sum + slot.confidence_percentage, 0) / slots.length;
-    const uniqueProviders = [...new Set(slots.map(slot => slot.provider_name))];
-    const uniqueSourceTypes = [...new Set(slots.map(slot => slot.energy_source_type))];
-    
+    const totalCapacity = slots.reduce(
+      (sum, slot) => sum + slot.available_watts,
+      0
+    );
+    const averageConfidence =
+      slots.reduce((sum, slot) => sum + slot.confidence_percentage, 0) /
+      slots.length;
+    const uniqueProviders = [
+      ...new Set(slots.map((slot) => slot.provider_name)),
+    ];
+    const uniqueSourceTypes = [
+      ...new Set(slots.map((slot) => slot.energy_source_type)),
+    ];
+
     this.energyForecastSummary = {
       totalSlots: slots.length,
       totalCapacity: totalCapacity,
       averageConfidence: Math.round(averageConfidence * 10) / 10,
       providers: uniqueProviders,
-      sourcesTypes: uniqueSourceTypes
+      sourcesTypes: uniqueSourceTypes,
     };
-    
+
     console.log('Energy forecast summary updated:', this.energyForecastSummary);
   }
 
   private loadEnergyAvailabilityData(): void {
     console.log('Loading energy availability data...');
-    
-    this.energyAvailabilityService.getActiveEnergySlots(100)
+
+    this.energyAvailabilityService
+      .getActiveEnergySlots(100)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (response) => {
           console.log('Energy availability data received:', response);
-          
-          if (response.status === 'success' && response.availability.length > 0) {
+
+          if (
+            response.status === 'success' &&
+            response.availability.length > 0
+          ) {
             this.updateEnergyForecastSummary(response.availability);
             this.energyAvailabilitySlots = response.availability;
           } else {
@@ -591,8 +613,7 @@ export class EnergyPredictionV2Component implements OnInit, OnDestroy {
         },
         error: (error) => {
           console.error('Error loading energy availability data:', error);
-        }
+        },
       });
   }
-  
 }
