@@ -8,7 +8,7 @@ export const environment: Environment = {
   userKey: 'user',
   dashboardUrl: '/iframe-dashboard',
   cogUrl: '/iframe-cog',
-  grafanaUrl: '/iframe-grafana',
+  grafanaUrl: 'http://51.44.28.47:30000',
 
   // OIDC Configuration
   oidc: {
