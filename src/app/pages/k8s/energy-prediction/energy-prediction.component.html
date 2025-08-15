@@ -75,35 +75,37 @@
     </div>
 
     <div class="space-y-6 w-full">
-      <div class="w-full">
-        <div class="mb-4">
-          <h3 class="text-lg font-semibold">Actual vs Forecasted Energy</h3>
-          <p class="text-sm text-muted-foreground">Comparison between actual energy consumption and forecasted values over time</p>
-        </div>
-        <div class="w-full border rounded-lg p-4 bg-white">
-          <div class="chart-container w-full h-[400px]">
-            <highcharts-chart
-              [options]="comparisonChartOptions"
-              class="w-full h-full"
-            ></highcharts-chart>
+      <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+        <div class="w-full">
+          <div class="mb-4">
+            <h3 class="text-lg font-semibold">Actual vs Forecasted Energy</h3>
+            <p class="text-sm text-muted-foreground">Comparison between actual energy consumption and forecasted values over time</p>
+          </div>
+          <div class="w-full border rounded-lg p-4 bg-white">
+            <div class="chart-container w-full h-[400px]">
+              <highcharts-chart
+                [options]="comparisonChartOptions"
+                class="w-full h-full"
+              ></highcharts-chart>
+            </div>
+          </div>
+          <div class="text-xs text-muted-foreground mt-2">
+            Shows accuracy of predictions and helps identify patterns in forecasting performance
           </div>
         </div>
-        <div class="text-xs text-muted-foreground mt-2">
-          Shows accuracy of predictions and helps identify patterns in forecasting performance
-        </div>
-      </div>
 
-      <div class="w-full">
-        <div class="mb-4">
-          <h3 class="text-lg font-semibold">Energy Consumption Overview</h3>
-          <p class="text-sm text-muted-foreground">Historical and predicted energy usage across all nodes</p>
-        </div>
-        <div class="w-full border rounded-lg p-4 bg-white">
-          <div class="chart-container w-full h-[400px]">
-            <highcharts-chart
-              [options]="overviewChartOptions"
-              class="w-full h-full"
-            ></highcharts-chart>
+        <div class="w-full">
+          <div class="mb-4">
+            <h3 class="text-lg font-semibold">Energy Consumption Overview</h3>
+            <p class="text-sm text-muted-foreground">Historical and predicted energy usage across all nodes</p>
+          </div>
+          <div class="w-full border rounded-lg p-4 bg-white">
+            <div class="chart-container w-full h-[400px]">
+              <highcharts-chart
+                [options]="overviewChartOptions"
+                class="w-full h-full"
+              ></highcharts-chart>
+            </div>
           </div>
         </div>
       </div>
