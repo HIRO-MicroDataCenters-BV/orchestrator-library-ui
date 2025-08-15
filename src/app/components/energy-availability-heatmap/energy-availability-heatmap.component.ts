@@ -49,12 +49,29 @@ export class EnergyAvailabilityHeatmapComponent implements OnInit, OnChanges {
       dataMap.set(key, slot.available_watts || 0);
     });
 
-    const heatmapData: [number, number, number][] = [];
+    // Determine today's day index (Monday=0) and the current 4-hour time slot
+    const now = new Date();
+    const nowDay = now.getDay();
+    const currentDayIndex = nowDay === 0 ? 6 : nowDay - 1;
+    const currentSlotIndex = Math.floor(now.getHours() / 4);
+
+    const heatmapData: any[] = [];
     for (let day = 0; day < 7; day++) {
       for (let timeSlot = 0; timeSlot < 6; timeSlot++) {
         const key = `${day}-${timeSlot}`;
         const value = dataMap.get(key) || 0;
-        heatmapData.push([timeSlot, day, value]);
+        // Highlight the cell for today's date and current time slot
+        if (day === currentDayIndex && timeSlot === currentSlotIndex) {
+          heatmapData.push({
+            x: timeSlot,
+            y: day,
+            value,
+            borderColor: '#2563eb',
+            borderWidth: 1
+          });
+        } else {
+          heatmapData.push([timeSlot, day, value]);
+        }
       }
     }
 
@@ -71,12 +88,24 @@ export class EnergyAvailabilityHeatmapComponent implements OnInit, OnChanges {
       xAxis: {
         categories: timeSlots,
         title: { text: 'Time Slots' },
-        opposite: true
+        opposite: true,
+        // Plot band to subtly highlight the current time-slot column
+        plotBands: [{
+          from: currentSlotIndex - 0.5,
+          to: currentSlotIndex + 0.5,
+          color: 'rgba(37, 99, 235, 0.08)'
+        }]
       },
       yAxis: {
         categories: dayNames,
         title: { text: 'Days of Week' },
-        reversed: true
+        reversed: true,
+        // Plot band to subtly highlight today's row
+        plotBands: [{
+          from: currentDayIndex - 0.5,
+          to: currentDayIndex + 0.5,
+          color: 'rgba(16, 185, 129, 0.08)'
+        }]
       },
       colorAxis: {
         min: 0,
@@ -124,6 +153,9 @@ export class EnergyAvailabilityHeatmapComponent implements OnInit, OnChanges {
             fontSize: '10px',
             fontWeight: 'bold'
           }
+        },
+        states: {
+          inactive: { opacity: 1 }
         }
       }]
     };
