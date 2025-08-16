@@ -28,6 +28,7 @@ import {
 } from '../../../shared/models/auth.models';
 import { AUTH_CONSTANTS } from '../../../shared/constants/app.constants';
 import { MockAuthService } from '../../../mock/auth.mock';
+import { DexAuthService } from '../dex-auth.service';
 
 // OIDC-specific interfaces
 interface OidcAuthResult {
@@ -57,6 +58,7 @@ export class AuthService {
   private readonly platformId = inject(PLATFORM_ID);
 
   private readonly mockAuthService = inject(MockAuthService);
+  private readonly dexAuthService = inject(DexAuthService);
   private readonly isBrowser = isPlatformBrowser(this.platformId);
 
   // Auth state management
@@ -184,21 +186,16 @@ export class AuthService {
    * Login with email and password (mock) or redirect to OIDC provider
    */
   login(credentials?: LoginCredentials): Observable<LoginResponse> {
-    console.log('=== AuthService.login() called ===');
-    console.log('Credentials provided:', !!credentials);
-    console.log('Mock auth enabled:', this.mockAuthService.isMockAuthEnabled());
-    console.log('Is browser:', this.isBrowser);
-
     this.setLoading(true);
 
     // Check if credentials match mock credentials specifically
+    const mockUser = AUTH_CONSTANTS.MOCK_AUTH.USERS[0];
     const isMockCredentials =
       credentials &&
-      credentials.email === 'admin@admin.com' &&
-      credentials.password === 'password';
+      credentials.email === mockUser.email &&
+      credentials.password === mockUser.password;
 
     if (this.mockAuthService.isMockAuthEnabled() && isMockCredentials) {
-      console.log('Using mock authentication');
       return this.mockAuthService.login(credentials).pipe(
         tap((response) => {
           if (response.success && response.user && response.tokens) {
@@ -229,10 +226,7 @@ export class AuthService {
       );
     }
 
-    // For real authentication, redirect to protected resource
-    // AuthService will intercept and start the DEX flow
     if (!this.isBrowser) {
-      console.error('Login attempted in SSR environment');
       this.setLoading(false);
       return throwError(() =>
         this.createAuthError(
@@ -243,14 +237,7 @@ export class AuthService {
       );
     }
 
-    console.log('=== Starting OIDC Password Flow ===');
-    console.log('Using credentials for OIDC authentication...');
-    console.log('Credentials object:', credentials);
-    console.log('Email:', credentials?.email);
-    console.log('Password length:', credentials?.password?.length);
-
     if (!credentials) {
-      console.error('No credentials provided');
       this.setLoading(false);
       return throwError(() =>
         this.createAuthError(
@@ -261,123 +248,69 @@ export class AuthService {
       );
     }
 
-    console.log('Credentials validated, proceeding with OIDC request...');
+    // Use DEX Authorization Code Flow with credentials
+    return this.dexAuthService
+      .authorizeWithDex(credentials.email, credentials.password)
+      .pipe(
+        map((dexResult) => {
+          // Create a mock user from the session
+          const user: User = {
+            id: 'dex-user',
+            email: credentials.email,
+            name: credentials.email.split('@')[0],
+            firstName: credentials.email.split('@')[0],
+            lastName: '',
+            roles: ['user'],
+            permissions: ['read'],
+            avatar: '',
+            isEmailVerified: true,
+            lastLoginAt: new Date(),
+            createdAt: new Date(),
+            updatedAt: new Date(),
+          };
 
-    try {
-      // Use OIDC Resource Owner Password Credentials Grant
-      const tokenUrl = AUTH_CONSTANTS.ROUTES.DEX_TOKEN;
-      console.log('Token URL:', tokenUrl);
+          const tokens: AuthTokens = {
+            accessToken: dexResult.authserviceSession,
+            refreshToken: '',
+            idToken: '',
+            expiresAt: Date.now() + 8 * 60 * 60 * 1000, // 8 hours
+          };
 
-      const body = new URLSearchParams({
-        grant_type: 'password',
-        username: credentials.email,
-        password: credentials.password,
-        client_id: AUTH_CONSTANTS.OIDC.CLIENT_ID,
-        client_secret: AUTH_CONSTANTS.OIDC.CLIENT_SECRET,
-        scope: AUTH_CONSTANTS.OIDC.SCOPE,
-      });
+          this.setAuthState({
+            isAuthenticated: true,
+            isLoading: false,
+            user,
+            tokens,
+            error: null,
+          });
 
-      console.log('Request body params:', {
-        grant_type: 'password',
-        username: credentials.email,
-        password: '[HIDDEN]',
-        client_id: AUTH_CONSTANTS.OIDC.CLIENT_ID,
-        client_secret: '[HIDDEN]',
-        scope: AUTH_CONSTANTS.OIDC.SCOPE,
-      });
+          this.storeAuthData(user, tokens);
 
-      console.log('Making HTTP POST request to:', tokenUrl);
+          return {
+            success: true,
+            message: 'Authentication successful',
+            user,
+            tokens,
+          };
+        }),
+        catchError((error) => {
+          const errorMessage = error.message || 'Authentication failed';
+          const authError = this.createAuthError(
+            AuthErrorType.OIDC_ERROR,
+            'DEX_ERROR',
+            errorMessage
+          );
 
-      return this.http
-        .post<any>(tokenUrl, body.toString(), {
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-        })
-        .pipe(
-          map((tokenResponse) => {
-            console.log('=== OIDC Token Response ===');
-            console.log('Full response:', tokenResponse);
-            console.log('Token received successfully');
+          this.setAuthState({
+            ...this.authState(),
+            isLoading: false,
+            error: authError.message,
+          });
 
-            // Set authenticated state
-            this.setAuthState({
-              isAuthenticated: true,
-              isLoading: false,
-              user: null, // Will be populated from token if needed
-              tokens: {
-                accessToken: tokenResponse.access_token,
-                refreshToken: tokenResponse.refresh_token,
-                idToken: tokenResponse.id_token,
-                expiresAt: Date.now() + tokenResponse.expires_in * 1000,
-              },
-              error: null,
-            });
-
-            console.log('Auth state updated successfully');
-
-            return {
-              success: true,
-              message: 'Authentication successful',
-            };
-          }),
-          catchError((error) => {
-            console.error('=== OIDC Token Error ===');
-            console.error('Full error object:', error);
-            console.error('Error status:', error.status);
-            console.error('Error statusText:', error.statusText);
-            console.error('Error message:', error.message);
-            console.error('Error url:', error.url);
-            console.error('Error body:', error.error);
-
-            const errorMessage =
-              error.error?.error_description ||
-              error.error?.error ||
-              error.statusText ||
-              'Invalid credentials';
-
-            console.error('Parsed error message:', errorMessage);
-
-            const authError = this.createAuthError(
-              AuthErrorType.OIDC_ERROR,
-              'CREDENTIALS_ERROR',
-              errorMessage
-            );
-
-            this.setAuthState({
-              ...this.authState(),
-              isLoading: false,
-              error: authError.message,
-            });
-
-            return throwError(() => authError);
-          }),
-          finalize(() => {
-            console.log('OIDC request finalized, setting loading to false');
-            this.setLoading(false);
-          })
-        );
-    } catch (error) {
-      console.error('=== OIDC Authentication Error (Synchronous) ===');
-      console.error('Error object:', error);
-
-      const errorMessage =
-        (error as any)?.message || 'Unknown authentication error';
-      const authError = this.createAuthError(
-        AuthErrorType.OIDC_ERROR,
-        'AUTH_ERROR',
-        `Authentication failed: ${errorMessage}`
+          return throwError(() => authError);
+        }),
+        finalize(() => this.setLoading(false))
       );
-
-      this.setAuthState({
-        ...this.authState(),
-        isLoading: false,
-        error: authError.message,
-      });
-
-      this.setLoading(false);
-      return throwError(() => authError);
-    }
   }
 
   /**

@@ -172,13 +172,27 @@ export const routes: Routes = [
     data: { title: 'Access Denied' },
   },
 
+  // Test routes (public)
   {
-    path: 'test/proxy',
-    loadComponent: () =>
-      import('./pages/test/proxy-test.component').then(
-        (m) => m.ProxyTestComponent
-      ),
-    data: { title: 'Proxy Test' },
+    path: 'test',
+    children: [
+      {
+        path: 'proxy',
+        loadComponent: () =>
+          import('./pages/test/proxy-test.component').then(
+            (m) => m.ProxyTestComponent
+          ),
+        data: { title: 'Proxy Test' },
+      },
+      {
+        path: 'dex',
+        loadComponent: () =>
+          import('./pages/test/dex-test.component').then(
+            (m) => m.DexTestComponent
+          ),
+        data: { title: 'DEX Test' },
+      },
+    ],
   },
 
   // Fallback routes - but exclude proxy paths

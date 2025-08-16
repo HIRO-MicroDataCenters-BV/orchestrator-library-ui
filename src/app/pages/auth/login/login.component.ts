@@ -11,13 +11,7 @@ import { finalize } from 'rxjs/operators';
 
 import { TranslocoModule } from '@jsverse/transloco';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import {
-  lucideEye,
-  lucideEyeOff,
-  lucideLoader,
-  lucideLock,
-  lucideMail,
-} from '@ng-icons/lucide';
+import { lucideEye, lucideEyeOff } from '@ng-icons/lucide';
 
 // Spartan UI Components
 import { HlmCardImports } from '@spartan-ng/ui-card-helm';
@@ -50,9 +44,6 @@ import {
     provideIcons({
       lucideEye,
       lucideEyeOff,
-      lucideLoader,
-      lucideLock,
-      lucideMail,
     }),
   ],
   templateUrl: './login.component.html',
@@ -79,23 +70,16 @@ export class LoginComponent {
     });
 
     if (this.mockAuthService.isMockAuthEnabled()) {
+      const mockUser = AUTH_CONSTANTS.MOCK_AUTH.USERS[0];
       this.loginForm.patchValue({
-        email: 'admin@admin.com',
-        password: 'password',
+        email: mockUser.email,
+        password: mockUser.password,
       });
     }
   }
 
   togglePasswordVisibility(): void {
     this._showPassword.update((show) => !show);
-  }
-
-  /**
-   * Initiate OIDC login flow
-   */
-  onOidcLogin(): void {
-    console.log('Initiating OIDC Authorization Code Flow');
-    this.authService.initiateOidcLogin();
   }
 
   onLogin(): void {
@@ -111,27 +95,19 @@ export class LoginComponent {
       password: this.loginForm.value.password,
     };
 
-    // Проверяем, совпадают ли credentials с mock данными
+    // Check if credentials match mock data
+    const mockUser = AUTH_CONSTANTS.MOCK_AUTH.USERS[0];
     const isMockCredentials =
-      credentials.email === 'admin@admin.com' &&
-      credentials.password === 'password';
-
-    console.log('=== Login Flow Decision ===');
-    console.log('Is mock credentials?', isMockCredentials);
-    console.log('Form values:', {
-      email: credentials.email,
-      password: '[HIDDEN]',
-    });
+      credentials.email === mockUser.email &&
+      credentials.password === mockUser.password;
 
     if (isMockCredentials) {
-      console.log('Using MOCK authentication flow');
-      // Используем mock аутентификацию
+      // Use mock authentication
       this.authService
         .login(credentials)
         .pipe(finalize(() => this._isLoading.set(false)))
         .subscribe({
           next: (response) => {
-            console.log('Mock login response:', response);
             if (response.success) {
               const returnUrl =
                 this.authService.getReturnUrl() ||
@@ -141,18 +117,16 @@ export class LoginComponent {
             }
           },
           error: (error: AuthError) => {
-            console.error('Mock login error:', error);
+            // Handle mock login error
           },
         });
     } else {
-      console.log('Using OIDC authentication flow with credentials');
       // Use OIDC authentication with real credentials
       this.authService
         .login(credentials)
         .pipe(finalize(() => this._isLoading.set(false)))
         .subscribe({
           next: (response) => {
-            console.log('OIDC login response:', response);
             if (response.success) {
               const returnUrl =
                 this.authService.getReturnUrl() ||
@@ -162,7 +136,7 @@ export class LoginComponent {
             }
           },
           error: (error: AuthError) => {
-            console.error('OIDC login error:', error);
+            // Handle OIDC login error
           },
         });
     }

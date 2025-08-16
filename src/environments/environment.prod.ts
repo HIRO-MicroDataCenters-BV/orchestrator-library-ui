@@ -9,6 +9,7 @@ export const environment: Environment = {
   dashboardUrl: '/iframe-dashboard',
   cogUrl: '/iframe-cog',
   grafanaUrl: 'http://51.44.28.47:30000',
+  dexUrl: 'https://dashboard.cog.hiro-develop.nl/apidev',
 
   // OIDC Configuration
   oidc: {

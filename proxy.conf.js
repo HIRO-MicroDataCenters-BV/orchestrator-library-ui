@@ -1,86 +1,66 @@
+// Environment-based proxy configuration
+const proxyTargets = {
+  api: process.env.API_TARGET || 'http://51.44.28.47:30015',
+  dex: process.env.DEX_TARGET || 'http://51.44.28.47:30080',
+  dashboard: process.env.DASHBOARD_TARGET || 'http://51.44.28.47:30016',
+  grafana: process.env.GRAFANA_TARGET || 'http://51.44.28.47:30000',
+  cog: process.env.COG_TARGET || 'https://dashboard.cog.hiro-develop.nl',
+};
+
+const isDevelopment = process.env.NODE_ENV !== 'production';
+
 module.exports = {
   '/api/**': {
-    target: 'http://51.44.28.47:30015',
+    target: proxyTargets.api,
     secure: false,
     changeOrigin: true,
-    logLevel: 'debug',
+    logLevel: isDevelopment ? 'debug' : 'error',
     pathRewrite: {
       '^/api': '',
     },
     onError: function (err, req, res) {
-      console.error('[API PROXY ERROR]', err.message);
       res.writeHead(500, { 'Content-Type': 'text/plain' });
       res.end('API proxy error: ' + err.message);
     },
-    onProxyReq: function (proxyReq, req, res) {
-      console.log(
-        '[API PROXY]',
-        req.method,
-        req.url,
-        '->',
-        proxyReq.host + proxyReq.path
-      );
-    },
   },
   '/.well-known/openid-configuration': {
-    target: 'http://51.44.28.47:30080',
+    target: proxyTargets.dex,
     secure: false,
     changeOrigin: true,
-    logLevel: 'debug',
+    logLevel: isDevelopment ? 'debug' : 'error',
     pathRewrite: {
       '^/.well-known/openid-configuration':
         '/dex/.well-known/openid-configuration',
     },
     onError: function (err, req, res) {
-      console.error('[OIDC DISCOVERY PROXY ERROR]', err.message);
       res.writeHead(500, { 'Content-Type': 'text/plain' });
       res.end('OIDC discovery proxy error: ' + err.message);
     },
-    onProxyReq: function (proxyReq, req, res) {
-      console.log(
-        '[ROOT OIDC DISCOVERY PROXY]',
-        req.method,
-        req.url,
-        '->',
-        proxyReq.host + proxyReq.path
-      );
-    },
   },
   '/dex/.well-known/**': {
-    target: 'http://51.44.28.47:30080',
+    target: proxyTargets.dex,
     secure: false,
     changeOrigin: true,
-    logLevel: 'debug',
+    logLevel: isDevelopment ? 'debug' : 'error',
     pathRewrite: {
       '^/dex/.well-known': '/dex/.well-known',
     },
     onError: function (err, req, res) {
-      console.error('[DEX OIDC DISCOVERY PROXY ERROR]', err.message);
       res.writeHead(500, { 'Content-Type': 'text/plain' });
       res.end('DEX OIDC discovery proxy error: ' + err.message);
     },
-    onProxyReq: function (proxyReq, req, res) {
-      console.log(
-        '[DEX OIDC DISCOVERY PROXY]',
-        req.method,
-        req.url,
-        '->',
-        proxyReq.host + proxyReq.path
-      );
-    },
   },
   '/iframe-dashboard/**': {
-    target: 'http://51.44.28.47:30016',
+    target: proxyTargets.dashboard,
     secure: false,
     changeOrigin: true,
-    logLevel: 'debug',
+    logLevel: isDevelopment ? 'debug' : 'error',
     followRedirects: true,
     cookieDomainRewrite: 'localhost',
     pathRewrite: {
       '^/iframe-dashboard': '',
     },
     onError: function (err, req, res) {
-      console.error('[IFRAME DASHBOARD PROXY ERROR]', err.message);
       res.writeHead(500, { 'Content-Type': 'text/plain' });
       res.end('K8s dashboard proxy error: ' + err.message);
     },
@@ -106,28 +86,18 @@ module.exports = {
           ) + '; frame-ancestors *'
         : 'frame-ancestors *';
     },
-    onProxyReq: function (proxyReq, req, res) {
-      console.log(
-        '[IFRAME DASHBOARD PROXY]',
-        req.method,
-        req.url,
-        '->',
-        proxyReq.host + proxyReq.path
-      );
-    },
   },
   '/iframe-grafana/**': {
-    target: 'http://51.44.28.47:30000',
+    target: proxyTargets.grafana,
     secure: false,
     changeOrigin: true,
-    logLevel: 'debug',
+    logLevel: isDevelopment ? 'debug' : 'error',
     followRedirects: true,
     cookieDomainRewrite: 'localhost',
     pathRewrite: {
       '^/iframe-grafana': '',
     },
     onError: function (err, req, res) {
-      console.error('[IFRAME GRAFANA PROXY ERROR]', err.message);
       res.writeHead(500, { 'Content-Type': 'text/plain' });
       res.end('Grafana iframe proxy error: ' + err.message);
     },
@@ -166,28 +136,19 @@ module.exports = {
       } else if (req.headers.authorization) {
         proxyReq.setHeader('Authorization', req.headers.authorization);
       }
-
-      console.log(
-        '[IFRAME GRAFANA PROXY]',
-        req.method,
-        req.url,
-        '->',
-        proxyReq.host + proxyReq.path
-      );
     },
   },
   '/iframe-cog/**': {
-    target: 'https://dashboard.cog.hiro-develop.nl',
+    target: proxyTargets.cog,
     secure: false,
     changeOrigin: true,
-    logLevel: 'debug',
+    logLevel: isDevelopment ? 'debug' : 'error',
     followRedirects: true,
     cookieDomainRewrite: 'localhost',
     pathRewrite: {
       '^/iframe-cog': '',
     },
     onError: function (err, req, res) {
-      console.error('[IFRAME COG PROXY ERROR]', err.message);
       res.writeHead(500, { 'Content-Type': 'text/plain' });
       res.end('COG iframe proxy error: ' + err.message);
     },
@@ -226,54 +187,26 @@ module.exports = {
       } else if (req.headers.authorization) {
         proxyReq.setHeader('Authorization', req.headers.authorization);
       }
-
-      console.log(
-        '[IFRAME COG PROXY]',
-        req.method,
-        req.url,
-        '->',
-        proxyReq.host + proxyReq.path
-      );
     },
   },
   '/dex/**': {
-    target: 'http://51.44.28.47:30080',
+    target: proxyTargets.dex,
     secure: false,
     changeOrigin: true,
-    logLevel: 'debug',
+    logLevel: isDevelopment ? 'debug' : 'error',
     onError: function (err, req, res) {
-      console.error('[DEX PROXY ERROR]', err.message);
       res.writeHead(500, { 'Content-Type': 'text/plain' });
       res.end('DEX proxy error: ' + err.message);
     },
-    onProxyReq: function (proxyReq, req, res) {
-      console.log(
-        '[DEX PROXY]',
-        req.method,
-        req.url,
-        '->',
-        proxyReq.host + proxyReq.path
-      );
-    },
   },
   '/authservice/**': {
-    target: 'http://51.44.28.47:30080',
+    target: proxyTargets.dex,
     secure: false,
     changeOrigin: true,
-    logLevel: 'debug',
+    logLevel: isDevelopment ? 'debug' : 'error',
     onError: function (err, req, res) {
-      console.error('[AUTHSERVICE PROXY ERROR]', err.message);
       res.writeHead(500, { 'Content-Type': 'text/plain' });
       res.end('AuthService proxy error: ' + err.message);
-    },
-    onProxyReq: function (proxyReq, req, res) {
-      console.log(
-        '[AUTHSERVICE PROXY]',
-        req.method,
-        req.url,
-        '->',
-        proxyReq.host + proxyReq.path
-      );
     },
   },
 };
