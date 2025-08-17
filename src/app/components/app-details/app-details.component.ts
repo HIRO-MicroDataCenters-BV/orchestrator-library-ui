@@ -1,8 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { NgFor, NgIf, DatePipe } from '@angular/common';
 import { TranslocoModule } from '@jsverse/transloco';
 import { getDuration } from '../../shared';
-import { HlmScrollAreaDirective } from '@spartan-ng/ui-scrollarea-helm';
 
 import {
   lucideArrowUpDown,
@@ -52,7 +51,7 @@ interface Struct {
 }
 
 interface Data {
-  [keys: string]: any;
+  [keys: string]: unknown;
 }
 
 @Component({
@@ -96,13 +95,14 @@ export class AppDetailsComponent {
   @Input('struct') struct: Struct[] = [];
   @Input('data') data: Data | null = null;
 
-  testCondition(prop: string, data: any, condition: Condition | undefined) {
+  testCondition(prop: string, data: Data, condition: Condition | undefined) {
     if (condition === undefined) {
       return true;
     }
+    const propValue = data[condition.prop];
     const value =
-      typeof data[condition.prop] == 'string'
-        ? data[condition.prop].toLowerCase()
+      typeof propValue == 'string'
+        ? propValue.toLowerCase()
         : data[prop];
 
     const condValue = condition.value;
@@ -147,6 +147,19 @@ export class AppDetailsComponent {
 
   getDuration(start: string, end: string) {
     return getDuration(start, end);
+  }
+
+  // Type conversion methods for template usage
+  asString(value: unknown): string {
+    return String(value || '');
+  }
+
+  asDate(value: unknown): string | number | Date | null {
+    if (value === null || value === undefined) return null;
+    if (typeof value === 'string' || typeof value === 'number' || value instanceof Date) {
+      return value;
+    }
+    return String(value);
   }
 
   getValueType(value: unknown): string {

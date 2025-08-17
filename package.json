@@ -4,9 +4,10 @@
   "scripts": {
     "ng": "ng",
     "start": "nx serve",
-    "start:prod": "node dist/orchestration_library-front/server/server.mjs",
+    "start:prod": "NODE_ENV=production pnpm run serve:ssr",
     "build": "nx build",
     "build:prod": "nx build --configuration=production",
+    "serve:ssr": "node dist/orchestration_library-front/server/server.mjs",
     "test": "nx test",
     "test:dex": "node scripts/test-dex-auth.js"
   },

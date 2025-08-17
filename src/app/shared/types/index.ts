@@ -6,6 +6,9 @@
 // Common types and interfaces
 export * from './common.types';
 
+// API-specific types
+export * from './api.types';
+
 // Workload-specific types
 export * from './workload.types';
 
@@ -59,6 +62,22 @@ export type {
   AlertActionResponse,
 } from './alert.types';
 
+export type {
+  ResourceUsage,
+  ClusterInfo,
+  ClusterMetrics,
+  K8sTokenRequest,
+  TuningParameter,
+  TuningParameterCreate,
+  TuningParameterUpdate,
+  TuningParameterValidation,
+  TuningParameterQueryParams,
+  ClusterInfoQueryParams,
+  TuningParameterListResponse,
+  HttpRequestOptions,
+  HttpResponse,
+} from './api.types';
+
 // Re-export enums
 export {
   WorkloadActionType,
@@ -73,6 +92,10 @@ export {
   AlertSource,
   AlertActionType,
 } from './alert.types';
+
+export {
+  TuningParameterType,
+} from './api.types';
 
 export { GenericStatus } from './common.types';
 
@@ -98,3 +121,8 @@ export {
   isAlertStatus,
   isAlertSource,
 } from './alert.types';
+
+export {
+  getTuningParameterTypeDisplayName,
+  isTuningParameterType,
+} from './api.types';

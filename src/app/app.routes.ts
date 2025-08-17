@@ -172,9 +172,13 @@ export const routes: Routes = [
     data: { title: 'Access Denied' },
   },
 
-  // Test routes (public)
+  // Test routes (public with test layout)
   {
     path: 'test',
+    loadComponent: () =>
+      import('./layouts/test-layout/test-layout.component').then(
+        (m) => m.TestLayoutComponent
+      ),
     children: [
       {
         path: 'proxy',
@@ -191,6 +195,11 @@ export const routes: Routes = [
             (m) => m.DexTestComponent
           ),
         data: { title: 'DEX Test' },
+      },
+      {
+        path: '',
+        redirectTo: 'dex',
+        pathMatch: 'full',
       },
     ],
   },

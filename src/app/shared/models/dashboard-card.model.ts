@@ -7,6 +7,7 @@ export interface DashboardCardModel {
   type: 'metrics' | 'table';
   dataSource:
     | Observable<unknown[]>
+    | Observable<unknown>
     | Observable<K8sClusterInfoResponse>
     | K8sClusterInfoResponse
     | null;

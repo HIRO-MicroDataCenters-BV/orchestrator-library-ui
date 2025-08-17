@@ -12,7 +12,26 @@ import {
 import { AppTableComponent } from '../../../components/app-table/app-table.component';
 import { TranslocoModule } from '@jsverse/transloco';
 import { ApiService } from '../../../core/services';
-import requestDecisionsData from '../../../mock/workload_request_decision_response.json';
+import { EmdcMockService } from '../../../mock/emdc-mock.service';
+import requestDecisionsData from '../../../mock/data/request-decisions.json';
+
+// Define interfaces for type safety
+interface Condition {
+  prop: string;
+  if: 'eq' | 'neq';
+  value: string;
+}
+
+interface StructItem {
+  icon: string;
+  prop: string;
+  condition?: Condition;
+}
+
+interface Struct {
+  title: string | null;
+  items: StructItem[];
+}
 
 @Component({
   selector: 'app-request-decisions',
@@ -39,16 +58,20 @@ export class RequestDecisionsComponent implements OnInit, OnDestroy {
 
   dataSource: Observable<unknown[]> | null = null;
   staticData: unknown[] | null = null;
+  useMockData = false;
 
-  detailsStruct: any[] = [];
+  detailsStruct: Struct[] = [];
 
   constructor(
-    apiService: ApiService,
+    private apiService: ApiService,
+    private mockService: EmdcMockService,
     private router: Router,
     private activatedRoute: ActivatedRoute
   ) {
     this.staticData = requestDecisionsData;
-    this.dataSource = apiService.getWorkloadDecisions();
+    this.dataSource = this.useMockData
+      ? this.mockService.getRequestDecisions()
+      : this.apiService.getWorkloadDecisions() as Observable<unknown[]>;
   }
   ngOnInit(): void {
     this.checkCurrentRoute();

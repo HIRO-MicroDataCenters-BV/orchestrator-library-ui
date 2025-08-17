@@ -27,9 +27,9 @@ export class AuthInterceptor implements HttpInterceptor {
   private refreshTokenSubject = new BehaviorSubject<string | null>(null);
 
   intercept(
-    request: HttpRequest<any>,
+    request: HttpRequest<unknown>,
     next: HttpHandler
-  ): Observable<HttpEvent<any>> {
+  ): Observable<HttpEvent<unknown>> {
     // Skip authentication for certain URLs
     if (this.shouldSkipAuth(request.url)) {
       return next.handle(request);
@@ -39,7 +39,7 @@ export class AuthInterceptor implements HttpInterceptor {
     const authRequest = this.addAuthToken(request);
 
     return next.handle(authRequest).pipe(
-      catchError((error: any) => {
+      catchError((error: HttpErrorResponse) => {
         if (error instanceof HttpErrorResponse && error.status === 401) {
           return this.handle401Error(authRequest, next);
         }
@@ -51,7 +51,7 @@ export class AuthInterceptor implements HttpInterceptor {
   /**
    * Add authentication token to request headers
    */
-  private addAuthToken(request: HttpRequest<any>): HttpRequest<any> {
+  private addAuthToken(request: HttpRequest<unknown>): HttpRequest<unknown> {
     const token = this.authService.getAccessToken();
 
     if (token) {
@@ -70,9 +70,9 @@ export class AuthInterceptor implements HttpInterceptor {
    * Handle 401 Unauthorized errors by attempting token refresh
    */
   private handle401Error(
-    request: HttpRequest<any>,
+    request: HttpRequest<unknown>,
     next: HttpHandler
-  ): Observable<HttpEvent<any>> {
+  ): Observable<HttpEvent<unknown>> {
     if (!this.isRefreshing) {
       this.isRefreshing = true;
       this.refreshTokenSubject.next(null);
@@ -86,7 +86,7 @@ export class AuthInterceptor implements HttpInterceptor {
           const authRequest = this.addAuthToken(request);
           return next.handle(authRequest);
         }),
-        catchError((error: any) => {
+        catchError((error: HttpErrorResponse) => {
           this.isRefreshing = false;
 
           // Token refresh failed, logout user
@@ -179,7 +179,7 @@ export const authInterceptor: HttpInterceptorFn = (
   }
 
   return next(authReq).pipe(
-    catchError((error: any) => {
+    catchError((error: HttpErrorResponse) => {
       if (error instanceof HttpErrorResponse && error.status === 401) {
         // For functional interceptor, we'll just logout on 401
         // More complex token refresh logic would require additional setup

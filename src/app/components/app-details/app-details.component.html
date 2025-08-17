@@ -27,10 +27,10 @@
                 <span>
                   <span *ngIf="getValueType(data[item.prop]) === 'date'">
                     <span class="text-sm">{{
-                      data[item.prop] | date : 'dd/MM/yyyy'
+                      asDate(data[item.prop]) | date : 'dd/MM/yyyy'
                     }}</span>
                     <span class="text-sm text-gray-400">
-                      {{ data[item.prop] | date : 'HH:mm:ss' }}
+                      {{ asDate(data[item.prop]) | date : 'HH:mm:ss' }}
                     </span>
                   </span>
 
@@ -38,14 +38,14 @@
                     {{ data[item.prop] }}
                   </span>
                   <span *ngIf="item.prop == 'duration'"
-                    >{{ getDuration(data['created_at'], data['updated_at'])
+                    >{{ getDuration(asString(data['created_at']), asString(data['updated_at']))
                     }}{{ 'hint.s' | transloco }}</span
                   >
                   <span *ngIf="item.prop == 'date'">{{
-                    data['created_at'] | date : 'dd MMM yyyy'
+                    asDate(data['created_at']) | date : 'dd MMM yyyy'
                   }}</span>
                   <span *ngIf="item.prop == 'time'">{{
-                    data['created_at'] | date : 'HH:mm:ss'
+                    asDate(data['created_at']) | date : 'HH:mm:ss'
                   }}</span>
 
                   <span *ngIf="item.prop === 'cpu'">

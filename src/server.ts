@@ -15,6 +15,18 @@ const app = express();
 const angularApp = new AngularNodeAppEngine();
 
 /**
+ * Health check endpoint for Docker health checks
+ * Must be defined before all other middleware
+ */
+app.get('/health', (req, res) => {
+  res.status(200).json({
+    status: 'healthy',
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime()
+  });
+});
+
+/**
  * Middleware to modify proxy responses
  */
 function modifyProxyHeaders(proxyPath: string) {
@@ -164,6 +176,8 @@ app.use(
   })
 );
 
+
+
 /**
  * Example Express Rest API endpoints can be defined here.
  * Uncomment and define endpoints as necessary.
@@ -210,9 +224,7 @@ if (isMainModule(import.meta.url)) {
       throw error;
     }
 
-    if (process.env['NODE_ENV'] !== 'production') {
-      console.log(`Node Express server listening on http://localhost:${port}`);
-    }
+    console.log(`Node Express server listening on http://localhost:${port}`);
   });
 }
 

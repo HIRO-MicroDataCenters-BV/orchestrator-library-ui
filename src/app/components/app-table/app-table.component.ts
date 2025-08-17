@@ -16,6 +16,24 @@ import {
   untracked,
   ViewChild,
 } from '@angular/core';
+
+// Define interfaces for type safety
+interface Condition {
+  prop: string;
+  if: 'eq' | 'neq';
+  value: string;
+}
+
+interface StructItem {
+  icon: string;
+  prop: string;
+  condition?: Condition;
+}
+
+interface Struct {
+  title: string | null;
+  items: StructItem[];
+}
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import {
@@ -196,9 +214,9 @@ export class AppTableComponent implements OnChanges, OnInit {
   @Input('showHeader') showHeader = true;
   @Input('showFooter') showFooter = true;
   @Input('pageSize') pageSize?: number;
-  @Input('detailsStruct') detailsStruct: any = [];
+  @Input('detailsStruct') detailsStruct: Struct[] = [];
 
-  details: any = {};
+  details: Record<string, unknown> = {};
   detailsTitle = '';
 
   ACTION_ICONS: Record<string, string> = {
