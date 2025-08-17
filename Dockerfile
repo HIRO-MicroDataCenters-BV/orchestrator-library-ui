@@ -45,35 +45,33 @@ RUN mkdir -p /var/log/nginx && \
     chown -R nginx:nginx /run/nginx
 
 # Create startup script
-RUN cat > /usr/app/start.sh << 'EOF'
-#!/bin/sh
-set -e
-
-echo "Starting Node.js SSR server..."
-node dist/orchestration_library-front/server/server.mjs &
-NODE_PID=$!
-
-echo "Waiting for Node.js server to start..."
-sleep 5
-
-echo "Starting nginx..."
-nginx -g "daemon off;" &
-NGINX_PID=$!
-
-# Function to handle shutdown
-shutdown() {
-echo "Shutting down..."
-kill $NGINX_PID 2>/dev/null || true
-kill $NODE_PID 2>/dev/null || true
-exit 0
-}
-
-# Trap signals
-trap shutdown SIGTERM SIGINT
-
-# Wait for either process to exit
-wait $NODE_PID $NGINX_PID
-EOF
+RUN echo '#!/bin/sh' > /usr/app/start.sh && \
+    echo 'set -e' >> /usr/app/start.sh && \
+    echo '' >> /usr/app/start.sh && \
+    echo 'echo "Starting Node.js SSR server..."' >> /usr/app/start.sh && \
+    echo 'node dist/orchestration_library-front/server/server.mjs &' >> /usr/app/start.sh && \
+    echo 'NODE_PID=$!' >> /usr/app/start.sh && \
+    echo '' >> /usr/app/start.sh && \
+    echo 'echo "Waiting for Node.js server to start..."' >> /usr/app/start.sh && \
+    echo 'sleep 5' >> /usr/app/start.sh && \
+    echo '' >> /usr/app/start.sh && \
+    echo 'echo "Starting nginx..."' >> /usr/app/start.sh && \
+    echo 'nginx -g "daemon off;" &' >> /usr/app/start.sh && \
+    echo 'NGINX_PID=$!' >> /usr/app/start.sh && \
+    echo '' >> /usr/app/start.sh && \
+    echo '# Function to handle shutdown' >> /usr/app/start.sh && \
+    echo 'shutdown() {' >> /usr/app/start.sh && \
+    echo 'echo "Shutting down..."' >> /usr/app/start.sh && \
+    echo 'kill $NGINX_PID 2>/dev/null || true' >> /usr/app/start.sh && \
+    echo 'kill $NODE_PID 2>/dev/null || true' >> /usr/app/start.sh && \
+    echo 'exit 0' >> /usr/app/start.sh && \
+    echo '}' >> /usr/app/start.sh && \
+    echo '' >> /usr/app/start.sh && \
+    echo '# Trap signals' >> /usr/app/start.sh && \
+    echo 'trap shutdown SIGTERM SIGINT' >> /usr/app/start.sh && \
+    echo '' >> /usr/app/start.sh && \
+    echo '# Wait for either process to exit' >> /usr/app/start.sh && \
+    echo 'wait $NODE_PID $NGINX_PID' >> /usr/app/start.sh
 
 RUN chmod +x /usr/app/start.sh
 
