@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
-import { ConfigService } from './config.service';
+import { environment } from '../../../environments/environment';
 import { MessageResponse } from '../../shared/types';
 
 @Injectable({
@@ -10,8 +10,7 @@ import { MessageResponse } from '../../shared/types';
 })
 export class ApiService {
   private readonly http = inject(HttpClient);
-  private readonly configService = inject(ConfigService);
-  private readonly baseUrl = this.configService.apiUrl;
+  private readonly baseUrl = environment.apiUrl;
 
   private loadingSubject = new BehaviorSubject<boolean>(false);
   public loading$ = this.loadingSubject.asObservable();

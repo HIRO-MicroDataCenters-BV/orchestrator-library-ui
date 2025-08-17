@@ -8,14 +8,14 @@ export const environment: Environment = {
   userKey: 'user',
   dashboardUrl: '/iframe-dashboard',
   cogUrl: '/iframe-cog',
-  grafanaUrl: '', // Set via GRAFANA_URL environment variable
+  grafanaUrl: '/iframe-grafana',
   dexUrl: 'https://dashboard.cog.hiro-develop.nl/apidev',
 
   // OIDC Configuration
   oidc: {
-    authority: '', // Set via OIDC_AUTHORITY environment variable
-    clientId: 'authservice-oidc',
-    clientSecret: '', // Set via OIDC_CLIENT_SECRET environment variable
+    authority: 'http://localhost:8080/dex',
+    clientId: 'orchestrator-ui-dev',
+    clientSecret: 'dev-secret-not-for-production',
     scope: 'openid profile email groups',
     responseType: 'code',
     silentRenew: true,
@@ -25,7 +25,7 @@ export const environment: Environment = {
     autoUserInfo: true,
     triggerRefreshWhenIdTokenExpired: true,
     logLevel: 0, // LogLevel.Debug for development
-    redirectUri: 'http://localhost:4200/authservice/oidc/callback',
+    redirectUri: 'http://localhost:4200/auth/callback',
     postLogoutRedirectUri: 'http://localhost:4200/auth/login',
     tokenEndpoint: '/dex/token',
     authorizationEndpoint: '/dex/auth',

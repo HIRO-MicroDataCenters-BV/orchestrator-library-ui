@@ -2,20 +2,20 @@ import { Environment } from './environment.interface';
 
 export const environment: Environment = {
   production: false,
-  apiUrl: 'http://localhost:8086',
+  apiUrl: '/api',
   tokenKey: 'auth_token',
   refreshTokenKey: 'refresh_token',
   userKey: 'user',
   dashboardUrl: '/iframe-dashboard',
   cogUrl: '/iframe-cog',
-  grafanaUrl: '', // Set via GRAFANA_URL environment variable
+  grafanaUrl: '/iframe-grafana',
   dexUrl: 'https://dashboard.cog.hiro-develop.nl/apidev',
 
   // OIDC Configuration
   oidc: {
-    authority: '', // Set via OIDC_AUTHORITY environment variable
-    clientId: 'authservice-oidc',
-    clientSecret: '', // Set via OIDC_CLIENT_SECRET environment variable
+    authority: 'http://localhost:8080/dex',
+    clientId: 'orchestrator-ui-dev',
+    clientSecret: 'dev-secret-not-for-production',
     scope: 'openid profile email groups',
     responseType: 'code',
     silentRenew: true,
