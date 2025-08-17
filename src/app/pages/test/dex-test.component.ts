@@ -33,7 +33,9 @@ import { HlmAlertImports } from '@spartan-ng/ui-alert-helm';
       <!-- Header -->
       <div class="text-center space-y-2">
         <h1 class="text-3xl font-bold">DEX Authentication Test</h1>
-        <p class="text-muted-foreground">Test OAuth2 flow with DEX identity provider</p>
+        <p class="text-muted-foreground">
+          Test OAuth2 flow with DEX identity provider
+        </p>
       </div>
 
       <!-- Authentication Form -->
@@ -130,17 +132,26 @@ import { HlmAlertImports } from '@spartan-ng/ui-alert-helm';
                   <span
                     hlmBadge
                     [variant]="
-                      step.status === 'completed' ? 'default' :
-                      step.status === 'active' ? 'secondary' :
-                      step.status === 'error' ? 'destructive' : 'outline'
+                      step.status === 'completed'
+                        ? 'default'
+                        : step.status === 'active'
+                        ? 'secondary'
+                        : step.status === 'error'
+                        ? 'destructive'
+                        : 'outline'
                     "
                     class="text-xs"
                   >
                     {{ step.status | titlecase }}
                   </span>
                 </div>
-                <p class="text-sm text-muted-foreground mt-1">{{ step.description }}</p>
-                <div *ngIf="step.error" class="text-sm text-red-600 mt-1 font-medium">
+                <p class="text-sm text-muted-foreground mt-1">
+                  {{ step.description }}
+                </p>
+                <div
+                  *ngIf="step.error"
+                  class="text-sm text-red-600 mt-1 font-medium"
+                >
                   {{ step.error }}
                 </div>
               </div>
@@ -160,12 +171,16 @@ import { HlmAlertImports } from '@spartan-ng/ui-alert-helm';
           </div>
 
           <div *ngIf="isAuthenticated && !error" hlmAlert class="mb-4">
-            <p hlmAlertDescription>✅ Authentication successful! Session established.</p>
+            <p hlmAlertDescription>
+              ✅ Authentication successful! Session established.
+            </p>
           </div>
 
           <div *ngIf="apiResponse" class="space-y-2">
             <h4 class="font-medium">API Response Sample:</h4>
-            <div class="bg-gray-100 p-3 rounded text-sm font-mono max-h-40 overflow-auto">
+            <div
+              class="bg-gray-100 p-3 rounded text-sm font-mono max-h-40 overflow-auto"
+            >
               {{ apiResponseText }}
             </div>
           </div>
@@ -180,12 +195,7 @@ import { HlmAlertImports } from '@spartan-ng/ui-alert-helm';
             >
               Test API Call
             </button>
-            <button
-              hlmBtn
-              variant="ghost"
-              size="sm"
-              (click)="clearSession()"
-            >
+            <button hlmBtn variant="ghost" size="sm" (click)="clearSession()">
               Clear Session
             </button>
           </div>
@@ -259,7 +269,7 @@ export class DexTestComponent implements OnInit {
       description: 'Establishing authenticated session',
       status: 'pending' as 'pending' | 'active' | 'completed' | 'error',
       error: null as string | null,
-    }
+    },
   ];
 
   ngOnInit(): void {
@@ -317,7 +327,7 @@ export class DexTestComponent implements OnInit {
         method: 'GET',
       })
       .subscribe({
-        next: (response) => {
+        next: (response: unknown) => {
           this.apiResponse = response;
           this.apiResponseText = JSON.stringify(response, null, 2);
         },
@@ -348,15 +358,19 @@ export class DexTestComponent implements OnInit {
   }
 
   private resetSteps(): void {
-    this.authSteps.forEach(step => {
+    this.authSteps.forEach((step) => {
       step.status = 'pending';
       step.error = null;
     });
     this.currentStep = 0;
   }
 
-  private setStepStatus(stepId: string, status: 'pending' | 'active' | 'completed' | 'error', error?: string): void {
-    const step = this.authSteps.find(s => s.id === stepId);
+  private setStepStatus(
+    stepId: string,
+    status: 'pending' | 'active' | 'completed' | 'error',
+    error?: string
+  ): void {
+    const step = this.authSteps.find((s) => s.id === stepId);
     if (step) {
       step.status = status;
       step.error = error || null;
@@ -375,12 +389,14 @@ export class DexTestComponent implements OnInit {
 
   private handleAuthError(error: any): void {
     const errorMessage = error.message || 'Unknown error';
-    let currentActiveStep = this.authSteps.find(s => s.status === 'active');
+    let currentActiveStep = this.authSteps.find((s) => s.status === 'active');
 
     if (!currentActiveStep) {
-      const completedSteps = this.authSteps.filter(s => s.status === 'completed');
+      const completedSteps = this.authSteps.filter(
+        (s) => s.status === 'completed'
+      );
       const nextStepOrder = completedSteps.length + 1;
-      currentActiveStep = this.authSteps.find(s => s.order === nextStepOrder);
+      currentActiveStep = this.authSteps.find((s) => s.order === nextStepOrder);
     }
 
     if (currentActiveStep) {

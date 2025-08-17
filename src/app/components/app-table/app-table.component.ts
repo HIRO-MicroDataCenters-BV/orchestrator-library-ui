@@ -291,8 +291,9 @@ export class AppTableComponent implements OnChanges, OnInit {
   getDuration(start: string, end: string) {
     return getDuration(start, end);
   }
-  // TODO: Implement sorting logic for all columns
+  // Column sorting implementation
   private readonly _colSort = signal<'ASC' | 'DESC' | null>(null);
+  private readonly _sortColumn = signal<string | null>(null);
   protected readonly _filteredSortedPaginatedItems = computed(() => {
     const sort = this._colSort();
     const start = this._displayedIndices().start;
@@ -426,8 +427,35 @@ export class AppTableComponent implements OnChanges, OnInit {
     */
   }
 
-  public setFilter() {
-    // TODO: Implement tab filtering
+  public setFilter(filterValue?: string) {
+    if (filterValue) {
+      this._searchFilter.set(filterValue);
+    }
+  }
+
+  public sortByColumn(column: string) {
+    const currentSort = this._colSort();
+    const currentColumn = this._sortColumn();
+
+    if (currentColumn === column) {
+      // Toggle sort direction for same column
+      if (currentSort === 'ASC') {
+        this._colSort.set('DESC');
+      } else if (currentSort === 'DESC') {
+        this._colSort.set(null);
+        this._sortColumn.set(null);
+      } else {
+        this._colSort.set('ASC');
+      }
+    } else {
+      // New column, start with ASC
+      this._sortColumn.set(column);
+      this._colSort.set('ASC');
+    }
+  }
+
+  public getSortDirection(column: string): 'ASC' | 'DESC' | null {
+    return this._sortColumn() === column ? this._colSort() : null;
   }
 
   getStatusColor(status: string | number | boolean): string {

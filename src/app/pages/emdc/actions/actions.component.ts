@@ -66,7 +66,7 @@ export class ActionsComponent implements OnInit, OnDestroy {
   ) {
     this.dataSource = this.useMockData
       ? this.mockService.getWorkloadActions()
-      : this.apiService.getWorkloadActions() as Observable<unknown[]>;
+      : (this.apiService.getWorkloadActions() as Observable<unknown[]>);
   }
   ngOnInit(): void {
     this.checkCurrentRoute();
@@ -120,6 +120,23 @@ export class ActionsComponent implements OnInit, OnDestroy {
         ],
       },
     ];
+
+    // Initialize data source
+    this.loadActions();
+  }
+
+  private loadActions(): void {
+    if (this.dataSource) {
+      this.dataSource.subscribe({
+        next: (data) => {
+          this.actions = Array.isArray(data) ? data : [];
+        },
+        error: (error) => {
+          console.error('Error loading actions:', error);
+          this.actions = [];
+        },
+      });
+    }
   }
 
   ngOnDestroy(): void {

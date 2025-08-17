@@ -8,14 +8,14 @@ export const environment: Environment = {
   userKey: 'user',
   dashboardUrl: '/iframe-dashboard',
   cogUrl: '/iframe-cog',
-  grafanaUrl: 'http://51.44.28.47:30000',
+  grafanaUrl: '', // Set via GRAFANA_URL environment variable
   dexUrl: 'https://dashboard.cog.hiro-develop.nl/apidev',
 
   // OIDC Configuration
   oidc: {
-    authority: 'http://51.44.28.47:30015/dex',
+    authority: '', // Set via OIDC_AUTHORITY environment variable
     clientId: 'authservice-oidc',
-    clientSecret: '8KD8XQ11DTP1685XF8TK3844QAYY7Q',
+    clientSecret: '', // Set via OIDC_CLIENT_SECRET environment variable
     scope: 'openid profile email groups',
     responseType: 'code',
     silentRenew: true,

@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
-import { environment } from '../../../environments/environment';
+import { ConfigService } from './config.service';
 import { MessageResponse } from '../../shared/types';
 
 @Injectable({
@@ -10,7 +10,8 @@ import { MessageResponse } from '../../shared/types';
 })
 export class ApiService {
   private readonly http = inject(HttpClient);
-  private readonly baseUrl = environment.apiUrl;
+  private readonly configService = inject(ConfigService);
+  private readonly baseUrl = this.configService.apiUrl;
 
   private loadingSubject = new BehaviorSubject<boolean>(false);
   public loading$ = this.loadingSubject.asObservable();
@@ -191,7 +192,10 @@ export class ApiService {
     localStorage.removeItem('auth_token');
   }
 
-  private get<T>(endpoint: string, params?: Record<string, unknown>): Observable<T> {
+  private get<T>(
+    endpoint: string,
+    params?: Record<string, unknown>
+  ): Observable<T> {
     return this.request<T>('GET', endpoint, null, params);
   }
 
@@ -221,7 +225,9 @@ export class ApiService {
     };
 
     if (this.token) {
-      (options['headers'] as Record<string, string>)['Authorization'] = `Bearer ${this.token}`;
+      (options['headers'] as Record<string, string>)[
+        'Authorization'
+      ] = `Bearer ${this.token}`;
     }
 
     if (params) {

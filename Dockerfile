@@ -45,8 +45,36 @@ RUN mkdir -p /var/log/nginx && \
     chown -R nginx:nginx /run/nginx
 
 # Create startup script
+# Create environment injection script
+RUN echo '#!/bin/sh' > /usr/app/inject-env.sh && \
+    echo 'set -e' >> /usr/app/inject-env.sh && \
+    echo '' >> /usr/app/inject-env.sh && \
+    echo 'echo "Injecting environment variables into client application..."' >> /usr/app/inject-env.sh && \
+    echo '' >> /usr/app/inject-env.sh && \
+    echo '# Create environment JavaScript file' >> /usr/app/inject-env.sh && \
+    echo 'cat > /usr/app/dist/orchestration_library-front/browser/env.js << EOF' >> /usr/app/inject-env.sh && \
+    echo 'window.__env__ = {' >> /usr/app/inject-env.sh && \
+    echo '  API_URL: "${API_URL:-}",' >> /usr/app/inject-env.sh && \
+    echo '  GRAFANA_URL: "${GRAFANA_URL:-}",' >> /usr/app/inject-env.sh && \
+    echo '  DASHBOARD_URL: "${DASHBOARD_URL:-}",' >> /usr/app/inject-env.sh && \
+    echo '  COG_URL: "${COG_URL:-}",' >> /usr/app/inject-env.sh && \
+    echo '  DEX_URL: "${DEX_URL:-}",' >> /usr/app/inject-env.sh && \
+    echo '  OIDC_AUTHORITY: "${OIDC_AUTHORITY:-}",' >> /usr/app/inject-env.sh && \
+    echo '  OIDC_CLIENT_ID: "${OIDC_CLIENT_ID:-}",' >> /usr/app/inject-env.sh && \
+    echo '  OIDC_CLIENT_SECRET: "${OIDC_CLIENT_SECRET:-}",' >> /usr/app/inject-env.sh && \
+    echo '  OIDC_REDIRECT_URI: "${OIDC_REDIRECT_URI:-}",' >> /usr/app/inject-env.sh && \
+    echo '  OIDC_POST_LOGOUT_REDIRECT_URI: "${OIDC_POST_LOGOUT_REDIRECT_URI:-}"' >> /usr/app/inject-env.sh && \
+    echo '};' >> /usr/app/inject-env.sh && \
+    echo 'EOF' >> /usr/app/inject-env.sh && \
+    echo '' >> /usr/app/inject-env.sh && \
+    echo 'echo "Environment variables injected successfully"' >> /usr/app/inject-env.sh
+
+# Create startup script
 RUN echo '#!/bin/sh' > /usr/app/start.sh && \
     echo 'set -e' >> /usr/app/start.sh && \
+    echo '' >> /usr/app/start.sh && \
+    echo 'echo "Injecting environment variables..."' >> /usr/app/start.sh && \
+    echo '/usr/app/inject-env.sh' >> /usr/app/start.sh && \
     echo '' >> /usr/app/start.sh && \
     echo 'echo "Starting Node.js SSR server..."' >> /usr/app/start.sh && \
     echo 'node dist/orchestration_library-front/server/server.mjs &' >> /usr/app/start.sh && \
@@ -73,7 +101,7 @@ RUN echo '#!/bin/sh' > /usr/app/start.sh && \
     echo '# Wait for either process to exit' >> /usr/app/start.sh && \
     echo 'wait $NODE_PID $NGINX_PID' >> /usr/app/start.sh
 
-RUN chmod +x /usr/app/start.sh
+RUN chmod +x /usr/app/start.sh && chmod +x /usr/app/inject-env.sh
 
 # Expose ports
 EXPOSE 80 4000

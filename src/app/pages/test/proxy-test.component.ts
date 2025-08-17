@@ -35,7 +35,9 @@ interface ProxyTestResult {
       <!-- Header -->
       <div class="text-center space-y-2">
         <h1 class="text-3xl font-bold">Proxy Configuration Test</h1>
-        <p class="text-muted-foreground">Test proxy endpoints and authentication flow</p>
+        <p class="text-muted-foreground">
+          Test proxy endpoints and authentication flow
+        </p>
       </div>
 
       <!-- Test Controls -->
@@ -87,15 +89,21 @@ interface ProxyTestResult {
           <!-- Quick Status -->
           <div class="grid grid-cols-3 gap-4 text-center">
             <div class="space-y-1">
-              <div class="text-2xl font-bold text-green-600">{{ successCount }}</div>
+              <div class="text-2xl font-bold text-green-600">
+                {{ successCount }}
+              </div>
               <div class="text-sm text-muted-foreground">Passed</div>
             </div>
             <div class="space-y-1">
-              <div class="text-2xl font-bold text-red-600">{{ errorCount }}</div>
+              <div class="text-2xl font-bold text-red-600">
+                {{ errorCount }}
+              </div>
               <div class="text-sm text-muted-foreground">Failed</div>
             </div>
             <div class="space-y-1">
-              <div class="text-2xl font-bold text-blue-600">{{ pendingCount }}</div>
+              <div class="text-2xl font-bold text-blue-600">
+                {{ pendingCount }}
+              </div>
               <div class="text-sm text-muted-foreground">Pending</div>
             </div>
           </div>
@@ -149,8 +157,11 @@ interface ProxyTestResult {
                     <span
                       hlmBadge
                       [variant]="
-                        test.status === 'success' ? 'default' :
-                        test.status === 'pending' ? 'secondary' : 'destructive'
+                        test.status === 'success'
+                          ? 'default'
+                          : test.status === 'pending'
+                          ? 'secondary'
+                          : 'destructive'
                       "
                       class="text-xs"
                     >
@@ -158,14 +169,26 @@ interface ProxyTestResult {
                     </span>
                   </div>
                 </div>
-                <p class="text-sm text-muted-foreground mt-1">{{ getEndpointDescription(test.endpoint) }}</p>
-                <div *ngIf="test.error" class="text-sm text-red-600 mt-1 font-medium">
+                <p class="text-sm text-muted-foreground mt-1">
+                  {{ getEndpointDescription(test.endpoint) }}
+                </p>
+                <div
+                  *ngIf="test.error"
+                  class="text-sm text-red-600 mt-1 font-medium"
+                >
                   {{ test.error }}
                 </div>
-                <div *ngIf="test.status === 'success' && test.response" class="mt-2">
+                <div
+                  *ngIf="test.status === 'success' && test.response"
+                  class="mt-2"
+                >
                   <details class="text-xs">
-                    <summary class="cursor-pointer font-medium text-green-600">View Response</summary>
-                    <div class="mt-1 bg-green-100 p-2 rounded max-h-20 overflow-auto">
+                    <summary class="cursor-pointer font-medium text-green-600">
+                      View Response
+                    </summary>
+                    <div
+                      class="mt-1 bg-green-100 p-2 rounded max-h-20 overflow-auto"
+                    >
                       <pre>{{ formatResponse(test.response) }}</pre>
                     </div>
                   </details>
@@ -183,15 +206,24 @@ interface ProxyTestResult {
         </div>
         <div hlmCardContent>
           <div *ngIf="allTestsPassed" hlmAlert>
-            <p hlmAlertDescription>✅ All proxy endpoints are working correctly!</p>
+            <p hlmAlertDescription>
+              ✅ All proxy endpoints are working correctly!
+            </p>
           </div>
 
           <div *ngIf="hasErrors" hlmAlert variant="destructive">
-            <p hlmAlertDescription>❌ {{ errorCount }} endpoint(s) failed. Check configuration.</p>
+            <p hlmAlertDescription>
+              ❌ {{ errorCount }} endpoint(s) failed. Check configuration.
+            </p>
           </div>
 
           <div *ngIf="isRunning" hlmAlert>
-            <p hlmAlertDescription>⏳ Tests in progress... {{ completedTests }}/{{ totalTests }} completed</p>
+            <p hlmAlertDescription>
+              ⏳ Tests in progress... {{ completedTests }}/{{
+                totalTests
+              }}
+              completed
+            </p>
           </div>
         </div>
       </div>
@@ -214,28 +246,38 @@ export class ProxyTestComponent implements OnInit {
   // Test endpoints
   private testEndpoints = [
     { path: '/api/health', description: 'API Backend Health Check' },
-    { path: '/iframe-dashboard/api/v1/namespace', description: 'Kubernetes Dashboard' },
+    {
+      path: '/iframe-dashboard/api/v1/namespace',
+      description: 'Kubernetes Dashboard',
+    },
     { path: '/iframe-grafana/api/health', description: 'Grafana Monitoring' },
     { path: '/iframe-cog/health', description: 'COG Service' },
-    { path: '/dex/.well-known/openid_configuration', description: 'DEX Authentication' },
+    {
+      path: '/dex/.well-known/openid_configuration',
+      description: 'DEX Authentication',
+    },
     { path: '/authservice/oidc/callback', description: 'AuthService Callback' },
   ];
 
   // Computed properties
   get successCount(): number {
-    return this.testResults.filter(t => t.status === 'success').length;
+    return this.testResults.filter((t) => t.status === 'success').length;
   }
 
   get errorCount(): number {
-    return this.testResults.filter(t => t.status === 'error').length;
+    return this.testResults.filter((t) => t.status === 'error').length;
   }
 
   get pendingCount(): number {
-    return this.testResults.filter(t => t.status === 'pending').length;
+    return this.testResults.filter((t) => t.status === 'pending').length;
   }
 
   get allTestsPassed(): boolean {
-    return this.testResults.length > 0 && this.errorCount === 0 && this.pendingCount === 0;
+    return (
+      this.testResults.length > 0 &&
+      this.errorCount === 0 &&
+      this.pendingCount === 0
+    );
   }
 
   get hasErrors(): boolean {
@@ -247,7 +289,7 @@ export class ProxyTestComponent implements OnInit {
   }
 
   private initializeTestResults(): void {
-    this.testResults = this.testEndpoints.map(endpoint => ({
+    this.testResults = this.testEndpoints.map((endpoint) => ({
       endpoint: endpoint.path,
       status: 'pending' as const,
     }));
@@ -274,10 +316,12 @@ export class ProxyTestComponent implements OnInit {
     const startTime = Date.now();
 
     try {
-      const response = await this.http.get(result.endpoint, {
-        observe: 'response',
-        responseType: 'text'
-      }).toPromise();
+      const response = await this.http
+        .get(result.endpoint, {
+          observe: 'response',
+          responseType: 'text',
+        })
+        .toPromise();
 
       const duration = Date.now() - startTime;
 
@@ -327,7 +371,7 @@ export class ProxyTestComponent implements OnInit {
   }
 
   getEndpointDescription(endpoint: string): string {
-    const found = this.testEndpoints.find(e => e.path === endpoint);
+    const found = this.testEndpoints.find((e) => e.path === endpoint);
     return found?.description || 'Proxy endpoint test';
   }
 

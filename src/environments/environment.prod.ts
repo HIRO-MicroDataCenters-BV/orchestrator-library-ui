@@ -2,20 +2,20 @@ import { Environment } from './environment.interface';
 
 export const environment: Environment = {
   production: true,
-  apiUrl: 'http://51.44.28.47:30015',
+  apiUrl: '', // Set via API_URL environment variable
   tokenKey: 'auth_token',
   refreshTokenKey: 'refresh_token',
   userKey: 'user',
   dashboardUrl: '/iframe-dashboard',
   cogUrl: '/iframe-cog',
-  grafanaUrl: 'http://51.44.28.47:30000',
+  grafanaUrl: '', // Set via GRAFANA_URL environment variable
   dexUrl: 'https://dashboard.cog.hiro-develop.nl/apidev',
 
   // OIDC Configuration
   oidc: {
-    authority: 'http://51.44.28.47:30015/dex',
+    authority: '', // Set via OIDC_AUTHORITY environment variable
     clientId: 'authservice-oidc',
-    clientSecret: '8KD8XQ11DTP1685XF8TK3844QAYY7Q',
+    clientSecret: '', // Set via OIDC_CLIENT_SECRET environment variable
     scope: 'openid profile email groups',
     responseType: 'code',
     silentRenew: true,
@@ -25,8 +25,8 @@ export const environment: Environment = {
     autoUserInfo: true,
     triggerRefreshWhenIdTokenExpired: true,
     logLevel: 3, // LogLevel.Error for production
-    redirectUri: 'http://51.44.28.47:30015/authservice/oidc/callback',
-    postLogoutRedirectUri: 'http://51.44.28.47:30015/auth/login',
+    redirectUri: '', // Set via OIDC_REDIRECT_URI environment variable
+    postLogoutRedirectUri: '', // Set via OIDC_POST_LOGOUT_REDIRECT_URI environment variable
     tokenEndpoint: '/dex/token',
     authorizationEndpoint: '/dex/auth',
     userInfoEndpoint: '/dex/userinfo',
