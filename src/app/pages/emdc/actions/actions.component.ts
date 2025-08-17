@@ -50,7 +50,7 @@ export class ActionsComponent implements OnInit, OnDestroy {
     'action_reason',
     'duration',
   ];
-  actions: unknown[] = [];
+  actions: string[] = ['view_details', 'restart', 'cancel', 'retry', 'delete'];
 
   tabs = [];
 
@@ -126,17 +126,8 @@ export class ActionsComponent implements OnInit, OnDestroy {
   }
 
   private loadActions(): void {
-    if (this.dataSource) {
-      this.dataSource.subscribe({
-        next: (data: unknown) => {
-          this.actions = Array.isArray(data) ? data : [];
-        },
-        error: (error) => {
-          console.error('Error loading actions:', error);
-          this.actions = [];
-        },
-      });
-    }
+    // actions are already defined as table row actions
+    // this method can be used for additional data loading if needed
   }
 
   ngOnDestroy(): void {
