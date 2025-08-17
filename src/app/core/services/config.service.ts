@@ -30,13 +30,11 @@ export interface AppConfig {
     authorizationEndpoint: string;
     userInfoEndpoint: string;
     endSessionEndpoint: string;
-    jwksUri: string;
-    issuer: string;
   };
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ConfigService {
   private readonly _config: AppConfig;
@@ -59,25 +57,34 @@ export class ConfigService {
       oidc: {
         authority: this.getEnvVar('OIDC_AUTHORITY', environment.oidc.authority),
         clientId: this.getEnvVar('OIDC_CLIENT_ID', environment.oidc.clientId),
-        clientSecret: this.getEnvVar('OIDC_CLIENT_SECRET', environment.oidc.clientSecret),
+        clientSecret: this.getEnvVar(
+          'OIDC_CLIENT_SECRET',
+          environment.oidc.clientSecret
+        ),
         scope: this.getEnvVar('OIDC_SCOPE', environment.oidc.scope),
         responseType: environment.oidc.responseType,
         silentRenew: environment.oidc.silentRenew,
         useRefreshToken: environment.oidc.useRefreshToken,
-        renewTimeBeforeTokenExpiresInSeconds: environment.oidc.renewTimeBeforeTokenExpiresInSeconds,
+        renewTimeBeforeTokenExpiresInSeconds:
+          environment.oidc.renewTimeBeforeTokenExpiresInSeconds,
         historyCleanupOff: environment.oidc.historyCleanupOff,
         autoUserInfo: environment.oidc.autoUserInfo,
-        triggerRefreshWhenIdTokenExpired: environment.oidc.triggerRefreshWhenIdTokenExpired,
+        triggerRefreshWhenIdTokenExpired:
+          environment.oidc.triggerRefreshWhenIdTokenExpired,
         logLevel: environment.oidc.logLevel,
-        redirectUri: this.getEnvVar('OIDC_REDIRECT_URI', environment.oidc.redirectUri),
-        postLogoutRedirectUri: this.getEnvVar('OIDC_POST_LOGOUT_REDIRECT_URI', environment.oidc.postLogoutRedirectUri),
+        redirectUri: this.getEnvVar(
+          'OIDC_REDIRECT_URI',
+          environment.oidc.redirectUri
+        ),
+        postLogoutRedirectUri: this.getEnvVar(
+          'OIDC_POST_LOGOUT_REDIRECT_URI',
+          environment.oidc.postLogoutRedirectUri
+        ),
         tokenEndpoint: environment.oidc.tokenEndpoint,
         authorizationEndpoint: environment.oidc.authorizationEndpoint,
         userInfoEndpoint: environment.oidc.userInfoEndpoint,
         endSessionEndpoint: environment.oidc.endSessionEndpoint,
-        jwksUri: environment.oidc.jwksUri,
-        issuer: environment.oidc.issuer,
-      }
+      },
     };
   }
 
@@ -87,14 +94,17 @@ export class ConfigService {
     // or through a configuration API endpoint
     if (typeof window !== 'undefined') {
       // Client-side: use window.__env__ if available (injected via index.html)
-      const windowEnv = (window as any).__env__;
-      if (windowEnv && windowEnv[key]) {
-        return windowEnv[key];
+      const windowAny = window as unknown as {
+        __env__?: Record<string, string>;
+      };
+      if (windowAny.__env__ && windowAny.__env__[key]) {
+        return windowAny.__env__[key];
       }
     } else {
       // Server-side: can access process.env
-      if (process.env[key]) {
-        return process.env[key];
+      const envValue = process.env[key];
+      if (envValue) {
+        return envValue;
       }
     }
 

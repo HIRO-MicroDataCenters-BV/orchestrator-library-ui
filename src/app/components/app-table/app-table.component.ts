@@ -294,6 +294,7 @@ export class AppTableComponent implements OnChanges, OnInit {
   // Column sorting implementation
   private readonly _colSort = signal<'ASC' | 'DESC' | null>(null);
   private readonly _sortColumn = signal<string | null>(null);
+  private readonly _searchFilter = signal<string>('');
   protected readonly _filteredSortedPaginatedItems = computed(() => {
     const sort = this._colSort();
     const start = this._displayedIndices().start;

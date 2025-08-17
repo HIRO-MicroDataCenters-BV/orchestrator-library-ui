@@ -50,7 +50,7 @@ export class ActionsComponent implements OnInit, OnDestroy {
     'action_reason',
     'duration',
   ];
-  actions = [];
+  actions: unknown[] = [];
 
   tabs = [];
 
@@ -128,7 +128,7 @@ export class ActionsComponent implements OnInit, OnDestroy {
   private loadActions(): void {
     if (this.dataSource) {
       this.dataSource.subscribe({
-        next: (data) => {
+        next: (data: unknown) => {
           this.actions = Array.isArray(data) ? data : [];
         },
         error: (error) => {
