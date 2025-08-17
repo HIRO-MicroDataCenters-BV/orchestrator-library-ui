@@ -12,7 +12,6 @@ import {
   NavigationEnd,
   RouterOutlet,
 } from '@angular/router';
-import actionsData from '../../../mock/data/actions.json';
 
 // Define interfaces for type safety
 interface Condition {
@@ -56,9 +55,7 @@ export class ActionsComponent implements OnInit, OnDestroy {
   tabs = [];
 
   dataSource: Observable<unknown[]> | null = null;
-  staticData: unknown[] | null = null;
   useMockData = false;
-
   detailsStruct: Struct[] = [];
 
   constructor(
@@ -67,7 +64,6 @@ export class ActionsComponent implements OnInit, OnDestroy {
     private router: Router,
     private activatedRoute: ActivatedRoute
   ) {
-    this.staticData = actionsData;
     this.dataSource = this.useMockData
       ? this.mockService.getWorkloadActions()
       : this.apiService.getWorkloadActions() as Observable<unknown[]>;

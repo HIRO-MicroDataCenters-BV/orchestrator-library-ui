@@ -13,7 +13,6 @@ import { AppTableComponent } from '../../../components/app-table/app-table.compo
 import { TranslocoModule } from '@jsverse/transloco';
 import { ApiService } from '../../../core/services';
 import { EmdcMockService } from '../../../mock/emdc-mock.service';
-import requestDecisionsData from '../../../mock/data/request-decisions.json';
 
 // Define interfaces for type safety
 interface Condition {
@@ -57,7 +56,6 @@ export class RequestDecisionsComponent implements OnInit, OnDestroy {
   tabs = [];
 
   dataSource: Observable<unknown[]> | null = null;
-  staticData: unknown[] | null = null;
   useMockData = false;
 
   detailsStruct: Struct[] = [];
@@ -68,7 +66,6 @@ export class RequestDecisionsComponent implements OnInit, OnDestroy {
     private router: Router,
     private activatedRoute: ActivatedRoute
   ) {
-    this.staticData = requestDecisionsData;
     this.dataSource = this.useMockData
       ? this.mockService.getRequestDecisions()
       : this.apiService.getWorkloadDecisions() as Observable<unknown[]>;

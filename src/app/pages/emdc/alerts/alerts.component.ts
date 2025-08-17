@@ -13,7 +13,7 @@ import {
   RouterOutlet,
 } from '@angular/router';
 
-import alertsData from '../../../mock/data/alerts.json';
+
 
 // Define interfaces for type safety
 interface Condition {
@@ -49,7 +49,6 @@ export class AlertsComponent implements OnInit, OnDestroy {
   tabs = [];
 
   dataSource: Observable<unknown[]> | null = null;
-  staticData: unknown[] | null = null;
   useMockData = false;
 
   detailsStruct: Struct[] = [];
@@ -60,7 +59,6 @@ export class AlertsComponent implements OnInit, OnDestroy {
     private router: Router,
     private activatedRoute: ActivatedRoute
   ) {
-    this.staticData = alertsData;
     this.dataSource = this.useMockData
       ? this.mockService.getAlerts()
       : this.apiService.getAlerts() as Observable<unknown[]>;
