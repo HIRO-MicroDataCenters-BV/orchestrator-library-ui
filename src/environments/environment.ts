@@ -1,6 +1,4 @@
-import { Environment } from './environment.interface';
-
-export const environment: Environment = {
+export const environment = {
   production: false,
   apiUrl: '/api',
   tokenKey: 'auth_token',
@@ -13,9 +11,9 @@ export const environment: Environment = {
 
   // OIDC Configuration
   oidc: {
-    authority: 'http://localhost:8080/dex',
-    clientId: 'orchestrator-ui-dev',
-    clientSecret: 'dev-secret-not-for-production',
+    authority: 'http://51.44.28.47:30015/dex',
+    clientId: 'authservice-oidc',
+    clientSecret: '${OIDC_CLIENT_SECRET}',
     scope: 'openid profile email groups',
     responseType: 'code',
     silentRenew: true,
