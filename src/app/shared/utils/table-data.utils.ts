@@ -156,9 +156,9 @@ export const getStatusValue = (
   }
 
   // Handle workload decision status
-  if (item['is_decision_status'] !== undefined) {
-    return item['is_decision_status'] ? 'approved' : 'rejected';
-  }
+  // if (item['is_decision_status'] !== undefined) {
+  //   return item['is_decision_status'] ? 'approved' : 'rejected';
+  // }
 
   if (item['decision_status']) {
     return item['decision_status'] as string | number | boolean;

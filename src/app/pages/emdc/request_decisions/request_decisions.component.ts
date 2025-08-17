@@ -86,7 +86,7 @@ export class RequestDecisionsComponent implements OnInit, OnDestroy {
         items: [
           {
             icon: 'time',
-            prop: 'is_decision_status',
+            prop: 'decision_status',
           },
           {
             icon: 'calendar',

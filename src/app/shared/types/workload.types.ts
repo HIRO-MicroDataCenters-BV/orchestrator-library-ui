@@ -13,11 +13,12 @@ import { BaseEntity, PaginatedResponse, FilterParams } from './common.types';
  * Action types enum
  */
 export enum WorkloadActionType {
-  BIND = 'Bind',
-  CREATE = 'Create',
-  DELETE = 'Delete',
-  MOVE = 'Move',
-  SWAP = 'Swap'
+  BIND = 'bind',
+  CREATE = 'create',
+  DELETE = 'delete',
+  MOVE = 'move',
+  SWAP_X = 'swap_x',
+  SWAP_Y = 'swap_y'
 }
 
 /**
@@ -25,21 +26,20 @@ export enum WorkloadActionType {
  */
 export enum WorkloadActionStatus {
   PENDING = 'pending',
-  SUCCESSFUL = 'successful',
+  SUCCESSFUL = 'succeeded',
   FAILED = 'failed',
-  PARTIAL = 'partial'
 }
 
 /**
  * Pod parent types enum
  */
 export enum PodParentType {
-  DEPLOYMENT = 'Deployment',
-  STATEFUL_SET = 'StatefulSet',
-  REPLICA_SET = 'ReplicaSet',
-  JOB = 'Job',
-  DAEMON_SET = 'DaemonSet',
-  CRON_JOB = 'CronJob'
+  DEPLOYMENT = 'deployment',
+  STATEFUL_SET = 'stateful_set',
+  REPLICA_SET = 'replica_set',
+  JOB = 'job',
+  DAEMON_SET = 'daemon_set',
+  CRON_JOB = 'cron_job'
 }
 
 // ===================
@@ -141,6 +141,15 @@ export interface WorkloadActionListResponse extends PaginatedResponse<WorkloadAc
 // Workload Request Decision Types
 // ===================
 
+/** 
+ * Decision status enum 
+ */
+export enum WorkloadDecisionStatus {
+  PENDING = 'pending',
+  SUCCESSFUL = 'successful',
+  FAILED = 'failed',
+}
+
 /**
  * Workload Request Decision create request
  */
@@ -155,7 +164,7 @@ export interface WorkloadRequestDecisionCreate {
   demand_memory: number;
   demand_slack_cpu?: number | null;
   demand_slack_memory?: number | null;
-  is_decision_status: boolean;
+  decision_status: WorkloadDecisionStatus;
   pod_parent_id: string;
   pod_parent_kind: string;
 }
@@ -174,7 +183,7 @@ export interface WorkloadRequestDecisionSchema extends BaseEntity {
   demand_memory: number;
   demand_slack_cpu?: number | null;
   demand_slack_memory?: number | null;
-  is_decision_status: boolean;
+  decision_status: WorkloadDecisionStatus;
   pod_parent_id: string;
   pod_parent_kind: string;
 }
@@ -192,7 +201,7 @@ export interface WorkloadRequestDecisionUpdate {
   demand_memory?: number | null;
   demand_slack_cpu?: number | null;
   demand_slack_memory?: number | null;
-  is_decision_status?: boolean | null;
+  decision_status?: WorkloadDecisionStatus | null;
   pod_parent_id?: string | null;
   pod_parent_kind?: string | null;
 }
@@ -208,7 +217,7 @@ export interface WorkloadRequestDecisionQueryParams extends FilterParams {
   node_id?: string;
   is_elastic?: boolean;
   queue_name?: string;
-  is_decision_status?: boolean;
+  decision_status?: string;
   pod_parent_kind?: string;
 }
 
@@ -314,7 +323,8 @@ export const getActionTypeDisplayName = (actionType: WorkloadActionType): string
     [WorkloadActionType.CREATE]: 'Create Pod',
     [WorkloadActionType.DELETE]: 'Delete Pod',
     [WorkloadActionType.MOVE]: 'Move Pod',
-    [WorkloadActionType.SWAP]: 'Swap Pods',
+    [WorkloadActionType.SWAP_X]: 'Swap_X Pod',
+    [WorkloadActionType.SWAP_Y]: 'Swap_Y Pod'
   };
   return displayNames[actionType] || actionType;
 };
@@ -324,7 +334,6 @@ export const getActionStatusDisplayName = (status: WorkloadActionStatus): string
     [WorkloadActionStatus.PENDING]: 'Pending',
     [WorkloadActionStatus.SUCCESSFUL]: 'Successful',
     [WorkloadActionStatus.FAILED]: 'Failed',
-    [WorkloadActionStatus.PARTIAL]: 'Partially Successful',
   };
   return displayNames[status] || status;
 };
