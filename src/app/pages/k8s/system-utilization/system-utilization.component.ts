@@ -24,8 +24,64 @@ export class SystemUtilizationComponent implements OnInit, OnDestroy {
   memoryUtilizationChartOptions: Partial<Highcharts.Options> = {};
   energyWattsChartOptions: Partial<Highcharts.Options> = {};
   
+  // Make Math available in template
+  Math = Math;
+  
   // Energy availability heatmap data
   energyAvailabilitySlots: any[] = [];
+  
+  // Alert rotation data
+  allAlerts = [
+    {
+      type: 'critical',
+      title: 'Energy Shortfall Critical',
+      message: 'Expected demand 320W > Available 280W - 1 min ago',
+      bgColor: 'bg-red-50',
+      borderColor: 'border-red-400',
+      titleColor: 'text-red-800',
+      messageColor: 'text-red-600'
+    },
+    {
+      type: 'critical',
+      title: 'High CPU Usage',
+      message: 'worker-node-2 - 2 min ago',
+      bgColor: 'bg-red-50',
+      borderColor: 'border-red-400',
+      titleColor: 'text-red-800',
+      messageColor: 'text-red-600'
+    },
+    {
+      type: 'warning',
+      title: 'Energy Budget Warning',
+      message: '90% of daily energy allowance used - 8 min ago',
+      bgColor: 'bg-orange-50',
+      borderColor: 'border-orange-400',
+      titleColor: 'text-orange-800',
+      messageColor: 'text-orange-600'
+    },
+    {
+      type: 'warning',
+      title: 'Memory Warning',
+      message: 'master-node-1 - 15 min ago',
+      bgColor: 'bg-yellow-50',
+      borderColor: 'border-yellow-400',
+      titleColor: 'text-yellow-800',
+      messageColor: 'text-yellow-600'
+    },
+    {
+      type: 'info',
+      title: 'Energy Peak Prediction',
+      message: 'High demand expected at 2:00 PM - 18 min ago',
+      bgColor: 'bg-purple-50',
+      borderColor: 'border-purple-400',
+      titleColor: 'text-purple-800',
+      messageColor: 'text-purple-600'
+    }
+  ];
+  
+  visibleAlerts: any[] = [];
+  currentAlertIndex = 0;
+  alertRotationInterval: any;
   
   // Summary data
   utilizationSummary = {
@@ -56,6 +112,7 @@ export class SystemUtilizationComponent implements OnInit, OnDestroy {
       this.initializeCharts();
       this.loadUtilizationData();
       this.loadMockEnergyAvailabilityData();
+      this.startAlertRotation();
       
       // Set up auto-refresh
       this.refreshInterval$
@@ -70,6 +127,9 @@ export class SystemUtilizationComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+    if (this.alertRotationInterval) {
+      clearInterval(this.alertRotationInterval);
+    }
   }
 
   private initializeCharts(): void {
@@ -721,5 +781,46 @@ export class SystemUtilizationComponent implements OnInit, OnDestroy {
     ];
     
     console.log('🔥 Mock energy availability data loaded:', this.energyAvailabilitySlots.length, 'slots');
+  }
+
+  private startAlertRotation(): void {
+    // Initialize with first 2 alerts
+    this.updateVisibleAlerts();
+    
+    // Rotate alerts every 10 seconds (slow rotation)
+    this.alertRotationInterval = setInterval(() => {
+      this.rotateAlerts();
+    }, 10000);
+  }
+
+  private updateVisibleAlerts(): void {
+    // Show 2 alerts starting from currentAlertIndex
+    this.visibleAlerts = [];
+    for (let i = 0; i < 2; i++) {
+      const index = (this.currentAlertIndex + i) % this.allAlerts.length;
+      this.visibleAlerts.push(this.allAlerts[index]);
+    }
+  }
+
+  private rotateAlerts(): void {
+    // Move to next set of alerts
+    this.currentAlertIndex = (this.currentAlertIndex + 2) % this.allAlerts.length;
+    this.updateVisibleAlerts();
+  }
+
+  goToAlertGroup(groupIndex: number): void {
+    // Stop automatic rotation temporarily
+    if (this.alertRotationInterval) {
+      clearInterval(this.alertRotationInterval);
+    }
+    
+    // Set the alert index based on group
+    this.currentAlertIndex = groupIndex * 2;
+    this.updateVisibleAlerts();
+    
+    // Restart automatic rotation after 8 seconds
+    setTimeout(() => {
+      this.startAlertRotation();
+    }, 8000);
   }
 }
