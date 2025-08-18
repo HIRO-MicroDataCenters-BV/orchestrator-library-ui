@@ -464,13 +464,13 @@ export class SystemUtilizationComponent implements OnInit, OnDestroy {
       const dataMax = Math.max(...allValues);
       const range = dataMax - dataMin;
       
-      // Add 10% padding above and below for better visualization
-      const padding = Math.max(range * 0.1, 5); // Minimum 5W padding
+      // Use minimal padding for energy chart to show curve better
+      const padding = Math.max(range * 0.02, 1); // Only 2% padding, minimum 1W
       
-      yAxisMin = Math.max(0, Math.floor(dataMin - padding));
-      yAxisMax = Math.ceil(dataMax + padding);
+      yAxisMin = Math.max(0, dataMin - padding);
+      yAxisMax = dataMax + padding;
       
-      console.log(`📊 Energy chart Y-axis range: ${yAxisMin}W to ${yAxisMax}W (data range: ${dataMin.toFixed(1)}W - ${dataMax.toFixed(1)}W)`);
+      console.log(`📊 Energy chart Y-axis range: ${yAxisMin.toFixed(1)}W to ${yAxisMax.toFixed(1)}W (data range: ${dataMin.toFixed(1)}W - ${dataMax.toFixed(1)}W)`);
     }
 
     Object.keys(data).forEach((nodeName) => {
