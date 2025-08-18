@@ -132,6 +132,7 @@ export class EnergyAvailabilityHeatmapComponent implements OnInit, OnChanges {
         }]
       },
       colorAxis: {
+        visible: false,
         min: 0,
         minColor: '#FFFBEB',
         maxColor: '#D97706',
@@ -144,14 +145,7 @@ export class EnergyAvailabilityHeatmapComponent implements OnInit, OnChanges {
           [1, '#D97706']
         ]
       },
-      legend: {
-        align: 'right',
-        layout: 'vertical',
-        margin: 0,
-        verticalAlign: 'top',
-        y: 25,
-        symbolHeight: 280
-      },
+      legend: { enabled: false },
       tooltip: {
         formatter: function(this: any) {
           const timeSlot = timeSlots[this.x];
