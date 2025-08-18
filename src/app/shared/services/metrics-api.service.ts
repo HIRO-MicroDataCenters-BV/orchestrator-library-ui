@@ -114,6 +114,33 @@ export class MetricsApiService {
   }
 
   /**
+   * Transform metrics data for energy watts chart
+   * @param metrics - Array of NodeMetric
+   * @returns Array of chart data points
+   */
+  transformEnergyWattsData(metrics: NodeMetric[]): ChartDataPoint[] {
+    return metrics.map(metric => ({
+      timestamp: new Date(metric.timestamp).getTime(),
+      value: (metric as any).energy_watts || 0, // Handle energy_watts field
+      nodeName: metric.node_name
+    })).sort((a, b) => a.timestamp - b.timestamp);
+  }
+
+  /**
+   * Get energy watts data formatted for charts
+   * @param limit - Number of records to fetch
+   * @returns Observable with chart-formatted data
+   */
+  getEnergyWattsChartData(limit = 100): Observable<{ [nodeName: string]: [number, number][] }> {
+    return this.getMetrics(limit).pipe(
+      map(response => {
+        const chartData = this.transformEnergyWattsData(response.metrics);
+        return this.groupDataByNode(chartData);
+      })
+    );
+  }
+
+  /**
    * Group chart data points by node name
    * @param data - Array of ChartDataPoint
    * @returns Object with node names as keys and chart data arrays as values

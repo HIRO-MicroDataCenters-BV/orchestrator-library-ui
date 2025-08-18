@@ -42,7 +42,8 @@
     "overview": "Overview",
     "Energy Metrics": "Energy Metrics",
     "energy_metrics": "Energy Metrics",
-    "EnergyMetrics": "Energy Metrics"
+    "EnergyMetrics": "Energy Metrics",
+    "System Utilization": "System Utilization"
   },
   "action": {
     "previous": "Previous",

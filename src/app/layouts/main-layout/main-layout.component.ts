@@ -23,6 +23,7 @@ import {
   lucideChevronRight,
   lucideGrip,
   lucideZap,
+  lucideActivity,
 } from '@ng-icons/lucide';
 import { HlmIconDirective } from '@spartan-ng/ui-icon-helm';
 import { HlmSidebarComponent } from '../../../../libs/ui/ui-sidebar-helm/src/lib/hlm-sidebar.component';
@@ -81,6 +82,7 @@ interface Cluster {
       lucideChevronRight,
       lucideGrip,
       lucideZap,
+      lucideActivity,
     }),
   ],
   templateUrl: './main-layout.component.html',
@@ -105,6 +107,7 @@ export class MainLayoutComponent implements OnInit {
         { label: 'cog', icon: 'lucideCog', route: '/cog' },
         { label: 'k8s', icon: 'lucideLayoutDashboard', route: '/k8s' },
         { label: 'energy_metrics', icon: 'lucideZap', route: '/energy-metrics' },
+        { label: 'System Utilization', icon: 'lucideActivity', route: '/system-utilization' },
       ],
     },
     {

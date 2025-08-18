@@ -79,6 +79,14 @@ export const routes: Routes = [
         data: { title: 'Energy Metrics' },
       },
       {
+        path: 'system-utilization',
+        loadComponent: () =>
+          import('./pages/k8s/system-utilization/system-utilization.component').then(
+            (m) => m.SystemUtilizationComponent
+          ),
+        data: { title: 'System Utilization' },
+      },
+      {
         path: 'k8s',
         loadComponent: () =>
           import('./pages/k8s/k8s.component').then((m) => m.K8sComponent),
