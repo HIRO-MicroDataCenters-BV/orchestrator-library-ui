@@ -70,7 +70,7 @@ export class SystemUtilizationComponent implements OnInit, OnDestroy {
     // Initialize CPU Utilization chart (Y-axis will be set dynamically)
     this.cpuUtilizationChartOptions = {
       chart: { 
-        type: 'line', 
+        type: 'area', 
         backgroundColor: 'transparent',
         height: 300 
       },
@@ -98,7 +98,8 @@ export class SystemUtilizationComponent implements OnInit, OnDestroy {
       },
       legend: { enabled: true },
       plotOptions: {
-        line: {
+        area: {
+          fillOpacity: 0.3,
           lineWidth: 2,
           marker: { enabled: false },
           states: { inactive: { opacity: 1 } }
@@ -107,7 +108,7 @@ export class SystemUtilizationComponent implements OnInit, OnDestroy {
       series: []
     };
 
-    // Initialize Memory Utilization chart
+    // Initialize Memory Utilization chart (Y-axis will be set dynamically)
     this.memoryUtilizationChartOptions = {
       chart: { 
         type: 'area', 
@@ -121,16 +122,17 @@ export class SystemUtilizationComponent implements OnInit, OnDestroy {
         title: { text: 'Time' } 
       },
       yAxis: { 
-        title: { text: 'Memory Usage (MB)' },
-        min: 0 
+        title: { text: 'Memory Utilization (%)' },
+        startOnTick: false,
+        endOnTick: false
       },
       tooltip: { 
         shared: true, 
-        valueSuffix: ' MB',
+        valueSuffix: '%',
         formatter: function() {
           let tooltip = `<b>${new Date(this.x!).toLocaleString()}</b><br/>`;
           this.points!.forEach((point) => {
-            tooltip += `<span style="color:${point.color}">${point.series.name}</span>: <b>${point.y?.toFixed(0)} MB</b><br/>`;
+            tooltip += `<span style="color:${point.color}">${point.series.name}</span>: <b>${point.y?.toFixed(1)}%</b><br/>`;
           });
           return tooltip;
         }
@@ -197,15 +199,15 @@ export class SystemUtilizationComponent implements OnInit, OnDestroy {
 
     forkJoin({
       cpuUtilization: this.metricsApiService.getCpuUtilizationChartData(1000),
-      memoryUsage: this.metricsApiService.getMemoryUsageChartData(1000),
+      memoryUtilization: this.metricsApiService.getMemoryUtilizationChartData(1000),
       energyWatts: this.metricsApiService.getEnergyWattsChartData(1000),
     })
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: ({ cpuUtilization, memoryUsage, energyWatts }) => {
+        next: ({ cpuUtilization, memoryUtilization, energyWatts }) => {
           console.log('✅ Received utilization data:', {
             cpuNodes: Object.keys(cpuUtilization).length,
-            memoryNodes: Object.keys(memoryUsage).length,
+            memoryNodes: Object.keys(memoryUtilization).length,
             energyNodes: Object.keys(energyWatts).length,
           });
 
@@ -215,8 +217,8 @@ export class SystemUtilizationComponent implements OnInit, OnDestroy {
             this.loadMockCpuData();
           }
 
-          if (Object.keys(memoryUsage).length > 0) {
-            this.setupMemoryUtilizationChart(memoryUsage);
+          if (Object.keys(memoryUtilization).length > 0) {
+            this.setupMemoryUtilizationChart(memoryUtilization);
           } else {
             this.loadMockMemoryData();
           }
@@ -227,7 +229,7 @@ export class SystemUtilizationComponent implements OnInit, OnDestroy {
             this.loadMockEnergyData();
           }
 
-          this.updateSummaryData(cpuUtilization, memoryUsage, energyWatts);
+          this.updateSummaryData(cpuUtilization, memoryUtilization, energyWatts);
         },
         error: (error) => {
           console.error('❌ Error loading utilization data:', error);
@@ -274,9 +276,16 @@ export class SystemUtilizationComponent implements OnInit, OnDestroy {
       const color = colors[colorIndex % colors.length];
       series.push({
         name: nodeName,
-        type: 'line',
+        type: 'area',
         data: data[nodeName],
         color: color,
+        fillColor: {
+          linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+          stops: [
+            [0, `${color}40`],
+            [1, `${color}10`],
+          ],
+        } as Highcharts.GradientColorObject,
         lineWidth: 2,
         marker: { enabled: false },
       });
@@ -286,7 +295,7 @@ export class SystemUtilizationComponent implements OnInit, OnDestroy {
     // Update the CPU chart options with dynamic Y-axis
     this.cpuUtilizationChartOptions = {
       chart: { 
-        type: 'line', 
+        type: 'area', 
         backgroundColor: 'transparent',
         height: 300 
       },
@@ -316,7 +325,8 @@ export class SystemUtilizationComponent implements OnInit, OnDestroy {
       },
       legend: { enabled: true },
       plotOptions: {
-        line: {
+        area: {
+          fillOpacity: 0.3,
           lineWidth: 2,
           marker: { enabled: false },
           states: { inactive: { opacity: 1 } }
@@ -332,8 +342,31 @@ export class SystemUtilizationComponent implements OnInit, OnDestroy {
     console.log('📊 Setting up Memory Utilization chart');
     
     const series: Highcharts.SeriesOptionsType[] = [];
-    const colors = ['#3b82f6', '#ef4444', '#10b981', '#f59e0b', '#8b5cf6', '#f97316'];
+    const colors = ['#10b981', '#ef4444', '#3b82f6', '#f59e0b', '#8b5cf6', '#f97316'];
     let colorIndex = 0;
+
+    // Calculate min and max values from all data points
+    let allValues: number[] = [];
+    Object.values(data).forEach(nodeData => {
+      nodeData.forEach(([_, value]) => allValues.push(value));
+    });
+
+    let yAxisMin = 0;
+    let yAxisMax = 100; // Memory utilization cap at 100%
+
+    if (allValues.length > 0) {
+      const dataMin = Math.min(...allValues);
+      const dataMax = Math.max(...allValues);
+      const range = dataMax - dataMin;
+      
+      // Add 5% padding above and below for better visualization
+      const padding = Math.max(range * 0.05, 2); // Minimum 2% padding
+      
+      yAxisMin = Math.max(0, Math.floor(dataMin - padding));
+      yAxisMax = Math.min(100, Math.ceil(dataMax + padding));
+      
+      console.log(`📊 Memory chart Y-axis range: ${yAxisMin}% to ${yAxisMax}% (data range: ${dataMin.toFixed(1)}% - ${dataMax.toFixed(1)}%)`);
+    }
 
     Object.keys(data).forEach((nodeName) => {
       const color = colors[colorIndex % colors.length];
@@ -355,12 +388,50 @@ export class SystemUtilizationComponent implements OnInit, OnDestroy {
       colorIndex++;
     });
 
+    // Update the memory chart options with dynamic Y-axis
     this.memoryUtilizationChartOptions = {
-      ...this.memoryUtilizationChartOptions,
-      series: series,
+      chart: { 
+        type: 'area', 
+        backgroundColor: 'transparent',
+        height: 300 
+      },
+      title: { text: undefined },
+      credits: { enabled: false },
+      xAxis: { 
+        type: 'datetime', 
+        title: { text: 'Time' } 
+      },
+      yAxis: { 
+        title: { text: 'Memory Utilization (%)' },
+        min: yAxisMin,
+        max: yAxisMax,
+        startOnTick: false,
+        endOnTick: false
+      },
+      tooltip: { 
+        shared: true, 
+        valueSuffix: '%',
+        formatter: function() {
+          let tooltip = `<b>${new Date(this.x!).toLocaleString()}</b><br/>`;
+          this.points!.forEach((point) => {
+            tooltip += `<span style="color:${point.color}">${point.series.name}</span>: <b>${point.y?.toFixed(1)}%</b><br/>`;
+          });
+          return tooltip;
+        }
+      },
+      legend: { enabled: true },
+      plotOptions: {
+        area: {
+          fillOpacity: 0.3,
+          lineWidth: 2,
+          marker: { enabled: false },
+          states: { inactive: { opacity: 1 } }
+        }
+      },
+      series: series
     };
 
-    console.log('✅ Memory Utilization chart updated');
+    console.log('✅ Memory Utilization chart updated with dynamic Y-axis');
   }
 
   private setupEnergyWattsChart(data: { [nodeName: string]: [number, number][] }): void {
@@ -468,9 +539,9 @@ export class SystemUtilizationComponent implements OnInit, OnDestroy {
   private loadMockMemoryData(): void {
     const now = Date.now();
     const mockMemoryData: { [nodeName: string]: [number, number][] } = {
-      'master-node': this.generateMockTimeSeries(now, 60, 2000, 4000, 3000),
-      'worker-node-1': this.generateMockTimeSeries(now, 60, 1500, 3500, 2500),
-      'worker-node-2': this.generateMockTimeSeries(now, 60, 1200, 3200, 2200),
+      'master-node': this.generateMockTimeSeries(now, 60, 35, 85, 65),
+      'worker-node-1': this.generateMockTimeSeries(now, 60, 25, 75, 55),
+      'worker-node-2': this.generateMockTimeSeries(now, 60, 20, 70, 45),
     };
     this.setupMemoryUtilizationChart(mockMemoryData);
   }
@@ -520,7 +591,7 @@ export class SystemUtilizationComponent implements OnInit, OnDestroy {
       nodeData.forEach(([_, value]) => allCpuValues.push(value));
     });
 
-    // Collect all memory values
+    // Collect all memory values (now percentages)
     Object.values(memoryData).forEach(nodeData => {
       nodeData.forEach(([_, value]) => allMemoryValues.push(value));
     });
@@ -538,10 +609,10 @@ export class SystemUtilizationComponent implements OnInit, OnDestroy {
         ? Math.round(Math.max(...allCpuValues) * 10) / 10
         : 0,
       averageMemoryUsage: allMemoryValues.length > 0 
-        ? Math.round(allMemoryValues.reduce((sum, val) => sum + val, 0) / allMemoryValues.length)
+        ? Math.round((allMemoryValues.reduce((sum, val) => sum + val, 0) / allMemoryValues.length) * 10) / 10
         : 0,
       peakMemoryUsage: allMemoryValues.length > 0 
-        ? Math.round(Math.max(...allMemoryValues))
+        ? Math.round(Math.max(...allMemoryValues) * 10) / 10
         : 0,
       averageEnergyUsage: allEnergyValues.length > 0 
         ? Math.round((allEnergyValues.reduce((sum, val) => sum + val, 0) / allEnergyValues.length) * 10) / 10
@@ -560,8 +631,8 @@ export class SystemUtilizationComponent implements OnInit, OnDestroy {
     this.utilizationSummary = {
       averageCpuUsage: 58.5,
       peakCpuUsage: 85.2,
-      averageMemoryUsage: 2567,
-      peakMemoryUsage: 3850,
+      averageMemoryUsage: 55.7,
+      peakMemoryUsage: 82.3,
       averageEnergyUsage: 238.3,
       peakEnergyUsage: 276.5,
       totalNodes: 3,

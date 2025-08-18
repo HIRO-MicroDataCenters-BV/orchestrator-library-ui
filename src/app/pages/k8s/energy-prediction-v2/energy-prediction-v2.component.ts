@@ -85,15 +85,15 @@ export class EnergyPredictionV2Component implements OnInit, OnDestroy {
     forkJoin({
       cpuWatts: this.metricsApiService.getCpuWattsChartData(),
       cpuUtilization: this.metricsApiService.getCpuUtilizationChartData(),
-      memoryUsage: this.metricsApiService.getMemoryUsageChartData(),
+      memoryUtilization: this.metricsApiService.getMemoryUtilizationChartData(),
     })
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: ({ cpuWatts, cpuUtilization, memoryUsage }) => {
+        next: ({ cpuWatts, cpuUtilization, memoryUtilization }) => {
           console.log('Received metrics data:', {
             cpuWatts,
             cpuUtilization,
-            memoryUsage,
+            memoryUtilization,
           });
 
           if (Object.keys(cpuWatts).length > 0) {
@@ -110,11 +110,11 @@ export class EnergyPredictionV2Component implements OnInit, OnDestroy {
             console.warn('No CPU utilization data received');
           }
 
-          if (Object.keys(memoryUsage).length > 0) {
-            this.setupMemoryUsageChart(memoryUsage);
-            console.log('Memory Usage chart setup complete');
+          if (Object.keys(memoryUtilization).length > 0) {
+            this.setupMemoryUsageChart(memoryUtilization);
+            console.log('Memory Utilization chart setup complete');
           } else {
-            console.warn('No memory usage data received');
+            console.warn('No memory utilization data received');
           }
         },
         error: (error) => {

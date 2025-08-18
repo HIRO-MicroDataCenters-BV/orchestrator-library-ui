@@ -59,14 +59,14 @@ export class MetricsApiService {
   }
 
   /**
-   * Transform metrics data for memory usage chart (convert bytes to MB)
+   * Transform metrics data for memory utilization chart (percentage)
    * @param metrics - Array of NodeMetric
    * @returns Array of chart data points
    */
-  transformMemoryUsageData(metrics: NodeMetric[]): ChartDataPoint[] {
+  transformMemoryUtilizationData(metrics: NodeMetric[]): ChartDataPoint[] {
     return metrics.map(metric => ({
       timestamp: new Date(metric.timestamp).getTime(),
-      value: metric.memory_usage_bytes / (1024 * 1024), // Convert to MB
+      value: metric.memory_utilization_percent,
       nodeName: metric.node_name
     })).sort((a, b) => a.timestamp - b.timestamp);
   }
@@ -100,14 +100,14 @@ export class MetricsApiService {
   }
 
   /**
-   * Get memory usage data formatted for charts
+   * Get memory utilization data formatted for charts
    * @param limit - Number of records to fetch
    * @returns Observable with chart-formatted data
    */
-  getMemoryUsageChartData(limit = 100): Observable<{ [nodeName: string]: [number, number][] }> {
+  getMemoryUtilizationChartData(limit = 100): Observable<{ [nodeName: string]: [number, number][] }> {
     return this.getMetrics(limit).pipe(
       map(response => {
-        const chartData = this.transformMemoryUsageData(response.metrics);
+        const chartData = this.transformMemoryUtilizationData(response.metrics);
         return this.groupDataByNode(chartData);
       })
     );
