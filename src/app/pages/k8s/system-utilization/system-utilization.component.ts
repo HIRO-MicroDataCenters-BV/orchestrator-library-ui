@@ -147,7 +147,7 @@ export class SystemUtilizationComponent implements OnInit, OnDestroy {
       series: []
     };
 
-    // Initialize Energy Watts chart
+    // Initialize Energy Watts chart (Y-axis will be set dynamically)
     this.energyWattsChartOptions = {
       chart: { 
         type: 'spline', 
@@ -162,7 +162,8 @@ export class SystemUtilizationComponent implements OnInit, OnDestroy {
       },
       yAxis: { 
         title: { text: 'Energy Usage (W)' },
-        min: 0 
+        startOnTick: false,
+        endOnTick: false
       },
       tooltip: { 
         shared: true, 
@@ -311,6 +312,29 @@ export class SystemUtilizationComponent implements OnInit, OnDestroy {
     const colors = ['#f59e0b', '#ef4444', '#10b981', '#3b82f6', '#8b5cf6', '#f97316'];
     let colorIndex = 0;
 
+    // Calculate min and max values from all data points
+    let allValues: number[] = [];
+    Object.values(data).forEach(nodeData => {
+      nodeData.forEach(([_, value]) => allValues.push(value));
+    });
+
+    let yAxisMin = 0;
+    let yAxisMax = undefined;
+
+    if (allValues.length > 0) {
+      const dataMin = Math.min(...allValues);
+      const dataMax = Math.max(...allValues);
+      const range = dataMax - dataMin;
+      
+      // Add 10% padding above and below for better visualization
+      const padding = Math.max(range * 0.1, 5); // Minimum 5W padding
+      
+      yAxisMin = Math.max(0, Math.floor(dataMin - padding));
+      yAxisMax = Math.ceil(dataMax + padding);
+      
+      console.log(`📊 Energy chart Y-axis range: ${yAxisMin}W to ${yAxisMax}W (data range: ${dataMin.toFixed(1)}W - ${dataMax.toFixed(1)}W)`);
+    }
+
     Object.keys(data).forEach((nodeName) => {
       const color = colors[colorIndex % colors.length];
       series.push({
@@ -328,12 +352,53 @@ export class SystemUtilizationComponent implements OnInit, OnDestroy {
       colorIndex++;
     });
 
+    // Update the energy chart options with dynamic Y-axis
     this.energyWattsChartOptions = {
-      ...this.energyWattsChartOptions,
-      series: series,
+      chart: { 
+        type: 'spline', 
+        backgroundColor: 'transparent',
+        height: 300 
+      },
+      title: { text: undefined },
+      credits: { enabled: false },
+      xAxis: { 
+        type: 'datetime', 
+        title: { text: 'Time' } 
+      },
+      yAxis: { 
+        title: { text: 'Energy Usage (W)' },
+        min: yAxisMin,
+        max: yAxisMax,
+        startOnTick: false,
+        endOnTick: false
+      },
+      tooltip: { 
+        shared: true, 
+        valueSuffix: 'W',
+        formatter: function() {
+          let tooltip = `<b>${new Date(this.x!).toLocaleString()}</b><br/>`;
+          this.points!.forEach((point) => {
+            tooltip += `<span style="color:${point.color}">${point.series.name}</span>: <b>${point.y?.toFixed(1)}W</b><br/>`;
+          });
+          return tooltip;
+        }
+      },
+      legend: { enabled: true },
+      plotOptions: {
+        spline: {
+          lineWidth: 3,
+          marker: { 
+            enabled: true,
+            radius: 4,
+            symbol: 'circle'
+          },
+          states: { inactive: { opacity: 1 } }
+        }
+      },
+      series: series
     };
 
-    console.log('✅ Energy Watts chart updated');
+    console.log('✅ Energy Watts chart updated with dynamic Y-axis');
   }
 
   private loadMockCpuData(): void {
@@ -359,9 +424,9 @@ export class SystemUtilizationComponent implements OnInit, OnDestroy {
   private loadMockEnergyData(): void {
     const now = Date.now();
     const mockEnergyData: { [nodeName: string]: [number, number][] } = {
-      'master-node': this.generateMockTimeSeries(now, 60, 200, 300, 250),
-      'worker-node-1': this.generateMockTimeSeries(now, 60, 180, 280, 220),
-      'worker-node-2': this.generateMockTimeSeries(now, 60, 160, 260, 200),
+      'master-node': this.generateMockTimeSeries(now, 60, 240, 280, 265),
+      'worker-node-1': this.generateMockTimeSeries(now, 60, 210, 250, 235),
+      'worker-node-2': this.generateMockTimeSeries(now, 60, 190, 230, 215),
     };
     this.setupEnergyWattsChart(mockEnergyData);
   }
@@ -443,8 +508,8 @@ export class SystemUtilizationComponent implements OnInit, OnDestroy {
       peakCpuUsage: 85.2,
       averageMemoryUsage: 2567,
       peakMemoryUsage: 3850,
-      averageEnergyUsage: 223.4,
-      peakEnergyUsage: 298.7,
+      averageEnergyUsage: 238.3,
+      peakEnergyUsage: 276.5,
       totalNodes: 3,
       lastUpdated: new Date(),
     };
