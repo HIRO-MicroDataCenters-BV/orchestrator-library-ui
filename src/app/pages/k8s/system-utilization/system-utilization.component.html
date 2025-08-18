@@ -1,12 +1,11 @@
 <div class="fixed inset-0 top-16 overflow-auto bg-background"
      [style.left.px]="sidebarService.state() === 'collapsed' ? 48 : 256">
 
-  <div class="p-4 space-y-6 w-full max-w-7xl mx-auto">
+  <div class="px-4 space-y-6 w-full max-w-7xl mx-auto">
     <!-- Header -->
     <div class="flex justify-between items-center">
       <div>
         <h1 class="text-2xl font-bold text-gray-900">System Utilization</h1>
-        <p class="text-gray-600 mt-1">Real-time CPU and memory utilization across Kubernetes nodes</p>
       </div>
       <div class="flex flex-col items-end gap-2">
         <div class="text-sm text-gray-500">
