@@ -45,8 +45,8 @@ export class EnergyAvailabilityHeatmapComponent implements OnInit, OnChanges {
   }
 
   private buildChart(): void {
-    const dayNames = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-    const timeSlots = ['00:00-04:00', '04:00-08:00', '08:00-12:00', '12:00-16:00', '16:00-20:00', '20:00-24:00'];
+    const dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    const timeSlots = ['00-04', '04-08', '08-12', '12-16', '16-20', '20-24'];
 
     const dataMap = new Map<string, number>();
 
@@ -99,8 +99,14 @@ export class EnergyAvailabilityHeatmapComponent implements OnInit, OnChanges {
       credits: { enabled: false },
       xAxis: {
         categories: timeSlots,
-        title: { text: 'Time Slots' },
+        title: { text: '', style: { fontSize: '1px' } },
         opposite: true,
+        labels: {
+          style: {
+            fontSize: '9px',
+            fontWeight: 'normal'
+          }
+        },
         // Plot band to subtly highlight the current time-slot column
         plotBands: [{
           from: currentSlotIndex - 0.5,
@@ -110,8 +116,14 @@ export class EnergyAvailabilityHeatmapComponent implements OnInit, OnChanges {
       },
       yAxis: {
         categories: dayNames,
-        title: { text: 'Days of Week' },
+        title: { text: '', style: { fontSize: '1px' } },
         reversed: true,
+        labels: {
+          style: {
+            fontSize: '9px',
+            fontWeight: 'normal'
+          }
+        },
         // Plot band to subtly highlight today's row
         plotBands: [{
           from: currentDayIndex - 0.5,
@@ -145,7 +157,9 @@ export class EnergyAvailabilityHeatmapComponent implements OnInit, OnChanges {
           const timeSlot = timeSlots[this.x];
           const day = dayNames[this.y];
           const value = this.value || 0;
-          return `<b>${day}</b><br/><b>${timeSlot}</b><br/>Available Energy: <b>${value.toLocaleString()}W</b><br/>(${(value / 1000).toFixed(1)}kW)`;
+          // Convert abbreviated time format back to full format for tooltip
+          const fullTimeSlot = timeSlot.replace('-', ':00-') + ':00';
+          return `<b>${day}</b><br/><b>${fullTimeSlot}</b><br/>Available Energy: <b>${value.toLocaleString()}W</b><br/>(${(value / 1000).toFixed(1)}kW)`;
         }
       },
       series: [{
@@ -162,7 +176,7 @@ export class EnergyAvailabilityHeatmapComponent implements OnInit, OnChanges {
           },
           style: {
             textOutline: 'none',
-            fontSize: '10px',
+            fontSize: '8px',
             fontWeight: 'bold'
           }
         },
