@@ -67,7 +67,7 @@ export class SystemUtilizationComponent implements OnInit, OnDestroy {
   }
 
   private initializeCharts(): void {
-    // Initialize CPU Utilization chart
+    // Initialize CPU Utilization chart (Y-axis will be set dynamically)
     this.cpuUtilizationChartOptions = {
       chart: { 
         type: 'line', 
@@ -81,9 +81,9 @@ export class SystemUtilizationComponent implements OnInit, OnDestroy {
         title: { text: 'Time' } 
       },
       yAxis: { 
-        title: { text: 'CPU Utilization (%)' }, 
-        max: 100,
-        min: 0 
+        title: { text: 'CPU Utilization (%)' },
+        startOnTick: false,
+        endOnTick: false
       },
       tooltip: { 
         shared: true, 
@@ -179,11 +179,9 @@ export class SystemUtilizationComponent implements OnInit, OnDestroy {
       legend: { enabled: true },
       plotOptions: {
         spline: {
-          lineWidth: 3,
+          lineWidth: 2,
           marker: { 
-            enabled: true,
-            radius: 4,
-            symbol: 'circle'
+            enabled: false
           },
           states: { inactive: { opacity: 1 } }
         }
@@ -249,6 +247,29 @@ export class SystemUtilizationComponent implements OnInit, OnDestroy {
     const colors = ['#3b82f6', '#ef4444', '#10b981', '#f59e0b', '#8b5cf6', '#f97316'];
     let colorIndex = 0;
 
+    // Calculate min and max values from all data points
+    let allValues: number[] = [];
+    Object.values(data).forEach(nodeData => {
+      nodeData.forEach(([_, value]) => allValues.push(value));
+    });
+
+    let yAxisMin = 0;
+    let yAxisMax = 100; // CPU utilization cap at 100%
+
+    if (allValues.length > 0) {
+      const dataMin = Math.min(...allValues);
+      const dataMax = Math.max(...allValues);
+      const range = dataMax - dataMin;
+      
+      // Add 5% padding above and below for better visualization
+      const padding = Math.max(range * 0.05, 2); // Minimum 2% padding
+      
+      yAxisMin = Math.max(0, Math.floor(dataMin - padding));
+      yAxisMax = Math.min(100, Math.ceil(dataMax + padding));
+      
+      console.log(`📊 CPU chart Y-axis range: ${yAxisMin}% to ${yAxisMax}% (data range: ${dataMin.toFixed(1)}% - ${dataMax.toFixed(1)}%)`);
+    }
+
     Object.keys(data).forEach((nodeName) => {
       const color = colors[colorIndex % colors.length];
       series.push({
@@ -262,12 +283,49 @@ export class SystemUtilizationComponent implements OnInit, OnDestroy {
       colorIndex++;
     });
 
+    // Update the CPU chart options with dynamic Y-axis
     this.cpuUtilizationChartOptions = {
-      ...this.cpuUtilizationChartOptions,
-      series: series,
+      chart: { 
+        type: 'line', 
+        backgroundColor: 'transparent',
+        height: 300 
+      },
+      title: { text: undefined },
+      credits: { enabled: false },
+      xAxis: { 
+        type: 'datetime', 
+        title: { text: 'Time' } 
+      },
+      yAxis: { 
+        title: { text: 'CPU Utilization (%)' },
+        min: yAxisMin,
+        max: yAxisMax,
+        startOnTick: false,
+        endOnTick: false
+      },
+      tooltip: { 
+        shared: true, 
+        valueSuffix: '%',
+        formatter: function() {
+          let tooltip = `<b>${new Date(this.x!).toLocaleString()}</b><br/>`;
+          this.points!.forEach((point) => {
+            tooltip += `<span style="color:${point.color}">${point.series.name}</span>: <b>${point.y?.toFixed(1)}%</b><br/>`;
+          });
+          return tooltip;
+        }
+      },
+      legend: { enabled: true },
+      plotOptions: {
+        line: {
+          lineWidth: 2,
+          marker: { enabled: false },
+          states: { inactive: { opacity: 1 } }
+        }
+      },
+      series: series
     };
 
-    console.log('✅ CPU Utilization chart updated');
+    console.log('✅ CPU Utilization chart updated with dynamic Y-axis');
   }
 
   private setupMemoryUtilizationChart(data: { [nodeName: string]: [number, number][] }): void {
@@ -342,11 +400,9 @@ export class SystemUtilizationComponent implements OnInit, OnDestroy {
         type: 'spline',
         data: data[nodeName],
         color: color,
-        lineWidth: 3,
+        lineWidth: 2,
         marker: { 
-          enabled: true,
-          radius: 4,
-          symbol: 'circle'
+          enabled: false
         },
       });
       colorIndex++;
@@ -386,11 +442,9 @@ export class SystemUtilizationComponent implements OnInit, OnDestroy {
       legend: { enabled: true },
       plotOptions: {
         spline: {
-          lineWidth: 3,
+          lineWidth: 2,
           marker: { 
-            enabled: true,
-            radius: 4,
-            symbol: 'circle'
+            enabled: false
           },
           states: { inactive: { opacity: 1 } }
         }
