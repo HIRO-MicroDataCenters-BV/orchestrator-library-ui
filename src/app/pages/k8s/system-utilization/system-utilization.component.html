@@ -107,95 +107,91 @@
 
     <!-- Main Dashboard Layout -->
     <div class="flex gap-6">
-      <!-- Left Column: Charts (65%) -->
-      <div class="w-[65%] space-y-6">
-        <!-- CPU Utilization Chart -->
+      <!-- Left Column: Combined Charts Container (65%) -->
+      <div class="w-[65%]">
+        <!-- Combined Charts Container -->
         <div class="bg-white rounded-lg shadow border">
           <div class="p-6 border-b border-gray-200">
             <div class="flex justify-between items-center">
               <div>
-                <h3 class="text-lg font-semibold text-gray-900">CPU Utilization Over Time</h3>
-                <p class="text-sm text-gray-600 mt-1">CPU usage percentage across all nodes</p>
+                <h3 class="text-lg font-semibold text-gray-900">System Utilization Dashboard</h3>
+                <p class="text-sm text-gray-600 mt-1">Real-time CPU, memory, and energy metrics across all nodes</p>
               </div>
               <div class="text-sm text-gray-500">
                 Last updated: {{utilizationSummary.lastUpdated | date:'short'}}
               </div>
             </div>
           </div>
-          <div class="p-6">
-            <div class="w-full h-[300px]">
-              <highcharts-chart
-                [options]="cpuUtilizationChartOptions"
-                class="w-full h-full"
-                *ngIf="cpuUtilizationChartOptions && cpuUtilizationChartOptions.series && cpuUtilizationChartOptions.series.length > 0"
-              ></highcharts-chart>
-              <div *ngIf="!cpuUtilizationChartOptions?.series?.length" 
-                   class="flex items-center justify-center h-full text-gray-500 bg-gray-50 rounded">
-                <div class="text-center">
-                  <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
-                  <p class="text-sm font-medium">Loading CPU utilization data...</p>
+          
+          <div class="p-6 space-y-8">
+            <!-- CPU Utilization Chart -->
+            <div>
+              <div class="flex justify-between items-center mb-4">
+                <div>
+                  <h4 class="text-md font-medium text-gray-800">CPU Utilization Over Time</h4>
+                  <p class="text-xs text-gray-500 mt-1">CPU usage percentage across all nodes</p>
+                </div>
+              </div>
+              <div class="w-full h-[300px]">
+                <highcharts-chart
+                  [options]="cpuUtilizationChartOptions"
+                  class="w-full h-full"
+                  *ngIf="cpuUtilizationChartOptions && cpuUtilizationChartOptions.series && cpuUtilizationChartOptions.series.length > 0"
+                ></highcharts-chart>
+                <div *ngIf="!cpuUtilizationChartOptions?.series?.length" 
+                     class="flex items-center justify-center h-full text-gray-500 bg-gray-50 rounded">
+                  <div class="text-center">
+                    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                    <p class="text-sm font-medium">Loading CPU utilization data...</p>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
 
-        <!-- Memory Utilization Chart -->
-        <div class="bg-white rounded-lg shadow border">
-          <div class="p-6 border-b border-gray-200">
-            <div class="flex justify-between items-center">
-              <div>
-                <h3 class="text-lg font-semibold text-gray-900">Memory Utilization Over Time</h3>
-                <p class="text-sm text-gray-600 mt-1">Memory utilization percentage across all nodes</p>
+            <!-- Memory Utilization Chart -->
+            <div>
+              <div class="flex justify-between items-center mb-4">
+                <div>
+                  <h4 class="text-md font-medium text-gray-800">Memory Utilization Over Time</h4>
+                  <p class="text-xs text-gray-500 mt-1">Memory utilization percentage across all nodes</p>
+                </div>
               </div>
-              <div class="text-sm text-gray-500">
-                Last updated: {{utilizationSummary.lastUpdated | date:'short'}}
-              </div>
-            </div>
-          </div>
-          <div class="p-6">
-            <div class="w-full h-[300px]">
-              <highcharts-chart
-                [options]="memoryUtilizationChartOptions"
-                class="w-full h-full"
-                *ngIf="memoryUtilizationChartOptions && memoryUtilizationChartOptions.series && memoryUtilizationChartOptions.series.length > 0"
-              ></highcharts-chart>
-              <div *ngIf="!memoryUtilizationChartOptions?.series?.length" 
-                   class="flex items-center justify-center h-full text-gray-500 bg-gray-50 rounded">
-                <div class="text-center">
-                  <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600 mx-auto mb-4"></div>
-                  <p class="text-sm font-medium">Loading memory utilization data...</p>
+              <div class="w-full h-[300px]">
+                <highcharts-chart
+                  [options]="memoryUtilizationChartOptions"
+                  class="w-full h-full"
+                  *ngIf="memoryUtilizationChartOptions && memoryUtilizationChartOptions.series && memoryUtilizationChartOptions.series.length > 0"
+                ></highcharts-chart>
+                <div *ngIf="!memoryUtilizationChartOptions?.series?.length" 
+                     class="flex items-center justify-center h-full text-gray-500 bg-gray-50 rounded">
+                  <div class="text-center">
+                    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600 mx-auto mb-4"></div>
+                    <p class="text-sm font-medium">Loading memory utilization data...</p>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
 
-        <!-- Energy Watts Chart -->
-        <div class="bg-white rounded-lg shadow border">
-          <div class="p-6 border-b border-gray-200">
-            <div class="flex justify-between items-center">
-              <div>
-                <h3 class="text-lg font-semibold text-gray-900">Energy Usage Over Time</h3>
-                <p class="text-sm text-gray-600 mt-1">Total energy consumption in watts across all nodes</p>
+            <!-- Energy Usage Chart -->
+            <div>
+              <div class="flex justify-between items-center mb-4">
+                <div>
+                  <h4 class="text-md font-medium text-gray-800">Energy Usage Over Time</h4>
+                  <p class="text-xs text-gray-500 mt-1">Total energy consumption in watts across all nodes</p>
+                </div>
               </div>
-              <div class="text-sm text-gray-500">
-                Last updated: {{utilizationSummary.lastUpdated | date:'short'}}
-              </div>
-            </div>
-          </div>
-          <div class="p-6">
-            <div class="w-full h-[300px]">
-              <highcharts-chart
-                [options]="energyWattsChartOptions"
-                class="w-full h-full"
-                *ngIf="energyWattsChartOptions && energyWattsChartOptions.series && energyWattsChartOptions.series.length > 0"
-              ></highcharts-chart>
-              <div *ngIf="!energyWattsChartOptions?.series?.length" 
-                   class="flex items-center justify-center h-full text-gray-500 bg-gray-50 rounded">
-                <div class="text-center">
-                  <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-600 mx-auto mb-4"></div>
-                  <p class="text-sm font-medium">Loading energy usage data...</p>
+              <div class="w-full h-[300px]">
+                <highcharts-chart
+                  [options]="energyWattsChartOptions"
+                  class="w-full h-full"
+                  *ngIf="energyWattsChartOptions && energyWattsChartOptions.series && energyWattsChartOptions.series.length > 0"
+                ></highcharts-chart>
+                <div *ngIf="!energyWattsChartOptions?.series?.length" 
+                     class="flex items-center justify-center h-full text-gray-500 bg-gray-50 rounded">
+                  <div class="text-center">
+                    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-600 mx-auto mb-4"></div>
+                    <p class="text-sm font-medium">Loading energy usage data...</p>
+                  </div>
                 </div>
               </div>
             </div>
