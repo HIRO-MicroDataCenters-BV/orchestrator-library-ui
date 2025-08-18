@@ -244,6 +244,17 @@
                 </div>
               </div>
             </div>
+
+            <!-- Energy Availability Heatmap -->
+            <div class="space-y-3">
+              <h4 class="text-sm font-semibold text-gray-700">Energy Availability</h4>
+              <div class="bg-white border rounded p-2">
+                <app-energy-availability-heatmap 
+                  [slots]="energyAvailabilitySlots"
+                  class="w-full">
+                </app-energy-availability-heatmap>
+              </div>
+            </div>
           </div>
         </div>
       </div>

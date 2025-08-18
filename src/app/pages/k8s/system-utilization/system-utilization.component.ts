@@ -3,9 +3,10 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { PLATFORM_ID } from '@angular/core';
 import { HighchartsChartComponent } from 'highcharts-angular';
 import * as Highcharts from 'highcharts';
-import { Subject, takeUntil, forkJoin, interval } from 'rxjs';
+import { Subject, takeUntil, interval } from 'rxjs';
 import { MetricsApiService } from '../../../shared/services/metrics-api.service';
 import { HlmSidebarService } from '../../../../../libs/ui/ui-sidebar-helm/src/lib/hlm-sidebar.service';
+import { EnergyAvailabilityHeatmapComponent } from '../../../components/energy-availability-heatmap/energy-availability-heatmap.component';
 
 @Component({
   selector: 'app-system-utilization',
@@ -13,6 +14,7 @@ import { HlmSidebarService } from '../../../../../libs/ui/ui-sidebar-helm/src/li
   imports: [
     CommonModule,
     HighchartsChartComponent,
+    EnergyAvailabilityHeatmapComponent,
   ],
   templateUrl: './system-utilization.component.html',
   styleUrl: './system-utilization.component.css',
@@ -21,6 +23,9 @@ export class SystemUtilizationComponent implements OnInit, OnDestroy {
   cpuUtilizationChartOptions: Partial<Highcharts.Options> = {};
   memoryUtilizationChartOptions: Partial<Highcharts.Options> = {};
   energyWattsChartOptions: Partial<Highcharts.Options> = {};
+  
+  // Energy availability heatmap data
+  energyAvailabilitySlots: any[] = [];
   
   // Summary data
   utilizationSummary = {
@@ -50,6 +55,7 @@ export class SystemUtilizationComponent implements OnInit, OnDestroy {
       console.log('📊 Platform is browser, loading data...');
       this.initializeCharts();
       this.loadUtilizationData();
+      this.loadMockEnergyAvailabilityData();
       
       // Set up auto-refresh
       this.refreshInterval$
@@ -652,5 +658,68 @@ export class SystemUtilizationComponent implements OnInit, OnDestroy {
   refreshData(): void {
     console.log('🔄 Manual refresh triggered');
     this.loadUtilizationData();
+  }
+
+  private loadMockEnergyAvailabilityData(): void {
+    // Generate mock energy availability data for the heatmap
+    this.energyAvailabilitySlots = [
+      // Monday
+      { slot_start_time: '2024-01-01T00:00:00Z', available_watts: 1200 },
+      { slot_start_time: '2024-01-01T04:00:00Z', available_watts: 1400 },
+      { slot_start_time: '2024-01-01T08:00:00Z', available_watts: 2800 },
+      { slot_start_time: '2024-01-01T12:00:00Z', available_watts: 3200 },
+      { slot_start_time: '2024-01-01T16:00:00Z', available_watts: 2600 },
+      { slot_start_time: '2024-01-01T20:00:00Z', available_watts: 1800 },
+      
+      // Tuesday
+      { slot_start_time: '2024-01-02T00:00:00Z', available_watts: 1100 },
+      { slot_start_time: '2024-01-02T04:00:00Z', available_watts: 1300 },
+      { slot_start_time: '2024-01-02T08:00:00Z', available_watts: 2900 },
+      { slot_start_time: '2024-01-02T12:00:00Z', available_watts: 3400 },
+      { slot_start_time: '2024-01-02T16:00:00Z', available_watts: 2700 },
+      { slot_start_time: '2024-01-02T20:00:00Z', available_watts: 1900 },
+      
+      // Wednesday
+      { slot_start_time: '2024-01-03T00:00:00Z', available_watts: 1000 },
+      { slot_start_time: '2024-01-03T04:00:00Z', available_watts: 1200 },
+      { slot_start_time: '2024-01-03T08:00:00Z', available_watts: 3100 },
+      { slot_start_time: '2024-01-03T12:00:00Z', available_watts: 3600 },
+      { slot_start_time: '2024-01-03T16:00:00Z', available_watts: 2900 },
+      { slot_start_time: '2024-01-03T20:00:00Z', available_watts: 2000 },
+      
+      // Thursday
+      { slot_start_time: '2024-01-04T00:00:00Z', available_watts: 1300 },
+      { slot_start_time: '2024-01-04T04:00:00Z', available_watts: 1500 },
+      { slot_start_time: '2024-01-04T08:00:00Z', available_watts: 2700 },
+      { slot_start_time: '2024-01-04T12:00:00Z', available_watts: 3000 },
+      { slot_start_time: '2024-01-04T16:00:00Z', available_watts: 2400 },
+      { slot_start_time: '2024-01-04T20:00:00Z', available_watts: 1700 },
+      
+      // Friday
+      { slot_start_time: '2024-01-05T00:00:00Z', available_watts: 1400 },
+      { slot_start_time: '2024-01-05T04:00:00Z', available_watts: 1600 },
+      { slot_start_time: '2024-01-05T08:00:00Z', available_watts: 2500 },
+      { slot_start_time: '2024-01-05T12:00:00Z', available_watts: 2800 },
+      { slot_start_time: '2024-01-05T16:00:00Z', available_watts: 2200 },
+      { slot_start_time: '2024-01-05T20:00:00Z', available_watts: 1600 },
+      
+      // Saturday
+      { slot_start_time: '2024-01-06T00:00:00Z', available_watts: 800 },
+      { slot_start_time: '2024-01-06T04:00:00Z', available_watts: 1000 },
+      { slot_start_time: '2024-01-06T08:00:00Z', available_watts: 1800 },
+      { slot_start_time: '2024-01-06T12:00:00Z', available_watts: 2200 },
+      { slot_start_time: '2024-01-06T16:00:00Z', available_watts: 2000 },
+      { slot_start_time: '2024-01-06T20:00:00Z', available_watts: 1400 },
+      
+      // Sunday
+      { slot_start_time: '2024-01-07T00:00:00Z', available_watts: 900 },
+      { slot_start_time: '2024-01-07T04:00:00Z', available_watts: 1100 },
+      { slot_start_time: '2024-01-07T08:00:00Z', available_watts: 1900 },
+      { slot_start_time: '2024-01-07T12:00:00Z', available_watts: 2400 },
+      { slot_start_time: '2024-01-07T16:00:00Z', available_watts: 2100 },
+      { slot_start_time: '2024-01-07T20:00:00Z', available_watts: 1500 },
+    ];
+    
+    console.log('🔥 Mock energy availability data loaded:', this.energyAvailabilitySlots.length, 'slots');
   }
 }
