@@ -149,82 +149,122 @@
         </div>
       </div>
 
-      <!-- Right Column: Dashboard Placeholder (35%) -->
-      <div class="w-[35%] space-y-6">
-        <!-- Placeholder for Additional Dashboard Components -->
-        <div class="bg-white rounded-lg shadow border h-full min-h-[600px]">
+      <!-- Right Column: Dashboard Components (35%) -->
+      <div class="w-[35%] space-y-4">
+        
+        <!-- Energy Availability Heatmap Card -->
+        <div class="bg-white rounded-lg shadow border p-3">
+          <h4 class="text-sm font-semibold text-gray-700 text-center mb-2">Energy Availability For One Week</h4>
+          <app-energy-availability-heatmap
+            [slots]="energyAvailabilitySlots"
+            class="w-full">
+          </app-energy-availability-heatmap>
+        </div>
 
-          <div class="px-2 py-4 space-y-4">
-
-            <!-- Energy Availability Heatmap -->
-            <div>
-              <h4 class="text-sm font-semibold text-gray-700 text-center">Energy Availability For One Week</h4>
-              <div>
-                <app-energy-availability-heatmap
-                  [slots]="energyAvailabilitySlots"
-                  class="w-full">
-                </app-energy-availability-heatmap>
+        <!-- Node Status Card -->
+        <div class="bg-white rounded-lg shadow border p-3">
+          <h4 class="text-sm font-semibold text-gray-700 mb-3">Node Status</h4>
+          <div class="space-y-2">
+            <div class="flex items-center justify-between p-2 bg-green-50 rounded border">
+              <div class="flex items-center gap-2">
+                <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                <span class="text-xs font-medium">master-node-1</span>
               </div>
+              <span class="text-xs text-green-600">Online</span>
             </div>
-
-            <!-- Recent Alerts -->
-            <div class="space-y-3">
-              <h4 class="text-sm font-semibold text-gray-700">Recent Alerts</h4>
-              <div class="space-y-2">
-                <div class="p-2 bg-red-50 rounded border-l-4 border-red-400">
-                  <div class="text-xs font-medium text-red-800">High CPU Usage</div>
-                  <div class="text-xs text-red-600">worker-node-2 - 2 min ago</div>
-                </div>
-                <div class="p-2 bg-yellow-50 rounded border-l-4 border-yellow-400">
-                  <div class="text-xs font-medium text-yellow-800">Memory Warning</div>
-                  <div class="text-xs text-yellow-600">master-node-1 - 15 min ago</div>
-                </div>
+            <div class="flex items-center justify-between p-2 bg-green-50 rounded border">
+              <div class="flex items-center gap-2">
+                <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                <span class="text-xs font-medium">worker-node-1</span>
               </div>
+              <span class="text-xs text-green-600">Online</span>
             </div>
-
-            <!-- Quick Stats -->
-            <div class="space-y-3">
-              <h4 class="text-sm font-semibold text-gray-700">Quick Stats</h4>
-              <div class="grid grid-cols-1 gap-2">
-                <div class="p-3 bg-blue-50 rounded border">
-                  <div class="text-xs text-gray-600">Uptime</div>
-                  <div class="text-lg font-bold text-blue-600">14d 6h 23m</div>
-                </div>
-                <div class="p-3 bg-purple-50 rounded border">
-                  <div class="text-xs text-gray-600">Active Pods</div>
-                  <div class="text-lg font-bold text-purple-600">47</div>
-                </div>
-                <div class="p-3 bg-indigo-50 rounded border">
-                  <div class="text-xs text-gray-600">Services</div>
-                  <div class="text-lg font-bold text-indigo-600">12</div>
-                </div>
+            <div class="flex items-center justify-between p-2 bg-yellow-50 rounded border">
+              <div class="flex items-center gap-2">
+                <div class="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                <span class="text-xs font-medium">worker-node-2</span>
               </div>
+              <span class="text-xs text-yellow-600">Warning</span>
             </div>
-
-            <!-- Resource Limits -->
-            <div class="space-y-3">
-              <h4 class="text-sm font-semibold text-gray-700">Resource Limits</h4>
-              <div class="space-y-2">
-                <div class="flex justify-between items-center">
-                  <span class="text-xs text-gray-600">CPU Requests</span>
-                  <span class="text-xs font-medium">2.4 / 8 cores</span>
-                </div>
-                <div class="w-full bg-gray-200 rounded-full h-1.5">
-                  <div class="bg-blue-500 h-1.5 rounded-full" style="width: 30%"></div>
-                </div>
-                <div class="flex justify-between items-center">
-                  <span class="text-xs text-gray-600">Memory Requests</span>
-                  <span class="text-xs font-medium">6.2 / 16 GB</span>
-                </div>
-                <div class="w-full bg-gray-200 rounded-full h-1.5">
-                  <div class="bg-green-500 h-1.5 rounded-full" style="width: 39%"></div>
-                </div>
-              </div>
-            </div>
-
-
           </div>
         </div>
+
+        <!-- Recent Alerts Card -->
+        <div class="bg-white rounded-lg shadow border p-3">
+          <h4 class="text-sm font-semibold text-gray-700 mb-3">Recent Alerts</h4>
+          <div class="space-y-2">
+            <div class="p-2 bg-red-50 rounded border-l-4 border-red-400">
+              <div class="text-xs font-medium text-red-800">High CPU Usage</div>
+              <div class="text-xs text-red-600">worker-node-2 - 2 min ago</div>
+            </div>
+            <div class="p-2 bg-yellow-50 rounded border-l-4 border-yellow-400">
+              <div class="text-xs font-medium text-yellow-800">Memory Warning</div>
+              <div class="text-xs text-yellow-600">master-node-1 - 15 min ago</div>
+            </div>
+            <div class="p-2 bg-blue-50 rounded border-l-4 border-blue-400">
+              <div class="text-xs font-medium text-blue-800">Network Latency</div>
+              <div class="text-xs text-blue-600">worker-node-1 - 5 min ago</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Stats Card -->
+        <div class="bg-white rounded-lg shadow border p-3">
+          <h4 class="text-sm font-semibold text-gray-700 mb-3">Quick Stats</h4>
+          <div class="grid grid-cols-2 gap-2">
+            <div class="p-2 bg-blue-50 rounded border text-center">
+              <div class="text-xs text-gray-600">Uptime</div>
+              <div class="text-sm font-bold text-blue-600">14d 6h</div>
+            </div>
+            <div class="p-2 bg-purple-50 rounded border text-center">
+              <div class="text-xs text-gray-600">Active Pods</div>
+              <div class="text-sm font-bold text-purple-600">47</div>
+            </div>
+            <div class="p-2 bg-indigo-50 rounded border text-center">
+              <div class="text-xs text-gray-600">Services</div>
+              <div class="text-sm font-bold text-indigo-600">12</div>
+            </div>
+            <div class="p-2 bg-green-50 rounded border text-center">
+              <div class="text-xs text-gray-600">Deployments</div>
+              <div class="text-sm font-bold text-green-600">8</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Resource Limits Card -->
+        <div class="bg-white rounded-lg shadow border p-3">
+          <h4 class="text-sm font-semibold text-gray-700 mb-3">Resource Limits</h4>
+          <div class="space-y-3">
+            <div>
+              <div class="flex justify-between items-center mb-1">
+                <span class="text-xs text-gray-600">CPU Requests</span>
+                <span class="text-xs font-medium">2.4 / 8 cores</span>
+              </div>
+              <div class="w-full bg-gray-200 rounded-full h-1.5">
+                <div class="bg-blue-500 h-1.5 rounded-full" style="width: 30%"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between items-center mb-1">
+                <span class="text-xs text-gray-600">Memory Requests</span>
+                <span class="text-xs font-medium">6.2 / 16 GB</span>
+              </div>
+              <div class="w-full bg-gray-200 rounded-full h-1.5">
+                <div class="bg-green-500 h-1.5 rounded-full" style="width: 39%"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between items-center mb-1">
+                <span class="text-xs text-gray-600">Storage Used</span>
+                <span class="text-xs font-medium">145 / 500 GB</span>
+              </div>
+              <div class="w-full bg-gray-200 rounded-full h-1.5">
+                <div class="bg-orange-500 h-1.5 rounded-full" style="width: 29%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
 
