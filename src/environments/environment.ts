@@ -1,6 +1,7 @@
 export const environment = {
   production: false,
   apiUrl: '/api',
+  metricsApiUrl: 'http://localhost:8086/api/metrics/nodes/',
   tokenKey: 'auth_token',
   refreshTokenKey: 'refresh_token',
   userKey: 'user',
