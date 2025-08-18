@@ -12,8 +12,6 @@ import * as Highcharts from 'highcharts';
 })
 export class EnergyAvailabilityHeatmapComponent implements OnInit, OnChanges {
   @Input() slots: any[] = [];
-
-  Highcharts: typeof Highcharts = Highcharts;
   chartOptions: Partial<Highcharts.Options> = {};
 
   constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
@@ -90,8 +88,8 @@ export class EnergyAvailabilityHeatmapComponent implements OnInit, OnChanges {
       chart: {
         type: 'heatmap',
         backgroundColor: 'transparent',
-        marginTop: 40,
-        marginBottom: 80,
+        marginTop: 20,
+        marginBottom: 10,
         plotBorderWidth: 0,
         borderWidth: 0
       },
