@@ -145,7 +145,7 @@ export class MetricsApiService {
    * @param data - Array of ChartDataPoint
    * @returns Object with node names as keys and chart data arrays as values
    */
-  private groupDataByNode(data: ChartDataPoint[]): { [nodeName: string]: [number, number][] } {
+  groupDataByNode(data: ChartDataPoint[]): { [nodeName: string]: [number, number][] } {
     const grouped: { [nodeName: string]: [number, number][] } = {};
     
     data.forEach(point => {

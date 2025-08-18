@@ -100,7 +100,7 @@ export class SystemUtilizationComponent implements OnInit, OnDestroy {
       plotOptions: {
         area: {
           fillOpacity: 0.3,
-          lineWidth: 2,
+          lineWidth: 1,
           marker: { enabled: false },
           states: { inactive: { opacity: 1 } }
         }
@@ -141,7 +141,7 @@ export class SystemUtilizationComponent implements OnInit, OnDestroy {
       plotOptions: {
         area: {
           fillOpacity: 0.3,
-          lineWidth: 2,
+          lineWidth: 1,
           marker: { enabled: false },
           states: { inactive: { opacity: 1 } }
         }
@@ -181,7 +181,7 @@ export class SystemUtilizationComponent implements OnInit, OnDestroy {
       legend: { enabled: true },
       plotOptions: {
         spline: {
-          lineWidth: 2,
+          lineWidth: 1,
           marker: { 
             enabled: false
           },
@@ -197,39 +197,48 @@ export class SystemUtilizationComponent implements OnInit, OnDestroy {
   private loadUtilizationData(): void {
     console.log('📡 Loading utilization data from API...');
 
-    forkJoin({
-      cpuUtilization: this.metricsApiService.getCpuUtilizationChartData(1000),
-      memoryUtilization: this.metricsApiService.getMemoryUtilizationChartData(1000),
-      energyWatts: this.metricsApiService.getEnergyWattsChartData(1000),
-    })
+    // Single API call to get all metrics data
+    this.metricsApiService.getMetrics(1000)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: ({ cpuUtilization, memoryUtilization, energyWatts }) => {
-          console.log('✅ Received utilization data:', {
-            cpuNodes: Object.keys(cpuUtilization).length,
-            memoryNodes: Object.keys(memoryUtilization).length,
-            energyNodes: Object.keys(energyWatts).length,
+        next: (response) => {
+          console.log('✅ Received metrics response:', {
+            totalMetrics: response.metrics.length,
+            status: response.status
           });
 
-          if (Object.keys(cpuUtilization).length > 0) {
-            this.setupCpuUtilizationChart(cpuUtilization);
+          if (response.metrics.length > 0) {
+            // Transform data for each chart type from the single response
+            const cpuUtilizationData = this.metricsApiService.groupDataByNode(
+              this.metricsApiService.transformCpuUtilizationData(response.metrics)
+            );
+            
+            const memoryUtilizationData = this.metricsApiService.groupDataByNode(
+              this.metricsApiService.transformMemoryUtilizationData(response.metrics)
+            );
+            
+            const energyWattsData = this.metricsApiService.groupDataByNode(
+              this.metricsApiService.transformEnergyWattsData(response.metrics)
+            );
+
+            console.log('📊 Transformed chart data:', {
+              cpuNodes: Object.keys(cpuUtilizationData).length,
+              memoryNodes: Object.keys(memoryUtilizationData).length,
+              energyNodes: Object.keys(energyWattsData).length,
+            });
+
+            // Setup charts with transformed data
+            this.setupCpuUtilizationChart(cpuUtilizationData);
+            this.setupMemoryUtilizationChart(memoryUtilizationData);
+            this.setupEnergyWattsChart(energyWattsData);
+            this.updateSummaryData(cpuUtilizationData, memoryUtilizationData, energyWattsData);
           } else {
+            console.warn('⚠️ No metrics data received, loading mock data...');
             this.loadMockCpuData();
-          }
-
-          if (Object.keys(memoryUtilization).length > 0) {
-            this.setupMemoryUtilizationChart(memoryUtilization);
-          } else {
             this.loadMockMemoryData();
-          }
-
-          if (Object.keys(energyWatts).length > 0) {
-            this.setupEnergyWattsChart(energyWatts);
-          } else {
             this.loadMockEnergyData();
+            this.updateSummaryWithMockData();
           }
-
-          this.updateSummaryData(cpuUtilization, memoryUtilization, energyWatts);
         },
         error: (error) => {
           console.error('❌ Error loading utilization data:', error);
@@ -286,7 +295,7 @@ export class SystemUtilizationComponent implements OnInit, OnDestroy {
             [1, `${color}10`],
           ],
         } as Highcharts.GradientColorObject,
-        lineWidth: 2,
+        lineWidth: 1,
         marker: { enabled: false },
       });
       colorIndex++;
@@ -327,7 +336,7 @@ export class SystemUtilizationComponent implements OnInit, OnDestroy {
       plotOptions: {
         area: {
           fillOpacity: 0.3,
-          lineWidth: 2,
+          lineWidth: 1,
           marker: { enabled: false },
           states: { inactive: { opacity: 1 } }
         }
@@ -382,7 +391,7 @@ export class SystemUtilizationComponent implements OnInit, OnDestroy {
             [1, `${color}10`],
           ],
         } as Highcharts.GradientColorObject,
-        lineWidth: 2,
+        lineWidth: 1,
         marker: { enabled: false },
       });
       colorIndex++;
@@ -423,7 +432,7 @@ export class SystemUtilizationComponent implements OnInit, OnDestroy {
       plotOptions: {
         area: {
           fillOpacity: 0.3,
-          lineWidth: 2,
+          lineWidth: 1,
           marker: { enabled: false },
           states: { inactive: { opacity: 1 } }
         }
@@ -471,7 +480,7 @@ export class SystemUtilizationComponent implements OnInit, OnDestroy {
         type: 'spline',
         data: data[nodeName],
         color: color,
-        lineWidth: 2,
+        lineWidth: 1,
         marker: { 
           enabled: false
         },
@@ -513,7 +522,7 @@ export class SystemUtilizationComponent implements OnInit, OnDestroy {
       legend: { enabled: true },
       plotOptions: {
         spline: {
-          lineWidth: 2,
+          lineWidth: 1,
           marker: { 
             enabled: false
           },
