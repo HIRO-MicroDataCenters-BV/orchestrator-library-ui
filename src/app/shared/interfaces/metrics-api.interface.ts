@@ -9,6 +9,8 @@ export interface NodeMetric {
   cpu_utilization_percent: number;
   memory_utilization_percent: number;
   memory_usage_bytes: number;
+  predicted_energy_watts: number;
+  prediction_confidence: string;
 }
 
 export interface MetricsApiResponse {

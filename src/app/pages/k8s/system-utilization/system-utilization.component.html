@@ -9,6 +9,14 @@
         <div class="text-xs text-gray-500">
           Last updated: {{utilizationSummary.lastUpdated | date:'short'}}
         </div>
+        <label class="flex items-center gap-1 text-xs">
+          <input 
+            type="checkbox" 
+            [(ngModel)]="showPredictions"
+            (change)="togglePredictions()"
+            class="w-3 h-3 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2">
+          <span class="text-gray-700">Show Predictions</span>
+        </label>
         <button 
           (click)="refreshData()"
           class="px-2 py-1 text-xs bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors flex items-center gap-1 cursor-pointer">
@@ -82,18 +90,21 @@
               <!--                </div>-->
               <!--              </div>-->
               <div class="w-full h-[250px]">
-                <highcharts-chart
-                  [options]="energyWattsChartOptions"
-                  class="w-full h-full"
-                  *ngIf="energyWattsChartOptions && energyWattsChartOptions.series && energyWattsChartOptions.series.length > 0"
-                ></highcharts-chart>
-                <div *ngIf="!energyWattsChartOptions?.series?.length"
-                     class="flex items-center justify-center h-full text-gray-500 bg-gray-50 rounded">
-                  <div class="text-center">
-                    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-600 mx-auto mb-4"></div>
-                    <p class="text-sm font-medium">Loading energy usage data...</p>
-                  </div>
+                <div *ngIf="energyWattsChartOptions && energyWattsChartOptions.series && energyWattsChartOptions.series.length > 0; else loadingEnergy" [attr.data-key]="chartKey">
+                  <highcharts-chart
+                    [options]="energyWattsChartOptions"
+                    [oneToOne]="true"
+                    class="w-full h-full"
+                  ></highcharts-chart>
                 </div>
+                <ng-template #loadingEnergy>
+                  <div class="flex items-center justify-center h-full text-gray-500 bg-gray-50 rounded">
+                    <div class="text-center">
+                      <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-600 mx-auto mb-4"></div>
+                      <p class="text-sm font-medium">Loading energy usage data...</p>
+                    </div>
+                  </div>
+                </ng-template>
               </div>
             </div>
             <!-- CPU Utilization Chart -->

@@ -16,9 +16,10 @@ export class MetricsApiService {
    * @param limit - Number of metrics to fetch (default: 100)
    * @param nodeName - Optional node name filter
    * @param hours - Optional hours filter
+   * @param includePredictions - Optional include predictions flag (default: true)
    * @returns Observable<MetricsApiResponse>
    */
-  getMetrics(limit = 10000, nodeName?: string, hours?: number): Observable<MetricsApiResponse> {
+  getMetrics(limit = 10000, nodeName?: string, hours?: number, includePredictions = true): Observable<MetricsApiResponse> {
     let params = new HttpParams().set('limit', limit.toString());
     
     if (nodeName) {
@@ -28,6 +29,8 @@ export class MetricsApiService {
     if (hours) {
       params = params.set('hours', hours.toString());
     }
+
+    params = params.set('include_predictions', includePredictions.toString());
 
     return this.http.get<MetricsApiResponse>(this.baseUrl, { params });
   }
@@ -122,6 +125,19 @@ export class MetricsApiService {
     return metrics.map(metric => ({
       timestamp: new Date(metric.timestamp).getTime(),
       value: (metric as any).energy_watts || 0, // Handle energy_watts field
+      nodeName: metric.node_name
+    })).sort((a, b) => a.timestamp - b.timestamp);
+  }
+
+  /**
+   * Transform metrics data for predicted energy watts chart
+   * @param metrics - Array of NodeMetric
+   * @returns Array of chart data points
+   */
+  transformPredictedEnergyWattsData(metrics: NodeMetric[]): ChartDataPoint[] {
+    return metrics.map(metric => ({
+      timestamp: new Date(metric.timestamp).getTime(),
+      value: metric.predicted_energy_watts,
       nodeName: metric.node_name
     })).sort((a, b) => a.timestamp - b.timestamp);
   }

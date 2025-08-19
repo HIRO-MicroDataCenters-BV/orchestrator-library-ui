@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { PLATFORM_ID } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { HighchartsChartComponent } from 'highcharts-angular';
 import * as Highcharts from 'highcharts';
 import { Subject, takeUntil, interval } from 'rxjs';
@@ -13,6 +14,7 @@ import { EnergyAvailabilityHeatmapComponent } from '../../../components/energy-a
   standalone: true,
   imports: [
     CommonModule,
+    FormsModule,
     HighchartsChartComponent,
     EnergyAvailabilityHeatmapComponent,
   ],
@@ -24,8 +26,14 @@ export class SystemUtilizationComponent implements OnInit, OnDestroy {
   memoryUtilizationChartOptions: Partial<Highcharts.Options> = {};
   energyWattsChartOptions: Partial<Highcharts.Options> = {};
   
+  // Chart recreation key
+  chartKey = 0;
+  
   // Make Math available in template
   Math = Math;
+  
+  // Prediction toggle state
+  showPredictions = true;
   
   // Energy availability heatmap data
   energyAvailabilitySlots: any[] = [];
@@ -264,7 +272,7 @@ export class SystemUtilizationComponent implements OnInit, OnDestroy {
     console.log('📡 Loading utilization data from API...');
 
     // Single API call to get all metrics data
-    this.metricsApiService.getMetrics(1000)
+    this.metricsApiService.getMetrics(1000, undefined, undefined, this.showPredictions)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (response) => {
@@ -286,6 +294,10 @@ export class SystemUtilizationComponent implements OnInit, OnDestroy {
             const energyWattsData = this.metricsApiService.groupDataByNode(
               this.metricsApiService.transformEnergyWattsData(response.metrics)
             );
+            
+            const predictedEnergyWattsData = this.showPredictions ? this.metricsApiService.groupDataByNode(
+              this.metricsApiService.transformPredictedEnergyWattsData(response.metrics)
+            ) : undefined;
 
             console.log('📊 Transformed chart data:', {
               cpuNodes: Object.keys(cpuUtilizationData).length,
@@ -296,14 +308,20 @@ export class SystemUtilizationComponent implements OnInit, OnDestroy {
             // Setup charts with transformed data
             this.setupCpuUtilizationChart(cpuUtilizationData);
             this.setupMemoryUtilizationChart(memoryUtilizationData);
-            this.setupEnergyWattsChart(energyWattsData);
+            this.setupEnergyWattsChart(energyWattsData, predictedEnergyWattsData);
             this.updateSummaryData(cpuUtilizationData, memoryUtilizationData, energyWattsData);
+            
+            // Force chart updates
+            this.chartKey++;
           } else {
             console.warn('⚠️ No metrics data received, loading mock data...');
             this.loadMockCpuData();
             this.loadMockMemoryData();
             this.loadMockEnergyData();
             this.updateSummaryWithMockData();
+            
+            // Force chart updates
+            this.chartKey++;
           }
         },
         error: (error) => {
@@ -313,6 +331,8 @@ export class SystemUtilizationComponent implements OnInit, OnDestroy {
           this.loadMockMemoryData();
           this.loadMockEnergyData();
           this.updateSummaryWithMockData();
+          
+          // Force chart updates
         },
       });
   }
@@ -327,7 +347,7 @@ export class SystemUtilizationComponent implements OnInit, OnDestroy {
     // Calculate min and max values from all data points
     let allValues: number[] = [];
     Object.values(data).forEach(nodeData => {
-      nodeData.forEach(([_, value]) => allValues.push(value));
+      nodeData.forEach(([, value]) => allValues.push(value));
     });
 
     let yAxisMin = 0;
@@ -423,7 +443,7 @@ export class SystemUtilizationComponent implements OnInit, OnDestroy {
     // Calculate min and max values from all data points
     let allValues: number[] = [];
     Object.values(data).forEach(nodeData => {
-      nodeData.forEach(([_, value]) => allValues.push(value));
+      nodeData.forEach(([, value]) => allValues.push(value));
     });
 
     let yAxisMin = 0;
@@ -509,18 +529,24 @@ export class SystemUtilizationComponent implements OnInit, OnDestroy {
     console.log('✅ Memory Utilization chart updated with dynamic Y-axis');
   }
 
-  private setupEnergyWattsChart(data: { [nodeName: string]: [number, number][] }): void {
-    console.log('📊 Setting up Energy Watts chart');
+  private setupEnergyWattsChart(data: { [nodeName: string]: [number, number][] }, predictedData?: { [nodeName: string]: [number, number][] }): void {
+    console.log('📊 Setting up Energy Watts chart', { showPredictions: this.showPredictions, hasPredictedData: !!predictedData });
     
     const series: Highcharts.SeriesOptionsType[] = [];
     const colors = ['#f59e0b', '#ef4444', '#10b981', '#3b82f6', '#8b5cf6', '#f97316'];
     let colorIndex = 0;
 
-    // Calculate min and max values from all data points
+    // Calculate min and max values from all data points including predicted data
     let allValues: number[] = [];
     Object.values(data).forEach(nodeData => {
-      nodeData.forEach(([_, value]) => allValues.push(value));
+      nodeData.forEach(([, value]) => allValues.push(value));
     });
+    
+    if (predictedData) {
+      Object.values(predictedData).forEach(nodeData => {
+        nodeData.forEach(([, value]) => allValues.push(value));
+      });
+    }
 
     let yAxisMin = 0;
     let yAxisMax = undefined;
@@ -539,6 +565,7 @@ export class SystemUtilizationComponent implements OnInit, OnDestroy {
       console.log(`📊 Energy chart Y-axis range: ${yAxisMin.toFixed(1)}W to ${yAxisMax.toFixed(1)}W (data range: ${dataMin.toFixed(1)}W - ${dataMax.toFixed(1)}W)`);
     }
 
+    // Add actual energy data series
     Object.keys(data).forEach((nodeName) => {
       const color = colors[colorIndex % colors.length];
       series.push({
@@ -554,12 +581,37 @@ export class SystemUtilizationComponent implements OnInit, OnDestroy {
       colorIndex++;
     });
 
-    // Update the energy chart options with dynamic Y-axis
+    // Add predicted energy data series if available
+    if (predictedData) {
+      const predictedColors = ['#1e40af', '#2563eb', '#3b82f6', '#60a5fa', '#93c5fd', '#dbeafe'];
+      let predictedColorIndex = 0;
+      
+      Object.keys(predictedData).forEach((nodeName) => {
+        const predictedColor = predictedColors[predictedColorIndex % predictedColors.length];
+        series.push({
+          name: `${nodeName} (Predicted)`,
+          type: 'spline',
+          data: predictedData[nodeName],
+          color: predictedColor,
+          lineWidth: 1,
+          dashStyle: 'Dash',
+          marker: { 
+            enabled: false
+          },
+        });
+        predictedColorIndex++;
+      });
+    }
+
+    // Create completely new chart options to force refresh
     this.energyWattsChartOptions = {
       chart: { 
         type: 'spline', 
         backgroundColor: 'transparent',
-        height: 300 
+        height: 300,
+        animation: false,
+        // Add unique key to force recreation
+        renderTo: `energy-chart-${this.chartKey}`
       },
       title: { text: undefined },
       credits: { enabled: false },
@@ -595,10 +647,15 @@ export class SystemUtilizationComponent implements OnInit, OnDestroy {
           states: { inactive: { opacity: 1 } }
         }
       },
-      series: series
+      series: [...series] // Create new array to ensure change detection
     };
 
-    console.log('✅ Energy Watts chart updated with dynamic Y-axis');
+    console.log('✅ Energy Watts chart updated with dynamic Y-axis', {
+      totalSeries: series.length,
+      seriesNames: series.map(s => s.name),
+      showPredictions: this.showPredictions,
+      hasPredictedData: !!predictedData
+    });
   }
 
   private loadMockCpuData(): void {
@@ -663,17 +720,17 @@ export class SystemUtilizationComponent implements OnInit, OnDestroy {
 
     // Collect all CPU values
     Object.values(cpuData).forEach(nodeData => {
-      nodeData.forEach(([_, value]) => allCpuValues.push(value));
+      nodeData.forEach(([, value]) => allCpuValues.push(value));
     });
 
     // Collect all memory values (now percentages)
     Object.values(memoryData).forEach(nodeData => {
-      nodeData.forEach(([_, value]) => allMemoryValues.push(value));
+      nodeData.forEach(([, value]) => allMemoryValues.push(value));
     });
 
     // Collect all energy values
     Object.values(energyData).forEach(nodeData => {
-      nodeData.forEach(([_, value]) => allEnergyValues.push(value));
+      nodeData.forEach(([, value]) => allEnergyValues.push(value));
     });
 
     this.utilizationSummary = {
@@ -718,6 +775,19 @@ export class SystemUtilizationComponent implements OnInit, OnDestroy {
   refreshData(): void {
     console.log('🔄 Manual refresh triggered');
     this.loadUtilizationData();
+  }
+
+  togglePredictions(): void {
+    console.log('🔄 Prediction toggle changed:', this.showPredictions);
+    
+    // Clear chart options to force complete rebuild
+    this.energyWattsChartOptions = {};
+    this.chartKey++;
+    
+    // Small delay to ensure the chart is cleared before rebuilding
+    setTimeout(() => {
+      this.loadUtilizationData();
+    }, 50);
   }
 
   private loadMockEnergyAvailabilityData(): void {
