@@ -9,21 +9,42 @@ import { createProxyMiddleware } from 'http-proxy-middleware';
 import { join } from 'node:path';
 import type { Request, Response } from 'express';
 
+// Environment variables configuration
+const config = {
+  api: process.env['API_TARGET'] || 'http://51.44.28.47:30015',
+  dex: process.env['DEX_TARGET'] || 'http://51.44.28.47:30080',
+  dashboard: process.env['DASHBOARD_TARGET'] || 'http://51.44.28.47:30016',
+  grafana: process.env['GRAFANA_TARGET'] || 'http://51.44.28.47:30000',
+  cog: process.env['COG_TARGET'] || 'https://dashboard.cog.hiro-develop.nl',
+};
+
 const browserDistFolder = join(import.meta.dirname, '../browser');
 
 const app = express();
 const angularApp = new AngularNodeAppEngine();
 
 /**
+ * Health check endpoint for Docker health checks
+ * Must be defined before all other middleware
+ */
+app.get('/health', (req, res) => {
+  res.status(200).json({
+    status: 'healthy',
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+  });
+});
+
+/**
  * Middleware to modify proxy responses
  */
-function modifyProxyHeaders(proxyPath: string) {
-  return (req: Request, res: Response, next: any) => {
+function modifyProxyHeaders(_proxyPath: string) {
+  return (req: Request, res: Response, next: (error?: unknown) => void) => {
     const originalSend = res.send;
     const originalJson = res.json;
 
     // Override response methods to add headers
-    res.send = function (body: any) {
+    res.send = function (body: unknown) {
       // Add CORS headers
       res.header('Access-Control-Allow-Origin', '*');
       res.header('Access-Control-Allow-Credentials', 'true');
@@ -43,7 +64,7 @@ function modifyProxyHeaders(proxyPath: string) {
       return originalSend.call(this, body);
     };
 
-    res.json = function (obj: any) {
+    res.json = function (obj: unknown) {
       // Add CORS headers
       res.header('Access-Control-Allow-Origin', '*');
       res.header('Access-Control-Allow-Credentials', 'true');
@@ -70,7 +91,11 @@ function modifyProxyHeaders(proxyPath: string) {
 /**
  * Middleware to handle token extraction for iframe routes
  */
-function extractTokenFromURL(req: Request, res: Response, next: any) {
+function extractTokenFromURL(
+  req: Request,
+  res: Response,
+  next: (error?: unknown) => void
+) {
   if (req.url) {
     const url = new URL(req.url, `http://${req.headers.host}`);
     const token = url.searchParams.get('access_token');
@@ -92,7 +117,7 @@ app.use('/iframe-dashboard', modifyProxyHeaders('/iframe-dashboard'));
 app.use(
   '/iframe-dashboard',
   createProxyMiddleware({
-    target: 'http://51.44.28.47:30016',
+    target: config.dashboard,
     changeOrigin: true,
     followRedirects: true,
     pathRewrite: { '^/iframe-dashboard': '' },
@@ -107,7 +132,7 @@ app.use(
 app.use(
   '/iframe-grafana',
   createProxyMiddleware({
-    target: 'http://51.44.28.47:30000',
+    target: config.grafana,
     changeOrigin: true,
     followRedirects: true,
     pathRewrite: { '^/iframe-grafana': '' },
@@ -118,7 +143,7 @@ app.use('/iframe-cog', extractTokenFromURL, modifyProxyHeaders('/iframe-cog'));
 app.use(
   '/iframe-cog',
   createProxyMiddleware({
-    target: 'https://dashboard.cog.hiro-develop.nl',
+    target: config.cog,
     changeOrigin: true,
     secure: false,
     followRedirects: true,
@@ -129,7 +154,7 @@ app.use(
 app.use(
   '/api',
   createProxyMiddleware({
-    target: 'http://51.44.28.47:30015',
+    target: config.api,
     changeOrigin: true,
     followRedirects: true,
     pathRewrite: { '^/api': '' },
@@ -139,7 +164,7 @@ app.use(
 app.use(
   '/dex',
   createProxyMiddleware({
-    target: 'http://51.44.28.47:30080',
+    target: config.dex,
     changeOrigin: true,
     followRedirects: true,
   })
@@ -148,7 +173,7 @@ app.use(
 app.use(
   '/authservice',
   createProxyMiddleware({
-    target: 'http://51.44.28.47:30080',
+    target: config.dex,
     changeOrigin: true,
     followRedirects: true,
   })
@@ -157,7 +182,7 @@ app.use(
 app.use(
   '/.well-known',
   createProxyMiddleware({
-    target: 'http://51.44.28.47:30080',
+    target: config.dex,
     changeOrigin: true,
     followRedirects: true,
     pathRewrite: { '^/.well-known': '/dex/.well-known' },
@@ -205,14 +230,19 @@ app.use((req, res, next) => {
  */
 if (isMainModule(import.meta.url)) {
   const port = process.env['PORT'] || 4000;
-  app.listen(port, (error) => {
+  app.listen(port, (error?: unknown) => {
     if (error) {
       throw error;
     }
 
-    if (process.env['NODE_ENV'] !== 'production') {
-      console.log(`Node Express server listening on http://localhost:${port}`);
-    }
+    console.log(`Node Express server listening on http://localhost:${port}`);
+    console.log('Proxy configuration:', {
+      api: config.api,
+      dashboard: config.dashboard,
+      grafana: config.grafana,
+      cog: config.cog,
+      dex: config.dex,
+    });
   });
 }
 

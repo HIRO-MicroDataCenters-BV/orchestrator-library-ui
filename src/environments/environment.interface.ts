@@ -12,6 +12,7 @@ export interface Environment {
   dashboardUrl: string;
   cogUrl: string;
   grafanaUrl: string;
+  dexUrl: string;
   oidc: {
     authority: string;
     clientId: string;

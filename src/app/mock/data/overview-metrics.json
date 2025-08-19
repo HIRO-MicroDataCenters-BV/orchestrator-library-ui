@@ -1,0 +1,202 @@
+{
+  "cluster_info": {
+    "cluster_name": "production-cluster",
+    "status": "healthy",
+    "kubernetes_version": "v1.28.2",
+    "nodes": {
+      "total": 15,
+      "ready": 14,
+      "not_ready": 1
+    },
+    "pods": {
+      "total": 342,
+      "running": 328,
+      "pending": 8,
+      "failed": 6
+    },
+    "cpu": {
+      "total": "60 cores",
+      "used": "41.2 cores",
+      "usage_percent": 68.7
+    },
+    "memory": {
+      "total": "240 GB",
+      "used": "173.5 GB",
+      "usage_percent": 72.3
+    },
+    "storage": {
+      "total": "2.5 TB",
+      "used": "1.8 TB",
+      "usage_percent": 72.0
+    },
+    "namespaces": {
+      "total": 12,
+      "active": 11
+    },
+    "workloads": {
+      "deployments": 45,
+      "statefulsets": 8,
+      "daemonsets": 6,
+      "jobs": 23,
+      "cronjobs": 12
+    }
+  },
+  "recent_alerts": [
+    {
+      "id": "alert-001",
+      "alert_type": "High CPU Usage",
+      "alert_description": "Node worker-3 CPU usage exceeded 90%",
+      "severity": "warning",
+      "timestamp": "2025-01-16T15:30:00Z",
+      "node_name": "worker-3",
+      "status": "active"
+    },
+    {
+      "id": "alert-002",
+      "alert_type": "Pod Restart",
+      "alert_description": "Pod nginx-deployment-xyz restarted 5 times",
+      "severity": "critical",
+      "timestamp": "2025-01-16T14:45:00Z",
+      "pod_name": "nginx-deployment-xyz",
+      "status": "resolved"
+    },
+    {
+      "id": "alert-003",
+      "alert_type": "Network Anomaly",
+      "alert_description": "Unusual traffic pattern detected",
+      "severity": "info",
+      "timestamp": "2025-01-16T13:20:00Z",
+      "source_ip": "10.0.1.45",
+      "status": "investigating"
+    },
+    {
+      "id": "alert-004",
+      "alert_type": "Storage Full",
+      "alert_description": "PV storage-pv-001 is 95% full",
+      "severity": "warning",
+      "timestamp": "2025-01-16T12:15:00Z",
+      "pv_name": "storage-pv-001",
+      "status": "active"
+    },
+    {
+      "id": "alert-005",
+      "alert_type": "Service Down",
+      "alert_description": "Service api-gateway is unreachable",
+      "severity": "critical",
+      "timestamp": "2025-01-16T11:30:00Z",
+      "service_name": "api-gateway",
+      "status": "active"
+    }
+  ],
+  "recent_workload_decisions": [
+    {
+      "id": "decision-001",
+      "pod_name": "ml-training-pod-456",
+      "decision_status": "approved",
+      "cpu_requested": "2000m",
+      "memory_requested": "4096Mi",
+      "node_assigned": "gpu-worker-1",
+      "queue": "ml-training",
+      "timestamp": "2025-01-16T15:45:00Z"
+    },
+    {
+      "id": "decision-002",
+      "pod_name": "web-app-pod-789",
+      "decision_status": "pending",
+      "cpu_requested": "500m",
+      "memory_requested": "1024Mi",
+      "node_assigned": null,
+      "queue": "default",
+      "timestamp": "2025-01-16T15:40:00Z"
+    },
+    {
+      "id": "decision-003",
+      "pod_name": "data-processor-123",
+      "decision_status": "rejected",
+      "cpu_requested": "8000m",
+      "memory_requested": "16384Mi",
+      "node_assigned": null,
+      "queue": "batch-processing",
+      "timestamp": "2025-01-16T15:35:00Z",
+      "rejection_reason": "Insufficient resources"
+    },
+    {
+      "id": "decision-004",
+      "pod_name": "cache-redis-567",
+      "decision_status": "approved",
+      "cpu_requested": "1000m",
+      "memory_requested": "2048Mi",
+      "node_assigned": "worker-2",
+      "queue": "system",
+      "timestamp": "2025-01-16T15:30:00Z"
+    },
+    {
+      "id": "decision-005",
+      "pod_name": "log-collector-890",
+      "decision_status": "approved",
+      "cpu_requested": "250m",
+      "memory_requested": "512Mi",
+      "node_assigned": "worker-4",
+      "queue": "monitoring",
+      "timestamp": "2025-01-16T15:25:00Z"
+    }
+  ],
+  "recent_served_models": [
+    {
+      "id": "model-001",
+      "model_name": "bert-large-uncased",
+      "version": "v1.2.3",
+      "status": "serving",
+      "replicas": 3,
+      "cpu_usage": "1.2 cores",
+      "memory_usage": "3.8 GB",
+      "requests_per_minute": 450,
+      "last_updated": "2025-01-16T14:30:00Z"
+    },
+    {
+      "id": "model-002",
+      "model_name": "resnet-50-classification",
+      "version": "v2.1.0",
+      "status": "scaling",
+      "replicas": 2,
+      "cpu_usage": "2.1 cores",
+      "memory_usage": "5.2 GB",
+      "requests_per_minute": 230,
+      "last_updated": "2025-01-16T14:15:00Z"
+    },
+    {
+      "id": "model-003",
+      "model_name": "gpt-sentiment-analysis",
+      "version": "v1.0.5",
+      "status": "serving",
+      "replicas": 1,
+      "cpu_usage": "0.8 cores",
+      "memory_usage": "2.1 GB",
+      "requests_per_minute": 120,
+      "last_updated": "2025-01-16T13:45:00Z"
+    },
+    {
+      "id": "model-004",
+      "model_name": "object-detection-yolo",
+      "version": "v3.0.1",
+      "status": "failed",
+      "replicas": 0,
+      "cpu_usage": "0 cores",
+      "memory_usage": "0 GB",
+      "requests_per_minute": 0,
+      "last_updated": "2025-01-16T13:30:00Z",
+      "error_message": "Model loading failed"
+    },
+    {
+      "id": "model-005",
+      "model_name": "recommendation-engine",
+      "version": "v1.8.2",
+      "status": "serving",
+      "replicas": 4,
+      "cpu_usage": "3.2 cores",
+      "memory_usage": "7.5 GB",
+      "requests_per_minute": 680,
+      "last_updated": "2025-01-16T13:00:00Z"
+    }
+  ]
+}

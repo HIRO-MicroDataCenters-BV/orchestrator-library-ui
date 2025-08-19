@@ -60,7 +60,7 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanMatch {
   /**
    * Main authentication check logic
    */
-  private checkAuth(url: string, routeData?: any): Observable<boolean> {
+  private checkAuth(url: string, routeData?: Record<string, unknown>): Observable<boolean> {
     // For SSR, always allow access to prevent blocking
     if (!this.isBrowser) {
       return of(true);

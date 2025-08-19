@@ -16,6 +16,24 @@ import {
   untracked,
   ViewChild,
 } from '@angular/core';
+
+// Define interfaces for type safety
+interface Condition {
+  prop: string;
+  if: 'eq' | 'neq';
+  value: string;
+}
+
+interface StructItem {
+  icon: string;
+  prop: string;
+  condition?: Condition;
+}
+
+interface Struct {
+  title: string | null;
+  items: StructItem[];
+}
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import {
@@ -196,9 +214,9 @@ export class AppTableComponent implements OnChanges, OnInit {
   @Input('showHeader') showHeader = true;
   @Input('showFooter') showFooter = true;
   @Input('pageSize') pageSize?: number;
-  @Input('detailsStruct') detailsStruct: any = [];
+  @Input('detailsStruct') detailsStruct: Struct[] = [];
 
-  details: any = {};
+  details: Record<string, unknown> = {};
   detailsTitle = '';
 
   ACTION_ICONS: Record<string, string> = {
@@ -273,8 +291,10 @@ export class AppTableComponent implements OnChanges, OnInit {
   getDuration(start: string, end: string) {
     return getDuration(start, end);
   }
-  // TODO: Implement sorting logic for all columns
+  // Column sorting implementation
   private readonly _colSort = signal<'ASC' | 'DESC' | null>(null);
+  private readonly _sortColumn = signal<string | null>(null);
+  private readonly _searchFilter = signal<string>('');
   protected readonly _filteredSortedPaginatedItems = computed(() => {
     const sort = this._colSort();
     const start = this._displayedIndices().start;
@@ -408,8 +428,35 @@ export class AppTableComponent implements OnChanges, OnInit {
     */
   }
 
-  public setFilter() {
-    // TODO: Implement tab filtering
+  public setFilter(filterValue?: string) {
+    if (filterValue) {
+      this._searchFilter.set(filterValue);
+    }
+  }
+
+  public sortByColumn(column: string) {
+    const currentSort = this._colSort();
+    const currentColumn = this._sortColumn();
+
+    if (currentColumn === column) {
+      // Toggle sort direction for same column
+      if (currentSort === 'ASC') {
+        this._colSort.set('DESC');
+      } else if (currentSort === 'DESC') {
+        this._colSort.set(null);
+        this._sortColumn.set(null);
+      } else {
+        this._colSort.set('ASC');
+      }
+    } else {
+      // New column, start with ASC
+      this._sortColumn.set(column);
+      this._colSort.set('ASC');
+    }
+  }
+
+  public getSortDirection(column: string): 'ASC' | 'DESC' | null {
+    return this._sortColumn() === column ? this._colSort() : null;
   }
 
   getStatusColor(status: string | number | boolean): string {

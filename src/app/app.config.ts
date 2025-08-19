@@ -17,6 +17,7 @@ import { routes } from './app.routes';
 import { authInterceptor } from './core/services/auth/auth.interceptor';
 import { apiInterceptor } from './core/interceptors/api.interceptor';
 
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(

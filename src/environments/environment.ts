@@ -7,12 +7,13 @@ export const environment = {
   dashboardUrl: '/iframe-dashboard',
   cogUrl: '/iframe-cog',
   grafanaUrl: '/iframe-grafana',
+  dexUrl: 'https://dashboard.cog.hiro-develop.nl/apidev',
 
   // OIDC Configuration
   oidc: {
     authority: 'http://51.44.28.47:30015/dex',
     clientId: 'authservice-oidc',
-    clientSecret: '8KD8XQ11DTP1685XF8TK3844QAYY7Q',
+    clientSecret: '${OIDC_CLIENT_SECRET}',
     scope: 'openid profile email groups',
     responseType: 'code',
     silentRenew: true,
