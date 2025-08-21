@@ -159,7 +159,8 @@ export class EnergyAvailabilityHeatmapComponent implements OnInit, OnChanges, On
           available_watts: availableWatts,
           weather_condition: weatherCondition,
           weather_icon: weatherIcon,
-          weather_dependency: weatherCondition !== 'CLEAR'
+          weather_dependency: weatherCondition !== 'CLEAR',
+          energy_source_type: 'Solar'
         });
       }
     }
@@ -171,7 +172,7 @@ export class EnergyAvailabilityHeatmapComponent implements OnInit, OnChanges, On
     const dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
     const timeSlots = ['00-06', '06-12', '12-18', '18-24'];
 
-    const dataMap = new Map<string, {watts: number, weatherIcon: string, weatherCondition: string}>();
+    const dataMap = new Map<string, {watts: number, weatherIcon: string, weatherCondition: string, energySourceType: string}>();
 
     (this.energySlots || []).forEach(slot => {
       const startDate = new Date(slot.slot_start_time);
@@ -183,7 +184,8 @@ export class EnergyAvailabilityHeatmapComponent implements OnInit, OnChanges, On
       dataMap.set(key, {
         watts: slot.available_watts || 0,
         weatherIcon: slot.weather_icon || '☀️',
-        weatherCondition: slot.weather_condition || 'CLEAR'
+        weatherCondition: slot.weather_condition || 'CLEAR',
+        energySourceType: slot.energy_source_type || 'Solar'
       });
     });
 
@@ -197,7 +199,7 @@ export class EnergyAvailabilityHeatmapComponent implements OnInit, OnChanges, On
     for (let day = 0; day < 7; day++) {
       for (let timeSlot = 0; timeSlot < 4; timeSlot++) {
         const key = `${day}-${timeSlot}`;
-        const slotData = dataMap.get(key) || { watts: 0, weatherIcon: '☀️', weatherCondition: 'CLEAR' };
+        const slotData = dataMap.get(key) || { watts: 0, weatherIcon: '☀️', weatherCondition: 'CLEAR', energySourceType: 'Solar' };
         const value = slotData.watts;
         
         // Highlight the cell for today's date and current time slot
@@ -209,7 +211,8 @@ export class EnergyAvailabilityHeatmapComponent implements OnInit, OnChanges, On
             borderColor: '#2563eb',
             borderWidth: 1,
             weatherIcon: slotData.weatherIcon,
-            weatherCondition: slotData.weatherCondition
+            weatherCondition: slotData.weatherCondition,
+            energy_source_type: slotData.energySourceType
           });
         } else {
           heatmapData.push({
@@ -217,7 +220,8 @@ export class EnergyAvailabilityHeatmapComponent implements OnInit, OnChanges, On
             y: day,
             value,
             weatherIcon: slotData.weatherIcon,
-            weatherCondition: slotData.weatherCondition
+            weatherCondition: slotData.weatherCondition,
+            energy_source_type: slotData.energySourceType
           });
         }
       }
@@ -329,11 +333,15 @@ export class EnergyAvailabilityHeatmapComponent implements OnInit, OnChanges, On
           const value = this.value || 0;
           const weatherIcon = this.point.weatherIcon || '☀️';
           const weatherCondition = this.point.weatherCondition || 'CLEAR';
+          const energySourceType = this.point.energy_source_type || 'Solar';
           const fullTimeSlot = timeSlot.replace('-', ':00-') + ':00';
           return `
             <div style="background-color: white; border-radius: 6px; padding: 8px; text-align: center; min-width: 120px; box-sizing: border-box;">
               <strong style="color: #2563eb; font-size: 12px;">${day}</strong><br/>
               <span style="color: #666; font-size: 10px;">${fullTimeSlot}</span><br/>
+              <div style="margin: 2px 0; padding: 2px 4px; background: linear-gradient(90deg, #fbbf24, #f59e0b); border-radius: 4px;">
+                <span style="color: white; font-size: 9px; font-weight: bold;">☀️ ${energySourceType} Energy</span>
+              </div>
               <div style="margin: 4px 0; padding: 2px 0; border-top: 1px solid #eee;">
                 <strong style="color: #059669;">${(value / 1000).toFixed(1)}kW</strong><br/>
                 <span style="font-size: 9px; color: #888;">(${value.toLocaleString()}W)</span>
