@@ -138,3 +138,24 @@ jobs:
             --set app.service.port=80 \
             --set app.service.nodePort=${{ vars.ORCHESTRATOR_LIBRARY_UI_NODE_PORT }} \
             ${{ steps.helm-dry-run.outputs.flag }}
+
+      - name: Check deployment status
+        if: github.event_name == 'push'
+        run: |
+          echo "Waiting for deployment to be ready..."
+          sleep 10
+
+          echo "Checking pod status..."
+          kubectl get pods -n ${{ vars.ORCHESTRATOR_LIBRARY_UI_NAMESPACE }} -l app=${{ vars.ORCHESTRATOR_LIBRARY_UI_RELEASE_NAME }}
+
+          echo "Getting pod logs..."
+          POD_NAME=$(kubectl get pods -n ${{ vars.ORCHESTRATOR_LIBRARY_UI_NAMESPACE }} -l app=${{ vars.ORCHESTRATOR_LIBRARY_UI_RELEASE_NAME }} -o jsonpath='{.items[0].metadata.name}' 2>/dev/null || echo "")
+          if [ ! -z "$POD_NAME" ]; then
+            echo "Pod logs for $POD_NAME:"
+            kubectl logs $POD_NAME -n ${{ vars.ORCHESTRATOR_LIBRARY_UI_NAMESPACE }} --tail=50 || echo "Could not retrieve logs"
+          else
+            echo "No pod found"
+          fi
+
+          echo "Checking service..."
+          kubectl get service ${{ vars.ORCHESTRATOR_LIBRARY_UI_RELEASE_NAME }} -n ${{ vars.ORCHESTRATOR_LIBRARY_UI_NAMESPACE }}
