@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 set -e
 
 echo "🔧 Replacing OIDC Client Secret in Angular build"
@@ -6,7 +6,7 @@ echo "==============================================="
 
 # Find the main JavaScript file
 BROWSER_DIR="/usr/app/dist/orchestration_library-front/browser"
-MAIN_JS_FILE=$(find "$BROWSER_DIR" -name "main.*.js" -type f | head -1)
+MAIN_JS_FILE=$(find "$BROWSER_DIR" -name "main-*.js" -type f | head -1)
 
 if [ -z "$MAIN_JS_FILE" ]; then
     echo "❌ Main JavaScript file not found"
