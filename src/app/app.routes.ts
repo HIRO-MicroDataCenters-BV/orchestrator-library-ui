@@ -87,6 +87,14 @@ export const routes: Routes = [
         data: { title: 'System Utilization' },
       },
       {
+        path: 'workload-deployment',
+        loadComponent: () =>
+          import('./pages/k8s/workload-deployment/workload-deployment.component').then(
+            (m) => m.WorkloadDeploymentComponent
+          ),
+        data: { title: 'Workload Deployment' },
+      },
+      {
         path: 'k8s',
         loadComponent: () =>
           import('./pages/k8s/k8s.component').then((m) => m.K8sComponent),
