@@ -142,12 +142,17 @@ export class EnergyAvailabilityHeatmapComponent implements OnInit, OnChanges, On
 
         // Apply weather multiplier to energy availability
         const weatherMultiplier = this.weatherConditions[weatherCondition as keyof typeof this.weatherConditions].multiplier;
-        let weatherIcon = this.weatherConditions[weatherCondition as keyof typeof this.weatherConditions].icon;
+        let weatherIcon = '';
         
-        // Override with moon icon for night time slots (00-06 and 18-24)
-        if (timeSlot === 0 || timeSlot === 3) {
-          weatherIcon = '🌙';
+        // Only show icons for cloudy, rainy, and thunderstorm conditions
+        if (weatherCondition === 'CLOUDY') {
+          weatherIcon = '☁️';
+        } else if (weatherCondition === 'RAINY') {
+          weatherIcon = '🌧️';
+        } else if (weatherCondition === 'THUNDERSTORM') {
+          weatherIcon = '⛈️';
         }
+        // Clear conditions show no icon
         
         // Add some random variation
         const variation = Math.random() * 800 - 400;
@@ -183,7 +188,7 @@ export class EnergyAvailabilityHeatmapComponent implements OnInit, OnChanges, On
       const key = `${adjustedDay}-${timeSlotIndex}`;
       dataMap.set(key, {
         watts: slot.available_watts || 0,
-        weatherIcon: slot.weather_icon || '☀️',
+        weatherIcon: slot.weather_icon || '',
         weatherCondition: slot.weather_condition || 'CLEAR',
         energySourceType: slot.energy_source_type || 'Solar'
       });
@@ -199,7 +204,7 @@ export class EnergyAvailabilityHeatmapComponent implements OnInit, OnChanges, On
     for (let day = 0; day < 7; day++) {
       for (let timeSlot = 0; timeSlot < 4; timeSlot++) {
         const key = `${day}-${timeSlot}`;
-        const slotData = dataMap.get(key) || { watts: 0, weatherIcon: '☀️', weatherCondition: 'CLEAR', energySourceType: 'Solar' };
+        const slotData = dataMap.get(key) || { watts: 0, weatherIcon: '', weatherCondition: 'CLEAR', energySourceType: 'Solar' };
         const value = slotData.watts;
         
         // Highlight the cell for today's date and current time slot
@@ -231,7 +236,7 @@ export class EnergyAvailabilityHeatmapComponent implements OnInit, OnChanges, On
       chart: {
         type: 'heatmap',
         backgroundColor: 'transparent',
-        marginTop: 20,
+        marginTop: 0,
         marginBottom: 10,
         plotBorderWidth: 0,
         borderWidth: 0,
@@ -257,6 +262,8 @@ export class EnergyAvailabilityHeatmapComponent implements OnInit, OnChanges, On
         categories: timeSlots,
         title: { text: '', style: { fontSize: '1px' } },
         opposite: true,
+        lineWidth: 0,
+        tickWidth: 0,
         labels: {
           style: {
             fontSize: '9px',
@@ -274,6 +281,8 @@ export class EnergyAvailabilityHeatmapComponent implements OnInit, OnChanges, On
         categories: dayNames,
         title: { text: '', style: { fontSize: '1px' } },
         reversed: true,
+        lineWidth: 0,
+        tickWidth: 0,
         labels: {
           style: {
             fontSize: '9px',
@@ -331,7 +340,7 @@ export class EnergyAvailabilityHeatmapComponent implements OnInit, OnChanges, On
           const timeSlot = timeSlots[this.x];
           const day = dayNames[this.y];
           const value = this.value || 0;
-          const weatherIcon = this.point.weatherIcon || '☀️';
+          const weatherIcon = this.point.weatherIcon || '';
           const weatherCondition = this.point.weatherCondition || 'CLEAR';
           const energySourceType = this.point.energy_source_type || 'Solar';
           const fullTimeSlot = timeSlot.replace('-', ':00-') + ':00';
@@ -346,9 +355,9 @@ export class EnergyAvailabilityHeatmapComponent implements OnInit, OnChanges, On
                 <strong style="color: #059669;">${(value / 1000).toFixed(1)}kW</strong><br/>
                 <span style="font-size: 9px; color: #888;">(${value.toLocaleString()}W)</span>
               </div>
-              <div style="margin-top: 4px; font-size: 11px;">
+              ${weatherIcon ? `<div style="margin-top: 4px; font-size: 11px;">
                 <span style="font-size: 14px; filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));">${weatherIcon}</span> <span style="color: #7c3aed;">${weatherCondition}</span>
-              </div>
+              </div>` : ''}
             </div>
           `;
         },
@@ -381,9 +390,9 @@ export class EnergyAvailabilityHeatmapComponent implements OnInit, OnChanges, On
           color: '#000000',
           formatter: function(this: any) {
             const value = this.point?.value || this.value || 0;
-            const weatherIcon = this.point?.weatherIcon || '☀️';
+            const weatherIcon = this.point?.weatherIcon || '';
             if (value === 0) return '';
-            return `<span style="filter: drop-shadow(1px 1px 1px rgba(0,0,0,0.5)); font-size: 10px;">${weatherIcon}</span><br/><span style="color: #000; text-shadow: 1px 1px 1px rgba(255,255,255,0.8);">${(value / 1000).toFixed(0)}kW</span>`;
+            return `${weatherIcon ? `<span style="filter: drop-shadow(1px 1px 1px rgba(0,0,0,0.5)); font-size: 10px;">${weatherIcon}</span><br/>` : ''}<span style="color: #000; text-shadow: 1px 1px 1px rgba(255,255,255,0.8);">${(value / 1000).toFixed(0)}kW</span>`;
           },
           style: {
             textOutline: 'none',
