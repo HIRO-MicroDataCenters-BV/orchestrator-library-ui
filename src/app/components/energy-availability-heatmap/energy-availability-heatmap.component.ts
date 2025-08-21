@@ -227,7 +227,19 @@ export class EnergyAvailabilityHeatmapComponent implements OnInit, OnChanges, On
         plotBorderWidth: 0,
         borderWidth: 0,
         style: {
-          position: 'relative'
+          position: 'relative',
+          overflow: 'visible'
+        },
+        events: {
+          load: function() {
+            // Ensure tooltip container has high z-index
+            const tooltip = (this as any).tooltip;
+            if (tooltip && tooltip.label) {
+              tooltip.label.attr({
+                zIndex: 10000
+              });
+            }
+          }
         }
       },
       title: { text: undefined },
@@ -282,29 +294,69 @@ export class EnergyAvailabilityHeatmapComponent implements OnInit, OnChanges, On
       },
       legend: { enabled: false },
       tooltip: {
+        enabled: true,
+        shared: false,
+        useHTML: true,
+        hideDelay: 0,
+        animation: false,
+        backgroundColor: 'rgba(255, 255, 255, 1)',
+        borderColor: 'transparent',
+        borderRadius: 6,
+        borderWidth: 0,
+        shadow: {
+          color: 'rgba(0, 0, 0, 0.3)',
+          offsetX: 2,
+          offsetY: 2,
+          opacity: 0.8,
+          width: 3
+        },
+        style: {
+          fontSize: '11px',
+          fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+          color: '#333333',
+          padding: '8px 10px',
+          lineHeight: '14px',
+          whiteSpace: 'nowrap'
+        },
         formatter: function(this: any) {
           const timeSlot = timeSlots[this.x];
           const day = dayNames[this.y];
           const value = this.value || 0;
           const weatherIcon = this.point.weatherIcon || '☀️';
           const weatherCondition = this.point.weatherCondition || 'CLEAR';
-          // Convert abbreviated time format back to full format for tooltip
           const fullTimeSlot = timeSlot.replace('-', ':00-') + ':00';
-          return `<b>${day}</b><br/><b>${fullTimeSlot}</b><br/>Available Energy: <b>${value.toLocaleString()}W</b><br/>(${(value / 1000).toFixed(1)}kW)<br/><br/>Weather: ${weatherIcon} ${weatherCondition}`;
+          return `
+            <div style="background-color: white; border-radius: 6px; padding: 8px; text-align: center; min-width: 120px; box-sizing: border-box;">
+              <strong style="color: #2563eb; font-size: 12px;">${day}</strong><br/>
+              <span style="color: #666; font-size: 10px;">${fullTimeSlot}</span><br/>
+              <div style="margin: 4px 0; padding: 2px 0; border-top: 1px solid #eee;">
+                <strong style="color: #059669;">${(value / 1000).toFixed(1)}kW</strong><br/>
+                <span style="font-size: 9px; color: #888;">(${value.toLocaleString()}W)</span>
+              </div>
+              <div style="margin-top: 4px; font-size: 11px;">
+                ${weatherIcon} <span style="color: #7c3aed;">${weatherCondition}</span>
+              </div>
+            </div>
+          `;
         },
-        useHTML: true,
-        backgroundColor: 'rgba(255, 255, 255, 0.95)',
-        borderWidth: 1,
-        borderColor: '#ccc',
-        borderRadius: 8,
-        shadow: true,
-        style: {
-          fontSize: '12px',
-          padding: '8px',
-          zIndex: 9999
-        },
-        positioner: function (labelWidth, labelHeight, point) {
-          return { x: point.plotX + 10, y: point.plotY - 10 };
+        positioner: function(labelWidth: number, labelHeight: number, point: any) {
+          const chart = this.chart;
+          const plotLeft = chart.plotLeft;
+          const plotTop = chart.plotTop;
+          const plotWidth = chart.plotWidth;
+          
+          let x = point.plotX + plotLeft + 15;
+          let y = point.plotY + plotTop - labelHeight - 10;
+          
+          // Prevent tooltip from going outside chart bounds
+          if (x + labelWidth > plotLeft + plotWidth) {
+            x = point.plotX + plotLeft - labelWidth - 15;
+          }
+          if (y < plotTop) {
+            y = point.plotY + plotTop + 15;
+          }
+          
+          return { x, y };
         }
       },
       series: [{
