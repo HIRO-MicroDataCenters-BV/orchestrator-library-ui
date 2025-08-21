@@ -142,7 +142,12 @@ export class EnergyAvailabilityHeatmapComponent implements OnInit, OnChanges, On
 
         // Apply weather multiplier to energy availability
         const weatherMultiplier = this.weatherConditions[weatherCondition as keyof typeof this.weatherConditions].multiplier;
-        const weatherIcon = this.weatherConditions[weatherCondition as keyof typeof this.weatherConditions].icon;
+        let weatherIcon = this.weatherConditions[weatherCondition as keyof typeof this.weatherConditions].icon;
+        
+        // Override with moon icon for night time slots (00-06 and 18-24)
+        if (timeSlot === 0 || timeSlot === 3) {
+          weatherIcon = '🌙';
+        }
         
         // Add some random variation
         const variation = Math.random() * 800 - 400;
