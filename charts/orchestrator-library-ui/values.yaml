@@ -9,7 +9,6 @@ app:
     pullPolicy: Always
 
   service:
-    type: ClusterIP
-    port: 4000
+    type: NodePort
+    port: 80
     nodePort: 30010
-
