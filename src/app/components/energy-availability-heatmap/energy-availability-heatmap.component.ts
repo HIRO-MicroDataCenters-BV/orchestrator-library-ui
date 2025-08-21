@@ -339,7 +339,7 @@ export class EnergyAvailabilityHeatmapComponent implements OnInit, OnChanges, On
                 <span style="font-size: 9px; color: #888;">(${value.toLocaleString()}W)</span>
               </div>
               <div style="margin-top: 4px; font-size: 11px;">
-                ${weatherIcon} <span style="color: #7c3aed;">${weatherCondition}</span>
+                <span style="font-size: 14px; filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));">${weatherIcon}</span> <span style="color: #7c3aed;">${weatherCondition}</span>
               </div>
             </div>
           `;
@@ -375,7 +375,7 @@ export class EnergyAvailabilityHeatmapComponent implements OnInit, OnChanges, On
             const value = this.point?.value || this.value || 0;
             const weatherIcon = this.point?.weatherIcon || '☀️';
             if (value === 0) return '';
-            return `${weatherIcon}<br/>${(value / 1000).toFixed(0)}kW`;
+            return `<span style="filter: drop-shadow(1px 1px 1px rgba(0,0,0,0.5)); font-size: 10px;">${weatherIcon}</span><br/><span style="color: #000; text-shadow: 1px 1px 1px rgba(255,255,255,0.8);">${(value / 1000).toFixed(0)}kW</span>`;
           },
           style: {
             textOutline: 'none',
