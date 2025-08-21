@@ -222,7 +222,8 @@
         <div class="bg-white rounded-lg shadow border p-2">
           <h4 class="text-xs font-semibold text-gray-700 text-center mb-1">Energy Availability For One Week</h4>
           <app-energy-availability-heatmap
-            [slots]="energyAvailabilitySlots"
+            [dataSource]="'system-utilization'"
+            [refreshInterval]="30000"
             class="w-full">
           </app-energy-availability-heatmap>
         </div>

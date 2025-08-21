@@ -35,8 +35,6 @@ export class SystemUtilizationComponent implements OnInit, OnDestroy {
   // Prediction toggle state
   showPredictions = true;
   
-  // Energy availability heatmap data
-  energyAvailabilitySlots: any[] = [];
   
   // Alert rotation data
   allAlerts = [
@@ -119,7 +117,6 @@ export class SystemUtilizationComponent implements OnInit, OnDestroy {
       console.log('📊 Platform is browser, loading data...');
       this.initializeCharts();
       this.loadUtilizationData();
-      this.loadMockEnergyAvailabilityData();
       this.startAlertRotation();
       
       // Set up auto-refresh
@@ -790,68 +787,6 @@ export class SystemUtilizationComponent implements OnInit, OnDestroy {
     }, 50);
   }
 
-  private loadMockEnergyAvailabilityData(): void {
-    // Generate mock energy availability data for the heatmap
-    this.energyAvailabilitySlots = [
-      // Monday
-      { slot_start_time: '2024-01-01T00:00:00Z', available_watts: 1200 },
-      { slot_start_time: '2024-01-01T04:00:00Z', available_watts: 1400 },
-      { slot_start_time: '2024-01-01T08:00:00Z', available_watts: 2800 },
-      { slot_start_time: '2024-01-01T12:00:00Z', available_watts: 3200 },
-      { slot_start_time: '2024-01-01T16:00:00Z', available_watts: 2600 },
-      { slot_start_time: '2024-01-01T20:00:00Z', available_watts: 1800 },
-      
-      // Tuesday
-      { slot_start_time: '2024-01-02T00:00:00Z', available_watts: 1100 },
-      { slot_start_time: '2024-01-02T04:00:00Z', available_watts: 1300 },
-      { slot_start_time: '2024-01-02T08:00:00Z', available_watts: 2900 },
-      { slot_start_time: '2024-01-02T12:00:00Z', available_watts: 3400 },
-      { slot_start_time: '2024-01-02T16:00:00Z', available_watts: 2700 },
-      { slot_start_time: '2024-01-02T20:00:00Z', available_watts: 1900 },
-      
-      // Wednesday
-      { slot_start_time: '2024-01-03T00:00:00Z', available_watts: 1000 },
-      { slot_start_time: '2024-01-03T04:00:00Z', available_watts: 1200 },
-      { slot_start_time: '2024-01-03T08:00:00Z', available_watts: 3100 },
-      { slot_start_time: '2024-01-03T12:00:00Z', available_watts: 3600 },
-      { slot_start_time: '2024-01-03T16:00:00Z', available_watts: 2900 },
-      { slot_start_time: '2024-01-03T20:00:00Z', available_watts: 2000 },
-      
-      // Thursday
-      { slot_start_time: '2024-01-04T00:00:00Z', available_watts: 1300 },
-      { slot_start_time: '2024-01-04T04:00:00Z', available_watts: 1500 },
-      { slot_start_time: '2024-01-04T08:00:00Z', available_watts: 2700 },
-      { slot_start_time: '2024-01-04T12:00:00Z', available_watts: 3000 },
-      { slot_start_time: '2024-01-04T16:00:00Z', available_watts: 2400 },
-      { slot_start_time: '2024-01-04T20:00:00Z', available_watts: 1700 },
-      
-      // Friday
-      { slot_start_time: '2024-01-05T00:00:00Z', available_watts: 1400 },
-      { slot_start_time: '2024-01-05T04:00:00Z', available_watts: 1600 },
-      { slot_start_time: '2024-01-05T08:00:00Z', available_watts: 2500 },
-      { slot_start_time: '2024-01-05T12:00:00Z', available_watts: 2800 },
-      { slot_start_time: '2024-01-05T16:00:00Z', available_watts: 2200 },
-      { slot_start_time: '2024-01-05T20:00:00Z', available_watts: 1600 },
-      
-      // Saturday
-      { slot_start_time: '2024-01-06T00:00:00Z', available_watts: 800 },
-      { slot_start_time: '2024-01-06T04:00:00Z', available_watts: 1000 },
-      { slot_start_time: '2024-01-06T08:00:00Z', available_watts: 1800 },
-      { slot_start_time: '2024-01-06T12:00:00Z', available_watts: 2200 },
-      { slot_start_time: '2024-01-06T16:00:00Z', available_watts: 2000 },
-      { slot_start_time: '2024-01-06T20:00:00Z', available_watts: 1400 },
-      
-      // Sunday
-      { slot_start_time: '2024-01-07T00:00:00Z', available_watts: 900 },
-      { slot_start_time: '2024-01-07T04:00:00Z', available_watts: 1100 },
-      { slot_start_time: '2024-01-07T08:00:00Z', available_watts: 1900 },
-      { slot_start_time: '2024-01-07T12:00:00Z', available_watts: 2400 },
-      { slot_start_time: '2024-01-07T16:00:00Z', available_watts: 2100 },
-      { slot_start_time: '2024-01-07T20:00:00Z', available_watts: 1500 },
-    ];
-    
-    console.log('🔥 Mock energy availability data loaded:', this.energyAvailabilitySlots.length, 'slots');
-  }
 
   private startAlertRotation(): void {
     // Initialize with first 2 alerts

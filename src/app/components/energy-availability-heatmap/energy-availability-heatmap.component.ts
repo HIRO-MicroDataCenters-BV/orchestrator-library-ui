@@ -1,7 +1,8 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { Component, Inject, Input, OnChanges, OnInit, PLATFORM_ID, SimpleChanges } from '@angular/core';
+import { Component, Inject, Input, OnChanges, OnInit, PLATFORM_ID, SimpleChanges, OnDestroy } from '@angular/core';
 import { HighchartsChartComponent } from 'highcharts-angular';
 import * as Highcharts from 'highcharts';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-energy-availability-heatmap',
@@ -10,9 +11,13 @@ import * as Highcharts from 'highcharts';
   templateUrl: './energy-availability-heatmap.component.html',
   styleUrls: ['./energy-availability-heatmap.component.css']
 })
-export class EnergyAvailabilityHeatmapComponent implements OnInit, OnChanges {
-  @Input() slots: any[] = [];
+export class EnergyAvailabilityHeatmapComponent implements OnInit, OnChanges, OnDestroy {
+  @Input() dataSource?: string; // Optional data source identifier
+  @Input() refreshInterval?: number = 30000; // Refresh every 30 seconds by default
+  
   chartOptions: Partial<Highcharts.Options> = {};
+  private destroy$ = new Subject<void>();
+  private energySlots: any[] = [];
 
   constructor(@Inject(PLATFORM_ID) private platformId: object) {}
 
@@ -25,19 +30,85 @@ export class EnergyAvailabilityHeatmapComponent implements OnInit, OnChanges {
         if (heatmapModule.default && typeof heatmapModule.default === 'function') {
           (heatmapModule.default as any)(Highcharts);
         }
-        this.buildChart();
+        
+        // Load initial data and start periodic refresh
+        await this.loadEnergyData();
+        this.startDataRefresh();
       } catch (error) {
         console.error('Failed to load heatmap module:', error);
-        // Build chart anyway, might work without heatmap
-        this.buildChart();
+        // Load data anyway, might work without heatmap
+        await this.loadEnergyData();
+        this.startDataRefresh();
       }
     }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['slots'] && isPlatformBrowser(this.platformId)) {
+    if ((changes['dataSource'] || changes['refreshInterval']) && isPlatformBrowser(this.platformId)) {
+      this.loadEnergyData();
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  private async loadEnergyData(): Promise<void> {
+    try {
+      // Generate mock data for now - this can be replaced with actual API calls
+      this.energySlots = this.generateMockEnergyData();
+      this.buildChart();
+    } catch (error) {
+      console.error('Failed to load energy data:', error);
+      // Use empty data on error
+      this.energySlots = [];
       this.buildChart();
     }
+  }
+
+  private startDataRefresh(): void {
+    if (!this.refreshInterval || this.refreshInterval <= 0) return;
+    
+    // Use interval with takeUntil to handle component destruction
+    setInterval(() => {
+      this.loadEnergyData();
+    }, this.refreshInterval);
+  }
+
+  private generateMockEnergyData(): any[] {
+    // Generate mock energy availability data for one week
+    const mockData = [];
+    const baseDate = new Date();
+    const startOfWeek = new Date(baseDate);
+    startOfWeek.setDate(baseDate.getDate() - baseDate.getDay() + 1); // Start from Monday
+
+    for (let day = 0; day < 7; day++) {
+      for (let timeSlot = 0; timeSlot < 6; timeSlot++) {
+        const slotDate = new Date(startOfWeek);
+        slotDate.setDate(startOfWeek.getDate() + day);
+        slotDate.setHours(timeSlot * 4, 0, 0, 0);
+        
+        // Generate varying energy levels based on time of day and day of week
+        const isWeekend = day >= 5;
+        const isPeakHours = timeSlot >= 2 && timeSlot <= 4; // 08:00-20:00
+        
+        let baseWatts = 1000;
+        if (isPeakHours) baseWatts += 1500;
+        if (!isWeekend) baseWatts += 500;
+        
+        // Add some random variation
+        const variation = Math.random() * 800 - 400;
+        const availableWatts = Math.max(800, Math.round(baseWatts + variation));
+
+        mockData.push({
+          slot_start_time: slotDate.toISOString(),
+          available_watts: availableWatts
+        });
+      }
+    }
+
+    return mockData;
   }
 
   private buildChart(): void {
@@ -46,7 +117,7 @@ export class EnergyAvailabilityHeatmapComponent implements OnInit, OnChanges {
 
     const dataMap = new Map<string, number>();
 
-    (this.slots || []).forEach(slot => {
+    (this.energySlots || []).forEach(slot => {
       const startDate = new Date(slot.slot_start_time);
       const dayOfWeek = startDate.getDay();
       const adjustedDay = dayOfWeek === 0 ? 6 : dayOfWeek - 1; // Monday = 0

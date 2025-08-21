@@ -95,7 +95,7 @@
             <p class="text-xs text-muted-foreground">Weekly energy availability pattern by day and 4-hour time slots</p>
           </div>
           <div class="w-full border rounded-lg p-2 bg-white min-w-0">
-            <app-energy-availability-heatmap [slots]="energyAvailabilitySlots"></app-energy-availability-heatmap>
+            <app-energy-availability-heatmap [dataSource]="'energy-prediction'" [refreshInterval]="45000"></app-energy-availability-heatmap>
           </div>
         </div>
       </div>

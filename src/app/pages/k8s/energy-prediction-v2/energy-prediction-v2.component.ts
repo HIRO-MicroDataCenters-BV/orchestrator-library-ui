@@ -26,8 +26,6 @@ export class EnergyPredictionV2Component implements OnInit, OnDestroy {
   cpuWattsChartOptions: Partial<Highcharts.Options> = {};
   cpuUtilizationChartOptions: Partial<Highcharts.Options> = {};
   memoryUsageChartOptions: Partial<Highcharts.Options> = {};
-  // Data used by the child heatmap component
-  energyAvailabilitySlots: any[] = [];
 
   energyForecastSummary = {
     totalSlots: 0,
@@ -606,7 +604,6 @@ export class EnergyPredictionV2Component implements OnInit, OnDestroy {
             response.availability.length > 0
           ) {
             this.updateEnergyForecastSummary(response.availability);
-            this.energyAvailabilitySlots = response.availability;
           } else {
             console.warn('No energy availability data received');
           }
