@@ -13,11 +13,19 @@ import { Subject, takeUntil } from 'rxjs';
 })
 export class EnergyAvailabilityHeatmapComponent implements OnInit, OnChanges, OnDestroy {
   @Input() dataSource?: string; // Optional data source identifier
-  @Input() refreshInterval?: number = 30000; // Refresh every 30 seconds by default
+  @Input() refreshInterval?: number = 30000; // Not used - auto-refresh disabled
   
   chartOptions: Partial<Highcharts.Options> = {};
   private destroy$ = new Subject<void>();
   private energySlots: any[] = [];
+
+  // Weather conditions for forecast
+  private weatherConditions = {
+    CLEAR: { icon: '☀️', multiplier: 1.0 },
+    CLOUDY: { icon: '☁️', multiplier: 0.8 },
+    THUNDERSTORM: { icon: '⛈️', multiplier: 0.3 },
+    RAINY: { icon: '🌧️', multiplier: 0.6 }
+  };
 
   constructor(@Inject(PLATFORM_ID) private platformId: object) {}
 
@@ -31,22 +39,21 @@ export class EnergyAvailabilityHeatmapComponent implements OnInit, OnChanges, On
           (heatmapModule.default as any)(Highcharts);
         }
         
-        // Load initial data and start periodic refresh
+        // Load initial data only (no periodic refresh)
         await this.loadEnergyData();
-        this.startDataRefresh();
       } catch (error) {
         console.error('Failed to load heatmap module:', error);
         // Load data anyway, might work without heatmap
         await this.loadEnergyData();
-        this.startDataRefresh();
       }
     }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if ((changes['dataSource'] || changes['refreshInterval']) && isPlatformBrowser(this.platformId)) {
+    if (changes['dataSource'] && isPlatformBrowser(this.platformId)) {
       this.loadEnergyData();
     }
+    // Note: Refresh functionality is disabled
   }
 
   ngOnDestroy(): void {
@@ -67,13 +74,19 @@ export class EnergyAvailabilityHeatmapComponent implements OnInit, OnChanges, On
     }
   }
 
-  private startDataRefresh(): void {
-    if (!this.refreshInterval || this.refreshInterval <= 0) return;
-    
-    // Use interval with takeUntil to handle component destruction
-    setInterval(() => {
-      this.loadEnergyData();
-    }, this.refreshInterval);
+  // Note: Auto-refresh functionality has been disabled
+  // Data is loaded once on component initialization only
+
+  private isUpcomingSlot(day: number, timeSlot: number, currentDayIndex: number, currentSlotIndex: number, upcomingSlotsCount: number): boolean {
+    // Calculate if this slot is in the future (upcoming)
+    if (day < currentDayIndex) {
+      return false; // Past day
+    } else if (day === currentDayIndex) {
+      return timeSlot > currentSlotIndex; // Same day, future time slot
+    } else {
+      // Future day - but only consider it if we haven't found 2 slots yet
+      return upcomingSlotsCount < 2;
+    }
   }
 
   private generateMockEnergyData(): any[] {
@@ -82,6 +95,14 @@ export class EnergyAvailabilityHeatmapComponent implements OnInit, OnChanges, On
     const baseDate = new Date();
     const startOfWeek = new Date(baseDate);
     startOfWeek.setDate(baseDate.getDate() - baseDate.getDay() + 1); // Start from Monday
+
+    // Get current time info for determining next 2 upcoming slots
+    const now = new Date();
+    const currentDay = now.getDay();
+    const currentDayIndex = currentDay === 0 ? 6 : currentDay - 1; // Monday = 0
+    const currentSlotIndex = Math.floor(now.getHours() / 6);
+    
+    let upcomingSlotsCount = 0;
 
     for (let day = 0; day < 7; day++) {
       for (let timeSlot = 0; timeSlot < 4; timeSlot++) {
@@ -97,13 +118,43 @@ export class EnergyAvailabilityHeatmapComponent implements OnInit, OnChanges, On
         if (isPeakHours) baseWatts += 1500;
         if (!isWeekend) baseWatts += 500;
         
+        // Determine if this is one of the next 2 upcoming time slots
+        const isUpcomingSlot = this.isUpcomingSlot(day, timeSlot, currentDayIndex, currentSlotIndex, upcomingSlotsCount);
+        if (isUpcomingSlot && upcomingSlotsCount < 2) {
+          upcomingSlotsCount++;
+        }
+        
+        // Add weather forecast - only bad weather for next 2 upcoming slots
+        let weatherCondition = 'CLEAR';
+        
+        if (isUpcomingSlot && upcomingSlotsCount <= 2) {
+          // Force thunderstorm for next 2 upcoming slots
+          weatherCondition = 'THUNDERSTORM';
+        } else {
+          // Normal weather distribution for other slots
+          const weatherRandom = Math.random();
+          if (weatherRandom < 0.05) {
+            weatherCondition = 'RAINY';
+          } else if (weatherRandom < 0.2) {
+            weatherCondition = 'CLOUDY';
+          }
+        }
+
+        // Apply weather multiplier to energy availability
+        const weatherMultiplier = this.weatherConditions[weatherCondition as keyof typeof this.weatherConditions].multiplier;
+        const weatherIcon = this.weatherConditions[weatherCondition as keyof typeof this.weatherConditions].icon;
+        
         // Add some random variation
         const variation = Math.random() * 800 - 400;
-        const availableWatts = Math.max(800, Math.round(baseWatts + variation));
+        const baseAvailableWatts = Math.max(800, Math.round(baseWatts + variation));
+        const availableWatts = Math.round(baseAvailableWatts * weatherMultiplier);
 
         mockData.push({
           slot_start_time: slotDate.toISOString(),
-          available_watts: availableWatts
+          available_watts: availableWatts,
+          weather_condition: weatherCondition,
+          weather_icon: weatherIcon,
+          weather_dependency: weatherCondition !== 'CLEAR'
         });
       }
     }
@@ -115,7 +166,7 @@ export class EnergyAvailabilityHeatmapComponent implements OnInit, OnChanges, On
     const dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
     const timeSlots = ['00-06', '06-12', '12-18', '18-24'];
 
-    const dataMap = new Map<string, number>();
+    const dataMap = new Map<string, {watts: number, weatherIcon: string, weatherCondition: string}>();
 
     (this.energySlots || []).forEach(slot => {
       const startDate = new Date(slot.slot_start_time);
@@ -124,7 +175,11 @@ export class EnergyAvailabilityHeatmapComponent implements OnInit, OnChanges, On
       const startHour = startDate.getHours();
       const timeSlotIndex = Math.floor(startHour / 6);
       const key = `${adjustedDay}-${timeSlotIndex}`;
-      dataMap.set(key, slot.available_watts || 0);
+      dataMap.set(key, {
+        watts: slot.available_watts || 0,
+        weatherIcon: slot.weather_icon || '☀️',
+        weatherCondition: slot.weather_condition || 'CLEAR'
+      });
     });
 
     // Determine today's day index (Monday=0) and the current 6-hour time slot
@@ -137,7 +192,9 @@ export class EnergyAvailabilityHeatmapComponent implements OnInit, OnChanges, On
     for (let day = 0; day < 7; day++) {
       for (let timeSlot = 0; timeSlot < 4; timeSlot++) {
         const key = `${day}-${timeSlot}`;
-        const value = dataMap.get(key) || 0;
+        const slotData = dataMap.get(key) || { watts: 0, weatherIcon: '☀️', weatherCondition: 'CLEAR' };
+        const value = slotData.watts;
+        
         // Highlight the cell for today's date and current time slot
         if (day === currentDayIndex && timeSlot === currentSlotIndex) {
           heatmapData.push({
@@ -145,10 +202,18 @@ export class EnergyAvailabilityHeatmapComponent implements OnInit, OnChanges, On
             y: day,
             value,
             borderColor: '#2563eb',
-            borderWidth: 1
+            borderWidth: 1,
+            weatherIcon: slotData.weatherIcon,
+            weatherCondition: slotData.weatherCondition
           });
         } else {
-          heatmapData.push([timeSlot, day, value]);
+          heatmapData.push({
+            x: timeSlot,
+            y: day,
+            value,
+            weatherIcon: slotData.weatherIcon,
+            weatherCondition: slotData.weatherCondition
+          });
         }
       }
     }
@@ -160,7 +225,10 @@ export class EnergyAvailabilityHeatmapComponent implements OnInit, OnChanges, On
         marginTop: 20,
         marginBottom: 10,
         plotBorderWidth: 0,
-        borderWidth: 0
+        borderWidth: 0,
+        style: {
+          position: 'relative'
+        }
       },
       title: { text: undefined },
       credits: { enabled: false },
@@ -218,9 +286,25 @@ export class EnergyAvailabilityHeatmapComponent implements OnInit, OnChanges, On
           const timeSlot = timeSlots[this.x];
           const day = dayNames[this.y];
           const value = this.value || 0;
+          const weatherIcon = this.point.weatherIcon || '☀️';
+          const weatherCondition = this.point.weatherCondition || 'CLEAR';
           // Convert abbreviated time format back to full format for tooltip
           const fullTimeSlot = timeSlot.replace('-', ':00-') + ':00';
-          return `<b>${day}</b><br/><b>${fullTimeSlot}</b><br/>Available Energy: <b>${value.toLocaleString()}W</b><br/>(${(value / 1000).toFixed(1)}kW)`;
+          return `<b>${day}</b><br/><b>${fullTimeSlot}</b><br/>Available Energy: <b>${value.toLocaleString()}W</b><br/>(${(value / 1000).toFixed(1)}kW)<br/><br/>Weather: ${weatherIcon} ${weatherCondition}`;
+        },
+        useHTML: true,
+        backgroundColor: 'rgba(255, 255, 255, 0.95)',
+        borderWidth: 1,
+        borderColor: '#ccc',
+        borderRadius: 8,
+        shadow: true,
+        style: {
+          fontSize: '12px',
+          padding: '8px',
+          zIndex: 9999
+        },
+        positioner: function (labelWidth, labelHeight, point) {
+          return { x: point.plotX + 10, y: point.plotY - 10 };
         }
       },
       series: [{
@@ -232,14 +316,16 @@ export class EnergyAvailabilityHeatmapComponent implements OnInit, OnChanges, On
           color: '#000000',
           formatter: function(this: any) {
             const value = this.point?.value || this.value || 0;
+            const weatherIcon = this.point?.weatherIcon || '☀️';
             if (value === 0) return '';
-            return `${(value / 1000).toFixed(0)}kW`;
+            return `${weatherIcon}<br/>${(value / 1000).toFixed(0)}kW`;
           },
           style: {
             textOutline: 'none',
             fontSize: '8px',
             fontWeight: 'bold'
-          }
+          },
+          useHTML: true
         },
         states: {
           inactive: { opacity: 1 }
