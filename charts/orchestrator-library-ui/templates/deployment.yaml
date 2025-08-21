@@ -14,12 +14,37 @@ spec:
     spec:
       containers:
         - name: {{ .Values.app.name }}
-          image: "{{ .Values.app.image.repository }}:{{ .Values.app.image.tag }}"
+          image: '{{ .Values.app.image.repository }}:{{ .Values.app.image.tag }}'
           imagePullPolicy: {{ .Values.app.image.pullPolicy }}
           ports:
+            - containerPort: 80
+              name: http
             - containerPort: 4000
+              name: nodejs
           env:
             - name: PORT
-              value: "4000"
+              value: '4000'
             - name: NODE_ENV
-              value: "production"
+              value: 'production'
+            - name: API_TARGET
+              value: 'http://51.44.28.47:30015'
+            - name: DEX_TARGET
+              value: 'http://51.44.28.47:30080'
+            - name: DASHBOARD_TARGET
+              value: 'http://51.44.28.47:30016'
+            - name: GRAFANA_TARGET
+              value: 'http://51.44.28.47:30000'
+            - name: COG_TARGET
+              value: 'https://dashboard.cog.hiro-develop.nl'
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 80
+            initialDelaySeconds: 30
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 10
