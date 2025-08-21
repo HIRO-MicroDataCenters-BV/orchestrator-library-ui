@@ -14,7 +14,7 @@ export class EnergyAvailabilityHeatmapComponent implements OnInit, OnChanges {
   @Input() slots: any[] = [];
   chartOptions: Partial<Highcharts.Options> = {};
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+  constructor(@Inject(PLATFORM_ID) private platformId: object) {}
 
   async ngOnInit(): Promise<void> {
     if (isPlatformBrowser(this.platformId)) {
