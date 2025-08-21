@@ -6,6 +6,7 @@ export interface NodeMetric {
   cpu_package_watts: number;
   memory_power_watts: number;
   platform_watts: number;
+  energy_watts: number; // this is total watt for node
   cpu_utilization_percent: number;
   memory_utilization_percent: number;
   memory_usage_bytes: number;

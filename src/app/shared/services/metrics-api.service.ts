@@ -124,7 +124,7 @@ export class MetricsApiService {
   transformEnergyWattsData(metrics: NodeMetric[]): ChartDataPoint[] {
     return metrics.map(metric => ({
       timestamp: new Date(metric.timestamp).getTime(),
-      value: (metric as any).energy_watts || 0, // Handle energy_watts field
+      value: metric.energy_watts,
       nodeName: metric.node_name
     })).sort((a, b) => a.timestamp - b.timestamp);
   }
