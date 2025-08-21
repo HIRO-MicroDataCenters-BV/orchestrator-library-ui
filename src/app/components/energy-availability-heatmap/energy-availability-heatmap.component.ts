@@ -84,14 +84,14 @@ export class EnergyAvailabilityHeatmapComponent implements OnInit, OnChanges, On
     startOfWeek.setDate(baseDate.getDate() - baseDate.getDay() + 1); // Start from Monday
 
     for (let day = 0; day < 7; day++) {
-      for (let timeSlot = 0; timeSlot < 6; timeSlot++) {
+      for (let timeSlot = 0; timeSlot < 4; timeSlot++) {
         const slotDate = new Date(startOfWeek);
         slotDate.setDate(startOfWeek.getDate() + day);
-        slotDate.setHours(timeSlot * 4, 0, 0, 0);
+        slotDate.setHours(timeSlot * 6, 0, 0, 0);
         
         // Generate varying energy levels based on time of day and day of week
         const isWeekend = day >= 5;
-        const isPeakHours = timeSlot >= 2 && timeSlot <= 4; // 08:00-20:00
+        const isPeakHours = timeSlot >= 1 && timeSlot <= 2; // 06:00-18:00
         
         let baseWatts = 1000;
         if (isPeakHours) baseWatts += 1500;
@@ -113,7 +113,7 @@ export class EnergyAvailabilityHeatmapComponent implements OnInit, OnChanges, On
 
   private buildChart(): void {
     const dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-    const timeSlots = ['00-04', '04-08', '08-12', '12-16', '16-20', '20-24'];
+    const timeSlots = ['00-06', '06-12', '12-18', '18-24'];
 
     const dataMap = new Map<string, number>();
 
@@ -122,20 +122,20 @@ export class EnergyAvailabilityHeatmapComponent implements OnInit, OnChanges, On
       const dayOfWeek = startDate.getDay();
       const adjustedDay = dayOfWeek === 0 ? 6 : dayOfWeek - 1; // Monday = 0
       const startHour = startDate.getHours();
-      const timeSlotIndex = Math.floor(startHour / 4);
+      const timeSlotIndex = Math.floor(startHour / 6);
       const key = `${adjustedDay}-${timeSlotIndex}`;
       dataMap.set(key, slot.available_watts || 0);
     });
 
-    // Determine today's day index (Monday=0) and the current 4-hour time slot
+    // Determine today's day index (Monday=0) and the current 6-hour time slot
     const now = new Date();
     const nowDay = now.getDay();
     const currentDayIndex = nowDay === 0 ? 6 : nowDay - 1;
-    const currentSlotIndex = Math.floor(now.getHours() / 4);
+    const currentSlotIndex = Math.floor(now.getHours() / 6);
 
     const heatmapData: any[] = [];
     for (let day = 0; day < 7; day++) {
-      for (let timeSlot = 0; timeSlot < 6; timeSlot++) {
+      for (let timeSlot = 0; timeSlot < 4; timeSlot++) {
         const key = `${day}-${timeSlot}`;
         const value = dataMap.get(key) || 0;
         // Highlight the cell for today's date and current time slot
