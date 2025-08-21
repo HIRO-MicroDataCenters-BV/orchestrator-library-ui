@@ -16,23 +16,21 @@ export class EnergyAvailabilityHeatmapComponent implements OnInit, OnChanges {
 
   constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     if (isPlatformBrowser(this.platformId)) {
-      import('highcharts/modules/heatmap')
-        .then((m) => {
-          const factory: any = (m as any).default || (m as any);
-          if (typeof factory === 'function') {
-            factory(Highcharts);
-          } else if ((m as any).heatmap && typeof (m as any).heatmap === 'function') {
-            (m as any).heatmap(Highcharts);
-          } else if ((m as any).default && typeof (m as any).default.default === 'function') {
-            (m as any).default.default(Highcharts);
-          } else {
-            throw new Error('Unknown heatmap module format');
-          }
-        })
-        .then(() => this.buildChart())
-        .catch((err) => console.error('Failed to load Highcharts heatmap module:', err));
+      try {
+        // Dynamically import the heatmap module
+        const heatmapModule = await import('highcharts/modules/heatmap');
+        // Call the default export function with Highcharts
+        if (heatmapModule.default && typeof heatmapModule.default === 'function') {
+          (heatmapModule.default as any)(Highcharts);
+        }
+        this.buildChart();
+      } catch (error) {
+        console.error('Failed to load heatmap module:', error);
+        // Build chart anyway, might work without heatmap
+        this.buildChart();
+      }
     }
   }
 
