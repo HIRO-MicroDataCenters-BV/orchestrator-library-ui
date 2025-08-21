@@ -13,6 +13,9 @@ RUN pnpm install
 # Copy the rest of the source code
 COPY . .
 
+# Ensure replace-env.sh is available in builder stage
+RUN if [ ! -f /app/replace-env.sh ]; then echo "Error: replace-env.sh not found"; exit 1; fi
+
 # Build the Angular app
 RUN pnpm run build:prod
 
@@ -44,8 +47,8 @@ RUN mkdir -p /var/log/nginx && \
     chown -R nginx:nginx /var/cache/nginx && \
     chown -R nginx:nginx /run/nginx
 
-# Copy Angular environment replacement script
-COPY replace-env.sh /usr/app/replace-env.sh
+# Copy Angular environment replacement script from builder stage
+COPY --from=builder /app/replace-env.sh /usr/app/replace-env.sh
 RUN chmod +x /usr/app/replace-env.sh
 
 # Create startup script
