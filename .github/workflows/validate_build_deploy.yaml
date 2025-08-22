@@ -97,6 +97,9 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - build-and-push
+    strategy:
+      matrix:
+        kubeconfig_secret_name: [HIRO_KUBE_CONFIG_AWS, HIRO_KUBE_CONFIG_BASTON]
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -114,8 +117,8 @@ jobs:
       - name: Set up kubeconfig
         run: |
           mkdir -p ~/.kube
-          echo "${{ secrets.HIRO_KUBE_CONFIG }}" > ~/.kube/config
-          chmod 600 ~/.kube/config
+          echo "${{ secrets[matrix.kubeconfig_secret_name] }}" > ~/.kube/${{ matrix.kubeconfig_secret_name }}
+          chmod 600 ~/.kube/${{ matrix.kubeconfig_secret_name }}
 
       - name: Set Helm dry-run flag
         id: helm-dry-run
@@ -126,9 +129,13 @@ jobs:
             echo "flag=--dry-run" >> $GITHUB_OUTPUT
           fi
 
-      - name: Deploy Orchestration API Helm chart
+      - name: Deploy Orchestrator Library UI Helm chart
+        env:
+          RELEASE_NAME: ${{ vars.ORCHESTRATOR_LIBRARY_UI_RELEASE_NAME }} # used in post-renderer script
         run: |
           helm upgrade --install ${{ vars.ORCHESTRATOR_LIBRARY_UI_RELEASE_NAME }} ./charts/orchestrator-library-ui \
+            --post-renderer ./charts/orchestrator-library-ui/add-common-labels.sh \
+            --kubeconfig ~/.kube/${{ matrix.kubeconfig_secret_name }} \
             --namespace ${{ vars.ORCHESTRATOR_LIBRARY_UI_NAMESPACE }} \
             --create-namespace \
             --set namespace=${{ vars.ORCHESTRATOR_LIBRARY_UI_NAMESPACE }} \
@@ -146,16 +153,16 @@ jobs:
           sleep 10
 
           echo "Checking pod status..."
-          kubectl get pods -n ${{ vars.ORCHESTRATOR_LIBRARY_UI_NAMESPACE }} -l app=${{ vars.ORCHESTRATOR_LIBRARY_UI_RELEASE_NAME }}
+          kubectl get pods -n ${{ vars.ORCHESTRATOR_LIBRARY_UI_NAMESPACE }} --kubeconfig ~/.kube/${{ matrix.kubeconfig_secret_name }} -l app=${{ vars.ORCHESTRATOR_LIBRARY_UI_RELEASE_NAME }}
 
           echo "Getting pod logs..."
-          POD_NAME=$(kubectl get pods -n ${{ vars.ORCHESTRATOR_LIBRARY_UI_NAMESPACE }} -l app=${{ vars.ORCHESTRATOR_LIBRARY_UI_RELEASE_NAME }} -o jsonpath='{.items[0].metadata.name}' 2>/dev/null || echo "")
+          POD_NAME=$(kubectl get pods -n ${{ vars.ORCHESTRATOR_LIBRARY_UI_NAMESPACE }} --kubeconfig ~/.kube/${{ matrix.kubeconfig_secret_name }} -l app=${{ vars.ORCHESTRATOR_LIBRARY_UI_RELEASE_NAME }} -o jsonpath='{.items[0].metadata.name}' 2>/dev/null || echo "")
           if [ ! -z "$POD_NAME" ]; then
             echo "Pod logs for $POD_NAME:"
-            kubectl logs $POD_NAME -n ${{ vars.ORCHESTRATOR_LIBRARY_UI_NAMESPACE }} --tail=50 || echo "Could not retrieve logs"
+            kubectl logs $POD_NAME -n ${{ vars.ORCHESTRATOR_LIBRARY_UI_NAMESPACE }} --kubeconfig ~/.kube/${{ matrix.kubeconfig_secret_name }} --tail=50 || echo "Could not retrieve logs"
           else
             echo "No pod found"
           fi
 
           echo "Checking service..."
-          kubectl get service ${{ vars.ORCHESTRATOR_LIBRARY_UI_RELEASE_NAME }} -n ${{ vars.ORCHESTRATOR_LIBRARY_UI_NAMESPACE }}
+          kubectl get service ${{ vars.ORCHESTRATOR_LIBRARY_UI_RELEASE_NAME }} -n ${{ vars.ORCHESTRATOR_LIBRARY_UI_NAMESPACE }} --kubeconfig ~/.kube/${{ matrix.kubeconfig_secret_name }}
