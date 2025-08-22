@@ -139,6 +139,7 @@ jobs:
             --namespace ${{ vars.ORCHESTRATOR_LIBRARY_UI_NAMESPACE }} \
             --create-namespace \
             --set namespace=${{ vars.ORCHESTRATOR_LIBRARY_UI_NAMESPACE }} \
+            --set app.name=${{ vars.ORCHESTRATOR_LIBRARY_UI_RELEASE_NAME }} \
             --set app.image.repository=${{ vars.ORCHESTRATOR_LIBRARY_UI_IMAGE_NAME }} \
             --set app.image.tag=${{ needs.build-and-push.outputs.image_tag }} \
             --set app.service.type=NodePort \
