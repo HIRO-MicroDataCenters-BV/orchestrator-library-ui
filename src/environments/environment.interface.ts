@@ -9,7 +9,6 @@ export interface Environment {
   tokenKey: string;
   refreshTokenKey: string;
   userKey: string;
-  dashboardUrl: string;
   cogUrl: string;
   grafanaUrl: string;
   dexUrl: string;

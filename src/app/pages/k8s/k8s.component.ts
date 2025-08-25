@@ -1,57 +1,61 @@
-import { Component } from '@angular/core';
-import { SafePipe } from '../../pipes/safe.pipe';
+import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { HttpClient } from '@angular/common/http';
+import { Observable, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
-import { environment } from '../../../environments/environment';
-import { ApiService } from '../../core/services/api.service';
-import { K8sMockService } from '../../mock/k8s-mock.service';
-import { K8S_CONSTANTS, STORAGE_KEYS } from '../../shared/constants';
-import { setStorageItem, TokenStorage } from '../../shared/utils';
+interface K8sTokenResponse {
+  success: boolean;
+  token: string;
+  cached?: boolean;
+}
 
 @Component({
   selector: 'app-k8s',
   standalone: true,
-  imports: [SafePipe],
-  template: `<div class="container">
-    <iframe
-      [src]="url | safe : 'resourceUrl'"
-      frameborder="0"
-      allowfullscreen
-    ></iframe>
-  </div>`,
-  styleUrls: ['./k8s.component.scss'],
+  imports: [CommonModule],
+  templateUrl: './k8s.component.html',
+  styleUrl: './k8s.component.scss',
 })
-export class K8sComponent {
-  url = environment.dashboardUrl;
-  useMockData = false;
+export class K8sComponent implements OnInit {
+  private readonly http = inject(HttpClient);
+  private readonly sanitizer = inject(DomSanitizer);
 
-  constructor(
-    private apiService: ApiService,
-    private k8sMockService: K8sMockService
-  ) {
-    // Get token from safe storage if available
-    const tokenService = this.useMockData ? this.k8sMockService : this.apiService;
+  dashboardUrl: SafeResourceUrl | null = null;
 
-    if (this.useMockData) {
-      this.k8sMockService.getK8sToken().subscribe((res) => {
-        setStorageItem(STORAGE_KEYS.ACCESS_TOKEN, (res as any).token);
-        const token = TokenStorage.getAccessToken(STORAGE_KEYS.ACCESS_TOKEN);
-        if (token) {
-          this.url += '/?token=' + token;
-        }
-      });
-    } else {
-      this.apiService
-        .getK8sToken({
-          namespace: K8S_CONSTANTS.DEFAULT_VALUES.NAMESPACE,
-          service_account_name: K8S_CONSTANTS.DEFAULT_VALUES.SERVICE_ACCOUNT_NAME,
-        })
-        .subscribe((res) => {
-          setStorageItem(STORAGE_KEYS.ACCESS_TOKEN, (res as any).token);
-          const token = TokenStorage.getAccessToken(STORAGE_KEYS.ACCESS_TOKEN);
-          if (token) {
-            this.url += '/?token=' + token;
-          }
-        });
+  private get proxyUrl(): string {
+    if (typeof window !== 'undefined') {
+      return `${window.location.protocol}//${window.location.hostname}:3000`;
     }
+    return 'http://localhost:3000';
+  }
+
+  ngOnInit(): void {
+    this.loadDashboard();
+  }
+
+  private loadDashboard(): void {
+    this.getToken().subscribe({
+      next: (response: K8sTokenResponse) => {
+        if (response.success && response.token) {
+          const dashboardUrlWithToken = `${
+            this.proxyUrl
+          }/?token=${encodeURIComponent(response.token)}`;
+          this.dashboardUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
+            dashboardUrlWithToken
+          );
+        }
+      },
+      error: (error: unknown) => {
+        console.error('Failed to load K8s dashboard:', error);
+      },
+    });
+  }
+
+  private getToken(): Observable<K8sTokenResponse> {
+    return this.http
+      .get<K8sTokenResponse>(`${this.proxyUrl}/get-token`)
+      .pipe(catchError(() => of({ success: false, token: '' })));
   }
 }

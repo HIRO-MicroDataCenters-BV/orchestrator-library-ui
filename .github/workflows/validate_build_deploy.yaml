@@ -13,87 +13,368 @@ on:
     branches:
       - '**'
 
+env:
+  # Enable detailed logging
+  ACTIONS_STEP_DEBUG: true
+  ACTIONS_RUNNER_DEBUG: true
+
 jobs:
   checkout:
-    name: Checkout Code
+    name: 🔄 Checkout Code
     runs-on: ubuntu-latest
     outputs:
       repo-path: ${{ steps.set-repo-path.outputs.repo-path }}
+      build-timestamp: ${{ steps.set-timestamp.outputs.timestamp }}
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-      - name: Set repo path output
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 📊 Display workflow context
+        run: |
+          echo "::group::🔍 Workflow Context Information"
+          echo "Repository: ${{ github.repository }}"
+          echo "Branch: ${{ github.ref_name }}"
+          echo "Event: ${{ github.event_name }}"
+          echo "Actor: ${{ github.actor }}"
+          echo "Run ID: ${{ github.run_id }}"
+          echo "Run Number: ${{ github.run_number }}"
+          echo "Commit SHA: ${{ github.sha }}"
+          echo "Workspace: ${GITHUB_WORKSPACE}"
+          echo "::endgroup::"
+
+      - name: 🕐 Set build timestamp
+        id: set-timestamp
+        run: |
+          TIMESTAMP=$(date -u +"%Y%m%d-%H%M%S")
+          echo "timestamp=${TIMESTAMP}" >> $GITHUB_OUTPUT
+          echo "📅 Build timestamp: ${TIMESTAMP}"
+
+      - name: 📂 Set repository path
         id: set-repo-path
-        run: echo "repo-path=${GITHUB_WORKSPACE}" >> $GITHUB_OUTPUT
+        run: |
+          echo "repo-path=${GITHUB_WORKSPACE}" >> $GITHUB_OUTPUT
+          echo "📂 Repository path: ${GITHUB_WORKSPACE}"
 
   validate:
-    name: Validate YAML file Syntax and Testcoverage
+    name: ✅ Validate & Test
     runs-on: ubuntu-latest
     needs: checkout
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
 
-      - name: Set up Node.js
+      - name: 🔍 Validate pnpm lockfile
+        run: |
+          echo "::group::🔍 PNPM Lockfile Validation"
+          if [ -f "pnpm-lock.yaml" ]; then
+            echo "✅ pnpm-lock.yaml found"
+            echo "📊 Lockfile size: $(wc -c < pnpm-lock.yaml) bytes"
+            echo "📅 Last modified: $(stat -c %y pnpm-lock.yaml 2>/dev/null || stat -f %Sm pnpm-lock.yaml)"
+          else
+            echo "❌ pnpm-lock.yaml not found!"
+            echo "Available files:"
+            ls -la
+            exit 1
+          fi
+          echo "::endgroup::"
+
+      - name: 📊 Display validation context
+        run: |
+          echo "::group::🔍 Validation Context"
+          echo "Node.js setup starting..."
+          echo "Validation timestamp: $(date -u)"
+          echo "Working directory: $(pwd)"
+          echo "Available disk space: $(df -h . | tail -1 | awk '{print $4}')"
+          echo "::endgroup::"
+
+      - name: 🟢 Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      - name: Install pnpm
-        run: npm install -g pnpm
+      - name: 📦 Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: latest
 
-      - name: Show versions
+      - name: 🔄 Setup Node.js with pnpm cache
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: 🔍 Show environment versions
         run: |
-          node -v
-          pnpm -v
+          echo "::group::🔍 Environment Versions"
+          echo "Node.js: $(node -v)"
+          echo "npm: $(npm -v)"
+          echo "pnpm: $(pnpm -v)"
+          echo "OS: $(uname -a)"
+          echo "::endgroup::"
 
-      - name: Install dependencies
-        run: pnpm install
+      - name: 📥 Install project dependencies
+        run: |
+          echo "::group::📥 Installing Dependencies"
+          echo "Starting dependency installation at: $(date -u)"
+          echo "Package manager: pnpm"
 
-      # Need to uncomment this step once the tests are running
-      # - name: Run tests
-      #   run: pnpm test
+          # Show memory usage before installation
+          echo "Memory usage before installation:"
+          free -h
 
-      - name: Set up Helm
-        uses: azure/setup-helm@v3
+          pnpm install --frozen-lockfile
+
+          echo "✅ Dependencies installed successfully at: $(date -u)"
+          echo "::endgroup::"
+
+      - name: 🏗️ Validate build process
+        run: |
+          echo "::group::🏗️ Build Validation"
+          echo "Starting build validation at: $(date -u)"
+
+          # Check if build command exists
+          if pnpm run --help | grep -q "build:prod"; then
+            echo "✅ build:prod script found"
+          else
+            echo "❌ build:prod script not found"
+            echo "Available scripts:"
+            pnpm run --help
+          fi
+
+          # Validate TypeScript configuration
+          if [ -f "tsconfig.json" ]; then
+            echo "✅ TypeScript configuration found"
+          else
+            echo "❌ TypeScript configuration missing"
+          fi
+
+          # Check Angular configuration
+          if [ -f "angular.json" ] || [ -f "project.json" ]; then
+            echo "✅ Angular configuration found"
+          else
+            echo "❌ Angular configuration missing"
+          fi
+
+          echo "::endgroup::"
+
+      # Uncomment when tests are ready
+      # - name: 🧪 Run tests
+      #   run: |
+      #     echo "::group::🧪 Running Tests"
+      #     echo "Starting tests at: $(date -u)"
+      #     pnpm test
+      #     echo "✅ Tests completed at: $(date -u)"
+      #     echo "::endgroup::"
+
+      - name: 🎯 Set up Helm
+        uses: azure/setup-helm@v4
         with:
           version: 'latest'
 
-      - name: Lint Helm chart
-        run: helm lint ./charts/orchestrator-library-ui
+      - name: 🔍 Show Helm version
+        run: |
+          echo "::group::🔍 Helm Information"
+          echo "Helm version: $(helm version --short)"
+          echo "Helm client version: $(helm version --client --short)"
+          echo "::endgroup::"
+
+      - name: 🔍 Validate Helm chart
+        run: |
+          echo "::group::🔍 Helm Chart Validation"
+          echo "Starting Helm chart validation at: $(date -u)"
+
+          CHART_PATH="./charts/orchestrator-library-ui"
+
+          if [ -d "$CHART_PATH" ]; then
+            echo "✅ Chart directory found: $CHART_PATH"
+
+            # Show chart structure
+            echo "📂 Chart structure:"
+            find "$CHART_PATH" -type f -name "*.yaml" -o -name "*.yml" | head -20
+
+            # Validate chart syntax
+            echo "🔍 Running helm lint..."
+            helm lint "$CHART_PATH" --debug
+
+            # Dry run template generation
+            echo "🔍 Testing template generation..."
+            helm template test-release "$CHART_PATH" \
+              --set app.image.repository=test-image \
+              --set app.image.tag=test-tag \
+              --dry-run > /tmp/helm-test.yaml
+
+            echo "✅ Helm templates generated successfully"
+            echo "📊 Generated manifests size: $(wc -l < /tmp/helm-test.yaml) lines"
+
+          else
+            echo "❌ Chart directory not found: $CHART_PATH"
+            exit 1
+          fi
+
+          echo "✅ Helm chart validation completed at: $(date -u)"
+          echo "::endgroup::"
 
   build-and-push:
-    name: Build and Push Docker Image
+    name: 🐳 Build & Push Docker Image
     runs-on: ubuntu-latest
     needs: validate
     outputs:
       image_name: ${{ steps.set-image.outputs.image_name }}
       image_tag: ${{ steps.set-image.outputs.image_tag }}
+      build_duration: ${{ steps.build-stats.outputs.duration }}
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
 
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v2
+      - name: 📊 Display build context
+        run: |
+          echo "::group::🔍 Build Context Information"
+          echo "Building at: $(date -u)"
+          echo "Docker version: $(docker --version)"
+          echo "Available disk space: $(df -h . | tail -1 | awk '{print $4}')"
+          echo "Available memory: $(free -h | head -2 | tail -1 | awk '{print $7}')"
+          echo "CPU cores: $(nproc)"
+          echo "::endgroup::"
+
+      - name: 🔑 Log in to Docker Hub
+        uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build Docker image
+      - name: 🔍 Validate Docker environment
+        run: |
+          echo "::group::🔍 Docker Environment"
+          echo "Docker info:"
+          docker info | head -20
+
+          echo "Docker system df:"
+          docker system df
+
+          echo "Available Docker images:"
+          docker images | head -10
+          echo "::endgroup::"
+
+      - name: 🏗️ Build Docker image
         id: set-image
         run: |
-          IMAGE_TAG=${{ vars.ORCHESTRATOR_LIBRARY_UI_IMAGE_TAG }}-$(date +%Y%m%d%H%M%S)
-          docker build -t ${{ vars.ORCHESTRATOR_LIBRARY_UI_IMAGE_NAME }}:$IMAGE_TAG .
-          echo "image_tag=$IMAGE_TAG" >> $GITHUB_OUTPUT
-          echo "image_name=${{ vars.ORCHESTRATOR_LIBRARY_UI_IMAGE_NAME }}" >> $GITHUB_OUTPUT
+          echo "::group::🏗️ Docker Build Process"
 
-      - name: Push Docker image
+          BUILD_START=$(date +%s)
+          IMAGE_TAG=${{ vars.ORCHESTRATOR_LIBRARY_UI_IMAGE_TAG }}-$(date +%Y%m%d%H%M%S)
+          IMAGE_NAME=${{ vars.ORCHESTRATOR_LIBRARY_UI_IMAGE_NAME }}
+          FULL_IMAGE_NAME="${IMAGE_NAME}:${IMAGE_TAG}"
+
+          echo "🏷️ Building image: ${FULL_IMAGE_NAME}"
+          echo "⏰ Build started at: $(date -u)"
+
+          # Build with detailed output
+          docker build \
+            -t "${FULL_IMAGE_NAME}" \
+            --build-arg BUILD_DATE="$(date -u +'%Y-%m-%dT%H:%M:%SZ')" \
+            --build-arg BUILD_VERSION="${IMAGE_TAG}" \
+            --build-arg GIT_COMMIT="${{ github.sha }}" \
+            --progress=plain \
+            .
+
+          BUILD_END=$(date +%s)
+          BUILD_DURATION=$((BUILD_END - BUILD_START))
+
+          echo "✅ Build completed successfully!"
+          echo "⏱️ Build duration: ${BUILD_DURATION} seconds"
+          echo "📊 Image size: $(docker images ${FULL_IMAGE_NAME} --format 'table {{.Size}}')"
+
+          # Set outputs
+          echo "image_tag=${IMAGE_TAG}" >> $GITHUB_OUTPUT
+          echo "image_name=${IMAGE_NAME}" >> $GITHUB_OUTPUT
+          echo "build_duration=${BUILD_DURATION}" >> $GITHUB_OUTPUT
+
+          echo "::endgroup::"
+
+      - name: 📊 Image inspection
+        run: |
+          echo "::group::📊 Docker Image Details"
+          FULL_IMAGE_NAME="${{ steps.set-image.outputs.image_name }}:${{ steps.set-image.outputs.image_tag }}"
+
+          echo "🔍 Image details:"
+          docker inspect "${FULL_IMAGE_NAME}" | head -50
+
+          echo "📋 Image layers:"
+          docker history "${FULL_IMAGE_NAME}"
+
+          echo "🏷️ Image labels:"
+          docker inspect "${FULL_IMAGE_NAME}" --format='{{json .Config.Labels}}' | jq -r 'to_entries[] | "\(.key)=\(.value)"' || echo "No labels found"
+
+          echo "::endgroup::"
+
+      - name: 🧪 Test Docker image
+        run: |
+          echo "::group::🧪 Docker Image Testing"
+          FULL_IMAGE_NAME="${{ steps.set-image.outputs.image_name }}:${{ steps.set-image.outputs.image_tag }}"
+
+          echo "🏃 Starting test container..."
+          CONTAINER_ID=$(docker run -d --name test-container -p 8080:80 "${FULL_IMAGE_NAME}")
+
+          echo "⏳ Waiting for container to be ready..."
+          sleep 10
+
+          echo "🔍 Container status:"
+          docker ps -a --filter name=test-container
+
+          echo "📋 Container logs:"
+          docker logs test-container
+
+          echo "🌐 Testing HTTP response..."
+          if curl -f -s -o /dev/null -w "%{http_code}" http://localhost:8080 | grep -q "200"; then
+            echo "✅ Container responding correctly"
+          else
+            echo "❌ Container not responding correctly"
+            docker logs test-container
+            exit 1
+          fi
+
+          echo "🧹 Cleaning up test container..."
+          docker stop test-container
+          docker rm test-container
+
+          echo "::endgroup::"
+
+      - name: 🚀 Push Docker image
         if: github.event_name == 'push'
         run: |
-          docker push ${{ vars.ORCHESTRATOR_LIBRARY_UI_IMAGE_NAME }}:${{ steps.set-image.outputs.image_tag }}
+          echo "::group::🚀 Docker Push Process"
+          FULL_IMAGE_NAME="${{ steps.set-image.outputs.image_name }}:${{ steps.set-image.outputs.image_tag }}"
+
+          echo "📤 Pushing image: ${FULL_IMAGE_NAME}"
+          echo "⏰ Push started at: $(date -u)"
+
+          PUSH_START=$(date +%s)
+          docker push "${FULL_IMAGE_NAME}"
+          PUSH_END=$(date +%s)
+          PUSH_DURATION=$((PUSH_END - PUSH_START))
+
+          echo "✅ Image pushed successfully!"
+          echo "⏱️ Push duration: ${PUSH_DURATION} seconds"
+          echo "📍 Image location: docker.io/${FULL_IMAGE_NAME}"
+
+          echo "::endgroup::"
+
+      - name: 📊 Build statistics
+        id: build-stats
+        run: |
+          echo "::group::📊 Build Statistics Summary"
+          echo "🏗️ Build duration: ${{ steps.set-image.outputs.build_duration }} seconds"
+          echo "🏷️ Image tag: ${{ steps.set-image.outputs.image_tag }}"
+          echo "📦 Image name: ${{ steps.set-image.outputs.image_name }}"
+          echo "📊 Final image size: $(docker images ${{ steps.set-image.outputs.image_name }}:${{ steps.set-image.outputs.image_tag }} --format '{{.Size}}')"
+          echo "⏰ Build completed at: $(date -u)"
+          echo "duration=${{ steps.set-image.outputs.build_duration }}" >> $GITHUB_OUTPUT
+          echo "::endgroup::"
 
   deploy:
-    name: Deploy to Kubernetes
+    name: 🚀 Deploy to Kubernetes
     runs-on: ubuntu-latest
     needs:
       - build-and-push
@@ -101,38 +382,88 @@ jobs:
       matrix:
         kubeconfig_secret_name: [HIRO_KUBE_CONFIG_AWS, HIRO_KUBE_CONFIG_BASTON]
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
 
-      - name: Set up kubectl
-        uses: azure/setup-kubectl@v3
-        with:
-          version: 'latest'
-
-      - name: Set up Helm
-        uses: azure/setup-helm@v3
-        with:
-          version: 'latest'
-
-      - name: Set up kubeconfig
+      - name: 📊 Display deployment context
         run: |
+          echo "::group::🔍 Deployment Context"
+          echo "Deploying at: $(date -u)"
+          echo "Image: ${{ needs.build-and-push.outputs.image_name }}:${{ needs.build-and-push.outputs.image_tag }}"
+          echo "Event type: ${{ github.event_name }}"
+          echo "Target namespace: ${{ vars.ORCHESTRATOR_LIBRARY_UI_NAMESPACE }}"
+          echo "Release name: ${{ vars.ORCHESTRATOR_LIBRARY_UI_RELEASE_NAME }}"
+          echo "Build duration: ${{ needs.build-and-push.outputs.build_duration }} seconds"
+          echo "::endgroup::"
+
+      - name: ⚙️ Set up kubectl
+        uses: azure/setup-kubectl@v4
+        with:
+          version: 'latest'
+
+      - name: 🎯 Set up Helm
+        uses: azure/setup-helm@v4
+        with:
+          version: 'latest'
+
+      - name: 🔍 Show tool versions
+        run: |
+          echo "::group::🔍 Deployment Tools"
+          echo "kubectl version: $(kubectl version --client --short)"
+          echo "Helm version: $(helm version --short)"
+          echo "::endgroup::"
+
+      - name: 🔑 Set up kubeconfig
+        run: |
+          echo "::group::🔑 Kubernetes Configuration"
           mkdir -p ~/.kube
           echo "${{ secrets[matrix.kubeconfig_secret_name] }}" > ~/.kube/${{ matrix.kubeconfig_secret_name }}
           chmod 600 ~/.kube/${{ matrix.kubeconfig_secret_name }}
 
-      - name: Set Helm dry-run flag
+          echo "✅ Kubeconfig file created"
+          echo "📊 Config file size: $(wc -c < ~/.kube/config) bytes"
+
+          # Test connection (without exposing sensitive data)
+          if kubectl cluster-info > /dev/null 2>&1; then
+            echo "✅ Kubernetes cluster connection successful"
+            echo "🎯 Current context: $(kubectl config current-context)"
+          else
+            echo "❌ Failed to connect to Kubernetes cluster"
+            exit 1
+          fi
+          echo "::endgroup::"
+
+      - name: 🎯 Set deployment mode
         id: helm-dry-run
         run: |
+          echo "::group::🎯 Deployment Mode Configuration"
           if [[ "${{ github.event_name }}" == "push" ]]; then
             echo "flag=" >> $GITHUB_OUTPUT
+            echo "🚀 Production deployment mode (actual deployment)"
           else
             echo "flag=--dry-run" >> $GITHUB_OUTPUT
+            echo "🧪 Dry-run mode (validation only)"
           fi
+          echo "::endgroup::"
 
       - name: Deploy Orchestrator Library UI Helm chart
         env:
           RELEASE_NAME: ${{ vars.ORCHESTRATOR_LIBRARY_UI_RELEASE_NAME }} # used in post-renderer script
         run: |
+          echo "::group::🚀 Helm Deployment Process"
+
+          DEPLOY_START=$(date +%s)
+
+          echo "📋 Deployment parameters:"
+          echo "  Release: ${{ vars.ORCHESTRATOR_LIBRARY_UI_RELEASE_NAME }}"
+          echo "  Namespace: ${{ vars.ORCHESTRATOR_LIBRARY_UI_NAMESPACE }}"
+          echo "  Image: ${{ vars.ORCHESTRATOR_LIBRARY_UI_IMAGE_NAME }}:${{ needs.build-and-push.outputs.image_tag }}"
+          echo "  Node Port: ${{ vars.ORCHESTRATOR_LIBRARY_UI_NODE_PORT }}"
+          echo "  K8s Proxy Port: ${{ vars.K8S_PROXY_NODE_PORT }}"
+          echo "  Mode: ${{ steps.helm-dry-run.outputs.flag && 'DRY RUN' || 'PRODUCTION' }}"
+
+          echo "🏗️ Starting Helm deployment..."
+
           helm upgrade --install ${{ vars.ORCHESTRATOR_LIBRARY_UI_RELEASE_NAME }} ./charts/orchestrator-library-ui \
             --post-renderer ./charts/orchestrator-library-ui/add-common-labels.sh \
             --kubeconfig ~/.kube/${{ matrix.kubeconfig_secret_name }} \
@@ -145,25 +476,155 @@ jobs:
             --set app.service.type=NodePort \
             --set app.service.port=80 \
             --set app.service.nodePort=${{ vars.ORCHESTRATOR_LIBRARY_UI_NODE_PORT }} \
+            --set app.k8sProxy.enabled=true \
+            --set app.k8sProxy.service.nodePort=${{ vars.K8S_PROXY_NODE_PORT }} \
+            --timeout=600s \
+            --wait \
+            --debug \
             ${{ steps.helm-dry-run.outputs.flag }}
 
-      - name: Check deployment status
+          DEPLOY_END=$(date +%s)
+          DEPLOY_DURATION=$((DEPLOY_END - DEPLOY_START))
+
+          echo "✅ Helm deployment completed!"
+          echo "⏱️ Deployment duration: ${DEPLOY_DURATION} seconds"
+
+          echo "::endgroup::"
+
+      - name: 🔍 Verify deployment status
         if: github.event_name == 'push'
         run: |
-          echo "Waiting for deployment to be ready..."
-          sleep 10
+          echo "::group::🔍 Deployment Verification"
 
-          echo "Checking pod status..."
-          kubectl get pods -n ${{ vars.ORCHESTRATOR_LIBRARY_UI_NAMESPACE }} --kubeconfig ~/.kube/${{ matrix.kubeconfig_secret_name }} -l app=${{ vars.ORCHESTRATOR_LIBRARY_UI_RELEASE_NAME }}
+          echo "⏳ Waiting for deployment to stabilize..."
+          sleep 30
 
-          echo "Getting pod logs..."
-          POD_NAME=$(kubectl get pods -n ${{ vars.ORCHESTRATOR_LIBRARY_UI_NAMESPACE }} --kubeconfig ~/.kube/${{ matrix.kubeconfig_secret_name }} -l app=${{ vars.ORCHESTRATOR_LIBRARY_UI_RELEASE_NAME }} -o jsonpath='{.items[0].metadata.name}' 2>/dev/null || echo "")
+          NAMESPACE="${{ vars.ORCHESTRATOR_LIBRARY_UI_NAMESPACE }}"
+          RELEASE_NAME="${{ vars.ORCHESTRATOR_LIBRARY_UI_RELEASE_NAME }}"
+          KUBECONFIG=~/.kube/${{ matrix.kubeconfig_secret_name }}
+
+          echo "📊 Deployment status in namespace: ${NAMESPACE}"
+
+          # Check deployments
+          echo "🚀 Deployments:"
+          kubectl get deployments -n "${NAMESPACE}" "${KUBECONFIG}" -o wide || echo "No deployments found"
+
+          # Check pods
+          echo "🎯 Pods:"
+          kubectl get pods -n "${NAMESPACE}" "${KUBECONFIG}" -o wide || echo "No pods found"
+
+          # Check services
+          echo "🌐 Services:"
+          kubectl get services -n "${NAMESPACE}" "${KUBECONFIG}" -o wide || echo "No services found"
+
+          # Check configmaps
+          echo "⚙️ ConfigMaps:"
+          kubectl get configmaps -n "${NAMESPACE}" "${KUBECONFIG}" || echo "No configmaps found"
+
+          echo "::endgroup::"
+
+      - name: 📋 Collect Angular app logs
+        if: github.event_name == 'push'
+        run: |
+          echo "::group::📋 Angular Application Logs"
+
+          NAMESPACE="${{ vars.ORCHESTRATOR_LIBRARY_UI_NAMESPACE }}"
+          RELEASE_NAME="${{ vars.ORCHESTRATOR_LIBRARY_UI_RELEASE_NAME }}"
+          KUBECONFIG=~/.kube/${{ matrix.kubeconfig_secret_name }}
+
+          echo "🔍 Looking for Angular app pods with label: app=${RELEASE_NAME}"
+
+          POD_NAME=$(kubectl get pods -n "${NAMESPACE}" "${KUBECONFIG}" -l app="${RELEASE_NAME}" -o jsonpath='{.items[0].metadata.name}' 2>/dev/null || echo "")
+
           if [ ! -z "$POD_NAME" ]; then
-            echo "Pod logs for $POD_NAME:"
-            kubectl logs $POD_NAME -n ${{ vars.ORCHESTRATOR_LIBRARY_UI_NAMESPACE }} --kubeconfig ~/.kube/${{ matrix.kubeconfig_secret_name }} --tail=50 || echo "Could not retrieve logs"
+            echo "✅ Found Angular pod: ${POD_NAME}"
+
+            echo "📊 Pod details:"
+            kubectl describe pod "${POD_NAME}" -n "${NAMESPACE}" "${KUBECONFIG}"
+
+            echo "📋 Pod logs (last 100 lines):"
+            kubectl logs "${POD_NAME}" -n "${NAMESPACE}" "${KUBECONFIG}" --tail=100 || echo "Could not retrieve logs"
+
+            echo "🔍 Pod events:"
+            kubectl get events -n "${NAMESPACE}" "${KUBECONFIG}" --field-selector involvedObject.name="${POD_NAME}" --sort-by='.lastTimestamp'
+
           else
-            echo "No pod found"
+            echo "❌ No Angular app pod found with label app=${RELEASE_NAME}"
+            echo "Available pods in namespace:"
+            kubectl get pods -n "${NAMESPACE}" "${KUBECONFIG}"
+          fi
+          echo "::endgroup::"
+
+      - name: 📋 Collect K8s Proxy logs
+        if: github.event_name == 'push'
+        run: |
+          echo "::group::📋 K8s Proxy Logs"
+
+          NAMESPACE="${{ vars.ORCHESTRATOR_LIBRARY_UI_NAMESPACE }}"
+          KUBECONFIG=~/.kube/${{ matrix.kubeconfig_secret_name }}
+
+          echo "🔍 Looking for K8s proxy pods with label: app=aces-orchestrator-k8s-proxy"
+
+          K8S_POD_NAME=$(kubectl get pods -n "${NAMESPACE}" "${KUBECONFIG}" -l app=aces-orchestrator-k8s-proxy -o jsonpath='{.items[0].metadata.name}' 2>/dev/null || echo "")
+
+          if [ ! -z "$K8S_POD_NAME" ]; then
+            echo "✅ Found K8s proxy pod: ${K8S_POD_NAME}"
+
+            echo "📊 Pod details:"
+            kubectl describe pod "${K8S_POD_NAME}" -n "${NAMESPACE}" "${KUBECONFIG}"
+
+            echo "📋 Pod logs (last 100 lines):"
+            kubectl logs "${K8S_POD_NAME}" -n "${NAMESPACE}" "${KUBECONFIG}" --tail=100 || echo "Could not retrieve K8s proxy logs"
+
+            echo "🔍 Pod events:"
+            kubectl get events -n "${NAMESPACE}" "${KUBECONFIG}" --field-selector involvedObject.name="${K8S_POD_NAME}" --sort-by='.lastTimestamp'
+
+          else
+            echo "❌ No K8s proxy pod found with label app=aces-orchestrator-k8s-proxy"
+            echo "Available pods in namespace:"
+            kubectl get pods -n "${NAMESPACE}" "${KUBECONFIG}"
           fi
 
-          echo "Checking service..."
-          kubectl get service ${{ vars.ORCHESTRATOR_LIBRARY_UI_RELEASE_NAME }} -n ${{ vars.ORCHESTRATOR_LIBRARY_UI_NAMESPACE }} --kubeconfig ~/.kube/${{ matrix.kubeconfig_secret_name }}
+          echo "::endgroup::"
+
+      - name: 🌐 Service connectivity test
+        if: github.event_name == 'push'
+        run: |
+          echo "::group::🌐 Service Connectivity Test"
+
+          NAMESPACE="${{ vars.ORCHESTRATOR_LIBRARY_UI_NAMESPACE }}"
+          RELEASE_NAME="${{ vars.ORCHESTRATOR_LIBRARY_UI_RELEASE_NAME }}"
+          KUBECONFIG=~/.kube/${{ matrix.kubeconfig_secret_name }}
+
+          echo "🔍 Testing service connectivity..."
+
+          # Test main service
+          echo "🎯 Testing main service: ${RELEASE_NAME}"
+          kubectl get service "${RELEASE_NAME}" ${KUBECONFIG} -n "${NAMESPACE}" -o wide || echo "Main service not found"
+
+          # Test K8s proxy service
+          echo "🎯 Testing K8s proxy service: aces-orchestrator-k8s-proxy"
+          kubectl get service "aces-orchestrator-k8s-proxy" ${KUBECONFIG} -n "${NAMESPACE}" -o wide || echo "K8s proxy service not found"
+
+          # Show all endpoints
+          echo "🔗 All endpoints:"
+          kubectl get endpoints -n "${NAMESPACE}" ${KUBECONFIG} || echo "No endpoints found"
+
+          echo "::endgroup::"
+
+      - name: 📊 Final deployment summary
+        if: github.event_name == 'push'
+        run: |
+          echo "::group::📊 Deployment Summary"
+
+          echo "✅ Deployment Summary:"
+          echo "  🏷️ Image deployed: ${{ vars.ORCHESTRATOR_LIBRARY_UI_IMAGE_NAME }}:${{ needs.build-and-push.outputs.image_tag }}"
+          echo "  📦 Release: ${{ vars.ORCHESTRATOR_LIBRARY_UI_RELEASE_NAME }}"
+          echo "  🎯 Namespace: ${{ vars.ORCHESTRATOR_LIBRARY_UI_NAMESPACE }}"
+          echo "  ⏰ Completed at: $(date -u)"
+          echo "  🏗️ Build time: ${{ needs.build-and-push.outputs.build_duration }} seconds"
+          echo "  🌐 Main service port: ${{ vars.ORCHESTRATOR_LIBRARY_UI_NODE_PORT }}"
+          echo "  🔌 Proxy service port: ${{ vars.K8S_PROXY_NODE_PORT }}"
+
+          echo "🎉 Deployment completed successfully!"
+          echo "::endgroup::"

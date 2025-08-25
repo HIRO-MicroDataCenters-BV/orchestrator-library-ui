@@ -4,7 +4,7 @@ export const environment = {
   tokenKey: 'auth_token',
   refreshTokenKey: 'refresh_token',
   userKey: 'user',
-  dashboardUrl: '/iframe-dashboard',
+
   cogUrl: '/iframe-cog',
   grafanaUrl: '/iframe-grafana',
   dexUrl: 'https://dashboard.cog.hiro-develop.nl/apidev',

@@ -6,7 +6,7 @@ export const environment: Environment = {
   tokenKey: 'auth_token',
   refreshTokenKey: 'refresh_token',
   userKey: 'user',
-  dashboardUrl: '/iframe-dashboard',
+
   cogUrl: 'https://cui-nine.vercel.app/?is_iframe=1',
   grafanaUrl: 'http://51.44.28.47:30000',
   dexUrl: 'https://dashboard.cog.hiro-develop.nl/apidev',
