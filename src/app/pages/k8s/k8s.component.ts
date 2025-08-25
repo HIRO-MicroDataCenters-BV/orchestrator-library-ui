@@ -4,6 +4,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
 
 interface K8sTokenResponse {
   success: boolean;
@@ -25,10 +26,7 @@ export class K8sComponent implements OnInit {
   dashboardUrl: SafeResourceUrl | null = null;
 
   private get proxyUrl(): string {
-    if (typeof window !== 'undefined') {
-      return `${window.location.protocol}//${window.location.hostname}:3000`;
-    }
-    return 'http://localhost:3000';
+    return environment.dashboardUrl;
   }
 
   ngOnInit(): void {
