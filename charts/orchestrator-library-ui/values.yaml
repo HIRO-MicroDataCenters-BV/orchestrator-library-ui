@@ -11,6 +11,14 @@ app:
     type: NodePort
     port: 80
     nodePort: 30010
+  ingress:
+    enabled: true
+    className: nginx
+    host: aces-orchestrator.aces.hiro-develop.nl
+    path: /
+    tls: false
+    tlsSecretName: ""
+  
 
   k8sProxy:
     enabled: true

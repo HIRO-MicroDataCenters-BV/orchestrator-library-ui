@@ -446,6 +446,21 @@ jobs:
           fi
           echo "::endgroup::"
 
+      - name: Set Helm values for Service type and Ingress
+        id: helm-app-access
+        run: |
+          if [[ "${{ matrix.kubeconfig_secret_name }}" == "HIRO_KUBE_CONFIG_AWS" ]]; then
+            echo "orchestrator_ui_service_type=--set app.service.type=NodePort" >> $GITHUB_OUTPUT
+            echo "orchestrator_ui_service_nodePort=--set app.service.nodePort=${{ vars.ORCHESTRATOR_LIBRARY_UI_NODE_PORT }}" >> $GITHUB_OUTPUT            
+            echo "orchestrator_ui_ingress_enabled=--set app.ingress.enabled=false" >> $GITHUB_OUTPUT
+            echo "orchestrator_ui_ingress_host=" >> $GITHUB_OUTPUT
+          else
+            echo "orchestrator_ui_service_type=--set app.service.type=ClusterIP" >> $GITHUB_OUTPUT
+            echo "orchestrator_ui_service_nodePort=" >> $GITHUB_OUTPUT
+            echo "orchestrator_ui_ingress_enabled=--set app.ingress.enabled=true" >> $GITHUB_OUTPUT
+            echo "orchestrator_ui_ingress_host=--set app.ingress.host=${{ vars.ORCHESTRATOR_LIBRARY_UI_INGRESS_HOST }}" >> $GITHUB_OUTPUT
+          fi
+
       - name: Deploy Orchestrator Library UI Helm chart
         env:
           RELEASE_NAME: ${{ vars.ORCHESTRATOR_LIBRARY_UI_RELEASE_NAME }} # used in post-renderer script
@@ -473,8 +488,11 @@ jobs:
             --set app.name=${{ vars.ORCHESTRATOR_LIBRARY_UI_RELEASE_NAME }} \
             --set app.image.repository=${{ vars.ORCHESTRATOR_LIBRARY_UI_IMAGE_NAME }} \
             --set app.image.tag=${{ needs.build-and-push.outputs.image_tag }} \
+            ${{ steps.helm-app-access.outputs.orchestrator_ui_service_type }} \
+            ${{ steps.helm-app-access.outputs.orchestrator_ui_service_nodePort }} \
+            ${{ steps.helm-app-access.outputs.orchestrator_ui_ingress_enabled }} \
+            ${{ steps.helm-app-access.outputs.orchestrator_ui_ingress_host }} \
             --set app.service.type=NodePort \
-            --set app.service.port=80 \
             --set app.service.nodePort=${{ vars.ORCHESTRATOR_LIBRARY_UI_NODE_PORT }} \
             --set app.k8sProxy.enabled=true \
             --set app.k8sProxy.service.nodePort=${{ vars.K8S_PROXY_NODE_PORT }} \
