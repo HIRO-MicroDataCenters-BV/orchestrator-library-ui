@@ -462,7 +462,7 @@ jobs:
           helm upgrade --install ${{ vars.ORCHESTRATOR_LIBRARY_UI_RELEASE_NAME }} ./charts/orchestrator-library-ui \
             --namespace ${{ vars.ORCHESTRATOR_LIBRARY_UI_NAMESPACE }} \
             --create-namespace \
-            --set namespace=${{ vars.ORCHESTRATOR_LIBRARY_UI_NAMESPACE }} \
+
             --set app.image.repository=${{ vars.ORCHESTRATOR_LIBRARY_UI_IMAGE_NAME }} \
             --set app.image.tag=${{ needs.build-and-push.outputs.image_tag }} \
             --set app.service.type=NodePort \
