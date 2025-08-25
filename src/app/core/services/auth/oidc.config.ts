@@ -49,7 +49,6 @@ export function getOidcConfig(): OidcConfig {
     // Secure routes that require authentication
     secureRoutes: [
       environment.apiUrl,
-      environment.dashboardUrl,
       environment.cogUrl,
     ],
 

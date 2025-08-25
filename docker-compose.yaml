@@ -1,15 +1,12 @@
 services:
-  orchestrator-library-ui:
+  # Angular UI Application
+  orchestrator-ui:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: orchestrator-library-ui
+    container_name: orchestrator-ui
     ports:
       - '80:80'
-      - '4000:4000'
-    environment:
-      - PORT=4000
-      - NODE_ENV=production
     restart: unless-stopped
     healthcheck:
       test: ['CMD', 'wget', '-qO-', 'http://localhost:80']
@@ -17,3 +14,27 @@ services:
       timeout: 10s
       retries: 3
       start_period: 30s
+
+  # K8s Dashboard Proxy
+  k8s-proxy:
+    image: node:20-alpine
+    container_name: k8s-proxy
+    ports:
+      - '3000:3000'
+    environment:
+      - PORT=${PORT}
+      - API_BACKEND_URL=${API_BACKEND_URL}
+      - K8S_DASHBOARD_URL=${K8S_DASHBOARD_URL}
+      - K8S_NAMESPACE=${K8S_NAMESPACE}
+      - K8S_SERVICE_ACCOUNT=${K8S_SERVICE_ACCOUNT}
+    volumes:
+      - ./k8s-proxy.js:/app/k8s-proxy.js:ro
+    working_dir: /app
+    command: node k8s-proxy.js
+    restart: unless-stopped
+    healthcheck:
+      test: ['CMD', 'wget', '-qO-', 'http://localhost:3000/health']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s

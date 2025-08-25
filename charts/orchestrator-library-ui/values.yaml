@@ -12,3 +12,19 @@ app:
     type: NodePort
     port: 80
     nodePort: 30010
+
+  k8sProxy:
+    enabled: true
+    name: aces-orchestrator-k8s-proxy
+    image:
+      repository: node
+      tag: "20-alpine3.20"
+    service:
+      type: NodePort
+      port: 3000
+      nodePort: 30020
+    env:
+      API_BACKEND_URL: "http://51.44.28.47:30015"
+      K8S_DASHBOARD_URL: "http://51.44.28.47:30016"
+      K8S_NAMESPACE: "hiros"
+      K8S_SERVICE_ACCOUNT: "readonly-user"

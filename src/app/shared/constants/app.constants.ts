@@ -152,7 +152,6 @@ export const ENVIRONMENT = {
 // ===================
 
 export const EXTERNAL_URLS = {
-  DASHBOARD: environment.dashboardUrl,
   COG: environment.cogUrl,
   API: environment.apiUrl,
 } as const;
