@@ -421,12 +421,12 @@ jobs:
           chmod 600 ~/.kube/${{ matrix.kubeconfig_secret_name }}
 
           echo "✅ Kubeconfig file created"
-          echo "📊 Config file size: $(wc -c < ~/.kube/config) bytes"
+          echo "📊 Config file size: $(wc -c < ~/.kube/${{ matrix.kubeconfig_secret_name }}) bytes"
 
           # Test connection (without exposing sensitive data)
-          if kubectl cluster-info > /dev/null 2>&1; then
+          if kubectl cluster-info --kubeconfig ~/.kube/${{ matrix.kubeconfig_secret_name }} > /dev/null 2>&1; then
             echo "✅ Kubernetes cluster connection successful"
-            echo "🎯 Current context: $(kubectl config current-context)"
+            echo "🎯 Current context: $(kubectl config current-context --kubeconfig ~/.kube/${{ matrix.kubeconfig_secret_name }})"
           else
             echo "❌ Failed to connect to Kubernetes cluster"
             exit 1
