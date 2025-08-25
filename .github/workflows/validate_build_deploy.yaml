@@ -492,8 +492,6 @@ jobs:
             ${{ steps.helm-app-access.outputs.orchestrator_ui_service_nodePort }} \
             ${{ steps.helm-app-access.outputs.orchestrator_ui_ingress_enabled }} \
             ${{ steps.helm-app-access.outputs.orchestrator_ui_ingress_host }} \
-            --set app.service.type=NodePort \
-            --set app.service.nodePort=${{ vars.ORCHESTRATOR_LIBRARY_UI_NODE_PORT }} \
             --set app.k8sProxy.enabled=true \
             --set app.k8sProxy.service.nodePort=${{ vars.K8S_PROXY_NODE_PORT }} \
             --timeout=600s \
