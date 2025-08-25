@@ -19,11 +19,7 @@ spec:
           ports:
             - containerPort: 80
               name: http
-            - containerPort: 4000
-              name: nodejs
           env:
-            - name: PORT
-              value: '4000'
             - name: NODE_ENV
               value: 'production'
             - name: API_TARGET
