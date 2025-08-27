@@ -15,6 +15,8 @@ app:
     DASHBOARD_TARGET: 'http://51.44.28.47:30016'
     GRAFANA_TARGET: 'http://51.44.28.47:30000'
     COG_TARGET: 'https://dashboard.cog.hiro-develop.nl'
+    K8S_PROXY_TARGET: 'http://51.44.28.47:30020'
+    # K8S_PROXY_TARGET: "http://{{ .Values.k8sProxy.name }}:{{ .Values.k8sProxy.service.port }}"
   ingress:
     enabled: true
     className: nginx
