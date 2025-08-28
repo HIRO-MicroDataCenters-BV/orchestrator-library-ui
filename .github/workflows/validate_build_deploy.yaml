@@ -503,10 +503,14 @@ jobs:
           echo "  Kubeconfig: ${{ matrix.kubeconfig_secret_name }}"
           echo "  Mode: ${{ steps.helm-dry-run.outputs.flag && 'DRY RUN' || 'PRODUCTION' }}"
 
-          echo "  Service Type: ${{ steps.helm-app-access.outputs.orchestrator_ui_service_type }}"
-          echo "  Service NodePort: ${{ steps.helm-app-access.outputs.orchestrator_ui_service_nodePort }}"
-          echo "  Ingress Enabled: ${{ steps.helm-app-access.outputs.orchestrator_ui_ingress_enabled }}"
-          echo "  Ingress Host: ${{ steps.helm-app-access.outputs.orchestrator_ui_ingress_host }}"
+          echo "  UI Service Type: ${{ steps.helm-app-access.outputs.orchestrator_ui_service_type }}"
+          echo "  UI Service NodePort: ${{ steps.helm-app-access.outputs.orchestrator_ui_service_nodePort }}"
+          echo "  UI Ingress Enabled: ${{ steps.helm-app-access.outputs.orchestrator_ui_ingress_enabled }}"
+          echo "  UI Ingress Host: ${{ steps.helm-app-access.outputs.orchestrator_ui_ingress_host }}"
+          echo "  K8S Proxy Service Type: ${{ steps.helm-app-access.outputs.k8s_proxy_service_type }}"
+          echo "  K8S Proxy Service NodePort: ${{ steps.helm-app-access.outputs.k8s_proxy_service_nodePort }}"
+          echo "  K8S Proxy Ingress Enabled: ${{ steps.helm-app-access.outputs.k8s_proxy_ingress_enabled }}"
+          echo "  K8S Proxy Ingress Host: ${{ steps.helm-app-access.outputs.k8s_proxy_ingress_host }}"
           echo "  API_TARGET: ${{ steps.helm-app-env.outputs.orchestrator_ui_env_api_target }}"
           echo "  DEX_TARGET: ${{ steps.helm-app-env.outputs.orchestrator_ui_env_dex_target }}"
           echo "  DASHBOARD_TARGET: ${{ steps.helm-app-env.outputs.orchestrator_ui_env_dashboard_target }}"
@@ -534,7 +538,10 @@ jobs:
             --set app.env.GRAFANA_TARGET=${{ steps.helm-app-env.outputs.orchestrator_ui_env_grafana_target }} \
             --set app.env.COG_TARGET=${{ steps.helm-app-env.outputs.orchestrator_ui_env_cog_target }} \
             --set app.k8sProxy.enabled=true \
-            --set app.k8sProxy.service.nodePort=${{ vars.K8S_PROXY_NODE_PORT }} \
+            ${{ steps.helm-app-access.outputs.k8s_proxy_service_type }} \
+            ${{ steps.helm-app-access.outputs.k8s_proxy_service_nodePort }} \
+            ${{ steps.helm-app-access.outputs.k8s_proxy_ingress_enabled }} \
+            ${{ steps.helm-app-access.outputs.k8s_proxy_ingress_host }} \
             --timeout=600s \
             --wait \
             --debug \
