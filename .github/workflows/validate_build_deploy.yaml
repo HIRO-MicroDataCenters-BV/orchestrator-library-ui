@@ -571,19 +571,19 @@ jobs:
 
           # Check deployments
           echo "🚀 Deployments:"
-          kubectl get deployments -n "${NAMESPACE}" "${KUBECONFIG}" -o wide || echo "No deployments found"
+          kubectl get deployments -n "${NAMESPACE}" --kubeconfig "${KUBECONFIG}" -o wide || echo "No deployments found"
 
           # Check pods
           echo "🎯 Pods:"
-          kubectl get pods -n "${NAMESPACE}" "${KUBECONFIG}" -o wide || echo "No pods found"
+          kubectl get pods -n "${NAMESPACE}" --kubeconfig "${KUBECONFIG}" -o wide || echo "No pods found"
 
           # Check services
           echo "🌐 Services:"
-          kubectl get services -n "${NAMESPACE}" "${KUBECONFIG}" -o wide || echo "No services found"
+          kubectl get services -n "${NAMESPACE}" --kubeconfig "${KUBECONFIG}" -o wide || echo "No services found"
 
           # Check configmaps
           echo "⚙️ ConfigMaps:"
-          kubectl get configmaps -n "${NAMESPACE}" "${KUBECONFIG}" || echo "No configmaps found"
+          kubectl get configmaps -n "${NAMESPACE}" --kubeconfig "${KUBECONFIG}" || echo "No configmaps found"
 
           echo "::endgroup::"
 
@@ -598,24 +598,24 @@ jobs:
 
           echo "🔍 Looking for Angular app pods with label: app=${RELEASE_NAME}"
 
-          POD_NAME=$(kubectl get pods -n "${NAMESPACE}" "${KUBECONFIG}" -l app="${RELEASE_NAME}" -o jsonpath='{.items[0].metadata.name}' 2>/dev/null || echo "")
+          POD_NAME=$(kubectl get pods -n "${NAMESPACE}" --kubeconfig "${KUBECONFIG}" -l app="${RELEASE_NAME}" -o jsonpath='{.items[0].metadata.name}' 2>/dev/null || echo "")
 
           if [ ! -z "$POD_NAME" ]; then
             echo "✅ Found Angular pod: ${POD_NAME}"
 
             echo "📊 Pod details:"
-            kubectl describe pod "${POD_NAME}" -n "${NAMESPACE}" "${KUBECONFIG}"
+            kubectl describe pod "${POD_NAME}" -n "${NAMESPACE}" --kubeconfig "${KUBECONFIG}"
 
             echo "📋 Pod logs (last 100 lines):"
-            kubectl logs "${POD_NAME}" -n "${NAMESPACE}" "${KUBECONFIG}" --tail=100 || echo "Could not retrieve logs"
+            kubectl logs "${POD_NAME}" -n "${NAMESPACE}" --kubeconfig "${KUBECONFIG}" --tail=100 || echo "Could not retrieve logs"
 
             echo "🔍 Pod events:"
-            kubectl get events -n "${NAMESPACE}" "${KUBECONFIG}" --field-selector involvedObject.name="${POD_NAME}" --sort-by='.lastTimestamp'
+            kubectl get events -n "${NAMESPACE}" --kubeconfig "${KUBECONFIG}" --field-selector involvedObject.name="${POD_NAME}" --sort-by='.lastTimestamp'
 
           else
             echo "❌ No Angular app pod found with label app=${RELEASE_NAME}"
             echo "Available pods in namespace:"
-            kubectl get pods -n "${NAMESPACE}" "${KUBECONFIG}"
+            kubectl get pods -n "${NAMESPACE}" --kubeconfig "${KUBECONFIG}"
           fi
           echo "::endgroup::"
 
@@ -629,24 +629,24 @@ jobs:
 
           echo "🔍 Looking for K8s proxy pods with label: app=aces-orchestrator-k8s-proxy"
 
-          K8S_POD_NAME=$(kubectl get pods -n "${NAMESPACE}" "${KUBECONFIG}" -l app=aces-orchestrator-k8s-proxy -o jsonpath='{.items[0].metadata.name}' 2>/dev/null || echo "")
+          K8S_POD_NAME=$(kubectl get pods -n "${NAMESPACE}" --kubeconfig "${KUBECONFIG}" -l app=aces-orchestrator-k8s-proxy -o jsonpath='{.items[0].metadata.name}' 2>/dev/null || echo "")
 
           if [ ! -z "$K8S_POD_NAME" ]; then
             echo "✅ Found K8s proxy pod: ${K8S_POD_NAME}"
 
             echo "📊 Pod details:"
-            kubectl describe pod "${K8S_POD_NAME}" -n "${NAMESPACE}" "${KUBECONFIG}"
+            kubectl describe pod "${K8S_POD_NAME}" -n "${NAMESPACE}" --kubeconfig "${KUBECONFIG}"
 
             echo "📋 Pod logs (last 100 lines):"
-            kubectl logs "${K8S_POD_NAME}" -n "${NAMESPACE}" "${KUBECONFIG}" --tail=100 || echo "Could not retrieve K8s proxy logs"
+            kubectl logs "${K8S_POD_NAME}" -n "${NAMESPACE}" --kubeconfig "${KUBECONFIG}" --tail=100 || echo "Could not retrieve K8s proxy logs"
 
             echo "🔍 Pod events:"
-            kubectl get events -n "${NAMESPACE}" "${KUBECONFIG}" --field-selector involvedObject.name="${K8S_POD_NAME}" --sort-by='.lastTimestamp'
+            kubectl get events -n "${NAMESPACE}" --kubeconfig "${KUBECONFIG}" --field-selector involvedObject.name="${K8S_POD_NAME}" --sort-by='.lastTimestamp'
 
           else
             echo "❌ No K8s proxy pod found with label app=aces-orchestrator-k8s-proxy"
             echo "Available pods in namespace:"
-            kubectl get pods -n "${NAMESPACE}" "${KUBECONFIG}"
+            kubectl get pods -n "${NAMESPACE}" --kubeconfig "${KUBECONFIG}"
           fi
 
           echo "::endgroup::"
@@ -664,15 +664,15 @@ jobs:
 
           # Test main service
           echo "🎯 Testing main service: ${RELEASE_NAME}"
-          kubectl get service "${RELEASE_NAME}" ${KUBECONFIG} -n "${NAMESPACE}" -o wide || echo "Main service not found"
+          kubectl get service "${RELEASE_NAME}" --kubeconfig "${KUBECONFIG}" -n "${NAMESPACE}" -o wide || echo "Main service not found"
 
           # Test K8s proxy service
           echo "🎯 Testing K8s proxy service: aces-orchestrator-k8s-proxy"
-          kubectl get service "aces-orchestrator-k8s-proxy" ${KUBECONFIG} -n "${NAMESPACE}" -o wide || echo "K8s proxy service not found"
+          kubectl get service "aces-orchestrator-k8s-proxy" --kubeconfig "${KUBECONFIG}" -n "${NAMESPACE}" -o wide || echo "K8s proxy service not found"
 
           # Show all endpoints
           echo "🔗 All endpoints:"
-          kubectl get endpoints -n "${NAMESPACE}" ${KUBECONFIG} || echo "No endpoints found"
+          kubectl get endpoints -n "${NAMESPACE}" --kubeconfig "${KUBECONFIG}" || echo "No endpoints found"
 
           echo "::endgroup::"
 
@@ -689,6 +689,8 @@ jobs:
           echo "  🏗️ Build time: ${{ needs.build-and-push.outputs.build_duration }} seconds"
           echo "  🌐 Main service port: ${{ vars.ORCHESTRATOR_LIBRARY_UI_NODE_PORT }}"
           echo "  🔌 Proxy service port: ${{ vars.K8S_PROXY_NODE_PORT }}"
+          echo "  📡 Main service ingress host: ${{ vars.ORCHESTRATOR_LIBRARY_UI_INGRESS_HOST }}"
+          echo "  📡 Proxy service ingress host: ${{ vars.K8S_PROXY_INGRESS_HOST }}"
 
           echo "🎉 Deployment completed successfully!"
           echo "::endgroup::"
