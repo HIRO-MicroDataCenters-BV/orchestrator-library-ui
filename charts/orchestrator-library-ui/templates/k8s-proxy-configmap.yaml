@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ .Values.app.k8sProxy.name }}-config
+  name: {{ .Values.app.k8sProxy.configMap.name }}
 data:
   k8s-proxy.js: |
     const http = require('http');
@@ -64,6 +64,7 @@ data:
 
         const apiUrl = url.parse(config.k8sApi);
         const options = {
+          protocol: apiUrl.protocol,
           hostname: apiUrl.hostname,
           port: apiUrl.port || (apiUrl.protocol === 'https:' ? 443 : 80),
           path: `/k8s_get_token/?namespace=${config.namespace}&service_account_name=${config.serviceAccount}`,
@@ -103,11 +104,12 @@ data:
 
             return tokenData.token;
           }
+        } else {
+          console.error('Failed to get token from API:', response.statusCode, response.data);
+          throw new Error('Failed to get token from API');
         }
-
-        throw new Error('Failed to get token from API');
       } catch (error) {
-        console.error('Error fetching K8s token:', error.message);
+        console.error('Error fetching K8s token:', error);
         throw new Error('Failed to get K8s token');
       }
     }
