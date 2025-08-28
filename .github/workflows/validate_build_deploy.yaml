@@ -542,6 +542,10 @@ jobs:
             ${{ steps.helm-app-access.outputs.k8s_proxy_service_nodePort }} \
             ${{ steps.helm-app-access.outputs.k8s_proxy_ingress_enabled }} \
             ${{ steps.helm-app-access.outputs.k8s_proxy_ingress_host }} \
+            --set app.k8sProxy.env.API_BACKEND_URL=${{ steps.helm-app-env.outputs.orchestrator_ui_env_api_target }} \
+            --set app.k8sProxy.env.K8S_DASHBOARD_URL=${{ steps.helm-app-env.outputs.orchestrator_ui_env_dashboard_target }} \
+            --set app.k8sProxy.env.K8S_NAMESPACE=hiros \
+            --set app.k8sProxy.env.K8S_SERVICE_ACCOUNT=readonly-user \
             --timeout=600s \
             --wait \
             --debug \
