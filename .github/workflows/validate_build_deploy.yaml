@@ -509,20 +509,6 @@ jobs:
           echo "  Kubeconfig: ${{ matrix.kubeconfig_secret_name }}"
           echo "  Mode: ${{ steps.helm-dry-run.outputs.flag && 'DRY RUN' || 'PRODUCTION' }}"
 
-          echo "  UI Service Type: ${{ steps.helm-app-access.outputs.orchestrator_ui_service_type }}"
-          echo "  UI Service NodePort: ${{ steps.helm-app-access.outputs.orchestrator_ui_service_nodePort }}"
-          echo "  UI Ingress Enabled: ${{ steps.helm-app-access.outputs.orchestrator_ui_ingress_enabled }}"
-          echo "  UI Ingress Host: ${{ steps.helm-app-access.outputs.orchestrator_ui_ingress_host }}"
-          echo "  K8S Proxy Service Type: ${{ steps.helm-app-access.outputs.k8s_proxy_service_type }}"
-          echo "  K8S Proxy Service NodePort: ${{ steps.helm-app-access.outputs.k8s_proxy_service_nodePort }}"
-          echo "  K8S Proxy Ingress Enabled: ${{ steps.helm-app-access.outputs.k8s_proxy_ingress_enabled }}"
-          echo "  K8S Proxy Ingress Host: ${{ steps.helm-app-access.outputs.k8s_proxy_ingress_host }}"
-          echo "  API_TARGET: ${{ steps.helm-app-env.outputs.orchestrator_ui_env_api_target }}"
-          echo "  DEX_TARGET: ${{ steps.helm-app-env.outputs.orchestrator_ui_env_dex_target }}"
-          echo "  DASHBOARD_TARGET: ${{ steps.helm-app-env.outputs.orchestrator_ui_env_dashboard_target }}"
-          echo "  GRAFANA_TARGET: ${{ steps.helm-app-env.outputs.orchestrator_ui_env_grafana_target }}"
-          echo "  COG_TARGET: ${{ steps.helm-app-env.outputs.orchestrator_ui_env_cog_target }}"
-
           echo "🏗️ Starting Helm deployment..."
 
           helm upgrade --install ${{ vars.ORCHESTRATOR_LIBRARY_UI_RELEASE_NAME }} ./charts/orchestrator-library-ui \
