@@ -10,7 +10,7 @@ data:
       grafanaUrl: "{{ .Values.app.env.GRAFANA_TARGET }}",
       dexUrl: "{{ .Values.app.env.DEX_TARGET }}",
       cogUrl: "{{ .Values.app.env.COG_TARGET }}",
-      k8sProxyUrl: {{- if .Values.app.k8sProxy.ingress.enabled }} "https://{{ .Values.app.k8sProxy.ingress.host }}"{{- else }} "http://{{ .Values.app.k8sProxy.name }}:{{ .Values.app.k8sProxy.service.port }}"{{- end }},
+      k8sProxyUrl: "{{ .Values.app.env.K8S_PROXY_TARGET | default .Values.app.k8sProxy.ingress.host }}",
       oidcAuthority: "{{ .Values.app.env.OIDC_AUTHORITY | default "" }}",
       oidcClientId: "{{ .Values.app.env.OIDC_CLIENT_ID | default "" }}",
       oidcClientSecret: "{{ .Values.app.env.OIDC_CLIENT_SECRET | default "" }}",
