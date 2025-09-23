@@ -39,7 +39,14 @@
     "monitoring": "Monitoring",
     "request_decisions": "Request Decisions",
     "actions": "Actions",
-    "overview": "Overview"
+    "overview": "Overview",
+    "Energy Metrics": "Energy Metrics",
+    "energy_metrics": "Energy Metrics",
+    "EnergyMetrics": "Energy Metrics",
+    "System Utilization": "System Utilization",
+    "Workload Deployment": "Workload Deployment",
+    "workload_deployment": "Workload Deployment",
+    "Create Workload": "Create Workload"
   },
   "action": {
     "previous": "Previous",

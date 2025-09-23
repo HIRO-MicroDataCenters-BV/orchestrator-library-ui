@@ -22,6 +22,8 @@ import {
   lucideChevronDown,
   lucideChevronRight,
   lucideGrip,
+  lucideZap,
+  lucideActivity,
 } from '@ng-icons/lucide';
 import { HlmIconDirective } from '@spartan-ng/ui-icon-helm';
 import { HlmSidebarComponent } from '../../../../libs/ui/ui-sidebar-helm/src/lib/hlm-sidebar.component';
@@ -79,6 +81,8 @@ interface Cluster {
       lucideChevronDown,
       lucideChevronRight,
       lucideGrip,
+      lucideZap,
+      lucideActivity,
     }),
   ],
   templateUrl: './main-layout.component.html',
@@ -102,6 +106,7 @@ export class MainLayoutComponent implements OnInit {
         },
         { label: 'cog', icon: 'lucideCog', route: '/cog' },
         { label: 'k8s', icon: 'lucideLayoutDashboard', route: '/k8s' },
+        { label: 'energy_metrics', icon: 'lucideZap', route: '/energy-metrics' },
       ],
     },
     {
@@ -120,6 +125,9 @@ export class MainLayoutComponent implements OnInit {
               route: '/request_decisions',
             },
             { label: 'actions', icon: null, route: '/actions' },
+            { label: 'System Utilization', icon: null, route: '/system-utilization' },
+            { label: 'workload_deployment', icon: null, route: '/workload-deployment' },
+            { label: 'Create Workload', icon: null, route: '/create-workload' },
           ],
         },
         { label: 'alerts', icon: 'lucideSiren', route: '/alerts' },
@@ -166,5 +174,16 @@ export class MainLayoutComponent implements OnInit {
     if (this.sidebarService.state() === 'collapsed') {
       this.showSubmenuOnHover = null;
     }
+  }
+
+  resolveRoute(groupRoute: string, itemRoute: string, subItemRoute?: string): string {
+    const parts = [groupRoute || '', itemRoute || '', subItemRoute || '']
+      .map((p) => String(p));
+    let url = parts.join('');
+    url = url.replace(/\/{2,}/g, '/');
+    if (!url.startsWith('/')) {
+      url = '/' + url;
+    }
+    return url;
   }
 }

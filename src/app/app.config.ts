@@ -12,6 +12,8 @@ import {
   HTTP_INTERCEPTORS,
 } from '@angular/common/http';
 import { provideTransloco } from '@jsverse/transloco';
+import { provideHighcharts } from 'highcharts-angular';
+import * as Highcharts from 'highcharts';
 import { getTranslocoConfig } from './transloco-config';
 import { routes } from './app.routes';
 import { authInterceptor } from './core/services/auth/auth.interceptor';
@@ -28,5 +30,6 @@ export const appConfig: ApplicationConfig = {
       useClass: ApiInterceptor,
       multi: true,
     },
+    provideHighcharts({ instance: async () => Highcharts }),
   ],
 };

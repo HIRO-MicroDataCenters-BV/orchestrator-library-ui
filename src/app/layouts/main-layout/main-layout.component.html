@@ -89,7 +89,7 @@
               <li *ngFor="let subItem of item.items" class="mb-1">
                 <a
                   hlmSidebarMenuButton
-                  [routerLink]="group.route + item.route + subItem.route"
+                  [routerLink]="resolveRoute(group.route, item.route, subItem.route)"
                   routerLinkActive="active"
                   [routerLinkActiveOptions]="{ exact: true }"
                   class="flex items-center gap-2 font-normal menu-item-link p-2 [.active]:bg-gray-100 rounded-md"
@@ -118,7 +118,7 @@
           >
             <a
               hlmSidebarMenuButton
-              [routerLink]="group.route + item.route"
+              [routerLink]="resolveRoute(group.route, item.route)"
               routerLinkActive="active"
               [routerLinkActiveOptions]="{ exact: true }"
               class="flex items-center gap-2 font-normal menu-item-link p-2 [.active]:bg-gray-100 rounded-md"
