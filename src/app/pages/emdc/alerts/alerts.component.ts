@@ -4,6 +4,7 @@ import { TranslocoModule } from '@jsverse/transloco';
 import { ApiService } from '../../../core/services';
 import { EmdcMockService } from '../../../mock/emdc-mock.service';
 import { Observable, Subscription } from 'rxjs';
+import { Alert } from '../../../shared/types';
 import { NgIf } from '@angular/common';
 import { filter } from 'rxjs/operators';
 import {
@@ -12,8 +13,6 @@ import {
   NavigationEnd,
   RouterOutlet,
 } from '@angular/router';
-
-
 
 // Define interfaces for type safety
 interface Condition {
@@ -48,7 +47,7 @@ export class AlertsComponent implements OnInit, OnDestroy {
 
   tabs = [];
 
-  dataSource: Observable<unknown[]> | null = null;
+  dataSource: Observable<Alert[]> | null = null;
   useMockData = false;
 
   detailsStruct: Struct[] = [];
@@ -60,8 +59,8 @@ export class AlertsComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute
   ) {
     this.dataSource = this.useMockData
-      ? this.mockService.getAlerts()
-      : this.apiService.getAlerts() as Observable<unknown[]>;
+      ? (this.mockService.getAlerts() as Observable<Alert[]>)
+      : this.apiService.getAlerts();
     this.detailsStruct = [
       {
         title: 'alert_details',

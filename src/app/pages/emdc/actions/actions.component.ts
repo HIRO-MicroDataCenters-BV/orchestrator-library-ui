@@ -4,6 +4,7 @@ import { TranslocoModule } from '@jsverse/transloco';
 import { ApiService } from '../../../core/services';
 import { EmdcMockService } from '../../../mock/emdc-mock.service';
 import { Observable, Subscription } from 'rxjs';
+import { WorkloadAction } from '../../../shared/types';
 import { NgIf } from '@angular/common';
 import { filter } from 'rxjs/operators';
 import {
@@ -42,19 +43,21 @@ export class ActionsComponent implements OnInit, OnDestroy {
   private routerSubscription: Subscription | null = null;
   clusters = [];
   columns = [
-    'id_uid',
-    'action_status',
+    'decision_id',
+    'action_id',
     'action_type',
-    'bound_pod_name',
-    'pod_parent_name',
-    'action_reason',
-    'duration',
+    'decision_pod_name',
+    'decision_namespace',
+    'decision_node_name',
+    'decision_status',
+    'action_status',
+    'total_duration',
   ];
   actions: string[] = ['view_details', 'restart', 'cancel', 'retry', 'delete'];
 
   tabs = [];
 
-  dataSource: Observable<unknown[]> | null = null;
+  dataSource: Observable<WorkloadAction[]> | null = null;
   useMockData = false;
   detailsStruct: Struct[] = [];
 
@@ -65,8 +68,8 @@ export class ActionsComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute
   ) {
     this.dataSource = this.useMockData
-      ? this.mockService.getWorkloadActions()
-      : (this.apiService.getWorkloadActions() as Observable<unknown[]>);
+      ? (this.mockService.getWorkloadActions() as Observable<WorkloadAction[]>)
+      : this.apiService.getWorkloadActions();
   }
   ngOnInit(): void {
     this.checkCurrentRoute();
