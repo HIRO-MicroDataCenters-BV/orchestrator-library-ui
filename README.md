@@ -5,28 +5,34 @@ A modern Angular 20 web application built with Nx workspace, Tailwind CSS, and S
 ## Technology Stack
 
 ### Frontend Framework
+
 - **Angular 20**: Modern web framework with standalone components, signals, and improved performance
 - **TypeScript**: Strongly-typed programming language for better code quality
 
 ### Development Tools
+
 - **Nx**: Smart, extensible build framework for monorepos
 - **ESLint**: Code quality and style enforcement
 - **Jest**: Unit testing framework
 - **Cypress**: End-to-end testing framework
 
 ### UI Framework
+
 - **Tailwind CSS**: Utility-first CSS framework
 - **Spartan UI**: Component library based on Tailwind CSS with 44+ components
 - **Lucide Icons**: Modern SVG icon library
 
 ### State Management
+
 - **Angular Signals**: Reactive state management
 - **RxJS**: Reactive programming library
 
 ### Internationalization
+
 - **Transloco**: Internationalization library with runtime language switching
 
 ### Performance Optimization
+
 - **SSR (Server-Side Rendering)**: For improved performance and SEO
 - **Lazy Loading**: On-demand module loading
 - **Angular Optimization**: Production build optimizations
@@ -160,6 +166,7 @@ The application uses a single, unified **ApiService** that handles all API opera
 ### Architecture
 
 **Clean Architecture:**
+
 - ✅ Single unified API service (no inheritance complexity)
 - ✅ Methods organized by OpenAPI tags/groups
 - ✅ Direct endpoint mapping from OpenAPI specification
@@ -170,6 +177,7 @@ The application uses a single, unified **ApiService** that handles all API opera
 ### Usage
 
 **New API Usage:**
+
 ```typescript
 import { ApiService } from '@core/services';
 
@@ -178,24 +186,26 @@ export class MyComponent {
 
   loadData() {
     // Kubernetes operations (direct OpenAPI mapping)
-    this.apiService.listPods({ namespace: 'default' }).subscribe(pods => {
+    this.apiService.listPods({ namespace: 'default' }).subscribe((pods) => {
       console.log('Pods:', pods);
     });
 
     // Alert management
-    this.apiService.getAlerts({ skip: 0, limit: 10 }).subscribe(alerts => {
+    this.apiService.getAlerts({ skip: 0, limit: 10 }).subscribe((alerts) => {
       console.log('Alerts:', alerts);
     });
 
     // Workload operations
-    this.apiService.getWorkloadActions({ 
-      action_type: 'Create' 
-    }).subscribe(actions => {
-      console.log('Actions:', actions);
-    });
+    this.apiService
+      .getWorkloadActions({
+        action_type: 'Create',
+      })
+      .subscribe((actions) => {
+        console.log('Actions:', actions);
+      });
 
     // Backward compatibility (still works)
-    this.apiService.getPods().subscribe(pods => {
+    this.apiService.getPods().subscribe((pods) => {
       console.log('Legacy method still works:', pods);
     });
   }
@@ -245,7 +255,7 @@ export const environment: Environment = {
   apiUrl: 'https://your-api-server.com',
   dashboardUrl: 'https://your-dashboard.com',
   cogUrl: 'https://your-cog-instance.com',
-  
+
   // Customize OIDC for your provider
   oidc: {
     authority: 'https://your-oidc-provider.com',
@@ -269,7 +279,7 @@ export const environment: Environment = {
 # Development build (uses environment.development.ts)
 pnpm run build:dev
 
-# Production build (uses environment.prod.ts)  
+# Production build (uses environment.prod.ts)
 pnpm run build:prod
 
 # Default build (uses environment.ts)
@@ -294,15 +304,17 @@ pnpm install
 ### Configuration
 
 1. **Configure your OIDC provider** with the redirect URLs:
+
    - Redirect URI: `http://localhost:4200/auth/callback` (development)
    - Post-logout URI: `http://localhost:4200/login`
 
 2. **Update environment files** with your OIDC provider settings:
+
    ```bash
    # Edit development environment
    nano src/environments/environment.development.ts
-   
-   # Edit production environment  
+
+   # Edit production environment
    nano src/environments/environment.prod.ts
    ```
 
@@ -356,35 +368,41 @@ nx extract-i18n
 ## Features
 
 - **Modern Angular Architecture**:
+
   - Standalone components for better modularity
   - Signal-based state management
   - Lazy loading for improved performance
   - Server-side rendering (SSR) support
 
 - **UI Framework**:
+
   - Responsive design with Tailwind CSS
   - Spartan UI component library (44+ components)
   - Lucide Icons for modern iconography
   - Accessibility-focused UI components
 
 - **Internationalization**:
+
   - Multi-language support with Transloco
   - Separate translation files for each language
   - Runtime language switching
 
 - **API Integration**:
+
   - Unified API service for all backend operations
   - OpenAPI-based method naming and typing
   - Automatic error handling and loading states
   - Token-based authentication
 
 - **Kubernetes Features**:
+
   - Pod and node management
   - Cluster monitoring
   - Resource tracking
   - Integration with external Kubernetes dashboard
 
 - **Workload Management**:
+
   - Request decision tracking
   - Action monitoring
   - Resource demand analysis
@@ -436,20 +454,47 @@ The container exposes port 4000 for the Node.js server that handles SSR.
 
 ## API Documentation
 
+### OpenAPI Specification
+
+**Important**: The API service (`src/app/core/services/api.service.ts`) must be kept synchronized with the OpenAPI specification.
+
+- **Specification File**: `openapi.json` (located in project root)
+- **Last Updated**: October 13, 2025
+- **Source**: [http://51.44.28.47:30015/docs](http://51.44.28.47:30015/docs)
+
+#### Updating API Service
+
+When the backend API changes:
+
+1. Download the latest OpenAPI specification from [http://51.44.28.47:30015/docs](http://51.44.28.47:30015/docs)
+2. Save it as `openapi.json` in the project root
+3. Update `src/app/core/services/api.service.ts` according to the new specification
+4. Update TypeScript types in `src/app/shared/types/` to match the new schemas
+5. Update affected components to use the new API methods
+
+```bash
+# Example: Download latest OpenAPI spec
+curl http://51.44.28.47:30015/docs -o openapi.json
+
+# Verify the specification
+cat openapi.json | jq .info.version
+```
+
 ### Available API Methods (OpenAPI Based)
 
-| Category | Key Methods | Purpose |
-|----------|-------------|---------|
-| **Kubernetes** | `listPods()`, `listNodes()`, `getClusterInfo()`, `getK8sToken()` | Cluster operations and management |
-| **Tuning Parameters** | `createTuningParameter()`, `getTuningParameters()`, `getLatestTuningParameters()` | Parameter optimization |
-| **Workload Decisions** | `createWorkloadDecision()`, `getWorkloadDecisions()`, `updateWorkloadDecision()` | Decision tracking and management |
-| **Alerts** | `createAlert()`, `getAlerts()` | Alert creation and management |
-| **Workload Actions** | `createWorkloadAction()`, `getWorkloadActions()`, `updateWorkloadAction()` | Action tracking and execution |
-| **Authentication** | `isAuthenticated()`, `logout()` | Session management |
+| Category               | Key Methods                                                                       | Purpose                           |
+| ---------------------- | --------------------------------------------------------------------------------- | --------------------------------- |
+| **Kubernetes**         | `listPods()`, `listNodes()`, `getClusterInfo()`, `getK8sToken()`                  | Cluster operations and management |
+| **Tuning Parameters**  | `createTuningParameter()`, `getTuningParameters()`, `getLatestTuningParameters()` | Parameter optimization            |
+| **Workload Decisions** | `createWorkloadDecision()`, `getWorkloadDecisions()`, `updateWorkloadDecision()`  | Decision tracking and management  |
+| **Alerts**             | `createAlert()`, `getAlerts()`                                                    | Alert creation and management     |
+| **Workload Actions**   | `createWorkloadAction()`, `getWorkloadActions()`, `updateWorkloadAction()`        | Action tracking and execution     |
+| **Authentication**     | `isAuthenticated()`, `logout()`                                                   | Session management                |
 
 ### API Architecture
 
 **OpenAPI-First Design:**
+
 - ✅ Direct mapping from OpenAPI 3.1 specification
 - ✅ Method names match OpenAPI operationIds
 - ✅ Request/Response types match OpenAPI schemas
@@ -457,18 +502,9 @@ The container exposes port 4000 for the Node.js server that handles SSR.
 - ✅ Automatic error handling (401, 403, 404, 422, 500)
 - ✅ Loading state management (`loading$` observable)
 
-### Backward Compatibility
+### API Service Maintenance
 
-Legacy method names are preserved as aliases:
-```typescript
-// New methods (recommended)
-apiService.listPods()
-apiService.getWorkloadDecisions()
-
-// Legacy methods (still work)
-apiService.getPods()
-apiService.getPodRequestDecisions()
-```
+The API service is fully synchronized with the backend OpenAPI specification. All methods, parameters, and return types match the OpenAPI schema definitions. Regular updates ensure compatibility with backend changes.
 
 ### Usage Guide
 
@@ -484,22 +520,23 @@ The application uses Angular's router with lazy loading for optimal performance:
 
 ### Main Routes
 
-| Route | Component | Description |
-|-------|-----------|-------------|
-| `/cog` | `CogComponent` | Integration with COG system |
-| `/grafana` | `GrafanaComponent` | Integration with Grafana monitoring |
-| `/k8s` | `K8sComponent` | Kubernetes dashboard |
-| `/emdc/workloads/request_decisions` | `RequestDecisionsComponent` | Workload request decisions |
-| `/emdc/workloads/actions` | `ActionsComponent` | Workload actions |
-| `/emdc/alerts` | `AlertsComponent` | Alert management |
-| `/error/404` | `NotFoundComponent` | 404 error page |
-| `/error/500` | `ServerErrorComponent` | 500 error page |
+| Route                               | Component                   | Description                         |
+| ----------------------------------- | --------------------------- | ----------------------------------- |
+| `/cog`                              | `CogComponent`              | Integration with COG system         |
+| `/grafana`                          | `GrafanaComponent`          | Integration with Grafana monitoring |
+| `/k8s`                              | `K8sComponent`              | Kubernetes dashboard                |
+| `/emdc/workloads/request_decisions` | `RequestDecisionsComponent` | Workload request decisions          |
+| `/emdc/workloads/actions`           | `ActionsComponent`          | Workload actions                    |
+| `/emdc/alerts`                      | `AlertsComponent`           | Alert management                    |
+| `/error/404`                        | `NotFoundComponent`         | 404 error page                      |
+| `/error/500`                        | `ServerErrorComponent`      | 500 error page                      |
 
 ### Layout Structure
 
 The application uses two main layouts:
 
 1. **MainLayoutComponent**: Used for all main application routes
+
    - Includes sidebar navigation
    - Responsive design with collapsible sidebar
    - User authentication controls
@@ -552,9 +589,9 @@ This project follows strict coding standards to ensure maintainability and consi
 
 - **main**: Production-ready code
 - **develop**: Integration branch for feature development
-- **feature/***:  Feature branches
-- **bugfix/***:  Bug fix branches
-- **release/***:  Release preparation branches
+- **feature/\***: Feature branches
+- **bugfix/\***: Bug fix branches
+- **release/\***: Release preparation branches
 
 ### Continuous Integration
 
@@ -579,20 +616,20 @@ To contribute to this project:
 
 ### Available Environment Variables
 
-| Variable | Type | Description | Default |
-|----------|------|-------------|---------|
-| `production` | boolean | Production mode flag | `false` |
-| `apiUrl` | string | Backend API base URL | `http://51.44.28.47:30015` |
-| `dashboardUrl` | string | Kubernetes dashboard URL | `http://51.44.28.47:30016` |
-| `cogUrl` | string | COG system URL | `https://dashboard.cog.hiro-develop.nl/cogui/` |
-| `grafanaUrl` | string | Grafana monitoring URL | `http://51.44.28.47:30000` |
-| `oidc.authority` | string | OIDC provider authority URL | `https://dex.hiro-develop.nl` |
-| `oidc.clientId` | string | OIDC client identifier | `orchestrator-ui` |
-| `oidc.scope` | string | OIDC scopes | `openid profile email groups` |
-| `oidc.responseType` | string | OIDC response type | `code` |
-| `oidc.silentRenew` | boolean | Enable silent token renewal | `true` |
-| `oidc.useRefreshToken` | boolean | Use refresh tokens | `true` |
-| `oidc.logLevel` | number | OIDC logging level (0=Debug, 1=Warn, 3=Error) | `1` |
+| Variable               | Type    | Description                                   | Default                                        |
+| ---------------------- | ------- | --------------------------------------------- | ---------------------------------------------- |
+| `production`           | boolean | Production mode flag                          | `false`                                        |
+| `apiUrl`               | string  | Backend API base URL                          | `http://51.44.28.47:30015`                     |
+| `dashboardUrl`         | string  | Kubernetes dashboard URL                      | `http://51.44.28.47:30016`                     |
+| `cogUrl`               | string  | COG system URL                                | `https://dashboard.cog.hiro-develop.nl/cogui/` |
+| `grafanaUrl`           | string  | Grafana monitoring URL                        | `http://51.44.28.47:30000`                     |
+| `oidc.authority`       | string  | OIDC provider authority URL                   | `https://dex.hiro-develop.nl`                  |
+| `oidc.clientId`        | string  | OIDC client identifier                        | `orchestrator-ui`                              |
+| `oidc.scope`           | string  | OIDC scopes                                   | `openid profile email groups`                  |
+| `oidc.responseType`    | string  | OIDC response type                            | `code`                                         |
+| `oidc.silentRenew`     | boolean | Enable silent token renewal                   | `true`                                         |
+| `oidc.useRefreshToken` | boolean | Use refresh tokens                            | `true`                                         |
+| `oidc.logLevel`        | number  | OIDC logging level (0=Debug, 1=Warn, 3=Error) | `1`                                            |
 
 ### OIDC Provider Setup
 
@@ -603,12 +640,12 @@ To contribute to this project:
 issuer: https://dex.hiro-develop.nl
 
 staticClients:
-- id: orchestrator-ui
-  redirectURIs:
-  - 'http://localhost:4200/auth/callback'
-  - 'https://your-domain.com/auth/callback'
-  name: 'Orchestrator UI'
-  public: true
+  - id: orchestrator-ui
+    redirectURIs:
+      - 'http://localhost:4200/auth/callback'
+      - 'https://your-domain.com/auth/callback'
+    name: 'Orchestrator UI'
+    public: true
 ```
 
 #### Auth0 Configuration Example
@@ -660,6 +697,7 @@ The Grafana monitoring system is integrated through Angular proxy configuration 
 #### Development Setup
 
 1. **Proxy Configuration**: `proxy.conf.js` handles COG requests
+
    ```javascript
    '/iframe-cog/**': {
      target: 'https://dashboard.cog.hiro-develop.nl',
@@ -670,6 +708,7 @@ The Grafana monitoring system is integrated through Angular proxy configuration 
    ```
 
 2. **Environment Configuration**:
+
    - Development: `cogUrl: '/iframe-cog'` (uses proxy to COG instance)
    - Production: `cogUrl: '/iframe-cog'` (uses proxy to COG instance)
 
@@ -678,6 +717,7 @@ The Grafana monitoring system is integrated through Angular proxy configuration 
 #### Grafana Proxy Configuration
 
 1. **Proxy Configuration**: `proxy.conf.js` handles Grafana requests
+
    ```javascript
    '/iframe-grafana/**': {
      target: 'http://51.44.28.47:30000',
@@ -688,6 +728,7 @@ The Grafana monitoring system is integrated through Angular proxy configuration 
    ```
 
 2. **Environment Configuration**:
+
    - Development: `grafanaUrl: '/iframe-grafana'` (uses proxy to Grafana instance)
    - Production: `grafanaUrl: '/iframe-grafana'` (uses proxy to Grafana instance)
 
@@ -696,27 +737,27 @@ The Grafana monitoring system is integrated through Angular proxy configuration 
 #### Component Usage
 
 @Component({
-  template: `
-    <iframe 
+template: `   <iframe 
       [src]="url | safe : 'resourceUrl'" 
       frameborder="0" 
       allowfullscreen>
     </iframe>
-  `
+`
 })
 export class CogComponent {
-  url = environment.cogUrl; // Resolves to /iframe-cog
+url = environment.cogUrl; // Resolves to /iframe-cog
 }
 
 export class GrafanaComponent {
-  url = environment.grafanaUrl; // Resolves to /iframe-grafana
+url = environment.grafanaUrl; // Resolves to /iframe-grafana
 }
+
 ```
 
 #### Benefits
 
 - ✅ **Automatic Authentication**: Tokens passed transparently
-- ✅ **CORS Handling**: Proxy resolves cross-origin issues  
+- ✅ **CORS Handling**: Proxy resolves cross-origin issues
 - ✅ **Environment Specific**: Different COG and Grafana instances per environment
 - ✅ **No Code Changes**: Simple iframe with proxy URL
 - ✅ **Unified Architecture**: Both COG and Grafana follow the same integration pattern
@@ -745,3 +786,4 @@ The project roadmap includes the following planned enhancements:
 - **Predictive Analytics**: Add predictive capabilities for resource planning
 - **Integration Expansion**: Support for additional container orchestration platforms
 - **Plugin Architecture**: Develop extensible plugin system for custom functionality
+```

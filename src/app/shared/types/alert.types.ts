@@ -10,23 +10,12 @@ import { BaseEntity, PaginatedResponse, FilterParams } from './common.types';
 // ===================
 
 /**
- * Alert types enum
+ * Alert types enum (from OpenAPI spec)
  */
 export enum AlertType {
-  CPU_HIGH = 'cpu_high',
-  MEMORY_HIGH = 'memory_high',
-  DISK_HIGH = 'disk_high',
-  NETWORK_HIGH = 'network_high',
-  POD_FAILED = 'pod_failed',
-  POD_RESTART = 'pod_restart',
-  NODE_DOWN = 'node_down',
-  NODE_UNREACHABLE = 'node_unreachable',
-  RESOURCE_QUOTA_EXCEEDED = 'resource_quota_exceeded',
-  PERSISTENT_VOLUME_FULL = 'persistent_volume_full',
-  SERVICE_UNAVAILABLE = 'service_unavailable',
-  DEPLOYMENT_FAILED = 'deployment_failed',
-  SCALING_FAILED = 'scaling_failed',
-  CUSTOM = 'custom'
+  ABNORMAL = 'Abnormal',
+  NETWORK_ATTACK = 'Network-Attack',
+  OTHER = 'Other',
 }
 
 /**
@@ -37,7 +26,7 @@ export enum AlertSeverity {
   HIGH = 'high',
   MEDIUM = 'medium',
   LOW = 'low',
-  INFO = 'info'
+  INFO = 'info',
 }
 
 /**
@@ -47,7 +36,7 @@ export enum AlertStatus {
   ACTIVE = 'active',
   RESOLVED = 'resolved',
   SUPPRESSED = 'suppressed',
-  ACKNOWLEDGED = 'acknowledged'
+  ACKNOWLEDGED = 'acknowledged',
 }
 
 /**
@@ -58,7 +47,7 @@ export enum AlertSource {
   KUBERNETES = 'kubernetes',
   SYSTEM = 'system',
   APPLICATION = 'application',
-  CUSTOM = 'custom'
+  CUSTOM = 'custom',
 }
 
 // ===================
@@ -66,58 +55,37 @@ export enum AlertSource {
 // ===================
 
 /**
- * Alert create request
+ * Alert create request (from OpenAPI spec)
  */
 export interface AlertCreate {
   alert_type: AlertType;
-  alert_severity: AlertSeverity;
-  alert_description: string;
-  alert_source?: AlertSource;
-  pod_id?: string | null;
-  pod_name?: string | null;
-  node_id?: string | null;
-  node_name?: string | null;
-  namespace?: string | null;
-  cluster_name?: string | null;
-  resource_type?: string | null;
-  resource_name?: string | null;
-  threshold_value?: number | null;
-  current_value?: number | null;
-  alert_labels?: Record<string, string> | null;
-  alert_annotations?: Record<string, string> | null;
-  external_id?: string | null;
-  alert_url?: string | null;
+  alert_model: string; // maxLength: 1000, minLength: 1
+  alert_description: string; // maxLength: 1000, minLength: 1
+  pod_id?: string | null; // UUID format
+  node_id?: string | null; // UUID format
+  source_ip?: string | null;
+  destination_ip?: string | null;
+  source_port?: number | null; // 1-65535
+  destination_port?: number | null; // 1-65535
+  protocol?: string | null; // maxLength: 10, minLength: 1
 }
 
 /**
- * Alert response/schema
+ * Alert response/schema (from OpenAPI spec)
  */
-export interface Alert extends BaseEntity {
+export interface Alert {
+  id: number;
   alert_type: AlertType;
-  alert_severity: AlertSeverity;
+  alert_model: string;
   alert_description: string;
-  alert_status: AlertStatus;
-  alert_source?: AlertSource | null;
-  pod_id?: string | null;
-  pod_name?: string | null;
-  node_id?: string | null;
-  node_name?: string | null;
-  namespace?: string | null;
-  cluster_name?: string | null;
-  resource_type?: string | null;
-  resource_name?: string | null;
-  threshold_value?: number | null;
-  current_value?: number | null;
-  alert_labels?: Record<string, string> | null;
-  alert_annotations?: Record<string, string> | null;
-  external_id?: string | null;
-  alert_url?: string | null;
-  first_seen?: string | null;
-  last_seen?: string | null;
-  resolved_at?: string | null;
-  acknowledged_at?: string | null;
-  acknowledged_by?: string | null;
-  resolution_notes?: string | null;
+  pod_id: string | null; // UUID format
+  node_id: string | null; // UUID format
+  source_ip?: string | null;
+  source_port?: number | null; // 1-65535
+  destination_ip?: string | null;
+  destination_port?: number | null; // 1-65535
+  protocol?: string | null; // maxLength: 10, minLength: 1
+  created_at: string; // ISO 8601 datetime
 }
 
 /**
@@ -189,7 +157,7 @@ export enum AlertActionType {
   SUPPRESS = 'suppress',
   ESCALATE = 'escalate',
   ASSIGN = 'assign',
-  ADD_NOTE = 'add_note'
+  ADD_NOTE = 'add_note',
 }
 
 /**
@@ -328,25 +296,16 @@ export const isAlertSource = (value: string): value is AlertSource => {
 
 export const getAlertTypeDisplayName = (alertType: AlertType): string => {
   const displayNames: Record<AlertType, string> = {
-    [AlertType.CPU_HIGH]: 'High CPU Usage',
-    [AlertType.MEMORY_HIGH]: 'High Memory Usage',
-    [AlertType.DISK_HIGH]: 'High Disk Usage',
-    [AlertType.NETWORK_HIGH]: 'High Network Usage',
-    [AlertType.POD_FAILED]: 'Pod Failed',
-    [AlertType.POD_RESTART]: 'Pod Restart',
-    [AlertType.NODE_DOWN]: 'Node Down',
-    [AlertType.NODE_UNREACHABLE]: 'Node Unreachable',
-    [AlertType.RESOURCE_QUOTA_EXCEEDED]: 'Resource Quota Exceeded',
-    [AlertType.PERSISTENT_VOLUME_FULL]: 'Persistent Volume Full',
-    [AlertType.SERVICE_UNAVAILABLE]: 'Service Unavailable',
-    [AlertType.DEPLOYMENT_FAILED]: 'Deployment Failed',
-    [AlertType.SCALING_FAILED]: 'Scaling Failed',
-    [AlertType.CUSTOM]: 'Custom Alert',
+    [AlertType.ABNORMAL]: 'Abnormal',
+    [AlertType.NETWORK_ATTACK]: 'Network Attack',
+    [AlertType.OTHER]: 'Other',
   };
   return displayNames[alertType] || alertType;
 };
 
-export const getAlertSeverityDisplayName = (severity: AlertSeverity): string => {
+export const getAlertSeverityDisplayName = (
+  severity: AlertSeverity
+): string => {
   const displayNames: Record<AlertSeverity, string> = {
     [AlertSeverity.CRITICAL]: 'Critical',
     [AlertSeverity.HIGH]: 'High',

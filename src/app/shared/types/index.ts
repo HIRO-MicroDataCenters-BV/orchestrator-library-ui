@@ -48,6 +48,12 @@ export type {
   WorkloadActionStatistics,
   WorkloadRequestDecisionStatistics,
   ResourceDemandSummary,
+  WorkloadTimingCreate,
+  WorkloadTimingSchema,
+  WorkloadTimingUpdate,
+  WorkloadTimingQueryParams,
+  WorkloadDecisionActionFlowItem,
+  WorkloadDecisionActionFlowQueryParams,
 } from './workload.types';
 
 export type {
@@ -70,19 +76,27 @@ export type {
   TuningParameter,
   TuningParameterCreate,
   TuningParameterUpdate,
-  TuningParameterValidation,
   TuningParameterQueryParams,
   ClusterInfoQueryParams,
   TuningParameterListResponse,
+  TuningParameterResponse,
   HttpRequestOptions,
   HttpResponse,
+  PodQueryParams,
+  UserPodQueryParams,
+  PodParentQueryParams,
+  DeletePodParams,
+  NodeQueryParams,
+  TokenQueryParams,
 } from './api.types';
 
 // Re-export enums
 export {
   WorkloadActionType,
   WorkloadActionStatus,
+  WorkloadDecisionStatus,
   PodParentType,
+  WorkloadTimingSchedulerEnum,
 } from './workload.types';
 
 export {
@@ -92,10 +106,6 @@ export {
   AlertSource,
   AlertActionType,
 } from './alert.types';
-
-export {
-  TuningParameterType,
-} from './api.types';
 
 export { GenericStatus } from './common.types';
 
@@ -121,8 +131,3 @@ export {
   isAlertStatus,
   isAlertSource,
 } from './alert.types';
-
-export {
-  getTuningParameterTypeDisplayName,
-  isTuningParameterType,
-} from './api.types';
