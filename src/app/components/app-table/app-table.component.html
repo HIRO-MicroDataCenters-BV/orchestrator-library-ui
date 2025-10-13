@@ -323,6 +323,34 @@
             </button>
           </hlm-td>
         </brn-column-def>
+        <brn-column-def
+          name="duration_request_decision"
+          class="w-32 !text-left"
+        >
+          <ng-container *brnHeaderDef>
+            <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
+              'column.duration' | transloco
+            }}</hlm-th>
+          </ng-container>
+          <hlm-td truncate *brnCellDef="let element">
+            <button
+              brnSheetTrigger
+              hlmBtn
+              variant="ghost"
+              (click)="onRowClick(element)"
+            >
+              <p class="text-sm text-gray-500">
+                {{
+                  getDuration(
+                    element.decision_end_time,
+                    element.decision_start_time
+                  )
+                }}{{ 'hint.s' | transloco }}
+              </p>
+            </button>
+          </hlm-td>
+        </brn-column-def>
+
         <brn-column-def name="duration" class="w-32 !text-left">
           <ng-container *brnHeaderDef>
             <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{

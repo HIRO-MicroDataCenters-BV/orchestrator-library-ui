@@ -53,6 +53,7 @@ export class RequestDecisionsComponent implements OnInit, OnDestroy {
     'decision_status',
     'action_status',
     'total_duration',
+    'duration_request_decision',
   ];
   actions = [];
 
