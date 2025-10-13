@@ -51,6 +51,11 @@ const DEFAULT_ROUTE_METADATA: Record<string, RouteMetadata> = {
     title: 'Request Decisions',
     icon: 'lucideCheckCircle',
   },
+  decision_action_flow: {
+    breadcrumb: 'decision_action_flow',
+    title: 'Decision Action Flow',
+    icon: 'lucideGitBranch',
+  },
   cog: {
     breadcrumb: 'cog',
     title: 'COG',

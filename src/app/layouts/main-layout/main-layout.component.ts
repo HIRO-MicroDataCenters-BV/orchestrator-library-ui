@@ -120,6 +120,11 @@ export class MainLayoutComponent implements OnInit {
               route: '/request_decisions',
             },
             { label: 'actions', icon: null, route: '/actions' },
+            {
+              label: 'decision_action_flow',
+              icon: null,
+              route: '/decision_action_flow',
+            },
           ],
         },
         { label: 'alerts', icon: 'lucideSiren', route: '/alerts' },

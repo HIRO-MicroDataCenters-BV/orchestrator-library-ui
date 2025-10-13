@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
 import { ErrorLayoutComponent } from './layouts/error-layout/error-layout.component';
 import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component';
-import { AuthGuard, GuestGuard } from './core/services/auth';
+import { GuestGuard } from './core/services/auth';
 
 export const routes: Routes = [
   // Auth routes (public, for non-authenticated users)
@@ -107,6 +107,14 @@ export const routes: Routes = [
                     (m) => m.ActionsComponent
                   ),
                 data: { title: 'Actions' },
+              },
+              {
+                path: 'decision_action_flow',
+                loadComponent: () =>
+                  import(
+                    './pages/emdc/decision_action_flow/decision-action-flow.component'
+                  ).then((m) => m.DecisionActionFlowComponent),
+                data: { title: 'Decision Action Flow' },
               },
             ],
           },

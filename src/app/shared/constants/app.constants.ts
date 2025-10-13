@@ -73,6 +73,7 @@ export const ROUTES = {
     WORKLOADS: {
       REQUEST_DECISIONS: '/emdc/workloads/request_decisions',
       ACTIONS: '/emdc/workloads/actions',
+      DECISION_ACTION_FLOW: '/emdc/workloads/decision_action_flow',
     },
   },
   ERROR: {

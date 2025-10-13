@@ -70,7 +70,8 @@ export const createWorkloadActionFromResponse = (
     bound_pod_name: (data['bound_pod_name'] as string) || null,
     bound_pod_namespace: (data['bound_pod_namespace'] as string) || null,
     bound_node_name: (data['bound_node_name'] as string) || null,
-    created_at: (data['created_at'] as string) || null,
+    durationInSeconds: (data['durationInSeconds'] as number) || null,
+    created_at: data['created_at'] as string, // Required field from OpenAPI
     updated_at: (data['updated_at'] as string) || null,
   };
 };

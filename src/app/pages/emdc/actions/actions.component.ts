@@ -43,17 +43,16 @@ export class ActionsComponent implements OnInit, OnDestroy {
   private routerSubscription: Subscription | null = null;
   clusters = [];
   columns = [
-    'decision_id',
-    'action_id',
-    'action_type',
-    'decision_pod_name',
-    'decision_namespace',
-    'decision_node_name',
-    'decision_status',
+    'id',
     'action_status',
-    'total_duration',
+    'action_type',
+    'created_at',
+    'duration',
+    'bound_pod_name',
+    'pod_parent_name',
   ];
-  actions: string[] = ['view_details', 'restart', 'cancel', 'retry', 'delete'];
+  actions: string[] = [];
+  //['view_details', 'restart', 'cancel', 'retry', 'delete'];
 
   tabs = [];
 
