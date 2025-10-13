@@ -3,7 +3,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Values.app.k8sProxy.name }}
-  namespace: {{ .Release.Namespace }}
 spec:
   replicas: 1
   selector:
@@ -52,6 +51,6 @@ spec:
       volumes:
         - name: proxy-script
           configMap:
-            name: {{ .Values.app.k8sProxy.name }}-config
+            name: {{ .Values.app.k8sProxy.configMap.name }}
             defaultMode: 0755
 {{- end }}
