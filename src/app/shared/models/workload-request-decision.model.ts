@@ -14,18 +14,13 @@ import {
   WorkloadRequestDecisionStatistics,
   WorkloadDecisionStatus,
   ResourceDemandSummary,
-  PodRequestDecisionCreate,
-  PodRequestDecisionSchema,
-  PodRequestDecisionUpdate,
-  PodRequestDecisionQueryParams,
-  PodRequestDecisionListResponse,
+  WorkloadActionType,
+  PodParentType,
 } from '../types';
 
 // Re-export all types for backward compatibility
 
-export {
-  WorkloadDecisionStatus
-}
+export { WorkloadDecisionStatus };
 
 export type {
   WorkloadRequestDecisionSchema,
@@ -35,11 +30,6 @@ export type {
   WorkloadRequestDecisionListResponse,
   WorkloadRequestDecisionStatistics,
   ResourceDemandSummary,
-  PodRequestDecisionCreate,
-  PodRequestDecisionSchema,
-  PodRequestDecisionUpdate,
-  PodRequestDecisionQueryParams,
-  PodRequestDecisionListResponse,
 };
 
 // Additional utility functions specific to this model
@@ -52,17 +42,22 @@ export const createWorkloadRequestDecisionFromResponse = (
     pod_name: data['pod_name'] as string,
     namespace: data['namespace'] as string,
     node_id: data['node_id'] as string,
-    is_elastic: data['is_elastic'] as boolean,
-    queue_name: data['queue_name'] as string,
-    demand_cpu: data['demand_cpu'] as number,
-    demand_memory: data['demand_memory'] as number,
+    node_name: data['node_name'] as string,
+    is_elastic: (data['is_elastic'] as boolean) || null,
+    queue_name: (data['queue_name'] as string) || null,
+    demand_cpu: (data['demand_cpu'] as number) || null,
+    demand_memory: (data['demand_memory'] as number) || null,
     demand_slack_cpu: (data['demand_slack_cpu'] as number) || null,
     demand_slack_memory: (data['demand_slack_memory'] as number) || null,
+    action_type: data['action_type'] as WorkloadActionType,
     decision_status: data['decision_status'] as WorkloadDecisionStatus,
     pod_parent_id: data['pod_parent_id'] as string,
-    pod_parent_kind: data['pod_parent_kind'] as string,
+    pod_parent_name: data['pod_parent_name'] as string,
+    pod_parent_kind: data['pod_parent_kind'] as PodParentType,
+    decision_start_time: (data['decision_start_time'] as string) || null,
+    decision_end_time: (data['decision_end_time'] as string) || null,
     created_at: (data['created_at'] as string) || null,
-    updated_at: (data['updated_at'] as string) || null,
+    deleted_at: (data['deleted_at'] as string) || null,
   };
 };
 
@@ -87,20 +82,40 @@ export const validateWorkloadRequestDecisionCreate = (
     errors.push('Node ID is required');
   }
 
-  if (!data.queue_name) {
-    errors.push('Queue name is required');
+  if (!data.node_name) {
+    errors.push('Node name is required');
   }
 
-  if (data.demand_cpu < 0) {
+  if (!data.action_type) {
+    errors.push('Action type is required');
+  }
+
+  if (!data.decision_status) {
+    errors.push('Decision status is required');
+  }
+
+  if (
+    data.demand_cpu !== undefined &&
+    data.demand_cpu !== null &&
+    data.demand_cpu < 0
+  ) {
     errors.push('CPU demand must be non-negative');
   }
 
-  if (data.demand_memory < 0) {
+  if (
+    data.demand_memory !== undefined &&
+    data.demand_memory !== null &&
+    data.demand_memory < 0
+  ) {
     errors.push('Memory demand must be non-negative');
   }
 
   if (!data.pod_parent_id) {
     errors.push('Pod parent ID is required');
+  }
+
+  if (!data.pod_parent_name) {
+    errors.push('Pod parent name is required');
   }
 
   if (!data.pod_parent_kind) {
@@ -123,8 +138,8 @@ export const calculateResourceDemandSummary = (
   };
 
   decisions.forEach((decision) => {
-    summary.total_cpu_demand += decision.demand_cpu;
-    summary.total_memory_demand += decision.demand_memory;
+    summary.total_cpu_demand += decision.demand_cpu || 0;
+    summary.total_memory_demand += decision.demand_memory || 0;
     summary.total_slack_cpu_demand += decision.demand_slack_cpu || 0;
     summary.total_slack_memory_demand += decision.demand_slack_memory || 0;
 
@@ -174,7 +189,7 @@ export const groupDecisionsByQueue = (
   decisions: WorkloadRequestDecisionSchema[]
 ): Record<string, WorkloadRequestDecisionSchema[]> => {
   return decisions.reduce((groups, decision) => {
-    const queue = decision.queue_name;
+    const queue = decision.queue_name || 'unknown';
     if (!groups[queue]) {
       groups[queue] = [];
     }

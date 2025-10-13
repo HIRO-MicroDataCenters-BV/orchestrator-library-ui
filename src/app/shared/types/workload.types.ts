@@ -18,28 +18,28 @@ export enum WorkloadActionType {
   DELETE = 'delete',
   MOVE = 'move',
   SWAP_X = 'swap_x',
-  SWAP_Y = 'swap_y'
+  SWAP_Y = 'swap_y',
 }
 
 /**
- * Action status enum
+ * Action status enum (from OpenAPI spec)
  */
 export enum WorkloadActionStatus {
   PENDING = 'pending',
-  SUCCESSFUL = 'succeeded',
+  SUCCEEDED = 'succeeded',
   FAILED = 'failed',
 }
 
 /**
- * Pod parent types enum
+ * Pod parent types enum (from OpenAPI spec)
  */
 export enum PodParentType {
   DEPLOYMENT = 'deployment',
-  STATEFUL_SET = 'stateful_set',
-  REPLICA_SET = 'replica_set',
+  STATEFULSET = 'statefulset',
+  REPLICASET = 'replicaset',
   JOB = 'job',
-  DAEMON_SET = 'daemon_set',
-  CRON_JOB = 'cron_job'
+  DAEMONSET = 'daemonset',
+  CRONJOB = 'cronjob',
 }
 
 // ===================
@@ -47,17 +47,17 @@ export enum PodParentType {
 // ===================
 
 /**
- * Workload Action create request
+ * Workload Action create request (from OpenAPI spec)
  */
 export interface WorkloadActionCreate {
-  action_type: WorkloadActionType;
-  action_status?: WorkloadActionStatus | null;
-  action_start_time?: string | null;
-  action_end_time?: string | null;
+  action_type?: WorkloadActionType; // default: 'bind'
+  action_status?: WorkloadActionStatus; // default: 'pending'
+  action_start_time?: string | null; // ISO 8601 datetime
+  action_end_time?: string | null; // ISO 8601 datetime
   action_reason?: string | null;
   pod_parent_name?: string | null;
-  pod_parent_type?: PodParentType | null;
-  pod_parent_uid?: string | null;
+  pod_parent_type?: PodParentType | null; // default: 'deployment'
+  pod_parent_uid?: string | null; // UUID format
   created_pod_name?: string | null;
   created_pod_namespace?: string | null;
   created_node_name?: string | null;
@@ -67,20 +67,23 @@ export interface WorkloadActionCreate {
   bound_pod_name?: string | null;
   bound_pod_namespace?: string | null;
   bound_node_name?: string | null;
+  created_at?: string | null; // ISO 8601 datetime
+  updated_at?: string | null; // ISO 8601 datetime
 }
 
 /**
- * Workload Action response/schema
+ * Workload Action response/schema (from OpenAPI spec)
  */
-export interface WorkloadAction extends BaseEntity {
+export interface WorkloadAction {
+  id: string; // UUID format
   action_type: WorkloadActionType;
   action_status?: WorkloadActionStatus | null;
-  action_start_time?: string | null;
-  action_end_time?: string | null;
+  action_start_time?: string | null; // ISO 8601 datetime
+  action_end_time?: string | null; // ISO 8601 datetime
   action_reason?: string | null;
   pod_parent_name?: string | null;
   pod_parent_type?: PodParentType | null;
-  pod_parent_uid?: string | null;
+  pod_parent_uid?: string | null; // UUID format
   created_pod_name?: string | null;
   created_pod_namespace?: string | null;
   created_node_name?: string | null;
@@ -90,6 +93,9 @@ export interface WorkloadAction extends BaseEntity {
   bound_pod_name?: string | null;
   bound_pod_namespace?: string | null;
   bound_node_name?: string | null;
+  durationInSeconds?: number | null;
+  created_at: string; // ISO 8601 datetime
+  updated_at?: string | null; // ISO 8601 datetime
 }
 
 /**
@@ -133,7 +139,8 @@ export interface WorkloadActionQueryParams extends FilterParams {
 /**
  * Workload Action list response
  */
-export interface WorkloadActionListResponse extends PaginatedResponse<WorkloadAction> {
+export interface WorkloadActionListResponse
+  extends PaginatedResponse<WorkloadAction> {
   actions: WorkloadAction[];
 }
 
@@ -141,69 +148,90 @@ export interface WorkloadActionListResponse extends PaginatedResponse<WorkloadAc
 // Workload Request Decision Types
 // ===================
 
-/** 
- * Decision status enum 
+/**
+ * Decision status enum (from OpenAPI spec)
  */
 export enum WorkloadDecisionStatus {
   PENDING = 'pending',
-  SUCCESSFUL = 'successful',
+  SUCCEEDED = 'succeeded',
   FAILED = 'failed',
 }
 
 /**
- * Workload Request Decision create request
+ * Workload Request Decision create request (from OpenAPI spec)
  */
 export interface WorkloadRequestDecisionCreate {
-  pod_id: string;
-  pod_name: string;
-  namespace: string;
-  node_id: string;
-  is_elastic: boolean;
-  queue_name: string;
-  demand_cpu: number;
-  demand_memory: number;
-  demand_slack_cpu?: number | null;
-  demand_slack_memory?: number | null;
-  decision_status: WorkloadDecisionStatus;
-  pod_parent_id: string;
-  pod_parent_kind: string;
-}
-
-/**
- * Workload Request Decision schema/response
- */
-export interface WorkloadRequestDecisionSchema extends BaseEntity {
-  pod_id: string;
-  pod_name: string;
-  namespace: string;
-  node_id: string;
-  is_elastic: boolean;
-  queue_name: string;
-  demand_cpu: number;
-  demand_memory: number;
-  demand_slack_cpu?: number | null;
-  demand_slack_memory?: number | null;
-  decision_status: WorkloadDecisionStatus;
-  pod_parent_id: string;
-  pod_parent_kind: string;
-}
-
-/**
- * Workload Request Decision update request
- */
-export interface WorkloadRequestDecisionUpdate {
-  pod_name?: string | null;
-  namespace?: string | null;
-  node_id?: string | null;
   is_elastic?: boolean | null;
   queue_name?: string | null;
   demand_cpu?: number | null;
   demand_memory?: number | null;
   demand_slack_cpu?: number | null;
   demand_slack_memory?: number | null;
+  pod_id: string; // UUID format
+  pod_name: string;
+  namespace: string;
+  node_id: string; // UUID format
+  node_name: string;
+  action_type: WorkloadActionType;
+  decision_status: WorkloadDecisionStatus;
+  pod_parent_id: string; // UUID format
+  pod_parent_name: string;
+  pod_parent_kind: PodParentType;
+  decision_start_time?: string | null; // ISO 8601 datetime
+  decision_end_time?: string | null; // ISO 8601 datetime
+  created_at?: string | null; // ISO 8601 datetime
+  deleted_at?: string | null; // ISO 8601 datetime
+}
+
+/**
+ * Workload Request Decision schema/response (from OpenAPI spec)
+ */
+export interface WorkloadRequestDecisionSchema {
+  id: string; // UUID format
+  is_elastic?: boolean | null;
+  queue_name?: string | null;
+  demand_cpu?: number | null;
+  demand_memory?: number | null;
+  demand_slack_cpu?: number | null;
+  demand_slack_memory?: number | null;
+  pod_id: string; // UUID format
+  pod_name: string;
+  namespace: string;
+  node_id: string; // UUID format
+  node_name: string;
+  action_type: WorkloadActionType;
+  decision_status: WorkloadDecisionStatus;
+  pod_parent_id: string; // UUID format
+  pod_parent_name: string;
+  pod_parent_kind: PodParentType;
+  decision_start_time?: string | null; // ISO 8601 datetime
+  decision_end_time?: string | null; // ISO 8601 datetime
+  created_at?: string | null; // ISO 8601 datetime
+  deleted_at?: string | null; // ISO 8601 datetime
+}
+
+/**
+ * Workload Request Decision update request (from OpenAPI spec)
+ */
+export interface WorkloadRequestDecisionUpdate {
+  is_elastic?: boolean | null;
+  queue_name?: string | null;
+  demand_cpu?: number | null;
+  demand_memory?: number | null;
+  demand_slack_cpu?: number | null;
+  demand_slack_memory?: number | null;
+  pod_name?: string | null;
+  namespace?: string | null;
+  node_id?: string | null; // UUID format
+  node_name?: string | null;
+  action_type?: WorkloadActionType | null;
   decision_status?: WorkloadDecisionStatus | null;
-  pod_parent_id?: string | null;
-  pod_parent_kind?: string | null;
+  pod_parent_id?: string | null; // UUID format
+  pod_parent_name?: string | null;
+  pod_parent_kind?: PodParentType | null;
+  decision_start_time?: string | null; // ISO 8601 datetime
+  decision_end_time?: string | null; // ISO 8601 datetime
+  deleted_at?: string | null; // ISO 8601 datetime
 }
 
 /**
@@ -224,7 +252,8 @@ export interface WorkloadRequestDecisionQueryParams extends FilterParams {
 /**
  * Workload Request Decision list response
  */
-export interface WorkloadRequestDecisionListResponse extends PaginatedResponse<WorkloadRequestDecisionSchema> {
+export interface WorkloadRequestDecisionListResponse
+  extends PaginatedResponse<WorkloadRequestDecisionSchema> {
   decisions: WorkloadRequestDecisionSchema[];
 }
 
@@ -288,25 +317,170 @@ export interface ActionExecutionSummary {
 }
 
 // ===================
-// Legacy Type Aliases (for backward compatibility)
+// Workload Timing Types
 // ===================
 
-export type PodRequestDecisionCreate = WorkloadRequestDecisionCreate;
-export type PodRequestDecisionSchema = WorkloadRequestDecisionSchema;
-export type PodRequestDecisionUpdate = WorkloadRequestDecisionUpdate;
-export type PodRequestDecisionQueryParams = WorkloadRequestDecisionQueryParams;
-export type PodRequestDecisionListResponse = WorkloadRequestDecisionListResponse;
+/**
+ * Workload timing scheduler enum (from OpenAPI spec)
+ */
+export enum WorkloadTimingSchedulerEnum {
+  DEFAULT_SCHEDULER = 'default-scheduler',
+  RESOURCE_MANAGEMENT_SERVICE = 'resource-management-service',
+}
+
+/**
+ * Workload timing create request (from OpenAPI spec)
+ */
+export interface WorkloadTimingCreate {
+  id: string; // UUID format
+  pod_name: string;
+  namespace: string;
+  node_name: string;
+  scheduler_type: WorkloadTimingSchedulerEnum;
+  pod_uid: string;
+  created_timestamp?: string | null; // ISO 8601 datetime
+  scheduled_timestamp?: string | null; // ISO 8601 datetime
+  ready_timestamp?: string | null; // ISO 8601 datetime
+  deleted_timestamp?: string | null; // ISO 8601 datetime
+  phase?: string | null;
+  reason?: string | null;
+  is_completed?: boolean | null; // default: false
+  recorded_at?: string | null; // ISO 8601 datetime
+}
+
+/**
+ * Workload timing schema/response (from OpenAPI spec)
+ */
+export interface WorkloadTimingSchema {
+  id: string; // UUID format
+  pod_name: string;
+  namespace: string;
+  node_name?: string | null;
+  scheduler_type?: WorkloadTimingSchedulerEnum | null;
+  pod_uid?: string | null;
+  created_timestamp?: string | null; // ISO 8601 datetime
+  scheduled_timestamp?: string | null; // ISO 8601 datetime
+  ready_timestamp?: string | null; // ISO 8601 datetime
+  deleted_timestamp?: string | null; // ISO 8601 datetime
+  creation_to_scheduled_ms?: number | null;
+  scheduled_to_ready_ms?: number | null;
+  creation_to_ready_ms?: number | null;
+  total_lifecycle_ms?: number | null;
+  phase?: string | null;
+  reason?: string | null;
+  is_completed?: boolean | null; // default: false
+  recorded_at?: string | null; // ISO 8601 datetime
+}
+
+/**
+ * Workload timing update request (from OpenAPI spec)
+ */
+export interface WorkloadTimingUpdate {
+  created_timestamp?: string | null; // ISO 8601 datetime
+  scheduled_timestamp?: string | null; // ISO 8601 datetime
+  ready_timestamp?: string | null; // ISO 8601 datetime
+  deleted_timestamp?: string | null; // ISO 8601 datetime
+  phase?: string | null;
+  reason?: string | null;
+  is_completed?: boolean | null; // default: false
+  recorded_at?: string | null; // ISO 8601 datetime
+}
+
+/**
+ * Workload timing query parameters (from OpenAPI spec)
+ */
+export interface WorkloadTimingQueryParams {
+  pod_name?: string | null;
+  namespace?: string | null;
+  skip?: number; // default: 0
+  limit?: number; // default: 100
+  [key: string]: unknown;
+}
+
+// ===================
+// Workload Decision Action Flow Types
+// ===================
+
+/**
+ * Workload decision action flow item (from OpenAPI spec)
+ */
+export interface WorkloadDecisionActionFlowItem {
+  decision_id: string; // UUID format
+  action_id: string; // UUID format
+  action_type: WorkloadActionType;
+  is_elastic?: boolean | null;
+  queue_name?: string | null;
+  demand_cpu?: number | null;
+  demand_memory?: number | null;
+  demand_slack_cpu?: number | null;
+  demand_slack_memory?: number | null;
+  created_pod_name?: string | null;
+  created_pod_namespace?: string | null;
+  created_node_name?: string | null;
+  deleted_pod_name?: string | null;
+  deleted_pod_namespace?: string | null;
+  deleted_node_name?: string | null;
+  bound_pod_name?: string | null;
+  bound_pod_namespace?: string | null;
+  bound_node_name?: string | null;
+  decision_pod_name?: string | null;
+  decision_namespace?: string | null;
+  decision_node_name?: string | null;
+  decision_status?: WorkloadDecisionStatus | null;
+  action_status?: WorkloadActionStatus | null;
+  decision_start_time?: string | null; // ISO 8601 datetime
+  decision_end_time?: string | null; // ISO 8601 datetime
+  action_start_time?: string | null; // ISO 8601 datetime
+  action_end_time?: string | null; // ISO 8601 datetime
+  decision_duration?: string | null; // duration format
+  action_duration?: string | null; // duration format
+  total_duration?: string | null; // duration format
+  decision_created_at?: string | null; // ISO 8601 datetime
+  decision_deleted_at?: string | null; // ISO 8601 datetime
+  action_created_at?: string | null; // ISO 8601 datetime
+  action_updated_at?: string | null; // ISO 8601 datetime
+  decision_pod_parent_id?: string | null; // UUID format
+  decision_pod_parent_name?: string | null;
+  decision_pod_parent_kind?: string | null;
+  action_pod_parent_name?: string | null;
+  action_pod_parent_type?: string | null;
+  action_pod_parent_uid?: string | null; // UUID format
+  action_reason?: string | null;
+}
+
+/**
+ * Workload decision action flow query parameters (from OpenAPI spec)
+ */
+export interface WorkloadDecisionActionFlowQueryParams {
+  skip?: number; // default: 0
+  limit?: number; // default: 100
+  decision_id?: string | null; // UUID format
+  action_id?: string | null; // UUID format
+  pod_name?: string | null;
+  namespace?: string | null;
+  node_name?: string | null;
+  action_type?: WorkloadActionType | null;
+  [key: string]: unknown;
+}
 
 // ===================
 // Type Guards
 // ===================
 
-export const isWorkloadActionType = (value: string): value is WorkloadActionType => {
-  return Object.values(WorkloadActionType).includes(value as WorkloadActionType);
+export const isWorkloadActionType = (
+  value: string
+): value is WorkloadActionType => {
+  return Object.values(WorkloadActionType).includes(
+    value as WorkloadActionType
+  );
 };
 
-export const isWorkloadActionStatus = (value: string): value is WorkloadActionStatus => {
-  return Object.values(WorkloadActionStatus).includes(value as WorkloadActionStatus);
+export const isWorkloadActionStatus = (
+  value: string
+): value is WorkloadActionStatus => {
+  return Object.values(WorkloadActionStatus).includes(
+    value as WorkloadActionStatus
+  );
 };
 
 export const isPodParentType = (value: string): value is PodParentType => {
@@ -317,35 +491,41 @@ export const isPodParentType = (value: string): value is PodParentType => {
 // Utility Functions
 // ===================
 
-export const getActionTypeDisplayName = (actionType: WorkloadActionType): string => {
+export const getActionTypeDisplayName = (
+  actionType: WorkloadActionType
+): string => {
   const displayNames: Record<WorkloadActionType, string> = {
     [WorkloadActionType.BIND]: 'Bind Pod',
     [WorkloadActionType.CREATE]: 'Create Pod',
     [WorkloadActionType.DELETE]: 'Delete Pod',
     [WorkloadActionType.MOVE]: 'Move Pod',
     [WorkloadActionType.SWAP_X]: 'Swap_X Pod',
-    [WorkloadActionType.SWAP_Y]: 'Swap_Y Pod'
+    [WorkloadActionType.SWAP_Y]: 'Swap_Y Pod',
   };
   return displayNames[actionType] || actionType;
 };
 
-export const getActionStatusDisplayName = (status: WorkloadActionStatus): string => {
+export const getActionStatusDisplayName = (
+  status: WorkloadActionStatus
+): string => {
   const displayNames: Record<WorkloadActionStatus, string> = {
     [WorkloadActionStatus.PENDING]: 'Pending',
-    [WorkloadActionStatus.SUCCESSFUL]: 'Successful',
+    [WorkloadActionStatus.SUCCEEDED]: 'Succeeded',
     [WorkloadActionStatus.FAILED]: 'Failed',
   };
   return displayNames[status] || status;
 };
 
-export const getPodParentTypeDisplayName = (parentType: PodParentType): string => {
+export const getPodParentTypeDisplayName = (
+  parentType: PodParentType
+): string => {
   const displayNames: Record<PodParentType, string> = {
     [PodParentType.DEPLOYMENT]: 'Deployment',
-    [PodParentType.STATEFUL_SET]: 'StatefulSet',
-    [PodParentType.REPLICA_SET]: 'ReplicaSet',
+    [PodParentType.STATEFULSET]: 'StatefulSet',
+    [PodParentType.REPLICASET]: 'ReplicaSet',
     [PodParentType.JOB]: 'Job',
-    [PodParentType.DAEMON_SET]: 'DaemonSet',
-    [PodParentType.CRON_JOB]: 'CronJob',
+    [PodParentType.DAEMONSET]: 'DaemonSet',
+    [PodParentType.CRONJOB]: 'CronJob',
   };
   return displayNames[parentType] || parentType;
 };

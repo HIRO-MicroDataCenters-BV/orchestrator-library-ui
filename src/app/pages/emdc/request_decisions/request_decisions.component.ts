@@ -13,6 +13,7 @@ import { AppTableComponent } from '../../../components/app-table/app-table.compo
 import { TranslocoModule } from '@jsverse/transloco';
 import { ApiService } from '../../../core/services';
 import { EmdcMockService } from '../../../mock/emdc-mock.service';
+import { WorkloadDecisionActionFlowItem } from '../../../shared/types';
 
 // Define interfaces for type safety
 interface Condition {
@@ -43,19 +44,22 @@ export class RequestDecisionsComponent implements OnInit, OnDestroy {
   private routerSubscription: Subscription | null = null;
   clusters = [];
   columns = [
-    'id_uid',
-    'pod_name',
+    'decision_id',
+    'action_id',
+    'action_type',
+    'decision_pod_name',
+    'decision_namespace',
+    'decision_node_name',
     'decision_status',
-    'cpu_memory',
-    'node_name',
-    'queue_name',
-    'created_at',
+    'action_status',
+    'total_duration',
+    'duration_request_decision',
   ];
   actions = [];
 
   tabs = [];
 
-  dataSource: Observable<unknown[]> | null = null;
+  dataSource: Observable<WorkloadDecisionActionFlowItem[]> | null = null;
   useMockData = false;
 
   detailsStruct: Struct[] = [];
@@ -67,8 +71,10 @@ export class RequestDecisionsComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute
   ) {
     this.dataSource = this.useMockData
-      ? this.mockService.getRequestDecisions()
-      : this.apiService.getWorkloadDecisions() as Observable<unknown[]>;
+      ? (this.mockService.getRequestDecisions() as Observable<
+          WorkloadDecisionActionFlowItem[]
+        >)
+      : this.apiService.getWorkloadDecisionActionFlow();
   }
   ngOnInit(): void {
     this.checkCurrentRoute();

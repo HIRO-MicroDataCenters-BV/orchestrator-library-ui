@@ -52,7 +52,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
         type: 'table',
         dataSource: this.useMockData
           ? this.overviewMockService.getAlerts({ limit: 5 })
-          : this.apiService.getAlerts({ limit: 5 }) as Observable<unknown[]>,
+          : (this.apiService.getAlerts({ limit: 5 }) as Observable<unknown[]>),
         actions: [
           {
             label: 'action.view_all',
@@ -66,7 +66,9 @@ export class OverviewComponent implements OnInit, OnDestroy {
         type: 'table',
         dataSource: this.useMockData
           ? this.overviewMockService.getWorkloadDecisions({ limit: 5 })
-          : this.apiService.getWorkloadDecisions({ limit: 5 }) as Observable<unknown[]>,
+          : (this.apiService.getWorkloadDecisions({ limit: 5 }) as Observable<
+              unknown[]
+            >),
         actions: [
           {
             label: 'action.view_all',
@@ -80,7 +82,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
         type: 'table',
         dataSource: this.useMockData
           ? this.overviewMockService.getWorkloadActions()
-          : this.apiService.getWorkloadActions() as Observable<unknown[]>,
+          : (this.apiService.getWorkloadActions() as Observable<unknown[]>),
         actions: [
           {
             label: 'action.view_all',

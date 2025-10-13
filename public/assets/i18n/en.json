@@ -39,6 +39,7 @@
     "monitoring": "Monitoring",
     "request_decisions": "Request Decisions",
     "actions": "Actions",
+    "decision_action_flow": "Decision Action Flow",
     "overview": "Overview"
   },
   "action": {
@@ -89,7 +90,32 @@
     "memory": "Demand Memory",
     "cpu": "Demand CPU",
     "node_name": "Node",
-    "namespace": "Namespace"
+    "namespace": "Namespace",
+    "decision_id": "Decision ID",
+    "action_id": "Action ID",
+    "decision_pod_name": "Decision Pod Name",
+    "decision_namespace": "Decision Namespace",
+    "decision_node_name": "Decision Node",
+    "decision_created_at": "Created",
+    "decision_start_time": "Decision Start",
+    "decision_end_time": "Decision End",
+    "decision_duration": "Decision Duration",
+    "action_duration": "Action Duration",
+    "total_duration": "Total Duration",
+    "workload_info": "Workload Information",
+    "resource_demands": "Resource Demands",
+    "action_targets": "Action Targets",
+    "timing_summary": "Timing Summary",
+    "decision_pod_parent_name": "Decision Parent Workload",
+    "decision_pod_parent_kind": "Decision Parent Type",
+    "demand_slack_cpu": "CPU Slack Demand",
+    "demand_slack_memory": "Memory Slack Demand",
+    "created_pod_name": "Created Pod",
+    "created_pod_namespace": "Created Namespace",
+    "created_node_name": "Created Node",
+    "deleted_pod_name": "Deleted Pod",
+    "deleted_pod_namespace": "Deleted Namespace",
+    "deleted_node_name": "Deleted Node"
   },
   "column": {
     "id": "ID",
@@ -139,7 +165,13 @@
     "pod": "Pod",
     "duration": "Duration",
     "cpu_memory": "CPU / Memory",
-    "time": "Time"
+    "time": "Time",
+    "decision_id": "Decision ID",
+    "action_id": "Action ID",
+    "decision_pod_name": "Decision Pod",
+    "decision_namespace": "Namespace",
+    "decision_node_name": "Node",
+    "total_duration": "Total Duration"
   },
   "common": {
     "title": "Orchestration Library",

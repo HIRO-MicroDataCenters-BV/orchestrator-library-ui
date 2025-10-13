@@ -68,96 +68,140 @@ export interface K8sTokenRequest {
 // ===================
 
 /**
- * Tuning parameter
+ * Tuning parameter (from OpenAPI spec)
  */
 export interface TuningParameter {
-  id: string;
-  name: string;
-  value: string | number | boolean;
-  type: TuningParameterType;
-  description?: string;
-  category?: string;
-  namespace?: string;
-  created_at: string;
-  updated_at?: string;
-  validation_rules?: TuningParameterValidation;
+  id: number;
+  output_1: number;
+  output_2: number;
+  output_3: number;
+  alpha: number;
+  beta: number;
+  gamma: number;
+  created_at: string; // ISO 8601 datetime
 }
 
 /**
- * Tuning parameter creation request
+ * Tuning parameter creation request (from OpenAPI spec)
  */
 export interface TuningParameterCreate {
-  name: string;
-  value: string | number | boolean;
-  type: TuningParameterType;
-  description?: string;
-  category?: string;
-  namespace?: string;
-  validation_rules?: TuningParameterValidation;
+  output_1: number;
+  output_2: number;
+  output_3: number;
+  alpha: number;
+  beta: number;
+  gamma: number;
 }
 
 /**
  * Tuning parameter update request
  */
 export interface TuningParameterUpdate {
-  value?: string | number | boolean;
-  description?: string;
-  category?: string;
-  validation_rules?: TuningParameterValidation;
+  output_1?: number;
+  output_2?: number;
+  output_3?: number;
+  alpha?: number;
+  beta?: number;
+  gamma?: number;
 }
 
 /**
- * Tuning parameter type
- */
-export enum TuningParameterType {
-  STRING = 'string',
-  INTEGER = 'integer',
-  FLOAT = 'float',
-  BOOLEAN = 'boolean',
-  JSON = 'json',
-}
-
-/**
- * Tuning parameter validation rules
- */
-export interface TuningParameterValidation {
-  min_value?: number;
-  max_value?: number;
-  allowed_values?: (string | number | boolean)[];
-  pattern?: string;
-  required?: boolean;
-}
-
-/**
- * Tuning parameter query parameters
+ * Tuning parameter query parameters (from OpenAPI spec)
  */
 export interface TuningParameterQueryParams {
-  category?: string;
-  namespace?: string;
-  type?: TuningParameterType;
-  name?: string;
   skip?: number;
   limit?: number;
+  start_date?: string; // ISO 8601 datetime
+  end_date?: string; // ISO 8601 datetime
+  [key: string]: unknown;
 }
 
 // ===================
 // Generic Query Parameters
 // ===================
 
-
-
 /**
- * Cluster info query parameters
+ * Cluster info query parameters (from OpenAPI spec)
  */
 export interface ClusterInfoQueryParams {
-  include_metrics?: boolean;
+  advanced?: boolean; // default: false
+  [key: string]: unknown;
+}
+
+// ===================
+// Kubernetes Pod Types
+// ===================
+
+/**
+ * Kubernetes pod query parameters (from OpenAPI spec)
+ */
+export interface PodQueryParams {
+  namespace?: string;
+  name?: string;
+  pod_id?: string; // UUID format
+  status?: string;
+  [key: string]: unknown;
+}
+
+/**
+ * Kubernetes user pod query parameters (from OpenAPI spec)
+ */
+export interface UserPodQueryParams {
+  namespace?: string;
+  name?: string;
+  pod_id?: string; // UUID format
+  status?: string;
+  [key: string]: unknown;
+}
+
+/**
+ * Pod parent query parameters (from OpenAPI spec)
+ */
+export interface PodParentQueryParams {
+  namespace: string;
+  name?: string;
+  pod_id?: string; // UUID format
+  [key: string]: unknown;
+}
+
+/**
+ * Delete pod parameters (from OpenAPI spec)
+ */
+export interface DeletePodParams {
+  pod_id: string; // UUID format
+  [key: string]: unknown;
+}
+
+// ===================
+// Kubernetes Node Types
+// ===================
+
+/**
+ * Kubernetes node query parameters (from OpenAPI spec)
+ */
+export interface NodeQueryParams {
+  name?: string;
+  node_id?: string; // UUID format
+  status?: string;
+  [key: string]: unknown;
+}
+
+// ===================
+// Kubernetes Token Types
+// ===================
+
+/**
+ * Kubernetes token query parameters (from OpenAPI spec)
+ */
+export interface TokenQueryParams {
+  namespace?: string; // default: 'hiros'
+  service_account_name?: string; // default: 'readonly-user'
+  [key: string]: unknown;
 }
 
 // ===================
 // Response Types
 // ===================
-
-
 
 /**
  * Tuning parameter list response
@@ -168,6 +212,11 @@ export interface TuningParameterListResponse {
   skip: number;
   limit: number;
 }
+
+/**
+ * Tuning parameter response (single item) - alias for compatibility
+ */
+export type TuningParameterResponse = TuningParameter;
 
 // ===================
 // HTTP Request Options
@@ -191,29 +240,4 @@ export interface HttpResponse<T = unknown> {
   status: number;
   statusText: string;
   headers: Record<string, string>;
-}
-
-// ===================
-// Utility Functions
-// ===================
-
-/**
- * Get tuning parameter type display name
- */
-export function getTuningParameterTypeDisplayName(type: TuningParameterType): string {
-  const displayNames: Record<TuningParameterType, string> = {
-    [TuningParameterType.STRING]: 'String',
-    [TuningParameterType.INTEGER]: 'Integer',
-    [TuningParameterType.FLOAT]: 'Float',
-    [TuningParameterType.BOOLEAN]: 'Boolean',
-    [TuningParameterType.JSON]: 'JSON',
-  };
-  return displayNames[type] || type;
-}
-
-/**
- * Check if value is a valid tuning parameter type
- */
-export function isTuningParameterType(value: string): value is TuningParameterType {
-  return Object.values(TuningParameterType).includes(value as TuningParameterType);
 }

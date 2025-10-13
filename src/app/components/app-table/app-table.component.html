@@ -323,6 +323,34 @@
             </button>
           </hlm-td>
         </brn-column-def>
+        <brn-column-def
+          name="duration_request_decision"
+          class="w-32 !text-left"
+        >
+          <ng-container *brnHeaderDef>
+            <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
+              'column.duration' | transloco
+            }}</hlm-th>
+          </ng-container>
+          <hlm-td truncate *brnCellDef="let element">
+            <button
+              brnSheetTrigger
+              hlmBtn
+              variant="ghost"
+              (click)="onRowClick(element)"
+            >
+              <p class="text-sm text-gray-500">
+                {{
+                  getDuration(
+                    element.decision_end_time,
+                    element.decision_start_time
+                  )
+                }}{{ 'hint.s' | transloco }}
+              </p>
+            </button>
+          </hlm-td>
+        </brn-column-def>
+
         <brn-column-def name="duration" class="w-32 !text-left">
           <ng-container *brnHeaderDef>
             <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
@@ -662,7 +690,7 @@
             <hlm-th
               truncate
               [style.visibility]="showHeader ? 'visible' : 'hidden'"
-              >{{ 'column.status' | transloco }}</hlm-th
+              >{{ 'column.action_status' | transloco }}</hlm-th
             >
           </ng-container>
           <hlm-td truncate *brnCellDef="let element">
@@ -677,6 +705,124 @@
                 hlmBadge
                 >{{ element.action_status }}</span
               >
+            </button>
+          </hlm-td>
+        </brn-column-def>
+        <brn-column-def name="decision_id" class="w-80 !text-left">
+          <ng-container *brnHeaderDef>
+            <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
+              'column.decision_id' | transloco
+            }}</hlm-th>
+          </ng-container>
+          <hlm-td truncate *brnCellDef="let element">
+            <button
+              brnSheetTrigger
+              hlmBtn
+              variant="ghost"
+              (click)="onRowClick(element)"
+            >
+              <p
+                class="text-sm text-gray-500 overflow-hidden text-ellipsis w-full"
+              >
+                {{ element.decision_id }}
+              </p>
+            </button>
+          </hlm-td>
+        </brn-column-def>
+        <brn-column-def name="action_id" class="w-80 !text-left">
+          <ng-container *brnHeaderDef>
+            <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
+              'column.action_id' | transloco
+            }}</hlm-th>
+          </ng-container>
+          <hlm-td truncate *brnCellDef="let element">
+            <button
+              brnSheetTrigger
+              hlmBtn
+              variant="ghost"
+              (click)="onRowClick(element)"
+            >
+              <p
+                class="text-sm text-gray-500 overflow-hidden text-ellipsis w-full"
+              >
+                {{ element.action_id }}
+              </p>
+            </button>
+          </hlm-td>
+        </brn-column-def>
+        <brn-column-def name="decision_pod_name" class="w-80 !text-left">
+          <ng-container *brnHeaderDef>
+            <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
+              'column.decision_pod_name' | transloco
+            }}</hlm-th>
+          </ng-container>
+          <hlm-td truncate *brnCellDef="let element">
+            <button
+              brnSheetTrigger
+              hlmBtn
+              variant="ghost"
+              (click)="onRowClick(element)"
+            >
+              <p class="text-sm text-gray-500">
+                {{ element.decision_pod_name }}
+              </p>
+            </button>
+          </hlm-td>
+        </brn-column-def>
+        <brn-column-def name="decision_namespace" class="w-64 !text-left">
+          <ng-container *brnHeaderDef>
+            <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
+              'column.decision_namespace' | transloco
+            }}</hlm-th>
+          </ng-container>
+          <hlm-td truncate *brnCellDef="let element">
+            <button
+              brnSheetTrigger
+              hlmBtn
+              variant="ghost"
+              (click)="onRowClick(element)"
+            >
+              <p class="text-sm text-gray-500">
+                {{ element.decision_namespace }}
+              </p>
+            </button>
+          </hlm-td>
+        </brn-column-def>
+        <brn-column-def name="decision_node_name" class="w-64 !text-left">
+          <ng-container *brnHeaderDef>
+            <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
+              'column.decision_node_name' | transloco
+            }}</hlm-th>
+          </ng-container>
+          <hlm-td truncate *brnCellDef="let element">
+            <button
+              brnSheetTrigger
+              hlmBtn
+              variant="ghost"
+              (click)="onRowClick(element)"
+            >
+              <p class="text-sm text-gray-500">
+                {{ element.decision_node_name }}
+              </p>
+            </button>
+          </hlm-td>
+        </brn-column-def>
+        <brn-column-def name="total_duration" class="w-40 !text-left">
+          <ng-container *brnHeaderDef>
+            <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
+              'column.total_duration' | transloco
+            }}</hlm-th>
+          </ng-container>
+          <hlm-td truncate *brnCellDef="let element">
+            <button
+              brnSheetTrigger
+              hlmBtn
+              variant="ghost"
+              (click)="onRowClick(element)"
+            >
+              <p class="text-sm text-gray-500">
+                {{ element.total_duration }}
+              </p>
             </button>
           </hlm-td>
         </brn-column-def>

@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
 import { ErrorLayoutComponent } from './layouts/error-layout/error-layout.component';
 import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component';
-import { AuthGuard, GuestGuard } from './core/services/auth';
+import { GuestGuard } from './core/services/auth';
 
 export const routes: Routes = [
   // Auth routes (public, for non-authenticated users)
@@ -49,7 +49,8 @@ export const routes: Routes = [
   {
     path: '',
     component: MainLayoutComponent,
-    canActivate: [AuthGuard],
+    // TODO: Uncomment this when auth is implemented
+    // canActivate: [AuthGuard],
     children: [
       {
         path: '',
@@ -106,6 +107,14 @@ export const routes: Routes = [
                     (m) => m.ActionsComponent
                   ),
                 data: { title: 'Actions' },
+              },
+              {
+                path: 'decision_action_flow',
+                loadComponent: () =>
+                  import(
+                    './pages/emdc/decision_action_flow/decision-action-flow.component'
+                  ).then((m) => m.DecisionActionFlowComponent),
+                data: { title: 'Decision Action Flow' },
               },
             ],
           },
@@ -204,34 +213,10 @@ export const routes: Routes = [
     ],
   },
 
-  // Fallback routes - but exclude proxy paths
+  // Fallback route - catch all unmatched routes
+  // Note: Proxy paths should be handled by your dev server proxy configuration (proxy.conf.js)
   {
     path: '**',
     redirectTo: '/error/404',
-    matcher: (url) => {
-      // Don't match proxy routes - let them pass through to the dev server
-      const proxyPaths = [
-        'api',
-        'iframe-dashboard',
-        'iframe-grafana',
-        'iframe-cog',
-        'dex',
-        'authservice',
-      ];
-
-      const path = url[0]?.path || '';
-      const isProxyPath = proxyPaths.some((proxy) => path.startsWith(proxy));
-
-      // Debug logging
-      console.log('[ROUTER MATCHER]', {
-        path: path,
-        url: url.map((segment) => segment.path).join('/'),
-        isProxyPath: isProxyPath,
-        willMatch: !isProxyPath,
-      });
-
-      // Only match if it's NOT a proxy path
-      return isProxyPath ? null : { consumed: url };
-    },
   },
 ];
