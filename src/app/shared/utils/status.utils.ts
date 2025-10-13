@@ -16,6 +16,8 @@ export enum StatusType {
   BIND = 'bind',
   SUCCESS = 'success',
   SUCCESSFUL = 'successful',
+  SUCCESSED = 'succesed',
+  SUCCEEDED = 'succeeded',
   COMPLETED = 'completed',
   APPROVED = 'approved',
   FAILED = 'failed',
@@ -92,14 +94,21 @@ const STATUS_CONFIG_MAP: Record<string, StatusConfig> = {
     value: StatusType.SUCCESS,
     label: 'Success',
     color: 'text-success-foreground',
-    bgColor: 'bg-success/10',
+    bgColor: 'bg-success',
+    icon: 'lucideCircleCheck',
+  },
+  [StatusType.SUCCEEDED]: {
+    value: StatusType.SUCCEEDED,
+    label: 'Success',
+    color: 'text-success-foreground',
+    bgColor: 'bg-success',
     icon: 'lucideCircleCheck',
   },
   [StatusType.SUCCESSFUL]: {
-    value: StatusType.SUCCESSFUL,
+    value: StatusType.SUCCESS,
     label: 'Successful',
     color: 'text-success-foreground',
-    bgColor: 'bg-success/10',
+    bgColor: 'bg-success',
     icon: 'lucideCircleCheck',
   },
   [StatusType.COMPLETED]: {
@@ -122,7 +131,7 @@ const STATUS_CONFIG_MAP: Record<string, StatusConfig> = {
     value: StatusType.FAILED,
     label: 'Failed',
     color: 'text-destructive-foreground',
-    bgColor: 'bg-destructive/10',
+    bgColor: 'bg-destructive',
     icon: 'lucideCircleX',
   },
   [StatusType.ERROR]: {
@@ -343,6 +352,7 @@ export const getStatusConfig = (
   if (typeof status === 'string') {
     const normalizedStatus = normalizeStatus(status);
     const config = STATUS_CONFIG_MAP[normalizedStatus];
+    console.log('config', config);
     if (config) {
       return config;
     }
