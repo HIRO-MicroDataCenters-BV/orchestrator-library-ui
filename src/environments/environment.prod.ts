@@ -2,7 +2,7 @@ import { Environment } from './environment.interface';
 
 export const environment: Environment = {
   production: true,
-  apiUrl: 'http://51.44.28.47:30015',
+  apiUrl: 'https://orchestration-api.aces.hiro-develop.nl',
   tokenKey: 'auth_token',
   refreshTokenKey: 'refresh_token',
   userKey: 'user',

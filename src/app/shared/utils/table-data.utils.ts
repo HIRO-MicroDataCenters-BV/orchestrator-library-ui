@@ -321,3 +321,30 @@ export const getDuration = (start: string, end: string): number => {
 
   return diffSeconds;
 };
+
+export const parseDuration = (duration: string | null | undefined): number => {
+  if (!duration || typeof duration !== 'string') {
+    return 0;
+  }
+
+  const regex =
+    /P(?:(\d+)Y)?(?:(\d+)M)?(?:(\d+)D)?(?:T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+(?:\.\d+)?)S)?)?/;
+  const matches = duration.match(regex);
+
+  if (!matches) {
+    return 0;
+  }
+
+  const [, years, months, days, hours, minutes, seconds] = matches;
+
+  let totalSeconds = 0;
+
+  if (years) totalSeconds += parseInt(years, 10) * 365 * 24 * 60 * 60;
+  if (months) totalSeconds += parseInt(months, 10) * 30 * 24 * 60 * 60;
+  if (days) totalSeconds += parseInt(days, 10) * 24 * 60 * 60;
+  if (hours) totalSeconds += parseInt(hours, 10) * 60 * 60;
+  if (minutes) totalSeconds += parseInt(minutes, 10) * 60;
+  if (seconds) totalSeconds += parseFloat(seconds);
+
+  return totalSeconds;
+};

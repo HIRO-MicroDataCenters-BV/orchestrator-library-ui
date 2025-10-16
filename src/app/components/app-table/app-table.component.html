@@ -822,7 +822,8 @@
               (click)="onRowClick(element)"
             >
               <p class="text-sm text-gray-500">
-                {{ element.total_duration }}
+                {{ parseDuration(element.total_duration)
+                }}{{ 'hint.s' | transloco }}
               </p>
             </button>
           </hlm-td>

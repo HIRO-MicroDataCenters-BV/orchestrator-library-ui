@@ -61,7 +61,7 @@ import { HlmButtonModule } from '@spartan-ng/ui-button-helm';
 import { HlmIconDirective } from '@spartan-ng/ui-icon-helm';
 import { HlmInputDirective } from '@spartan-ng/ui-input-helm';
 import { BrnMenuTriggerDirective } from '@spartan-ng/brain/menu';
-import { getDuration } from '../../shared';
+import { getDuration, parseDuration } from '../../shared';
 import {
   HlmMenuItemCheckboxDirective,
   HlmMenuItemCheckComponent,
@@ -290,6 +290,10 @@ export class AppTableComponent implements OnChanges, OnInit {
 
   getDuration(start: string, end: string) {
     return getDuration(start, end);
+  }
+
+  parseDuration(duration: string | null | undefined): number {
+    return parseDuration(duration);
   }
   // Column sorting implementation
   private readonly _colSort = signal<'ASC' | 'DESC' | null>(null);
