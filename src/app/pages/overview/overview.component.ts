@@ -38,9 +38,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
         type: 'metrics',
         dataSource: this.useMockData
           ? this.overviewMockService.getClusterInfo()
-          : (this.apiService.getClusterInfo({ advanced: false }) as Observable<
-              unknown[]
-            >),
+          : this.apiService.getClusterInfo({ advanced: false }) as Observable<unknown[]>,
         actions: [
           {
             label: 'action.view_details',

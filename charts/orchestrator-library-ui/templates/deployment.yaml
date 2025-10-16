@@ -23,15 +23,15 @@ spec:
             - name: NODE_ENV
               value: 'production'
             - name: API_TARGET
-              value: 'http://51.44.28.47:30015'
+              value: '{{ .Values.app.env.API_TARGET }}'
             - name: DEX_TARGET
-              value: 'http://51.44.28.47:30080'
+              value: '{{ .Values.app.env.DEX_TARGET }}'
             - name: DASHBOARD_TARGET
-              value: 'http://51.44.28.47:30016'
+              value: '{{ .Values.app.env.DASHBOARD_TARGET }}'
             - name: GRAFANA_TARGET
-              value: 'http://51.44.28.47:30000'
+              value: '{{ .Values.app.env.GRAFANA_TARGET }}'
             - name: COG_TARGET
-              value: 'https://dashboard.cog.hiro-develop.nl'
+              value: '{{ .Values.app.env.COG_TARGET }}'
           livenessProbe:
             httpGet:
               path: /health
@@ -44,3 +44,11 @@ spec:
               port: 80
             initialDelaySeconds: 10
             periodSeconds: 10
+          volumeMounts:
+          - name: env-config
+            mountPath: /usr/share/nginx/html/assets/env.js
+            subPath: env.js
+      volumes:
+        - name: env-config
+          configMap:
+            name: {{ .Values.app.configMap.envName }}
