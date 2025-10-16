@@ -10,24 +10,25 @@ const env = typeof window !== 'undefined' && window.__env ? window.__env : {};
 
 export const environment: Environment = {
   production: true,
-  apiUrl:
-    (env['apiUrl'] as string) ||
-    'https://orchestration-api.aces.hiro-develop.nl',
+  apiUrl: (env['apiUrl'] as string) || 'http://aces-orchestration-api',
   tokenKey: (env['tokenKey'] as string) || 'auth_token',
   refreshTokenKey: (env['refreshTokenKey'] as string) || 'refresh_token',
   userKey: 'user',
-  dashboardUrl: (env['k8sProxyUrl'] as string) || 'http://51.44.28.47:30020',
+  dashboardUrl:
+    (env['k8sProxyUrl'] as string) || 'http://aces-dashboard-reverse-proxy',
   cogUrl:
-    (env['cogUrl'] as string) || 'https://cui-nine.vercel.app/?is_iframe=1',
-  grafanaUrl: (env['grafanaUrl'] as string) || 'http://51.44.28.47:30000',
+    (env['cogUrl'] as string) ||
+    'https://dashboard.cog.hiro-develop.nl/uidev/?is_iframe=1',
+  grafanaUrl:
+    (env['grafanaUrl'] as string) ||
+    'http://grafana-nginx-reverse-proxy.ul.svc.cluster.local:8080',
   dexUrl:
     (env['dexUrl'] as string) || 'https://dashboard.cog.hiro-develop.nl/apidev',
 
   // OIDC Configuration
   oidc: {
     authority:
-      (env['oidcAuthority'] as string) ||
-      'https://orchestration-api.aces.hiro-develop.nl/dex',
+      (env['oidcAuthority'] as string) || 'http://aces-orchestration-api/dex',
     clientId: (env['oidcClientId'] as string) || 'authservice-oidc',
     clientSecret:
       (env['oidcClientSecret'] as string) || '${OIDC_CLIENT_SECRET}',
@@ -44,10 +45,10 @@ export const environment: Environment = {
     logLevel: (env['oidcLogLevel'] as number) ?? 3, // LogLevel.Error for production
     redirectUri:
       (env['oidcRedirectUri'] as string) ||
-      'https://orchestration-api.aces.hiro-develop.nl/authservice/oidc/callback',
+      'http://aces-orchestration-api/authservice/oidc/callback',
     postLogoutRedirectUri:
       (env['oidcPostLogoutRedirectUri'] as string) ||
-      'https://orchestration-api.aces.hiro-develop.nl/auth/login',
+      'http://aces-orchestration-api/auth/login',
     tokenEndpoint: (env['oidcTokenEndpoint'] as string) || '/dex/token',
     authorizationEndpoint:
       (env['oidcAuthorizationEndpoint'] as string) || '/dex/auth',
