@@ -46,10 +46,10 @@ export class ActionsComponent implements OnInit, OnDestroy {
     'id',
     'action_status',
     'action_type',
-    'created_at',
     'duration',
     'bound_pod_name',
     'pod_parent_name',
+    'created_at',
   ];
   actions: string[] = [];
   //['view_details', 'restart', 'cancel', 'retry', 'delete'];

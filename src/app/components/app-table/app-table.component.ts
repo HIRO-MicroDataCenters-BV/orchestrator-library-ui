@@ -14,7 +14,6 @@ import {
   SimpleChanges,
   TrackByFunction,
   untracked,
-  ViewChild,
 } from '@angular/core';
 
 // Define interfaces for type safety
@@ -236,7 +235,7 @@ export class AppTableComponent implements OnChanges, OnInit {
   );
 
   private readonly _displayedIndices = signal({ start: 0, end: 0 });
-  protected readonly _availablePageSizes = [5, 10, 20, 10000];
+  protected readonly _availablePageSizes = [50, 10000];
   protected readonly _pageSize = signal(this._availablePageSizes[0]);
 
   protected readonly _columns = computed(() => [...this.columns]);
@@ -262,6 +261,8 @@ export class AppTableComponent implements OnChanges, OnInit {
   });
 
   private _items = signal<BaseTableData[]>([]);
+  protected readonly _highlightedRowId = signal<string | number | null>(null);
+
   private readonly _filteredItems = computed(() => {
     const colFilter = this._colFilter()?.trim()?.toLowerCase();
     if (colFilter && colFilter.length > 0) {
@@ -381,6 +382,22 @@ export class AppTableComponent implements OnChanges, OnInit {
         if (!this.showFooter) {
           this.initializeDashboardPagination();
         }
+
+        // Check for id in queryParams and highlight the row
+        if (this.route) {
+          this.route.queryParams.subscribe((params) => {
+            const id = params['id'];
+            if (id) {
+              // Find the item with this id
+              const foundItem = (res as BaseTableData[]).find(
+                (item) => String(item.id) === String(id)
+              );
+              if (foundItem) {
+                this._highlightedRowId.set(foundItem.id);
+              }
+            }
+          });
+        }
       });
     }
   }
@@ -390,6 +407,22 @@ export class AppTableComponent implements OnChanges, OnInit {
       this._items.set(this.staticData as BaseTableData[]);
       if (!this.showFooter) {
         this.initializeDashboardPagination();
+      }
+
+      // Check for id in queryParams and highlight the row
+      if (this.route) {
+        this.route.queryParams.subscribe((params) => {
+          const id = params['id'];
+          if (id) {
+            // Find the item with this id
+            const foundItem = (this.staticData as BaseTableData[]).find(
+              (item) => String(item.id) === String(id)
+            );
+            if (foundItem) {
+              this._highlightedRowId.set(foundItem.id);
+            }
+          }
+        });
       }
     }
   }
@@ -430,6 +463,19 @@ export class AppTableComponent implements OnChanges, OnInit {
       state: element as Record<string, unknown>,
     });
     */
+  }
+
+  public onRowClickRedirect(id: number | string, route: string) {
+    if (!this.router || !this.route) {
+      return;
+    }
+    console.log(id);
+    this.router.navigate([route], {
+      relativeTo: this.route,
+      queryParams: {
+        id,
+      },
+    });
   }
 
   public setFilter(filterValue?: string) {
@@ -498,6 +544,13 @@ export class AppTableComponent implements OnChanges, OnInit {
 
   getDashboardSubText(element: unknown): string {
     return getSubText(element as BaseTableData);
+  }
+
+  isRowHighlighted(element: BaseTableData): boolean {
+    const highlightedId = this._highlightedRowId();
+    return (
+      highlightedId !== null && String(element.id) === String(highlightedId)
+    );
   }
 
   ngOnChanges(changes: SimpleChanges): void {
