@@ -52,3 +52,4 @@ Thumbs.db
 .angular
 
 .nx
+/public/assets/env.js
