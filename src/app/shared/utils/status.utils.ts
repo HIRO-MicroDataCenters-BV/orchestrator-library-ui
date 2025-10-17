@@ -352,7 +352,6 @@ export const getStatusConfig = (
   if (typeof status === 'string') {
     const normalizedStatus = normalizeStatus(status);
     const config = STATUS_CONFIG_MAP[normalizedStatus];
-    console.log('config', config);
     if (config) {
       return config;
     }

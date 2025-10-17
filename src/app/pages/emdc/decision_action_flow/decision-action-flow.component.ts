@@ -52,6 +52,7 @@ export class DecisionActionFlowComponent implements OnInit, OnDestroy {
     'decision_status',
     'action_status',
     'total_duration',
+    'decision_created_at',
   ];
 
   actions: string[] = [];

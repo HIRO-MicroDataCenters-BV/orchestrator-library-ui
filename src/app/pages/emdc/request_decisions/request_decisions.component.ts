@@ -53,6 +53,7 @@ export class RequestDecisionsComponent implements OnInit, OnDestroy {
     'pod_parent_name',
     'node_name',
     'duration_request_decision',
+    'created_at',
   ];
   actions = [];
 
