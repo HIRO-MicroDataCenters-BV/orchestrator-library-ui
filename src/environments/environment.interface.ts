@@ -1,18 +1,27 @@
 /**
  * Environment Interface
- * Defines the structure for all environment configuration files
+ * 
+ * Defines the structure for environment configuration.
+ * Variable names match Helm ConfigMap structure (see charts/orchestrator-library-ui/templates/configmap.yaml)
  */
 
 export interface Environment {
   production: boolean;
+  
+  // API URLs (matching Helm values.yaml)
   apiUrl: string;
+  dashboardUrl: string;
+  grafanaUrl: string;
+  dexUrl: string;
+  cogUrl: string;
+  k8sProxyUrl: string;
+  
+  // Token keys
   tokenKey: string;
   refreshTokenKey: string;
   userKey: string;
-  dashboardUrl: string;
-  cogUrl: string;
-  grafanaUrl: string;
-  dexUrl: string;
+  
+  // OIDC Configuration
   oidc: {
     authority: string;
     clientId: string;
