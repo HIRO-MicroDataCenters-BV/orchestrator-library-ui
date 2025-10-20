@@ -12,33 +12,34 @@ import { OidcConfig } from '../../../shared/models/auth.models';
  * Get OIDC configuration for the current environment
  */
 export function getOidcConfig(): OidcConfig {
-  // Always use localhost:4200 for dev server regardless of browser URL
-  const baseUrl = 'http://localhost:4200';
+  // Extract base URL from authority for building full endpoint URLs
+  const baseUrl = environment.oidc.authority.replace(/\/dex$/, '');
 
   return {
-    authority: `${baseUrl}/dex`,
-    redirectUrl: `${baseUrl}${AUTH_CONSTANTS.ROUTES.CALLBACK}`,
-    postLogoutRedirectUri: `${baseUrl}${AUTH_CONSTANTS.ROUTES.AFTER_LOGOUT}`,
-    clientId: AUTH_CONSTANTS.OIDC.CLIENT_ID,
-    scope: AUTH_CONSTANTS.OIDC.SCOPE,
-    responseType: AUTH_CONSTANTS.OIDC.RESPONSE_TYPE,
-    silentRenew: false, // Disable silent renew to avoid discovery issues
-    useRefreshToken: false, // Disable refresh tokens for now
+    authority: environment.oidc.authority,
+    redirectUrl: environment.oidc.redirectUri,
+    postLogoutRedirectUri: environment.oidc.postLogoutRedirectUri,
+    clientId: environment.oidc.clientId,
+    scope: environment.oidc.scope,
+    responseType: environment.oidc.responseType,
+    silentRenew: environment.oidc.silentRenew,
+    useRefreshToken: environment.oidc.useRefreshToken,
     renewTimeBeforeTokenExpiresInSeconds:
-      AUTH_CONSTANTS.OIDC.RENEW_TIME_BEFORE_TOKEN_EXPIRES,
-    logLevel: LogLevel.Debug, // Always debug for now
-    historyCleanupOff: true,
-    autoUserInfo: false, // Disable auto user info to avoid discovery
-    triggerRefreshWhenIdTokenExpired: false,
+      environment.oidc.renewTimeBeforeTokenExpiresInSeconds,
+    logLevel: environment.oidc.logLevel as LogLevel,
+    historyCleanupOff: environment.oidc.historyCleanupOff,
+    autoUserInfo: environment.oidc.autoUserInfo,
+    triggerRefreshWhenIdTokenExpired:
+      environment.oidc.triggerRefreshWhenIdTokenExpired,
 
     // Completely disable discovery and use manual endpoints only
     wellKnownEndpoints: {
-      issuer: 'http://localhost:4200/dex',
-      authorizationEndpoint: 'http://localhost:4200/dex/auth',
-      tokenEndpoint: 'http://localhost:4200/dex/token',
-      userinfoEndpoint: 'http://localhost:4200/dex/userinfo',
-      endSessionEndpoint: 'http://localhost:4200/dex/logout',
-      jwksUri: 'http://localhost:4200/dex/keys',
+      issuer: environment.oidc.authority,
+      authorizationEndpoint: `${baseUrl}${environment.oidc.authorizationEndpoint}`,
+      tokenEndpoint: `${baseUrl}${environment.oidc.tokenEndpoint}`,
+      userinfoEndpoint: `${baseUrl}${environment.oidc.userInfoEndpoint}`,
+      endSessionEndpoint: `${baseUrl}${environment.oidc.endSessionEndpoint}`,
+      jwksUri: `${baseUrl}/dex/keys`,
     },
 
     // Routes for navigation after auth events
@@ -47,16 +48,11 @@ export function getOidcConfig(): OidcConfig {
     unauthorizedRoute: AUTH_CONSTANTS.ROUTES.UNAUTHORIZED,
 
     // Secure routes that require authentication
-    secureRoutes: [
-      environment.apiUrl,
-      environment.cogUrl,
-    ],
+    secureRoutes: [environment.apiUrl, environment.cogUrl],
 
     // Custom parameters for auth requests
     customParamsAuthRequest: {
-      // Add any custom parameters required by DEX
       prompt: 'login',
-      // client_name: 'Orchestrator UI',
     },
 
     // Custom parameters for refresh token requests
@@ -66,7 +62,9 @@ export function getOidcConfig(): OidcConfig {
     customParamsEndSessionRequest: {},
 
     // Silent renew configuration
-    silentRenewUrl: `${baseUrl}/silent-renew.html`,
+    silentRenewUrl: `${
+      environment.oidc.redirectUri.split('/authservice')[0]
+    }/silent-renew.html`,
 
     // Token validation
     ignoreNonceAfterRefresh: true,
@@ -123,13 +121,11 @@ export function getMockOidcConfig(): OidcConfig {
  // DEX-specific configuration overrides
  */
 export const DEX_CONFIG_OVERRIDES = {
-  // DEX typically uses these scopes
-  scope: 'openid profile email groups',
-
-  // Disable features that require discovery
-  silentRenew: false,
-  useRefreshToken: false,
-  autoUserInfo: false,
+  // Use environment-based configuration
+  scope: environment.oidc.scope,
+  silentRenew: environment.oidc.silentRenew,
+  useRefreshToken: environment.oidc.useRefreshToken,
+  autoUserInfo: environment.oidc.autoUserInfo,
 
   // Simplified custom parameters for DEX
   customParamsAuthRequest: {},

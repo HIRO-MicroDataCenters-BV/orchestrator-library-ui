@@ -1,33 +1,50 @@
+import { Environment } from './environment.interface';
+
+declare global {
+  interface Window {
+    __env?: Partial<Environment>;
+  }
+}
+
+const getEnv = (): Partial<Environment> => {
+  if (typeof window !== 'undefined' && window.__env) {
+    return window.__env;
+  }
+  return {};
+};
+
+const env = getEnv();
+
 export const environment = {
-  production: false,
-  apiUrl: '/api',
+  production: true,
+  apiUrl: env.apiUrl ?? '',
   tokenKey: 'auth_token',
   refreshTokenKey: 'refresh_token',
   userKey: 'user',
-  dashboardUrl: 'http://51.44.28.47:30020',
-  cogUrl: '/iframe-cog',
-  grafanaUrl: '/iframe-grafana',
-  dexUrl: 'https://dashboard.cog.hiro-develop.nl/apidev',
-
-  // OIDC Configuration
+  dashboardUrl: env.dashboardUrl ?? '',
+  cogUrl: env.cogUrl ?? '',
+  grafanaUrl: env.grafanaUrl ?? '',
+  dexUrl: env.dexUrl ?? '',
   oidc: {
-    authority: 'http://51.44.28.47:30015/dex',
-    clientId: 'authservice-oidc',
-    clientSecret: '${OIDC_CLIENT_SECRET}',
-    scope: 'openid profile email groups',
-    responseType: 'code',
-    silentRenew: true,
-    useRefreshToken: true,
-    renewTimeBeforeTokenExpiresInSeconds: 60,
-    historyCleanupOff: true,
-    autoUserInfo: true,
-    triggerRefreshWhenIdTokenExpired: true,
-    logLevel: 1, // LogLevel.Warn
-    redirectUri: 'http://localhost:4200/authservice/oidc/callback',
-    postLogoutRedirectUri: 'http://localhost:4200/auth/login',
-    tokenEndpoint: '/dex/token',
-    authorizationEndpoint: '/dex/auth',
-    userInfoEndpoint: '/dex/userinfo',
-    endSessionEndpoint: '/dex/auth/logout',
+    authority: env.oidcAuthority ?? '',
+    clientId: env.oidcClientId ?? '',
+    clientSecret: env.oidcClientSecret ?? '',
+    scope: env.oidcScope ?? '',
+    responseType: env.oidcResponseType ?? '',
+    silentRenew: env.oidcSilentRenew ?? true,
+    useRefreshToken: env.oidcUseRefreshToken ?? true,
+    renewTimeBeforeTokenExpiresInSeconds:
+      env.oidcRenewTimeBeforeTokenExpiresInSeconds ?? 0,
+    historyCleanupOff: env.oidcHistoryCleanupOff ?? true,
+    autoUserInfo: env.oidcAutoUserInfo ?? true,
+    triggerRefreshWhenIdTokenExpired:
+      env.oidcTriggerRefreshWhenIdTokenExpired ?? true,
+    logLevel: env.oidcLogLevel ?? 0,
+    redirectUri: env.oidcRedirectUri ?? '',
+    postLogoutRedirectUri: env.oidcPostLogoutRedirectUri ?? '',
+    tokenEndpoint: env.oidcTokenEndpoint ?? '',
+    authorizationEndpoint: env.oidcAuthorizationEndpoint ?? '',
+    userInfoEndpoint: env.oidcUserInfoEndpoint ?? '',
+    endSessionEndpoint: env.oidcEndSessionEndpoint ?? '',
   },
 };

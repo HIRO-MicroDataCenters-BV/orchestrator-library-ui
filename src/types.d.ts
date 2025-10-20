@@ -3,59 +3,59 @@
  */
 
 // JSON module declarations
-declare module "*.json" {
+declare module '*.json' {
   const value: any;
   export default value;
 }
 
 // Asset module declarations
-declare module "*.svg" {
+declare module '*.svg' {
   const content: string;
   export default content;
 }
 
-declare module "*.png" {
+declare module '*.png' {
   const content: string;
   export default content;
 }
 
-declare module "*.jpg" {
+declare module '*.jpg' {
   const content: string;
   export default content;
 }
 
-declare module "*.jpeg" {
+declare module '*.jpeg' {
   const content: string;
   export default content;
 }
 
-declare module "*.gif" {
+declare module '*.gif' {
   const content: string;
   export default content;
 }
 
-declare module "*.webp" {
+declare module '*.webp' {
   const content: string;
   export default content;
 }
 
 // CSS module declarations
-declare module "*.css" {
+declare module '*.css' {
   const content: Record<string, string>;
   export default content;
 }
 
-declare module "*.scss" {
+declare module '*.scss' {
   const content: Record<string, string>;
   export default content;
 }
 
-declare module "*.sass" {
+declare module '*.sass' {
   const content: Record<string, string>;
   export default content;
 }
 
-declare module "*.less" {
+declare module '*.less' {
   const content: Record<string, string>;
   export default content;
 }

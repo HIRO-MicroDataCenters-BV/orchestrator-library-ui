@@ -36,6 +36,7 @@ import { HlmSidebarService } from '../../../../libs/ui/ui-sidebar-helm/src/lib/h
 import { AppHeaderComponent } from '../../components/app-header/app-header.component';
 import { NgIf, NgFor } from '@angular/common';
 import { ApiService } from '../../core/services/api.service';
+import { environment } from '../../../environments/environment';
 
 interface Cluster {
   cluster_name: string;
@@ -147,7 +148,9 @@ export class MainLayoutComponent implements OnInit {
   constructor(
     public sidebarService: HlmSidebarService,
     private readonly apiService: ApiService
-  ) {}
+  ) {
+    console.log('process.env.NODE_ENV:', environment);
+  }
 
   ngOnInit(): void {
     console.log('version date:', '15.08.25');
