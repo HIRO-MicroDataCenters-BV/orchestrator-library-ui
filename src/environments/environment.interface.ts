@@ -13,24 +13,23 @@ export interface Environment {
   cogUrl: string;
   grafanaUrl: string;
   dexUrl: string;
-  oidc: {
-    authority: string;
-    clientId: string;
-    clientSecret: string;
-    scope: string;
-    responseType: string;
-    silentRenew: boolean;
-    useRefreshToken: boolean;
-    renewTimeBeforeTokenExpiresInSeconds: number;
-    historyCleanupOff: boolean;
-    autoUserInfo: boolean;
-    triggerRefreshWhenIdTokenExpired: boolean;
-    logLevel: number;
-    redirectUri: string;
-    postLogoutRedirectUri: string;
-    tokenEndpoint: string;
-    authorizationEndpoint: string;
-    userInfoEndpoint: string;
-    endSessionEndpoint: string;
-  };
+
+  oidcAuthority: string;
+  oidcClientId: string;
+  oidcClientSecret: string;
+  oidcScope: string;
+  oidcResponseType: string;
+  oidcSilentRenew: boolean;
+  oidcUseRefreshToken: boolean;
+  oidcRenewTimeBeforeTokenExpiresInSeconds: number;
+  oidcHistoryCleanupOff: boolean;
+  oidcAutoUserInfo: boolean;
+  oidcTriggerRefreshWhenIdTokenExpired: boolean;
+  oidcLogLevel: number;
+  oidcRedirectUri: string;
+  oidcPostLogoutRedirectUri: string;
+  oidcTokenEndpoint: string;
+  oidcAuthorizationEndpoint: string;
+  oidcUserInfoEndpoint: string;
+  oidcEndSessionEndpoint: string;
 }
