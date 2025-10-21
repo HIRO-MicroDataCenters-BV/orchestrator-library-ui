@@ -24,9 +24,10 @@ export class K8sComponent implements OnInit {
   private readonly sanitizer = inject(DomSanitizer);
 
   dashboardUrl: SafeResourceUrl | null = null;
+  k8sProxyUrl: string = environment.k8sProxyUrl;
 
   private get proxyUrl(): string {
-    return environment.dashboardUrl;
+    return environment.k8sProxyUrl;
   }
 
   ngOnInit(): void {

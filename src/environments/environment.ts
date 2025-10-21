@@ -25,6 +25,7 @@ export const environment = {
   cogUrl: env.cogUrl ?? '',
   grafanaUrl: env.grafanaUrl ?? '',
   dexUrl: env.dexUrl ?? '',
+  k8sProxyUrl: env.k8sProxyUrl ?? '',
   oidc: {
     authority: env.oidcAuthority ?? '',
     clientId: env.oidcClientId ?? '',
