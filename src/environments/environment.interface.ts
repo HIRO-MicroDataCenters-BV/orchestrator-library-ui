@@ -13,7 +13,7 @@ export interface Environment {
   cogUrl: string;
   grafanaUrl: string;
   dexUrl: string;
-
+  k8sProxyUrl: string;
   oidcAuthority: string;
   oidcClientId: string;
   oidcClientSecret: string;
