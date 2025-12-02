@@ -326,6 +326,8 @@ export class ApiService {
    * @param params Query parameters for filtering
    */
   getAlerts(params?: Record<string, unknown>): Observable<Alert[]> {
+    // API returns Alert[] directly, not PaginatedResponse
+    // The baseUrl is correctly set from environment.apiUrl
     return this.get<Alert[]>('/alerts/', params);
   }
 

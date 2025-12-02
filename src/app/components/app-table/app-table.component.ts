@@ -8,6 +8,8 @@ import {
   effect,
   inject,
   Input,
+  Output,
+  EventEmitter,
   OnChanges,
   OnInit,
   signal,
@@ -214,6 +216,11 @@ export class AppTableComponent implements OnChanges, OnInit {
   @Input('showFooter') showFooter = true;
   @Input('pageSize') pageSize?: number;
   @Input('detailsStruct') detailsStruct: Struct[] = [];
+  @Input('enableServerSearch') enableServerSearch = false;
+  @Input('enableServerPagination') enableServerPagination = false;
+  @Input('totalElements') totalElementsInput?: number;
+  @Output() searchChange = new EventEmitter<string>();
+  @Output() paginationChange = new EventEmitter<{ skip: number; limit: number }>();
 
   details: Record<string, unknown> = {};
   detailsTitle = '';
@@ -264,6 +271,11 @@ export class AppTableComponent implements OnChanges, OnInit {
   protected readonly _highlightedRowId = signal<string | number | null>(null);
 
   private readonly _filteredItems = computed(() => {
+    // Skip client-side filtering if server-side search is enabled
+    if (this.enableServerSearch) {
+      return this._items();
+    }
+    
     const colFilter = this._colFilter()?.trim()?.toLowerCase();
     if (colFilter && colFilter.length > 0) {
       return this._items().filter((item) => {
@@ -301,14 +313,29 @@ export class AppTableComponent implements OnChanges, OnInit {
   private readonly _sortColumn = signal<string | null>(null);
   private readonly _searchFilter = signal<string>('');
   protected readonly _filteredSortedPaginatedItems = computed(() => {
+    const items = this._filteredItems();
+    
+    // If server-side pagination is enabled, return items as-is (no client-side pagination)
+    if (this.enableServerPagination) {
+      const sort = this._colSort();
+      if (!sort) {
+        return items;
+      }
+      // Apply sorting only
+      return [...items].sort((p1, p2) => {
+        const p1Str = JSON.stringify(p1).toLowerCase();
+        const p2Str = JSON.stringify(p2).toLowerCase();
+        return (sort === 'ASC' ? 1 : -1) * p1Str.localeCompare(p2Str);
+      });
+    }
+    
+    // Client-side pagination (original behavior)
     const sort = this._colSort();
     const start = this._displayedIndices().start;
     const end = this._displayedIndices().end + 1;
-    const items = this._filteredItems();
 
     if (!sort) {
       const result = items.slice(start, end);
-
       return result;
     }
 
@@ -320,7 +347,6 @@ export class AppTableComponent implements OnChanges, OnInit {
     });
 
     const result = sortedItems.slice(start, end);
-
     return result;
   });
 
@@ -328,13 +354,28 @@ export class AppTableComponent implements OnChanges, OnInit {
     _: number,
     p: BaseTableData
   ) => p.id;
-  protected _totalElements = computed(() => this._filteredItems().length);
+  
+  // Use server-provided total if available, otherwise use client-side count
+  protected _totalElements = computed(() => {
+    if (this.enableServerPagination && this.totalElementsInput !== undefined) {
+      return this.totalElementsInput;
+    }
+    return this._filteredItems().length;
+  });
 
   protected readonly _onStateChange = ({
     startIndex,
     endIndex,
   }: PaginatorState) => {
     this._displayedIndices.set({ start: startIndex, end: endIndex });
+    
+    // Emit pagination change event for server-side pagination
+    if (this.enableServerPagination) {
+      const pageSize = this._pageSize();
+      const skip = startIndex;
+      const limit = endIndex - startIndex + 1;
+      this.paginationChange.emit({ skip, limit });
+    }
   };
 
   private router = inject(Router, { optional: true });
@@ -343,7 +384,26 @@ export class AppTableComponent implements OnChanges, OnInit {
   constructor() {
     effect(() => {
       const debouncedFilter = this._debouncedFilter();
-      untracked(() => this._colFilter.set(debouncedFilter ?? ''));
+      untracked(() => {
+        this._colFilter.set(debouncedFilter ?? '');
+        // Emit search change event for server-side search support
+        if (this.enableServerSearch) {
+          this.searchChange.emit(debouncedFilter ?? '');
+        }
+      });
+    });
+    
+    // Emit pagination change when page size changes (for server-side pagination)
+    effect(() => {
+      const pageSize = this._pageSize();
+      if (this.enableServerPagination) {
+        untracked(() => {
+          // Reset to first page when page size changes
+          const skip = 0;
+          this._displayedIndices.set({ start: 0, end: pageSize - 1 });
+          this.paginationChange.emit({ skip, limit: pageSize });
+        });
+      }
     });
   }
   ngOnInit(): void {
