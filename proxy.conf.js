@@ -4,7 +4,7 @@ const proxyTargets = {
   dex: process.env.DEX_TARGET || 'http://51.44.28.47:30080',
   dashboard: process.env.DASHBOARD_TARGET || 'http://51.44.28.47:30016',
   grafana: process.env.GRAFANA_TARGET || 'http://51.44.28.47:30000',
-  cog: process.env.COG_TARGET || 'https://dashboard.cog.hiro-develop.nl',
+  cog: process.env.COG_TARGET || 'https://dashboard.cog.hiro-develop.nl/uidev',
 };
 
 const isDevelopment = process.env.NODE_ENV !== 'production';

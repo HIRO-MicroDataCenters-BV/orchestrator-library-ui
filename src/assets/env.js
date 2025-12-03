@@ -3,7 +3,7 @@ window.__env = {
   dashboardUrl: 'http://localhost:30016',
   grafanaUrl: 'http://localhost:30000',
   dexUrl: 'http://localhost:30080',
-  cogUrl: 'https://dashboard.cog.hiro-develop.nl',
+  cogUrl: 'https://dashboard.cog.hiro-develop.nl/uidev',
   k8sProxyUrl: 'http://localhost:30020',
   oidcAuthority: 'http://localhost:30015/dex',
   oidcClientId: 'authservice-oidc',
