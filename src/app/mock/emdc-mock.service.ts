@@ -6,15 +6,17 @@ import alertsData from './data/alerts.json';
 import requestDecisionsData from './data/request-decisions.json';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class EmdcMockService {
-
   getWorkloadActions(): Observable<unknown[]> {
     const processedActions = actionsData.map((action: any) => ({
       ...action,
       id_uid: action.id,
-      duration: this.calculateDuration(action.action_start_time, action.action_end_time)
+      duration: this.calculateDuration(
+        action.action_start_time,
+        action.action_end_time
+      ),
     }));
 
     return of(processedActions).pipe(delay(300));
@@ -22,11 +24,16 @@ export class EmdcMockService {
 
   getActionById(id: string): Observable<unknown | null> {
     const action = actionsData.find((a: any) => a.id === id);
-    const processedAction = action ? {
-      ...action,
-      id_uid: action.id,
-      duration: this.calculateDuration(action.action_start_time, action.action_end_time)
-    } : null;
+    const processedAction = action
+      ? {
+          ...action,
+          id_uid: action.id,
+          duration: this.calculateDuration(
+            action.action_start_time,
+            action.action_end_time
+          ),
+        }
+      : null;
 
     return of(processedAction).pipe(delay(200));
   }
@@ -44,19 +51,61 @@ export class EmdcMockService {
     const processedDecisions = requestDecisionsData.map((decision: any) => ({
       ...decision,
       id_uid: decision.id,
-      cpu_memory: `${decision.demand_cpu}m / ${decision.demand_memory}Mi`
+      cpu_memory: `${decision.demand_cpu}m / ${decision.demand_memory}Mi`,
     }));
+
+    return of(processedDecisions).pipe(delay(300));
+  }
+
+  getWorkloadDecisions(
+    params?: Record<string, unknown>
+  ): Observable<unknown[]> {
+    // Alias for getRequestDecisions to match API service naming
+    let processedDecisions = requestDecisionsData.map((decision: any) => ({
+      ...decision,
+      id_uid: decision.id,
+      cpu_memory: `${decision.demand_cpu}m / ${decision.demand_memory}Mi`,
+    }));
+
+    // Apply pagination if provided
+    if (params) {
+      const skip = params['skip'] ? parseInt(params['skip'] as string, 10) : 0;
+      const limit = params['limit']
+        ? parseInt(params['limit'] as string, 10)
+        : processedDecisions.length;
+
+      // Apply search filter if provided
+      if (params['search'] && typeof params['search'] === 'string') {
+        const searchTerm = (params['search'] as string).toLowerCase();
+        processedDecisions = processedDecisions.filter((decision: any) => {
+          return Object.values(decision).some((value: any) => {
+            if (typeof value === 'string') {
+              return value.toLowerCase().includes(searchTerm);
+            }
+            if (typeof value === 'number') {
+              return value.toString().includes(searchTerm);
+            }
+            return false;
+          });
+        });
+      }
+
+      // Apply pagination
+      processedDecisions = processedDecisions.slice(skip, skip + limit);
+    }
 
     return of(processedDecisions).pipe(delay(300));
   }
 
   getRequestDecisionById(id: string): Observable<unknown | null> {
     const decision = requestDecisionsData.find((d: any) => d.id === id);
-    const processedDecision = decision ? {
-      ...decision,
-      id_uid: decision.id,
-      cpu_memory: `${decision.demand_cpu}m / ${decision.demand_memory}Mi`
-    } : null;
+    const processedDecision = decision
+      ? {
+          ...decision,
+          id_uid: decision.id,
+          cpu_memory: `${decision.demand_cpu}m / ${decision.demand_memory}Mi`,
+        }
+      : null;
 
     return of(processedDecision).pipe(delay(200));
   }
@@ -65,7 +114,7 @@ export class EmdcMockService {
     // Mock cluster data since clusters.json doesn't exist
     const mockClusters = [
       { id: '1', name: 'cluster-1', status: 'healthy' },
-      { id: '2', name: 'cluster-2', status: 'warning' }
+      { id: '2', name: 'cluster-2', status: 'warning' },
     ];
     return of(mockClusters).pipe(delay(300));
   }
@@ -73,9 +122,9 @@ export class EmdcMockService {
   getClusterById(id: string): Observable<unknown | null> {
     const mockClusters = [
       { id: '1', name: 'cluster-1', status: 'healthy' },
-      { id: '2', name: 'cluster-2', status: 'warning' }
+      { id: '2', name: 'cluster-2', status: 'warning' },
     ];
-    const cluster = mockClusters.find(c => c.id === id);
+    const cluster = mockClusters.find((c) => c.id === id);
     return of(cluster || null).pipe(delay(200));
   }
 
@@ -85,23 +134,30 @@ export class EmdcMockService {
       .map((action: any) => ({
         ...action,
         id_uid: action.id,
-        duration: this.calculateDuration(action.action_start_time, action.action_end_time)
+        duration: this.calculateDuration(
+          action.action_start_time,
+          action.action_end_time
+        ),
       }));
 
     return of(filtered).pipe(delay(300));
   }
 
   getAlertsByType(type: string): Observable<unknown[]> {
-    const filtered = alertsData.filter((alert: any) => alert.alert_type === type);
+    const filtered = alertsData.filter(
+      (alert: any) => alert.alert_type === type
+    );
     return of(filtered).pipe(delay(300));
   }
 
   getClustersByStatus(status: string): Observable<unknown[]> {
     const mockClusters = [
       { id: '1', name: 'cluster-1', status: 'healthy' },
-      { id: '2', name: 'cluster-2', status: 'warning' }
+      { id: '2', name: 'cluster-2', status: 'warning' },
     ];
-    const filtered = mockClusters.filter(cluster => cluster.status === status);
+    const filtered = mockClusters.filter(
+      (cluster) => cluster.status === status
+    );
     return of(filtered).pipe(delay(300));
   }
 

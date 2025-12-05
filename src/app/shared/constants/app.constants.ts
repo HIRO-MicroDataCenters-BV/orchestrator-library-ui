@@ -26,6 +26,12 @@ export const API_PATHS = {
 } as const;
 
 // ===================
+// Table Pagination Constants
+// ===================
+
+export const DEFAULT_PAGE_SIZE = 25; // First element from _availablePageSizes array
+
+// ===================
 // HTTP Status Codes
 // ===================
 

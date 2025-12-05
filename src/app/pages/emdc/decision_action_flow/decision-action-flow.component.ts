@@ -1,18 +1,20 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NgIf } from '@angular/common';
-import { filter } from 'rxjs/operators';
+import { filter, distinctUntilChanged, switchMap, map } from 'rxjs/operators';
 import { Observable, Subscription } from 'rxjs';
 import {
   RouterOutlet,
   Router,
   ActivatedRoute,
   NavigationEnd,
+  Params,
 } from '@angular/router';
 
 import { AppTableComponent } from '../../../components/app-table/app-table.component';
 import { TranslocoModule } from '@jsverse/transloco';
 import { ApiService } from '../../../core/services';
 import { WorkloadDecisionActionFlowItem } from '../../../shared/types';
+import { DEFAULT_PAGE_SIZE } from '../../../shared/constants/app.constants';
 
 // Define interfaces for type safety
 interface Condition {
@@ -59,6 +61,7 @@ export class DecisionActionFlowComponent implements OnInit, OnDestroy {
   tabs: string[] = [];
 
   dataSource: Observable<WorkloadDecisionActionFlowItem[]> | null = null;
+  totalElements = 0;
 
   detailsStruct: Struct[] = [];
 
@@ -67,8 +70,43 @@ export class DecisionActionFlowComponent implements OnInit, OnDestroy {
     private router: Router,
     private activatedRoute: ActivatedRoute
   ) {
-    // Fetch data from workload_decision_action_flow endpoint without parameters
-    this.dataSource = this.apiService.getWorkloadDecisionActionFlow();
+    // Fetch data from workload_decision_action_flow endpoint with pagination and search
+    const fetchFlow = (
+      queryParams: Params
+    ): Observable<WorkloadDecisionActionFlowItem[]> => {
+      const params: Record<string, unknown> = {
+        skip: parseInt(queryParams['skip'] || '0', 10),
+        limit: Math.max(
+          1,
+          parseInt(queryParams['limit'] || DEFAULT_PAGE_SIZE.toString(), 10)
+        ), // Ensure limit is at least 1
+      };
+
+      // If search query is provided, use server-side search
+      if (queryParams['search'] && queryParams['search'].trim()) {
+        params['search'] = queryParams['search'].trim();
+      }
+
+      return this.apiService.getWorkloadDecisionActionFlow(params);
+    };
+
+    // Create reactive data source that refetches when query params change
+    this.dataSource = this.activatedRoute.queryParams.pipe(
+      distinctUntilChanged(
+        (prev, curr) =>
+          prev['skip'] === curr['skip'] &&
+          prev['limit'] === curr['limit'] &&
+          prev['search'] === curr['search']
+      ),
+      switchMap((queryParams) => {
+        return fetchFlow(queryParams);
+      }),
+      map((items) => {
+        // Update total elements (in real API this would come from response headers or body)
+        this.totalElements = items.length;
+        return items;
+      })
+    );
   }
 
   ngOnInit(): void {
@@ -78,6 +116,16 @@ export class DecisionActionFlowComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.checkCurrentRoute();
       });
+
+    // Initialize query params if not present
+    this.activatedRoute.queryParams.subscribe((params) => {
+      if (!params['skip'] && !params['limit']) {
+        this.updateQueryParams(
+          { skip: 0, limit: DEFAULT_PAGE_SIZE, search: params['search'] || '' },
+          false
+        );
+      }
+    });
 
     this.detailsStruct = [
       {
@@ -255,5 +303,53 @@ export class DecisionActionFlowComponent implements OnInit, OnDestroy {
 
   checkCurrentRoute() {
     this.showParentContent = !this.activatedRoute.firstChild;
+  }
+
+  // Method to update search - updates URL query params
+  updateSearch(searchQuery: string): void {
+    const currentParams = this.activatedRoute.snapshot.queryParams;
+    this.updateQueryParams({
+      skip: 0, // Reset to first page when search changes
+      limit: Math.max(
+        1,
+        parseInt(currentParams['limit'] || DEFAULT_PAGE_SIZE.toString(), 10)
+      ),
+      search: searchQuery || '',
+    });
+  }
+
+  // Method to handle pagination changes - updates URL query params
+  onPaginationChange(pagination: { skip: number; limit: number }): void {
+    const currentParams = this.activatedRoute.snapshot.queryParams;
+    this.updateQueryParams({
+      skip: pagination.skip,
+      limit: Math.max(1, pagination.limit), // Ensure limit is at least 1
+      search: currentParams['search'] || '',
+    });
+  }
+
+  // Helper method to update query params
+  private updateQueryParams(
+    params: { skip: number; limit: number; search?: string },
+    replaceUrl: boolean = true
+  ): void {
+    const queryParams: Params = {
+      skip: params.skip.toString(),
+      limit: params.limit.toString(),
+    };
+
+    if (params.search) {
+      queryParams['search'] = params.search;
+    } else {
+      // Remove search param if empty
+      queryParams['search'] = null;
+    }
+
+    this.router.navigate([], {
+      relativeTo: this.activatedRoute,
+      queryParams,
+      replaceUrl,
+      queryParamsHandling: 'merge',
+    });
   }
 }

@@ -7,6 +7,11 @@
       [tabs]="tabs"
       [dataSource]="dataSource"
       [detailsStruct]="detailsStruct"
+      [enableServerSearch]="true"
+      [enableServerPagination]="true"
+      [totalElements]="totalElements"
+      (searchChange)="updateSearch($event)"
+      (paginationChange)="onPaginationChange($event)"
     ></app-table>
   </router-outlet>
 </div>
