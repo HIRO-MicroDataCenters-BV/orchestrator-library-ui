@@ -118,6 +118,8 @@
     "deleted_node_name": "Deleted Node"
   },
   "column": {
+    "destination_ip": "Destination IP",
+    "source_ip": "Source IP",
     "id": "ID",
     "name": "Name",
     "demand_slack_cpu": "CPU Slack",
