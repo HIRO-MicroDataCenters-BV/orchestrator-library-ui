@@ -11,6 +11,7 @@ import {
   Output,
   EventEmitter,
   OnChanges,
+  OnDestroy,
   OnInit,
   signal,
   SimpleChanges,
@@ -37,6 +38,7 @@ interface Struct {
 }
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
+import { Subscription } from 'rxjs';
 import {
   lucideArrowUpDown,
   lucideChevronDown,
@@ -78,7 +80,7 @@ import { HlmTableModule } from '@spartan-ng/ui-table-helm';
 import { BrnSelectModule } from '@spartan-ng/brain/select';
 import { HlmSelectModule } from '@spartan-ng/ui-select-helm';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { debounceTime, Observable } from 'rxjs';
+import { debounceTime, Observable, startWith } from 'rxjs';
 import { HlmBadgeDirective } from '@spartan-ng/ui-badge-helm';
 import { BrnSeparatorComponent } from '@spartan-ng/brain/separator';
 import { HlmSeparatorDirective } from '@spartan-ng/ui-separator-helm';
@@ -205,7 +207,7 @@ import {
   templateUrl: './app-table.component.html',
   styleUrls: ['./app-table.component.css'],
 })
-export class AppTableComponent implements OnChanges, OnInit {
+export class AppTableComponent implements OnChanges, OnInit, OnDestroy {
   @Input('columns') columns: string[] = [];
   @Input('actions') actions: string[] = [];
   @Input('tabs') tabs: string[] = [];
@@ -220,7 +222,10 @@ export class AppTableComponent implements OnChanges, OnInit {
   @Input('enableServerPagination') enableServerPagination = false;
   @Input('totalElements') totalElementsInput?: number;
   @Output() searchChange = new EventEmitter<string>();
-  @Output() paginationChange = new EventEmitter<{ skip: number; limit: number }>();
+  @Output() paginationChange = new EventEmitter<{
+    skip: number;
+    limit: number;
+  }>();
 
   details: Record<string, unknown> = {};
   detailsTitle = '';
@@ -238,11 +243,11 @@ export class AppTableComponent implements OnChanges, OnInit {
   protected readonly _rawFilterInput = signal('');
   protected readonly _colFilter = signal('');
   private readonly _debouncedFilter = toSignal(
-    toObservable(this._rawFilterInput).pipe(debounceTime(300))
+    toObservable(this._rawFilterInput).pipe(debounceTime(300), startWith(''))
   );
 
   private readonly _displayedIndices = signal({ start: 0, end: 0 });
-  protected readonly _availablePageSizes = [50, 10000];
+  protected readonly _availablePageSizes = [25, 50, 100, 10000];
   protected readonly _pageSize = signal(this._availablePageSizes[0]);
 
   protected readonly _columns = computed(() => [...this.columns]);
@@ -275,7 +280,7 @@ export class AppTableComponent implements OnChanges, OnInit {
     if (this.enableServerSearch) {
       return this._items();
     }
-    
+
     const colFilter = this._colFilter()?.trim()?.toLowerCase();
     if (colFilter && colFilter.length > 0) {
       return this._items().filter((item) => {
@@ -314,7 +319,7 @@ export class AppTableComponent implements OnChanges, OnInit {
   private readonly _searchFilter = signal<string>('');
   protected readonly _filteredSortedPaginatedItems = computed(() => {
     const items = this._filteredItems();
-    
+
     // If server-side pagination is enabled, return items as-is (no client-side pagination)
     if (this.enableServerPagination) {
       const sort = this._colSort();
@@ -328,7 +333,7 @@ export class AppTableComponent implements OnChanges, OnInit {
         return (sort === 'ASC' ? 1 : -1) * p1Str.localeCompare(p2Str);
       });
     }
-    
+
     // Client-side pagination (original behavior)
     const sort = this._colSort();
     const start = this._displayedIndices().start;
@@ -354,7 +359,7 @@ export class AppTableComponent implements OnChanges, OnInit {
     _: number,
     p: BaseTableData
   ) => p.id;
-  
+
   // Use server-provided total if available, otherwise use client-side count
   protected _totalElements = computed(() => {
     if (this.enableServerPagination && this.totalElementsInput !== undefined) {
@@ -368,18 +373,34 @@ export class AppTableComponent implements OnChanges, OnInit {
     endIndex,
   }: PaginatorState) => {
     this._displayedIndices.set({ start: startIndex, end: endIndex });
-    
+
     // Emit pagination change event for server-side pagination
-    if (this.enableServerPagination) {
-      const pageSize = this._pageSize();
+    // Only emit if value actually changed to prevent duplicate requests
+    if (this.enableServerPagination && this._isInitialized) {
       const skip = startIndex;
-      const limit = endIndex - startIndex + 1;
-      this.paginationChange.emit({ skip, limit });
+      // Use the selected page size from dropdown, not calculated from indices
+      const limit = Math.max(1, this._pageSize()); // Ensure limit is at least 1
+      const pagination = { skip, limit };
+
+      if (
+        !this._lastEmittedPagination ||
+        this._lastEmittedPagination.skip !== skip ||
+        this._lastEmittedPagination.limit !== limit
+      ) {
+        this._lastEmittedPagination = pagination;
+        this.paginationChange.emit(pagination);
+      }
     }
   };
 
   private router = inject(Router, { optional: true });
   private route = inject(ActivatedRoute, { optional: true });
+  private _isInitialized = false;
+  private _lastEmittedSearch: string | null = null;
+  private _lastEmittedPagination: { skip: number; limit: number } | null = null;
+  private _firstSearchEffectRun = true;
+  private _firstPaginationEffectRun = true;
+  private _queryParamsSubscription: Subscription | null = null;
 
   constructor() {
     effect(() => {
@@ -387,21 +408,54 @@ export class AppTableComponent implements OnChanges, OnInit {
       untracked(() => {
         this._colFilter.set(debouncedFilter ?? '');
         // Emit search change event for server-side search support
-        if (this.enableServerSearch) {
+        // Skip first run to avoid initial emission - parent will initialize URL params
+        if (this._firstSearchEffectRun) {
+          this._firstSearchEffectRun = false;
+          this._lastEmittedSearch = debouncedFilter ?? '';
+          return;
+        }
+        // Only emit after initialization and if value actually changed
+        if (
+          this.enableServerSearch &&
+          this._isInitialized &&
+          this._lastEmittedSearch !== debouncedFilter
+        ) {
+          this._lastEmittedSearch = debouncedFilter ?? '';
           this.searchChange.emit(debouncedFilter ?? '');
         }
       });
     });
-    
+
     // Emit pagination change when page size changes (for server-side pagination)
     effect(() => {
       const pageSize = this._pageSize();
       if (this.enableServerPagination) {
         untracked(() => {
-          // Reset to first page when page size changes
-          const skip = 0;
-          this._displayedIndices.set({ start: 0, end: pageSize - 1 });
-          this.paginationChange.emit({ skip, limit: pageSize });
+          // Skip first run to avoid initial emission - parent will initialize URL params
+          if (this._firstPaginationEffectRun) {
+            this._firstPaginationEffectRun = false;
+            const skip = 0;
+            const limit = Math.max(1, pageSize);
+            this._lastEmittedPagination = { skip, limit };
+            this._displayedIndices.set({ start: 0, end: limit - 1 });
+            return;
+          }
+
+          // Only emit if initialized and page size actually changed
+          if (this._isInitialized) {
+            const skip = 0;
+            const limit = Math.max(1, pageSize); // Ensure limit is at least 1
+            const pagination = { skip, limit };
+
+            if (
+              !this._lastEmittedPagination ||
+              this._lastEmittedPagination.limit !== limit
+            ) {
+              this._lastEmittedPagination = pagination;
+              this._displayedIndices.set({ start: 0, end: limit - 1 });
+              this.paginationChange.emit(pagination);
+            }
+          }
         });
       }
     });
@@ -413,6 +467,19 @@ export class AppTableComponent implements OnChanges, OnInit {
     } else if (!this.showHeader && !this.showFooter) {
       // Dashboard mode - show more items
       this._pageSize.set(10);
+    } else if (this.enableServerPagination && this.route) {
+      // Sync page size with URL query params if server-side pagination is enabled
+      this._queryParamsSubscription = this.route.queryParams.subscribe(
+        (params) => {
+          if (params['limit']) {
+            const limitFromUrl = parseInt(params['limit'], 10);
+            // Only update if the limit from URL is in available page sizes
+            if (this._availablePageSizes.includes(limitFromUrl)) {
+              this._pageSize.set(limitFromUrl);
+            }
+          }
+        }
+      );
     }
 
     // Initialize pagination for dashboard mode (no footer)
@@ -426,6 +493,9 @@ export class AppTableComponent implements OnChanges, OnInit {
     } else if (this.dataSource) {
       this.fetchData();
     }
+
+    // Mark as initialized after setup
+    this._isInitialized = true;
   }
 
   private initializeDashboardPagination(): void {
@@ -636,5 +706,9 @@ export class AppTableComponent implements OnChanges, OnInit {
         this._items.set([]);
       }
     }
+  }
+
+  ngOnDestroy(): void {
+    this._queryParamsSubscription?.unsubscribe();
   }
 }

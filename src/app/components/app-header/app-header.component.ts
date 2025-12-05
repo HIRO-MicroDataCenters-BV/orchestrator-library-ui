@@ -36,7 +36,9 @@ export class AppHeaderComponent {
         distinctUntilChanged()
       )
       .subscribe((url) => {
-        this.generateBreadcrumbs(url);
+        // Remove query parameters from URL before generating breadcrumbs
+        const urlWithoutQuery = url.split('?')[0];
+        this.generateBreadcrumbs(urlWithoutQuery);
       });
   }
 
