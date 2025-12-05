@@ -357,6 +357,55 @@
             </button>
           </hlm-td>
         </brn-column-def>
+
+        <brn-column-def name="destination_ip" class="w-64 !text-left">
+          <ng-container *brnHeaderDef>
+            <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
+              'column.destination_ip' | transloco
+            }}</hlm-th>
+          </ng-container>
+          <hlm-td
+            truncate
+            *brnCellDef="let element"
+            [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }"
+          >
+            <button
+              brnSheetTrigger
+              hlmBtn
+              variant="ghost"
+              (click)="onRowClick(element)"
+            >
+              <p class="text-sm text-gray-500">
+                {{ element.destination_ip }}:{{ element.destination_port }}
+              </p>
+            </button>
+          </hlm-td>
+        </brn-column-def>
+
+        <brn-column-def name="source_ip" class="w-64 !text-left">
+          <ng-container *brnHeaderDef>
+            <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
+              'column.source_ip' | transloco
+            }}</hlm-th>
+          </ng-container>
+          <hlm-td
+            truncate
+            *brnCellDef="let element"
+            [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }"
+          >
+            <button
+              brnSheetTrigger
+              hlmBtn
+              variant="ghost"
+              (click)="onRowClick(element)"
+            >
+              <p class="text-sm text-gray-500">
+                {{ element.source_ip }}:{{ element.source_port }}
+              </p>
+            </button>
+          </hlm-td>
+        </brn-column-def>
+
         <brn-column-def name="pod_id" class="w-64 !text-left">
           <ng-container *brnHeaderDef>
             <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
