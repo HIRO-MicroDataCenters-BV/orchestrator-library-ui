@@ -1,52 +1,44 @@
 <hlm-sheet side="right">
   <div>
-    <div
-      class="flex flex-col justify-between gap-4 sm:flex-row pb-2"
-      *ngIf="showHeader"
-    >
-      <div>
-        <input
-          hlmInput
-          class="w-full md:w-64"
-          [placeholder]="'placeholder.search' | transloco"
-          [ngModel]="_colFilter()"
-          (ngModelChange)="_rawFilterInput.set($event)"
-        />
+    <div class="flex flex-col justify-between gap-4 sm:flex-row pb-2" *ngIf="showHeader">
+      <div class="flex gap-2">
+        <brn-select class="inline-block" placeholder="All columns" [ngModel]="_searchColumn()"
+          (ngModelChange)="onColumnChange($event)">
+          <hlm-select-trigger class="w-40">
+            <hlm-select-value />
+          </hlm-select-trigger>
+          <hlm-select-content>
+            <hlm-option value="all">All columns</hlm-option>
+            @for (col of _columns(); track col) {
+            <hlm-option [value]="col">
+              {{ 'column.' + col | transloco }}
+            </hlm-option>
+            }
+          </hlm-select-content>
+        </brn-select>
+        <input hlmInput class="w-full md:w-64" [placeholder]="'placeholder.search' | transloco" [ngModel]="_colFilter()"
+          (ngModelChange)="_rawFilterInput.set($event)" />
       </div>
       <div class="flex gap-2">
         <div *ngIf="tabs.length > 0">
           <hlm-tabs [tab]="tabs[0]" class="w-full">
             <hlm-tabs-list class="w-full flex">
-              <button
-                *ngFor="let tab of tabs"
-                class="capitalize"
-                [hlmTabsTrigger]="tab"
-                (click)="setFilter()"
-              >
+              <button *ngFor="let tab of tabs" class="capitalize" [hlmTabsTrigger]="tab" (click)="setFilter()">
                 {{ tab }}
               </button>
             </hlm-tabs-list>
           </hlm-tabs>
         </div>
         <div>
-          <button
-            hlmBtn
-            variant="outline"
-            align="end"
-            [brnMenuTriggerFor]="menu"
-          >
+          <button hlmBtn variant="outline" align="end" [brnMenuTriggerFor]="menu">
             {{ 'placeholder.columns' | transloco }}
             <ng-icon hlm name="lucideChevronDown" class="ml-2" size="sm" />
           </button>
           <ng-template #menu>
             <hlm-menu>
               @for (columnOpt of _columnOptions(); track columnOpt.name) {
-              <button
-                hlmMenuItemCheckbox
-                class="capitalize"
-                [checked]="columnOpt.selected"
-                (click)="toggleColumnVisibility(columnOpt.name)"
-              >
+              <button hlmMenuItemCheckbox class="capitalize" [checked]="columnOpt.selected"
+                (click)="toggleColumnVisibility(columnOpt.name)">
                 <hlm-menu-item-check></hlm-menu-item-check>
                 <span>{{ `column.${columnOpt.name}` | transloco }}</span>
               </button>
@@ -57,34 +49,20 @@
       </div>
     </div>
     <div class="container-table">
-      <brn-table
-        hlm
-        stickyHeader
-        [class]="
+      <brn-table hlm stickyHeader [class]="
           showHeader && showFooter
             ? 'border-border block h-[calc(100vh-205px)] overflow-auto rounded-md border w-full'
             : 'border-border block h-full overflow-auto rounded-md border'
-        "
-        [dataSource]="_filteredSortedPaginatedItems()"
-        [displayedColumns]="_allDisplayedColumns()"
-        [trackBy]="_trackBy"
-      >
+        " [dataSource]="_filteredSortedPaginatedItems()" [displayedColumns]="_allDisplayedColumns()"
+        [trackBy]="_trackBy">
         <brn-column-def name="dashboard_status" class="w-16 !text-left">
           <ng-container *brnHeaderDef>
             <hlm-th [style.display]="showHeader ? 'block' : 'none'"></hlm-th>
           </ng-container>
-          <hlm-td
-            truncate
-            *brnCellDef="let element"
-            [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }"
-          >
+          <hlm-td truncate *brnCellDef="let element" [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }">
             <div class="flex items-center justify-center">
               <div [ngClass]="getDashboardStatusColor(element)">
-                <ng-icon
-                  hlm
-                  size="sm"
-                  [name]="getDashboardStatusIcon(element)"
-                />
+                <ng-icon hlm size="sm" [name]="getDashboardStatusIcon(element)" />
               </div>
             </div>
           </hlm-td>
@@ -94,11 +72,7 @@
           <ng-container *brnHeaderDef>
             <hlm-th [style.display]="showHeader ? 'block' : 'none'"></hlm-th>
           </ng-container>
-          <hlm-td
-            truncate
-            *brnCellDef="let element"
-            [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }"
-          >
+          <hlm-td truncate *brnCellDef="let element" [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }">
             <div class="flex flex-col">
               <p class="text-sm font-medium text-gray-900">
                 {{ getDashboardMainText(element) }}
@@ -114,11 +88,7 @@
           <ng-container *brnHeaderDef>
             <hlm-th [style.display]="showHeader ? 'block' : 'none'"></hlm-th>
           </ng-container>
-          <hlm-td
-            truncate
-            *brnCellDef="let element"
-            [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }"
-          >
+          <hlm-td truncate *brnCellDef="let element" [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }">
             <div class="flex flex-col text-right">
               <p class="text-xs text-gray-500">
                 {{ element.created_at | date : 'dd/MM/yyyy' }}
@@ -134,19 +104,10 @@
           <ng-container *brnHeaderDef>
             <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
               'column.id' | transloco
-            }}</hlm-th>
+              }}</hlm-th>
           </ng-container>
-          <hlm-td
-            truncate
-            *brnCellDef="let element"
-            [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }"
-          >
-            <button
-              brnSheetTrigger
-              hlmBtn
-              variant="ghost"
-              (click)="onRowClick(element)"
-            >
+          <hlm-td truncate *brnCellDef="let element" [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }">
+            <button brnSheetTrigger hlmBtn variant="ghost" (click)="onRowClick(element)">
               <p class="text-sm text-gray-500">
                 {{ element.id }}
               </p>
@@ -158,21 +119,11 @@
           <ng-container *brnHeaderDef>
             <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
               'column.id' | transloco
-            }}</hlm-th>
+              }}</hlm-th>
           </ng-container>
-          <hlm-td
-            truncate
-            *brnCellDef="let element"
-            [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }"
-            ><button
-              brnSheetTrigger
-              hlmBtn
-              variant="ghost"
-              (click)="onRowClick(element)"
-            >
-              <p
-                class="text-sm text-gray-500 overflow-hidden text-ellipsis w-full"
-              >
+          <hlm-td truncate *brnCellDef="let element" [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }"><button
+              brnSheetTrigger hlmBtn variant="ghost" (click)="onRowClick(element)">
+              <p class="text-sm text-gray-500 overflow-hidden text-ellipsis w-full">
                 {{ element.id }}
               </p>
             </button>
@@ -183,19 +134,10 @@
           <ng-container *brnHeaderDef>
             <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
               'column.created_pod_namespace' | transloco
-            }}</hlm-th>
+              }}</hlm-th>
           </ng-container>
-          <hlm-td
-            truncate
-            *brnCellDef="let element"
-            [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }"
-          >
-            <button
-              brnSheetTrigger
-              hlmBtn
-              variant="ghost"
-              (click)="onRowClick(element)"
-            >
+          <hlm-td truncate *brnCellDef="let element" [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }">
+            <button brnSheetTrigger hlmBtn variant="ghost" (click)="onRowClick(element)">
               <p class="text-sm text-gray-500">
                 {{ element.created_pod_namespace }}
               </p>
@@ -207,19 +149,10 @@
           <ng-container *brnHeaderDef>
             <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
               'column.node_name' | transloco
-            }}</hlm-th>
+              }}</hlm-th>
           </ng-container>
-          <hlm-td
-            truncate
-            *brnCellDef="let element"
-            [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }"
-          >
-            <button
-              brnSheetTrigger
-              hlmBtn
-              variant="ghost"
-              (click)="onRowClick(element)"
-            >
+          <hlm-td truncate *brnCellDef="let element" [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }">
+            <button brnSheetTrigger hlmBtn variant="ghost" (click)="onRowClick(element)">
               <p class="text-sm text-gray-500">{{ element.node_name }}</p>
             </button>
           </hlm-td>
@@ -229,19 +162,10 @@
           <ng-container *brnHeaderDef>
             <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
               'column.request_id' | transloco
-            }}</hlm-th>
+              }}</hlm-th>
           </ng-container>
-          <hlm-td
-            truncate
-            *brnCellDef="let element"
-            [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }"
-          >
-            <button
-              brnSheetTrigger
-              hlmBtn
-              variant="ghost"
-              (click)="onRowClick(element)"
-            >
+          <hlm-td truncate *brnCellDef="let element" [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }">
+            <button brnSheetTrigger hlmBtn variant="ghost" (click)="onRowClick(element)">
               <p class="text-sm text-gray-500">{{ element.id }}</p>
             </button>
           </hlm-td>
@@ -250,19 +174,10 @@
           <ng-container *brnHeaderDef>
             <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
               'column.pod_name' | transloco
-            }}</hlm-th>
+              }}</hlm-th>
           </ng-container>
-          <hlm-td
-            truncate
-            *brnCellDef="let element"
-            [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }"
-          >
-            <button
-              brnSheetTrigger
-              hlmBtn
-              variant="ghost"
-              (click)="onRowClick(element)"
-            >
+          <hlm-td truncate *brnCellDef="let element" [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }">
+            <button brnSheetTrigger hlmBtn variant="ghost" (click)="onRowClick(element)">
               <p class="text-sm text-gray-500">{{ element.pod_name }}</p>
             </button>
           </hlm-td>
@@ -271,19 +186,10 @@
           <ng-container *brnHeaderDef>
             <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
               'column.namespace' | transloco
-            }}</hlm-th>
+              }}</hlm-th>
           </ng-container>
-          <hlm-td
-            truncate
-            *brnCellDef="let element"
-            [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }"
-          >
-            <button
-              brnSheetTrigger
-              hlmBtn
-              variant="ghost"
-              (click)="onRowClick(element)"
-            >
+          <hlm-td truncate *brnCellDef="let element" [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }">
+            <button brnSheetTrigger hlmBtn variant="ghost" (click)="onRowClick(element)">
               <p class="text-sm text-gray-500">{{ element.namespace }}</p>
             </button>
           </hlm-td>
@@ -292,19 +198,10 @@
           <ng-container *brnHeaderDef>
             <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
               'column.queue_name' | transloco
-            }}</hlm-th>
+              }}</hlm-th>
           </ng-container>
-          <hlm-td
-            truncate
-            *brnCellDef="let element"
-            [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }"
-          >
-            <button
-              brnSheetTrigger
-              hlmBtn
-              variant="ghost"
-              (click)="onRowClick(element)"
-            >
+          <hlm-td truncate *brnCellDef="let element" [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }">
+            <button brnSheetTrigger hlmBtn variant="ghost" (click)="onRowClick(element)">
               <p class="text-sm text-gray-500">{{ element.queue_name }}</p>
             </button>
           </hlm-td>
@@ -313,24 +210,12 @@
           <ng-container *brnHeaderDef>
             <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
               'column.alert_type' | transloco
-            }}</hlm-th>
+              }}</hlm-th>
           </ng-container>
-          <hlm-td
-            truncate
-            *brnCellDef="let element"
-            [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }"
-          >
-            <button
-              brnSheetTrigger
-              hlmBtn
-              variant="ghost"
-              (click)="onRowClick(element)"
-            >
-              <span
-                [class]="`${getStatusColor(element.alert_type)} capitalize`"
-                hlmBadge
-                >{{ element.alert_type }}</span
-              >
+          <hlm-td truncate *brnCellDef="let element" [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }">
+            <button brnSheetTrigger hlmBtn variant="ghost" (click)="onRowClick(element)">
+              <span [class]="`${getStatusColor(element.alert_type)} capitalize`" hlmBadge>{{ element.alert_type
+                }}</span>
             </button>
           </hlm-td>
         </brn-column-def>
@@ -338,19 +223,10 @@
           <ng-container *brnHeaderDef>
             <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
               'column.alert_description' | transloco
-            }}</hlm-th>
+              }}</hlm-th>
           </ng-container>
-          <hlm-td
-            truncate
-            *brnCellDef="let element"
-            [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }"
-          >
-            <button
-              brnSheetTrigger
-              hlmBtn
-              variant="ghost"
-              (click)="onRowClick(element)"
-            >
+          <hlm-td truncate *brnCellDef="let element" [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }">
+            <button brnSheetTrigger hlmBtn variant="ghost" (click)="onRowClick(element)">
               <p class="text-sm text-gray-500">
                 {{ element.alert_description }}
               </p>
@@ -362,19 +238,10 @@
           <ng-container *brnHeaderDef>
             <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
               'column.destination_ip' | transloco
-            }}</hlm-th>
+              }}</hlm-th>
           </ng-container>
-          <hlm-td
-            truncate
-            *brnCellDef="let element"
-            [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }"
-          >
-            <button
-              brnSheetTrigger
-              hlmBtn
-              variant="ghost"
-              (click)="onRowClick(element)"
-            >
+          <hlm-td truncate *brnCellDef="let element" [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }">
+            <button brnSheetTrigger hlmBtn variant="ghost" (click)="onRowClick(element)">
               <p class="text-sm text-gray-500">
                 {{ element.destination_ip }}:{{ element.destination_port }}
               </p>
@@ -386,19 +253,10 @@
           <ng-container *brnHeaderDef>
             <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
               'column.source_ip' | transloco
-            }}</hlm-th>
+              }}</hlm-th>
           </ng-container>
-          <hlm-td
-            truncate
-            *brnCellDef="let element"
-            [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }"
-          >
-            <button
-              brnSheetTrigger
-              hlmBtn
-              variant="ghost"
-              (click)="onRowClick(element)"
-            >
+          <hlm-td truncate *brnCellDef="let element" [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }">
+            <button brnSheetTrigger hlmBtn variant="ghost" (click)="onRowClick(element)">
               <p class="text-sm text-gray-500">
                 {{ element.source_ip }}:{{ element.source_port }}
               </p>
@@ -410,49 +268,28 @@
           <ng-container *brnHeaderDef>
             <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
               'column.pod_id' | transloco
-            }}</hlm-th>
+              }}</hlm-th>
           </ng-container>
-          <hlm-td
-            truncate
-            *brnCellDef="let element"
-            [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }"
-          >
-            <button
-              brnSheetTrigger
-              hlmBtn
-              variant="ghost"
-              (click)="onRowClick(element)"
-            >
+          <hlm-td truncate *brnCellDef="let element" [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }">
+            <button brnSheetTrigger hlmBtn variant="ghost" (click)="onRowClick(element)">
               <p class="text-sm text-gray-500">{{ element.pod_id }}</p>
             </button>
           </hlm-td>
         </brn-column-def>
-        <brn-column-def
-          name="duration_request_decision"
-          class="w-32 !text-left"
-        >
+        <brn-column-def name="duration_request_decision" class="w-32 !text-left">
           <ng-container *brnHeaderDef>
             <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
               'column.duration' | transloco
-            }}</hlm-th>
+              }}</hlm-th>
           </ng-container>
-          <hlm-td
-            truncate
-            *brnCellDef="let element"
-            [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }"
-          >
-            <button
-              brnSheetTrigger
-              hlmBtn
-              variant="ghost"
-              (click)="onRowClick(element)"
-            >
+          <hlm-td truncate *brnCellDef="let element" [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }">
+            <button brnSheetTrigger hlmBtn variant="ghost" (click)="onRowClick(element)">
               <p class="text-sm text-gray-500">
                 {{
-                  getDuration(
-                    element.decision_end_time,
-                    element.decision_start_time
-                  )
+                getDuration(
+                element.decision_end_time,
+                element.decision_start_time
+                )
                 }}{{ 'hint.s' | transloco }}
               </p>
             </button>
@@ -463,19 +300,10 @@
           <ng-container *brnHeaderDef>
             <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
               'column.duration' | transloco
-            }}</hlm-th>
+              }}</hlm-th>
           </ng-container>
-          <hlm-td
-            truncate
-            *brnCellDef="let element"
-            [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }"
-          >
-            <button
-              brnSheetTrigger
-              hlmBtn
-              variant="ghost"
-              (click)="onRowClick(element)"
-            >
+          <hlm-td truncate *brnCellDef="let element" [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }">
+            <button brnSheetTrigger hlmBtn variant="ghost" (click)="onRowClick(element)">
               <p class="text-sm text-gray-500">
                 {{ getDuration(element.action_start_time, element.updated_at)
                 }}{{ 'hint.s' | transloco }}
@@ -487,19 +315,10 @@
           <ng-container *brnHeaderDef>
             <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
               'column.demand_cpu' | transloco
-            }}</hlm-th>
+              }}</hlm-th>
           </ng-container>
-          <hlm-td
-            truncate
-            *brnCellDef="let element"
-            [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }"
-          >
-            <button
-              brnSheetTrigger
-              hlmBtn
-              variant="ghost"
-              (click)="onRowClick(element)"
-            >
+          <hlm-td truncate *brnCellDef="let element" [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }">
+            <button brnSheetTrigger hlmBtn variant="ghost" (click)="onRowClick(element)">
               <p class="text-sm text-gray-500">{{ element.demand_cpu }}</p>
             </button>
           </hlm-td>
@@ -508,20 +327,10 @@
           <ng-container *brnHeaderDef>
             <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
               'column.action_type' | transloco
-            }}</hlm-th>
+              }}</hlm-th>
           </ng-container>
-          <hlm-td
-            truncate
-            *brnCellDef="let element"
-            [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }"
-          >
-            <button
-              brnSheetTrigger
-              hlmBtn
-              variant="ghost"
-              (click)="onRowClick(element)"
-              class="font-normal"
-            >
+          <hlm-td truncate *brnCellDef="let element" [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }">
+            <button brnSheetTrigger hlmBtn variant="ghost" (click)="onRowClick(element)" class="font-normal">
               {{ 'column.pod' | transloco }} {{ element.action_type }}
             </button>
           </hlm-td>
@@ -530,19 +339,10 @@
           <ng-container *brnHeaderDef>
             <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
               'column.bound_pod_name' | transloco
-            }}</hlm-th>
+              }}</hlm-th>
           </ng-container>
-          <hlm-td
-            truncate
-            *brnCellDef="let element"
-            [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }"
-          >
-            <button
-              brnSheetTrigger
-              hlmBtn
-              variant="ghost"
-              (click)="onRowClick(element)"
-            >
+          <hlm-td truncate *brnCellDef="let element" [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }">
+            <button brnSheetTrigger hlmBtn variant="ghost" (click)="onRowClick(element)">
               <p class="text-sm text-gray-500">{{ element.bound_pod_name }}</p>
             </button>
           </hlm-td>
@@ -551,19 +351,10 @@
           <ng-container *brnHeaderDef>
             <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
               'column.pod_parent_name' | transloco
-            }}</hlm-th>
+              }}</hlm-th>
           </ng-container>
-          <hlm-td
-            truncate
-            *brnCellDef="let element"
-            [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }"
-          >
-            <button
-              brnSheetTrigger
-              hlmBtn
-              variant="ghost"
-              (click)="onRowClick(element)"
-            >
+          <hlm-td truncate *brnCellDef="let element" [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }">
+            <button brnSheetTrigger hlmBtn variant="ghost" (click)="onRowClick(element)">
               <p class="text-sm text-gray-500">{{ element.pod_parent_name }}</p>
             </button>
           </hlm-td>
@@ -572,19 +363,10 @@
           <ng-container *brnHeaderDef>
             <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
               'column.action_reason' | transloco
-            }}</hlm-th>
+              }}</hlm-th>
           </ng-container>
-          <hlm-td
-            truncate
-            *brnCellDef="let element"
-            [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }"
-          >
-            <button
-              brnSheetTrigger
-              hlmBtn
-              variant="ghost"
-              (click)="onRowClick(element)"
-            >
+          <hlm-td truncate *brnCellDef="let element" [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }">
+            <button brnSheetTrigger hlmBtn variant="ghost" (click)="onRowClick(element)">
               <p class="text-sm text-gray-500">{{ element.action_reason }}</p>
             </button>
           </hlm-td>
@@ -593,19 +375,10 @@
           <ng-container *brnHeaderDef>
             <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
               'column.alert_model' | transloco
-            }}</hlm-th>
+              }}</hlm-th>
           </ng-container>
-          <hlm-td
-            truncate
-            *brnCellDef="let element"
-            [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }"
-          >
-            <button
-              brnSheetTrigger
-              hlmBtn
-              variant="ghost"
-              (click)="onRowClick(element)"
-            >
+          <hlm-td truncate *brnCellDef="let element" [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }">
+            <button brnSheetTrigger hlmBtn variant="ghost" (click)="onRowClick(element)">
               <p class="text-sm text-gray-500">{{ element.alert_model }}</p>
             </button>
           </hlm-td>
@@ -614,22 +387,13 @@
           <ng-container *brnHeaderDef>
             <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
               'column.cpu_memory' | transloco
-            }}</hlm-th>
+              }}</hlm-th>
           </ng-container>
-          <hlm-td
-            truncate
-            *brnCellDef="let element"
-            [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }"
-          >
-            <button
-              brnSheetTrigger
-              hlmBtn
-              variant="ghost"
-              (click)="onRowClick(element)"
-            >
+          <hlm-td truncate *brnCellDef="let element" [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }">
+            <button brnSheetTrigger hlmBtn variant="ghost" (click)="onRowClick(element)">
               <p class="text-sm text-gray-500">
                 {{ element.demand_slack_cpu }}{{ 'hint.m' | transloco }}/{{
-                  element.demand_slack_memory
+                element.demand_slack_memory
                 }}{{ 'hint.mi' | transloco }}
               </p>
             </button>
@@ -639,19 +403,10 @@
           <ng-container *brnHeaderDef>
             <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
               'column.demand_memory' | transloco
-            }}</hlm-th>
+              }}</hlm-th>
           </ng-container>
-          <hlm-td
-            truncate
-            *brnCellDef="let element"
-            [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }"
-          >
-            <button
-              brnSheetTrigger
-              hlmBtn
-              variant="ghost"
-              (click)="onRowClick(element)"
-            >
+          <hlm-td truncate *brnCellDef="let element" [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }">
+            <button brnSheetTrigger hlmBtn variant="ghost" (click)="onRowClick(element)">
               <p class="text-sm text-gray-500">{{ element.demand_memory }}</p>
             </button>
           </hlm-td>
@@ -660,19 +415,10 @@
           <ng-container *brnHeaderDef>
             <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
               'column.pod_parent_kind' | transloco
-            }}</hlm-th>
+              }}</hlm-th>
           </ng-container>
-          <hlm-td
-            truncate
-            *brnCellDef="let element"
-            [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }"
-          >
-            <button
-              brnSheetTrigger
-              hlmBtn
-              variant="ghost"
-              (click)="onRowClick(element)"
-            >
+          <hlm-td truncate *brnCellDef="let element" [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }">
+            <button brnSheetTrigger hlmBtn variant="ghost" (click)="onRowClick(element)">
               <p class="text-sm text-gray-500">{{ element.pod_parent_kind }}</p>
             </button>
           </hlm-td>
@@ -681,19 +427,10 @@
           <ng-container *brnHeaderDef>
             <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
               'column.node_id' | transloco
-            }}</hlm-th>
+              }}</hlm-th>
           </ng-container>
-          <hlm-td
-            truncate
-            *brnCellDef="let element"
-            [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }"
-          >
-            <button
-              brnSheetTrigger
-              hlmBtn
-              variant="ghost"
-              (click)="onRowClick(element)"
-            >
+          <hlm-td truncate *brnCellDef="let element" [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }">
+            <button brnSheetTrigger hlmBtn variant="ghost" (click)="onRowClick(element)">
               <p class="text-sm text-gray-500">{{ element.node_id }}</p>
             </button>
           </hlm-td>
@@ -702,25 +439,12 @@
           <ng-container *brnHeaderDef>
             <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
               'column.status' | transloco
-            }}</hlm-th>
+              }}</hlm-th>
           </ng-container>
-          <hlm-td
-            truncate
-            *brnCellDef="let element"
-            [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }"
-          >
-            <button
-              brnSheetTrigger
-              hlmBtn
-              variant="ghost"
-              (click)="onRowClick(element)"
-            >
-              <span
-                [class]="`${getStatusColor(element.decision_status)} capitalize`"
-                hlmBadge
-                static="true"
-                >{{ element.decision_status }}</span
-              >
+          <hlm-td truncate *brnCellDef="let element" [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }">
+            <button brnSheetTrigger hlmBtn variant="ghost" (click)="onRowClick(element)">
+              <span [class]="`${getStatusColor(element.decision_status)} capitalize`" hlmBadge static="true">{{
+                element.decision_status }}</span>
             </button>
           </hlm-td>
         </brn-column-def>
@@ -728,19 +452,10 @@
           <ng-container *brnHeaderDef>
             <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
               'column.created_at' | transloco
-            }}</hlm-th>
+              }}</hlm-th>
           </ng-container>
-          <hlm-td
-            truncate
-            *brnCellDef="let element"
-            [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }"
-          >
-            <button
-              brnSheetTrigger
-              hlmBtn
-              variant="ghost"
-              (click)="onRowClick(element)"
-            >
+          <hlm-td truncate *brnCellDef="let element" [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }">
+            <button brnSheetTrigger hlmBtn variant="ghost" (click)="onRowClick(element)">
               <div class="flex flex-col">
                 <p class="text-sm text-gray-500">
                   {{ element.created_at | date : 'dd/MM/yyyy' }}
@@ -756,19 +471,10 @@
           <ng-container *brnHeaderDef>
             <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
               'column.created_at' | transloco
-            }}</hlm-th>
+              }}</hlm-th>
           </ng-container>
-          <hlm-td
-            truncate
-            *brnCellDef="let element"
-            [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }"
-          >
-            <button
-              brnSheetTrigger
-              hlmBtn
-              variant="ghost"
-              (click)="onRowClick(element)"
-            >
+          <hlm-td truncate *brnCellDef="let element" [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }">
+            <button brnSheetTrigger hlmBtn variant="ghost" (click)="onRowClick(element)">
               <div class="flex flex-col">
                 <p class="text-sm text-gray-500">
                   {{ element.decision_created_at | date : 'dd/MM/yyyy' }}
@@ -784,19 +490,10 @@
           <ng-container *brnHeaderDef>
             <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
               'column.time' | transloco
-            }}</hlm-th>
+              }}</hlm-th>
           </ng-container>
-          <hlm-td
-            truncate
-            *brnCellDef="let element"
-            [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }"
-          >
-            <button
-              brnSheetTrigger
-              hlmBtn
-              variant="ghost"
-              (click)="onRowClick(element)"
-            >
+          <hlm-td truncate *brnCellDef="let element" [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }">
+            <button brnSheetTrigger hlmBtn variant="ghost" (click)="onRowClick(element)">
               <div class="flex flex-col">
                 <p class="text-sm text-gray-500">
                   {{ element.created_at | date : 'dd/MM/yyyy' }}
@@ -812,19 +509,10 @@
           <ng-container *brnHeaderDef>
             <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
               'column.action_start_time' | transloco
-            }}</hlm-th>
+              }}</hlm-th>
           </ng-container>
-          <hlm-td
-            truncate
-            *brnCellDef="let element"
-            [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }"
-          >
-            <button
-              brnSheetTrigger
-              hlmBtn
-              variant="ghost"
-              (click)="onRowClick(element)"
-            >
+          <hlm-td truncate *brnCellDef="let element" [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }">
+            <button brnSheetTrigger hlmBtn variant="ghost" (click)="onRowClick(element)">
               <div class="flex flex-col">
                 <p class="text-sm text-gray-500">
                   {{ element.action_start_time | date : 'dd/MM/yyyy' }}
@@ -838,23 +526,11 @@
         </brn-column-def>
         <brn-column-def name="action_end_time" class="w-64 !text-left">
           <ng-container *brnHeaderDef>
-            <hlm-th
-              truncate
-              [style.visibility]="showHeader ? 'visible' : 'hidden'"
-              >{{ 'column.action_end_time' | transloco }}</hlm-th
-            >
+            <hlm-th truncate [style.visibility]="showHeader ? 'visible' : 'hidden'">{{ 'column.action_end_time' |
+              transloco }}</hlm-th>
           </ng-container>
-          <hlm-td
-            truncate
-            *brnCellDef="let element"
-            [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }"
-          >
-            <button
-              brnSheetTrigger
-              hlmBtn
-              variant="ghost"
-              (click)="onRowClick(element)"
-            >
+          <hlm-td truncate *brnCellDef="let element" [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }">
+            <button brnSheetTrigger hlmBtn variant="ghost" (click)="onRowClick(element)">
               <div class="flex flex-col">
                 <p class="text-sm text-gray-500">
                   {{ element.action_end_time | date : 'dd/MM/yyyy' }}
@@ -868,23 +544,10 @@
         </brn-column-def>
         <brn-column-def name="cluster_name" class="w-64 !text-left">
           <ng-container *brnHeaderDef>
-            <hlm-th
-              truncate
-              [style.visibility]="showHeader ? 'visible' : 'hidden'"
-              >Cluster Name</hlm-th
-            >
+            <hlm-th truncate [style.visibility]="showHeader ? 'visible' : 'hidden'">Cluster Name</hlm-th>
           </ng-container>
-          <hlm-td
-            truncate
-            *brnCellDef="let element"
-            [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }"
-          >
-            <button
-              brnSheetTrigger
-              hlmBtn
-              variant="ghost"
-              (click)="onRowClick(element)"
-            >
+          <hlm-td truncate *brnCellDef="let element" [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }">
+            <button brnSheetTrigger hlmBtn variant="ghost" (click)="onRowClick(element)">
               <p class="text-sm mb-1">{{ element.cluster_name }}</p>
               <p class="text-sm text-gray-500">{{ element.id }}</p>
             </button>
@@ -892,28 +555,13 @@
         </brn-column-def>
         <brn-column-def name="action_status" class="w-32 !text-left">
           <ng-container *brnHeaderDef>
-            <hlm-th
-              truncate
-              [style.visibility]="showHeader ? 'visible' : 'hidden'"
-              >{{ 'column.action_status' | transloco }}</hlm-th
-            >
+            <hlm-th truncate [style.visibility]="showHeader ? 'visible' : 'hidden'">{{ 'column.action_status' |
+              transloco }}</hlm-th>
           </ng-container>
-          <hlm-td
-            truncate
-            *brnCellDef="let element"
-            [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }"
-          >
-            <button
-              brnSheetTrigger
-              hlmBtn
-              variant="ghost"
-              (click)="onRowClick(element)"
-            >
-              <span
-                [class]="`${getStatusColor(element.action_status)} capitalize`"
-                hlmBadge
-                >{{ element.action_status }}</span
-              >
+          <hlm-td truncate *brnCellDef="let element" [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }">
+            <button brnSheetTrigger hlmBtn variant="ghost" (click)="onRowClick(element)">
+              <span [class]="`${getStatusColor(element.action_status)} capitalize`" hlmBadge>{{ element.action_status
+                }}</span>
             </button>
           </hlm-td>
         </brn-column-def>
@@ -921,27 +569,16 @@
           <ng-container *brnHeaderDef>
             <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
               'column.decision_id' | transloco
-            }}</hlm-th>
+              }}</hlm-th>
           </ng-container>
-          <hlm-td
-            truncate
-            *brnCellDef="let element"
-            [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }"
-          >
-            <button
-              brnSheetTrigger
-              hlmBtn
-              variant="ghost"
-              (click)="
+          <hlm-td truncate *brnCellDef="let element" [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }">
+            <button brnSheetTrigger hlmBtn variant="ghost" (click)="
                 onRowClickRedirect(
                   element.decision_id,
                   '/emdc/workloads/request_decisions'
                 )
-              "
-            >
-              <p
-                class="text-sm text-gray-500 overflow-hidden text-ellipsis w-full"
-              >
+              ">
+              <p class="text-sm text-gray-500 overflow-hidden text-ellipsis w-full">
                 {{ element.decision_id }}
               </p>
             </button>
@@ -951,24 +588,13 @@
           <ng-container *brnHeaderDef>
             <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
               'column.action_id' | transloco
-            }}</hlm-th>
+              }}</hlm-th>
           </ng-container>
-          <hlm-td
-            truncate
-            *brnCellDef="let element"
-            [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }"
-          >
-            <button
-              brnSheetTrigger
-              hlmBtn
-              variant="ghost"
-              (click)="
+          <hlm-td truncate *brnCellDef="let element" [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }">
+            <button brnSheetTrigger hlmBtn variant="ghost" (click)="
                 onRowClickRedirect(element.action_id, '/emdc/workloads/actions')
-              "
-            >
-              <p
-                class="text-sm text-gray-500 overflow-hidden text-ellipsis w-full"
-              >
+              ">
+              <p class="text-sm text-gray-500 overflow-hidden text-ellipsis w-full">
                 {{ element.action_id }}
               </p>
             </button>
@@ -978,19 +604,10 @@
           <ng-container *brnHeaderDef>
             <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
               'column.decision_pod_name' | transloco
-            }}</hlm-th>
+              }}</hlm-th>
           </ng-container>
-          <hlm-td
-            truncate
-            *brnCellDef="let element"
-            [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }"
-          >
-            <button
-              brnSheetTrigger
-              hlmBtn
-              variant="ghost"
-              (click)="onRowClick(element)"
-            >
+          <hlm-td truncate *brnCellDef="let element" [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }">
+            <button brnSheetTrigger hlmBtn variant="ghost" (click)="onRowClick(element)">
               <p class="text-sm text-gray-500">
                 {{ element.decision_pod_name }}
               </p>
@@ -1001,19 +618,10 @@
           <ng-container *brnHeaderDef>
             <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
               'column.decision_namespace' | transloco
-            }}</hlm-th>
+              }}</hlm-th>
           </ng-container>
-          <hlm-td
-            truncate
-            *brnCellDef="let element"
-            [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }"
-          >
-            <button
-              brnSheetTrigger
-              hlmBtn
-              variant="ghost"
-              (click)="onRowClick(element)"
-            >
+          <hlm-td truncate *brnCellDef="let element" [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }">
+            <button brnSheetTrigger hlmBtn variant="ghost" (click)="onRowClick(element)">
               <p class="text-sm text-gray-500">
                 {{ element.decision_namespace }}
               </p>
@@ -1024,19 +632,10 @@
           <ng-container *brnHeaderDef>
             <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
               'column.decision_node_name' | transloco
-            }}</hlm-th>
+              }}</hlm-th>
           </ng-container>
-          <hlm-td
-            truncate
-            *brnCellDef="let element"
-            [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }"
-          >
-            <button
-              brnSheetTrigger
-              hlmBtn
-              variant="ghost"
-              (click)="onRowClick(element)"
-            >
+          <hlm-td truncate *brnCellDef="let element" [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }">
+            <button brnSheetTrigger hlmBtn variant="ghost" (click)="onRowClick(element)">
               <p class="text-sm text-gray-500">
                 {{ element.decision_node_name }}
               </p>
@@ -1047,19 +646,10 @@
           <ng-container *brnHeaderDef>
             <hlm-th truncate [style.display]="showHeader ? 'block' : 'none'">{{
               'column.total_duration' | transloco
-            }}</hlm-th>
+              }}</hlm-th>
           </ng-container>
-          <hlm-td
-            truncate
-            *brnCellDef="let element"
-            [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }"
-          >
-            <button
-              brnSheetTrigger
-              hlmBtn
-              variant="ghost"
-              (click)="onRowClick(element)"
-            >
+          <hlm-td truncate *brnCellDef="let element" [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }">
+            <button brnSheetTrigger hlmBtn variant="ghost" (click)="onRowClick(element)">
               <p class="text-sm text-gray-500">
                 {{ parseDuration(element.total_duration)
                 }}{{ 'hint.s' | transloco }}
@@ -1069,101 +659,46 @@
         </brn-column-def>
         <brn-column-def name="status" class="w-32 !text-left">
           <ng-container *brnHeaderDef>
-            <hlm-th
-              truncate
-              [style.visibility]="showHeader ? 'visible' : 'hidden'"
-              >{{ 'column.status' | transloco }}</hlm-th
-            >
+            <hlm-th truncate [style.visibility]="showHeader ? 'visible' : 'hidden'">{{ 'column.status' | transloco
+              }}</hlm-th>
           </ng-container>
-          <hlm-td
-            truncate
-            *brnCellDef="let element"
-            [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }"
-          >
-            <button
-              brnSheetTrigger
-              hlmBtn
-              variant="ghost"
-              (click)="onRowClick(element)"
-            >
+          <hlm-td truncate *brnCellDef="let element" [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }">
+            <button brnSheetTrigger hlmBtn variant="ghost" (click)="onRowClick(element)">
               <span [class]="getStatusColor(element.status)" hlmBadge>{{
                 element.status
-              }}</span>
+                }}</span>
             </button>
           </hlm-td>
         </brn-column-def>
         <brn-column-def name="workloads" class="w-32 !text-left">
           <ng-container *brnHeaderDef>
-            <hlm-th
-              truncate
-              [style.visibility]="showHeader ? 'visible' : 'hidden'"
-              >Workloads</hlm-th
-            >
+            <hlm-th truncate [style.visibility]="showHeader ? 'visible' : 'hidden'">Workloads</hlm-th>
           </ng-container>
-          <hlm-td
-            truncate
-            *brnCellDef="let element"
-            [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }"
-          >
-            <button
-              brnSheetTrigger
-              hlmBtn
-              variant="ghost"
-              (click)="onRowClick(element)"
-            >
+          <hlm-td truncate *brnCellDef="let element" [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }">
+            <button brnSheetTrigger hlmBtn variant="ghost" (click)="onRowClick(element)">
               {{ element.workloads }}
             </button>
           </hlm-td>
         </brn-column-def>
         <brn-column-def name="nodes" class="w-32 !text-left">
           <ng-container *brnHeaderDef>
-            <hlm-th
-              truncate
-              [style.visibility]="showHeader ? 'visible' : 'hidden'"
-              >Nodes</hlm-th
-            >
+            <hlm-th truncate [style.visibility]="showHeader ? 'visible' : 'hidden'">Nodes</hlm-th>
           </ng-container>
-          <hlm-td
-            truncate
-            *brnCellDef="let element"
-            [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }"
-          >
-            <button
-              brnSheetTrigger
-              hlmBtn
-              variant="ghost"
-              (click)="onRowClick(element)"
-            >
+          <hlm-td truncate *brnCellDef="let element" [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }">
+            <button brnSheetTrigger hlmBtn variant="ghost" (click)="onRowClick(element)">
               {{ element.nodes }}
             </button>
           </hlm-td>
         </brn-column-def>
         <brn-column-def name="cpu_usage" class="w-32 !text-left">
           <ng-container *brnHeaderDef>
-            <hlm-th
-              truncate
-              [style.visibility]="showHeader ? 'visible' : 'hidden'"
-              >CPU Usage</hlm-th
-            >
+            <hlm-th truncate [style.visibility]="showHeader ? 'visible' : 'hidden'">CPU Usage</hlm-th>
           </ng-container>
-          <hlm-td
-            truncate
-            *brnCellDef="let element"
-            [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }"
-          >
-            <button
-              brnSheetTrigger
-              hlmBtn
-              variant="ghost"
-              (click)="onRowClick(element)"
-            >
+          <hlm-td truncate *brnCellDef="let element" [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }">
+            <button brnSheetTrigger hlmBtn variant="ghost" (click)="onRowClick(element)">
               <span [class]="getProgressColor(element.cpu_usage)">
-                <app-circle-progress
-                  [progress]="element.cpu_usage"
-                  [size]="20"
-                  [strokeWidth]="2"
-                  [backgroundColor]="'#e6e6e6'"
-                >
+                <app-circle-progress [progress]="element.cpu_usage" [size]="20" [strokeWidth]="2"
+                  [backgroundColor]="'#e6e6e6'">
                   <div class="ml-14">
                     <span class="text-sm">{{ element.cpu_usage }}%</span>
                   </div>
@@ -1174,30 +709,13 @@
         </brn-column-def>
         <brn-column-def name="memory_usage" class="w-32 !text-left">
           <ng-container *brnHeaderDef>
-            <hlm-th
-              truncate
-              [style.visibility]="showHeader ? 'visible' : 'hidden'"
-              >Memory Usage</hlm-th
-            >
+            <hlm-th truncate [style.visibility]="showHeader ? 'visible' : 'hidden'">Memory Usage</hlm-th>
           </ng-container>
-          <hlm-td
-            truncate
-            *brnCellDef="let element"
-            [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }"
-          >
-            <button
-              brnSheetTrigger
-              hlmBtn
-              variant="ghost"
-              (click)="onRowClick(element)"
-            >
+          <hlm-td truncate *brnCellDef="let element" [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }">
+            <button brnSheetTrigger hlmBtn variant="ghost" (click)="onRowClick(element)">
               <span [class]="getProgressColor(element.memory_usage)">
-                <app-circle-progress
-                  [progress]="element.memory_usage"
-                  [size]="20"
-                  [strokeWidth]="2"
-                  [backgroundColor]="'#e6e6e6'"
-                >
+                <app-circle-progress [progress]="element.memory_usage" [size]="20" [strokeWidth]="2"
+                  [backgroundColor]="'#e6e6e6'">
                   <div class="ml-14">
                     <span class="text-sm">{{ element.memory_usage }}%</span>
                   </div>
@@ -1210,19 +728,10 @@
           <ng-container *brnHeaderDef>
             <hlm-th [style.visibility]="showHeader ? 'visible' : 'hidden'">{{
               'column.actions' | transloco
-            }}</hlm-th>
+              }}</hlm-th>
           </ng-container>
-          <hlm-td
-            *brnCellDef="let element"
-            [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }"
-          >
-            <button
-              hlmBtn
-              variant="outline"
-              class="h-8 w-8 p-0.5"
-              align="end"
-              [brnMenuTriggerFor]="menu"
-            >
+          <hlm-td *brnCellDef="let element" [ngClass]="{ 'bg-yellow-50': isRowHighlighted(element) }">
+            <button hlmBtn variant="outline" class="h-8 w-8 p-0.5" align="end" [brnMenuTriggerFor]="menu">
               <ng-icon hlm size="sm" name="lucideEllipsisVertical" />
             </button>
 
@@ -1230,16 +739,11 @@
               <hlm-menu class="w-52">
                 <hlm-menu-label>{{
                   'column.actions' | transloco
-                }}</hlm-menu-label>
+                  }}</hlm-menu-label>
                 <hlm-menu-separator />
                 <hlm-menu-group>
-                  <a
-                    *ngFor="let action of _actions()"
-                    hlmMenuItem
-                    class="flex gap-2"
-                    [routerLink]="`./${element.id}`"
-                    [state]="element"
-                  >
+                  <a *ngFor="let action of _actions()" hlmMenuItem class="flex gap-2" [routerLink]="`./${element.id}`"
+                    [state]="element">
                     <ng-icon hlm size="sm" [svg]="ACTION_ICONS[action]" />
                     <span>{{ `action.${action}` | transloco }}</span>
                   </a>
@@ -1249,29 +753,20 @@
           </hlm-td>
         </brn-column-def>
 
-        <div
-          class="flex items-center justify-center p-20 text-muted-foreground"
-          brnNoDataRow
-        >
+        <div class="flex items-center justify-center p-20 text-muted-foreground" brnNoDataRow>
           {{ 'hint.no_data' | transloco }}
         </div>
       </brn-table>
     </div>
     <div *ngIf="showFooter">
-      <div
-        class="flex flex-col justify-between mt-4 sm:flex-row sm:items-center"
-        *brnPaginator="
+      <div class="flex flex-col justify-between mt-4 sm:flex-row sm:items-center" *brnPaginator="
           let ctx;
           totalElements: _totalElements();
           pageSize: _pageSize();
           onStateChange: _onStateChange
-        "
-      >
+        ">
         <div class="flex items-center justify-between w-full">
-          <brn-select
-            placeholder="{{ _availablePageSizes[0] }}"
-            [(ngModel)]="_pageSize"
-          >
+          <brn-select placeholder="{{ _availablePageSizes[0] }}" [(ngModel)]="_pageSize">
             <hlm-select-trigger class="inline-flex mr-1 w-20 h-9">
               <hlm-select-value />
             </hlm-select-trigger>
@@ -1285,22 +780,10 @@
           </brn-select>
 
           <div class="flex gap-2">
-            <button
-              size="sm"
-              variant="outline"
-              hlmBtn
-              [disabled]="!ctx.decrementable()"
-              (click)="ctx.decrement()"
-            >
+            <button size="sm" variant="outline" hlmBtn [disabled]="!ctx.decrementable()" (click)="ctx.decrement()">
               {{ 'action.previous' | transloco }}
             </button>
-            <button
-              size="sm"
-              variant="outline"
-              hlmBtn
-              [disabled]="!ctx.incrementable()"
-              (click)="ctx.increment()"
-            >
+            <button size="sm" variant="outline" hlmBtn [disabled]="!ctx.incrementable()" (click)="ctx.increment()">
               {{ 'action.next' | transloco }}
             </button>
           </div>
@@ -1315,12 +798,7 @@
         <div class="flex">
           <div class="flex">
             <p class="text-md">#</p>
-            <brn-separator
-              decorative
-              hlmSeparator
-              orientation="vertical"
-              class="mx-4"
-            />
+            <brn-separator decorative hlmSeparator orientation="vertical" class="mx-4" />
           </div>
           <h3 hlmSheetTitle class="w-[calc(100%-40px)] text-md font-normal">
             {{ detailsTitle }}

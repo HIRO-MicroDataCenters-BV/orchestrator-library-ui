@@ -1,17 +1,8 @@
 <div class="px-4">
   <router-outlet>
-    <app-table
-      *ngIf="showParentContent"
-      [columns]="columns"
-      [actions]="actions"
-      [tabs]="tabs"
-      [dataSource]="dataSource"
-      [detailsStruct]="detailsStruct"
-      [enableServerSearch]="true"
-      [enableServerPagination]="true"
-      [totalElements]="totalElements"
-      (searchChange)="updateSearch($event)"
-      (paginationChange)="onPaginationChange($event)"
-    ></app-table>
+    <app-table *ngIf="showParentContent" [columns]="columns" [actions]="actions" [tabs]="tabs" [dataSource]="dataSource"
+      [detailsStruct]="detailsStruct" [enableServerSearch]="true" [enableServerPagination]="true"
+      [totalElements]="totalElements" (searchChange)="updateSearch($event)"
+      (searchColumnChange)="updateSearchColumn($event)" (paginationChange)="onPaginationChange($event)"></app-table>
   </router-outlet>
 </div>
