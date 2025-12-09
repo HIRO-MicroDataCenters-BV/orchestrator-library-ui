@@ -222,6 +222,7 @@ export class AppTableComponent implements OnChanges, OnInit, OnDestroy {
   @Input('enableServerPagination') enableServerPagination = false;
   @Input('totalElements') totalElementsInput?: number;
   @Output() searchChange = new EventEmitter<string>();
+  @Output() searchColumnChange = new EventEmitter<string>();
   @Output() paginationChange = new EventEmitter<{
     skip: number;
     limit: number;
@@ -242,6 +243,7 @@ export class AppTableComponent implements OnChanges, OnInit, OnDestroy {
 
   protected readonly _rawFilterInput = signal('');
   protected readonly _colFilter = signal('');
+  protected _searchColumn = signal<string>('all');
   private readonly _debouncedFilter = toSignal(
     toObservable(this._rawFilterInput).pipe(debounceTime(300), startWith(''))
   );
@@ -276,16 +278,36 @@ export class AppTableComponent implements OnChanges, OnInit, OnDestroy {
   protected readonly _highlightedRowId = signal<string | number | null>(null);
 
   private readonly _filteredItems = computed(() => {
-    // Skip client-side filtering if server-side search is enabled
-    if (this.enableServerSearch) {
-      return this._items();
-    }
-
     const colFilter = this._colFilter()?.trim()?.toLowerCase();
+    const searchColumn = this._searchColumn();
+
+    // Always perform client-side filtering if there's a search query
+    // This works for both server and client search modes
+
     if (colFilter && colFilter.length > 0) {
+      console.log('🔎 Filtering with:', { colFilter, searchColumn, itemsCount: this._items().length });
+
       return this._items().filter((item) => {
-        // Search through all string properties of the item
-        return Object.values(item as Record<string, unknown>).some((value) => {
+        // If a specific column is selected, only search in that column
+        if (searchColumn && searchColumn !== 'all') {
+          const value = (item as Record<string, unknown>)[searchColumn];
+          if (value === null || value === undefined) {
+            return false;
+          }
+          if (typeof value === 'string') {
+            return value.toLowerCase().includes(colFilter);
+          }
+          if (typeof value === 'number') {
+            return value.toString().includes(colFilter);
+          }
+          if (typeof value === 'object') {
+            return JSON.stringify(value).toLowerCase().includes(colFilter);
+          }
+          return false;
+        }
+
+        // Search through all string properties of the item (when 'all' is selected or null)
+        const matches = Object.values(item as Record<string, unknown>).some((value) => {
           if (typeof value === 'string') {
             return value.toLowerCase().includes(colFilter);
           }
@@ -301,6 +323,12 @@ export class AppTableComponent implements OnChanges, OnInit, OnDestroy {
           }
           return false;
         });
+
+        if (matches) {
+          console.log('✅ Match found in item:', item);
+        }
+
+        return matches;
       });
     }
     return this._items();
@@ -459,6 +487,21 @@ export class AppTableComponent implements OnChanges, OnInit, OnDestroy {
         });
       }
     });
+
+    // Emit searchColumn change when column selection changes (for server-side search)
+    effect(() => {
+      const searchColumn = this._searchColumn();
+      if (this.enableServerSearch) {
+        untracked(() => {
+          // Skip first run
+          if (!this._isInitialized) {
+            return;
+          }
+          console.log('📤 Emitting searchColumnChange:', searchColumn);
+          this.searchColumnChange.emit(searchColumn);
+        });
+      }
+    });
   }
   ngOnInit(): void {
     // Set page size based on input or mode
@@ -476,6 +519,23 @@ export class AppTableComponent implements OnChanges, OnInit, OnDestroy {
             // Only update if the limit from URL is in available page sizes
             if (this._availablePageSizes.includes(limitFromUrl)) {
               this._pageSize.set(limitFromUrl);
+            }
+          }
+
+          // Sync search from URL
+          if (params['search'] !== undefined) {
+            const searchFromUrl = params['search'] || '';
+            if (this._colFilter() !== searchFromUrl) {
+              this._colFilter.set(searchFromUrl);
+              this._rawFilterInput.set(searchFromUrl);
+            }
+          }
+
+          // Sync search_col from URL
+          if (params['search_col'] !== undefined) {
+            const searchColFromUrl = params['search_col'] || 'all';
+            if (this._searchColumn() !== searchColFromUrl) {
+              this._searchColumn.set(searchColFromUrl);
             }
           }
         }
@@ -574,6 +634,14 @@ export class AppTableComponent implements OnChanges, OnInit, OnDestroy {
         this._columnOptions.set(columnOptions);
       }
     }
+  }
+
+  public onColumnChange(column: string) {
+    console.log('🔽 Column changed to:', column);
+    this._searchColumn.set(column);
+    // Clear search when column changes
+    this._rawFilterInput.set('');
+    this._colFilter.set('');
   }
 
   isColumnSelected(columnName: string): boolean {

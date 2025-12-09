@@ -245,6 +245,7 @@ export class AlertsComponent implements OnInit, OnDestroy {
 
   // Method to update search - updates URL query params
   updateSearch(searchQuery: string): void {
+    console.log('🔍 updateSearch called with:', searchQuery);
     const currentParams = this.activatedRoute.snapshot.queryParams;
     this.updateQueryParams({
       skip: 0, // Reset to first page when search changes
@@ -252,7 +253,23 @@ export class AlertsComponent implements OnInit, OnDestroy {
         1,
         parseInt(currentParams['limit'] || DEFAULT_PAGE_SIZE.toString(), 10)
       ),
-      search: searchQuery || '',
+      search: searchQuery,
+      search_col: currentParams['search_col'], // Preserve search_col
+    });
+  }
+
+  // Method to update search column - updates URL query params
+  updateSearchColumn(searchColumn: string): void {
+    console.log('🎯 updateSearchColumn called with:', searchColumn);
+    const currentParams = this.activatedRoute.snapshot.queryParams;
+    this.updateQueryParams({
+      skip: 0, // Reset to first page when column changes
+      limit: Math.max(
+        1,
+        parseInt(currentParams['limit'] || DEFAULT_PAGE_SIZE.toString(), 10)
+      ),
+      search: currentParams['search'], // Preserve search
+      search_col: searchColumn !== 'all' ? searchColumn : undefined,
     });
   }
 
@@ -263,12 +280,13 @@ export class AlertsComponent implements OnInit, OnDestroy {
       skip: pagination.skip,
       limit: Math.max(1, pagination.limit), // Ensure limit is at least 1
       search: currentParams['search'] || '',
+      search_col: currentParams['search_col'], // Preserve search_col
     });
   }
 
   // Helper method to update query params
   private updateQueryParams(
-    params: { skip: number; limit: number; search?: string },
+    params: { skip: number; limit: number; search?: string; search_col?: string },
     replaceUrl: boolean = true
   ): void {
     const queryParams: Params = {
@@ -282,6 +300,15 @@ export class AlertsComponent implements OnInit, OnDestroy {
       // Remove search param if empty
       queryParams['search'] = null;
     }
+
+    if (params.search_col) {
+      queryParams['search_col'] = params.search_col;
+    } else {
+      // Remove search_col param if empty
+      queryParams['search_col'] = null;
+    }
+
+    console.log('🔄 updateQueryParams - navigating with:', queryParams);
 
     this.router.navigate([], {
       relativeTo: this.activatedRoute,
