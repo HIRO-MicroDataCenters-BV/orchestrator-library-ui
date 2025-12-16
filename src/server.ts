@@ -59,7 +59,7 @@ function modifyProxyHeaders(_proxyPath: string) {
 
       // Remove X-Frame-Options and add CSP
       res.removeHeader('X-Frame-Options');
-      res.header('Content-Security-Policy', 'frame-ancestors *');
+      res.header('Content-Security-Policy', 'upgrade-insecure-requests; frame-ancestors *');
 
       return originalSend.call(this, body);
     };
@@ -79,7 +79,7 @@ function modifyProxyHeaders(_proxyPath: string) {
 
       // Remove X-Frame-Options and add CSP
       res.removeHeader('X-Frame-Options');
-      res.header('Content-Security-Policy', 'frame-ancestors *');
+      res.header('Content-Security-Policy', 'upgrade-insecure-requests; frame-ancestors *');
 
       return originalJson.call(this, obj);
     };

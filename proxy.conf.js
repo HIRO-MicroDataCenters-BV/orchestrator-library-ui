@@ -81,9 +81,9 @@ module.exports = {
         'content-security-policy'
       ]
         ? proxyRes.headers['content-security-policy'].replace(
-            /frame-ancestors[^;]*;?/g,
-            ''
-          ) + '; frame-ancestors *'
+          /frame-ancestors[^;]*;?/g,
+          ''
+        ) + '; frame-ancestors *'
         : 'frame-ancestors *';
     },
   },
@@ -118,9 +118,9 @@ module.exports = {
         'content-security-policy'
       ]
         ? proxyRes.headers['content-security-policy'].replace(
-            /frame-ancestors[^;]*;?/g,
-            ''
-          ) + '; frame-ancestors *'
+          /frame-ancestors[^;]*;?/g,
+          ''
+        ) + '; frame-ancestors *'
         : 'frame-ancestors *';
     },
     onProxyReq: function (proxyReq, req, res) {
@@ -169,10 +169,10 @@ module.exports = {
         'content-security-policy'
       ]
         ? proxyRes.headers['content-security-policy'].replace(
-            /frame-ancestors[^;]*;?/g,
-            ''
-          ) + '; frame-ancestors *'
-        : 'frame-ancestors *';
+          /frame-ancestors[^;]*;?/g,
+          ''
+        ) + '; upgrade-insecure-requests; frame-ancestors *'
+        : 'upgrade-insecure-requests; frame-ancestors *';
     },
     onProxyReq: function (proxyReq, req, res) {
       // Extract token from query parameter and add to Authorization header

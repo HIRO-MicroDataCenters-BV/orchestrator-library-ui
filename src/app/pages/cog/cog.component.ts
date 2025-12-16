@@ -23,7 +23,9 @@ export class CogComponent implements OnInit {
 
   ngOnInit(): void {
     const token = this.authService.getAccessToken();
-    const baseUrl = environment.cogUrl;
+    // Use local proxy path to ensure CSP headers are applied and mixed content is avoided
+    // The proxy will forward to the actual COG URL and handle the token extraction
+    const baseUrl = '/iframe-cog';
 
     if (token) {
       const separator = baseUrl.includes('?') ? '&' : '?';
